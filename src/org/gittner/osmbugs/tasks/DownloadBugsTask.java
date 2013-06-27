@@ -349,16 +349,21 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
-        arguments.add(new BasicNameValuePair("b", String.valueOf(bBox_.getLatSouthE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("t", String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("l", String.valueOf(bBox_.getLonWestE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("r", String.valueOf(bBox_.getLonEastE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
+        arguments.add(new BasicNameValuePair("bbox", String.valueOf(bBox_.getLonEastE6() / 1000000.0) + "," +
+                String.valueOf(bBox_.getLatSouthE6() / 1000000.0) + "," +
+                String.valueOf(bBox_.getLonWestE6() / 1000000.0) + "," +
+                String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("comments", "1"));
         arguments.add(new BasicNameValuePair("ft", getMapdustSelectionString()));
         arguments.add(new BasicNameValuePair("fs", getMapdustEnabledTypesString()));
-        arguments.add(new BasicNameValuePair("fd", "1"));
 
+        HttpGet request;
 
-        HttpGet request = new HttpGet("http://www.mapdust.com/getBugs?" + URLEncodedUtils.format(arguments, "utf-8"));
+        if(Settings.DEBUG)
+            request = new HttpGet("http://st.www.mapdust.com/api/getBugs?" + URLEncodedUtils.format(arguments, "utf-8"));
+        else
+            request = new HttpGet("http://www.mapdust.com/api/getBugs?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute Query */
@@ -412,11 +417,11 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
         String result = "";
 
         if(Settings.Mapdust.isShowOpenEnabled())
-            result += "open,";
+            result += "1,";
         if(Settings.Mapdust.isShowClosedEnabled())
-            result += "fixed,";
+            result += "2,";
         if(Settings.Mapdust.isShowIgnoredEnabled())
-            result += "invalid,";
+            result += "3,";
 
         if(result.endsWith(","))
             result = result.substring(0, result.length() - 1);

@@ -386,6 +386,14 @@ public class Settings {
 
     public static class Mapdust {
 
+        public static String getApiKey() {
+            return "ae58b0b4aa3f876265a4d5f29167b73c";
+        }
+
+        public static String getUsername() {
+            return prefs_.getString("pref_mapdust_username", "Anonymous");
+        }
+
         public static boolean isEnabled() {
             return prefs_.getBoolean("pref_mapdust_enabled", true);
         }

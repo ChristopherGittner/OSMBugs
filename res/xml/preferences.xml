@@ -104,7 +104,8 @@
 	    </PreferenceScreen>
 	    <PreferenceScreen android:title="@string/mapdust">
 	        <PreferenceCategory android:title="@string/mapdust">
-		    	<CheckBoxPreference android:title="@string/show_open_bugs" android:key="pref_mapdust_enabled_open" android:defaultValue="true"/>
+                <EditTextPreference android:key="pref_mapdust_username" android:title="@string/username"/>
+                <CheckBoxPreference android:title="@string/show_open_bugs" android:key="pref_mapdust_enabled_open" android:defaultValue="true"/>
 		       	<CheckBoxPreference android:title="@string/show_fixed_bugs" android:key="pref_mapdust_enabled_closed" android:defaultValue="true"/>
 		    	<CheckBoxPreference android:title="@string/show_invalid_bugs" android:key="pref_mapdust_enabled_ignored" android:defaultValue="true"/>
 		       	<CheckBoxPreference android:title="@string/wrong_turn" android:key="pref_mapdust_enabled_wrong_turn" android:defaultValue="true"/>

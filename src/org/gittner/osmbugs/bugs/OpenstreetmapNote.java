@@ -18,7 +18,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -116,7 +115,6 @@ public class OpenstreetmapNote extends Bug {
                 /* Execute commit */
                 HttpResponse response = client.execute(request);
 
-                Log.w("", response.getStatusLine().getStatusCode() + "");
                 /* Check result for Success*/
                 if(response.getStatusLine().getStatusCode() != 200)
                     return false;
