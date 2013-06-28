@@ -40,7 +40,7 @@ public class BugEditorActivity extends SherlockActivity implements OnItemSelecte
     public static String EXTRABUG = "BUG";
 
     /* All Views on this Activity */
-    private TextView txtvTitle_, txtvText_;
+    private TextView txtvTitle_, txtvText_, txtvNewCommentHeader_, txtvNewComment_;
     private Spinner spnState_;
     private ArrayList<String> spinnerItems_;
     private ListView lvComments_;
@@ -83,6 +83,14 @@ public class BugEditorActivity extends SherlockActivity implements OnItemSelecte
             lvComments_ = (ListView) findViewById(R.id.listView1);
             lvComments_.setAdapter(commentAdapter_);
         }
+
+        /* Setup the new Comment Textview */
+        txtvNewCommentHeader_ = (TextView) findViewById(R.id.txtvNewCommentHeader);
+        txtvNewCommentHeader_.setVisibility(View.GONE);
+
+        txtvNewComment_ = (TextView) findViewById(R.id.txtvNewComment);
+        txtvNewComment_.setVisibility(View.GONE);
+        txtvNewComment_.setText("");
 
         /* Setup the State Spinner */
         spnState_ = (Spinner) findViewById(R.id.spnState);
@@ -169,7 +177,19 @@ public class BugEditorActivity extends SherlockActivity implements OnItemSelecte
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     bug_.setNewComment(commentEditText.getText().toString());
-                    commentAdapter_.notifyDataSetChanged();
+
+                    txtvNewComment_.setText(commentEditText.getText().toString());
+
+                    /* View or hide the New Comment TextViews */
+                    if(!commentEditText.getText().toString().equals("")) {
+                        txtvNewComment_.setVisibility(View.VISIBLE);
+                        txtvNewCommentHeader_.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        txtvNewComment_.setVisibility(View.GONE);
+                        txtvNewCommentHeader_.setVisibility(View.GONE);
+                    }
+
                     dialog.dismiss();
                 }});
             builder.setNegativeButton(getString(R.string.cancel), new android.content.DialogInterface.OnClickListener() {

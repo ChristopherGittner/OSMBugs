@@ -124,4 +124,5 @@
     <string name="domain_hijacking">Domain Hijacking</string>
     <string name="non_match">Non-Match</string>
     <string name="reset">Reset</string>
+    <string name="new_comment">New Comment</string>
 </resources>
