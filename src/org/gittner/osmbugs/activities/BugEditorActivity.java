@@ -46,6 +46,9 @@ public class BugEditorActivity extends SherlockActivity implements OnItemSelecte
     private ListView lvComments_;
     private ArrayAdapter<Comment> commentAdapter_;
 
+    /* The Main Menu */
+    Menu menu_;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +121,7 @@ public class BugEditorActivity extends SherlockActivity implements OnItemSelecte
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        menu_ = menu;
         getSupportMenuInflater().inflate(R.menu.bug_editor, menu);
         return true;
     }
@@ -177,20 +181,9 @@ public class BugEditorActivity extends SherlockActivity implements OnItemSelecte
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     bug_.setNewComment(commentEditText.getText().toString());
-
                     txtvNewComment_.setText(commentEditText.getText().toString());
-
-                    /* View or hide the New Comment TextViews */
-                    if(!commentEditText.getText().toString().equals("")) {
-                        txtvNewComment_.setVisibility(View.VISIBLE);
-                        txtvNewCommentHeader_.setVisibility(View.VISIBLE);
-                    }
-                    else{
-                        txtvNewComment_.setVisibility(View.GONE);
-                        txtvNewCommentHeader_.setVisibility(View.GONE);
-                    }
-
                     dialog.dismiss();
+                    update();
                 }});
             builder.setNegativeButton(getString(R.string.cancel), new android.content.DialogInterface.OnClickListener() {
                 @Override
@@ -230,10 +223,31 @@ public class BugEditorActivity extends SherlockActivity implements OnItemSelecte
             spnState_.setSelection(1);
         else
             spnState_.setSelection(0);
+
+        update();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    private void update() {
+        /* View or hide the New Comment TextViews */
+        if(bug_.hasNewComment()) {
+            txtvNewComment_.setVisibility(View.VISIBLE);
+            txtvNewCommentHeader_.setVisibility(View.VISIBLE);
+        }
+        else{
+            txtvNewComment_.setVisibility(View.GONE);
+            txtvNewCommentHeader_.setVisibility(View.GONE);
+        }
+
+        //TODO: Turn only on when the bug is actually commitable i.e. has a comment and changed State */
+        /* View or hide the Save Icon */
+        if(bug_.hasNewComment() || bug_.hasNewState())
+            menu_.findItem(R.id.action_save).setVisible(true);
+        else
+            menu_.findItem(R.id.action_save).setVisible(false);
     }
 }

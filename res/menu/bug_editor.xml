@@ -3,6 +3,6 @@
     
     <item android:id="@+id/action_cancel" android:title="@string/cancel" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_close_clear_cancel"></item>
     <item android:id="@+id/action_edit" android:title="@string/edit" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_edit"></item>
-    <item android:id="@+id/action_save" android:title="@string/save" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_save"></item>
+    <item android:id="@+id/action_save" android:title="@string/save" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_save" android:visible="false"></item>
     
 </menu>
