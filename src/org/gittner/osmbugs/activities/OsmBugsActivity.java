@@ -17,6 +17,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import android.app.AlertDialog;
@@ -24,15 +25,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.graphics.PointF;
+import android.graphics.Canvas;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -40,7 +38,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class OsmBugsActivity extends SherlockActivity implements LocationListener, OnItemGestureListener<Bug>, OnTouchListener {
+public class OsmBugsActivity extends SherlockActivity implements LocationListener, OnItemGestureListener<Bug> {
 
     public static final int REQUESTCODEBUGEDITORACTIVITY = 1;
     public static final int REQUESTCODESETTINGSACTIVITY = 2;
@@ -65,12 +63,10 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
     /* The Location Marker Overlay */
     private ItemizedIconOverlay<OverlayItem> locationOverlay_;
 
-    /* Used for deciding a long touch on Map */
-    private long mapViewDownTimeStart_;
+    private boolean addNewBugOnNextClick_ = false;
 
     /* Used to save the Point where to create the new Bug */
     private static GeoPoint newBugLocation_;
-    private static PointF startPoint_;
 
     /* Used to save the new Bugs platform */
     private static int newBugPlatform_;
@@ -120,10 +116,34 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
         /* Setup Main MapView */
         mapView_ = (MapView) findViewById(R.id.mapview);
         mapView_.setMultiTouchControls(true);
+        mapView_.setBuiltInZoomControls(true);
         mapView_.getController().setZoom(12);
         mapView_.getOverlays().add(bugOverlay_);
         mapView_.getOverlays().add(locationOverlay_);
-        mapView_.setOnTouchListener(this);
+
+        /* This adds an empty Overlay to retrieve the Touch Events
+         * This is some sort of Hack, since the OnTouchListener will fire only once
+         * if the Built in Zoom Controls are enabled
+         */
+        mapView_.getOverlays().add(new Overlay(this) {
+            @Override
+            protected void draw(Canvas arg0, MapView arg1, boolean arg2) {
+
+            }
+
+            @SuppressWarnings("deprecation")
+            @Override
+            public boolean onTouchEvent(MotionEvent event, MapView mapView) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN && addNewBugOnNextClick_) {
+                    addNewBugOnNextClick_ = false;
+                    newBugLocation_ = (GeoPoint) mapView_.getProjection().fromPixels(event.getX(), event.getY());
+                    showDialog(DIALOGNEWBUG);
+                    return false;
+                }
+
+                return super.onTouchEvent(event, mapView);
+            }
+        });
 
         /* Setup the LocationManager */
         locMgr_ = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -190,6 +210,15 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
             this.showDialog(DIALOGFEEDBACK);
         } else if (item.getItemId() == R.id.about) {
             this.showDialog(DIALOGABOUT);
+        } else if (item.getItemId() == R.id.add_bug) {
+            if(!addNewBugOnNextClick_) {
+                addNewBugOnNextClick_ = true;
+                Toast.makeText(this, getString(R.string.bug_creation_mode_enabled), Toast.LENGTH_LONG).show();
+            }
+            else {
+                addNewBugOnNextClick_ = false;
+                Toast.makeText(this, getString(R.string.bug_creation_mode_disabled), Toast.LENGTH_LONG).show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -380,29 +409,6 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
             new SendFeedbackTask(this).execute(message);
         else
             Toast.makeText(this, getString(R.string.feedback_message_too_long), Toast.LENGTH_LONG).show();
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if (v.getId() == R.id.mapview) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                mapViewDownTimeStart_ = System.currentTimeMillis();
-                startPoint_ = new PointF(event.getX(), event.getY());
-                newBugLocation_ = (GeoPoint) mapView_.getProjection().fromPixels(event.getX(), event.getY());
-            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                float diff = (float) Math.sqrt(Math.pow(startPoint_.x - event.getX(), 2) + Math.pow(startPoint_.y - event.getY(), 2));
-                if (diff > 50)
-                    mapViewDownTimeStart_ = System.currentTimeMillis();
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                if (System.currentTimeMillis() - mapViewDownTimeStart_ > 2000) {
-                    showDialog(DIALOGNEWBUG);
-                }
-            }
-            return true;
-        }
-        Log.w("", "Other");
-        return super.onTouchEvent(event);
     }
 
     private void createBug(int platform, String text) {

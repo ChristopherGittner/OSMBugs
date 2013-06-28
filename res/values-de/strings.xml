@@ -125,4 +125,7 @@
     <string name="non_match">Passt nicht</string>
     <string name="reset">Zurücksetzen</string>
     <string name="new_comment">Neuer Kommentar</string>
+    <string name="add_bug">Fehler hinzufügen</string>
+    <string name="bug_creation_mode_enabled">Fehlererstellungsmodus Eingeschaltet</string>
+    <string name="bug_creation_mode_disabled">Fehlererstellungsmodus Ausgeschaltet</string>
 </resources>

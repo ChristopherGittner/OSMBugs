@@ -125,4 +125,7 @@
     <string name="non_match">Non-Match</string>
     <string name="reset">Reset</string>
     <string name="new_comment">New Comment</string>
+    <string name="add_bug">Add Bug</string>
+    <string name="bug_creation_mode_enabled">Bug creation Mode enabled</string>
+    <string name="bug_creation_mode_disabled">Bug creation Mode disabled</string>
 </resources>
