@@ -7,9 +7,6 @@ import com.actionbarsherlock.view.Window;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
-import org.gittner.osmbugs.bugs.Comment;
-import org.gittner.osmbugs.bugs.OpenstreetbugsBug;
-import org.gittner.osmbugs.bugs.OpenstreetmapNote;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
 import org.gittner.osmbugs.tasks.BugCreateTask;
@@ -45,18 +42,19 @@ import java.util.ArrayList;
 
 public class OsmBugsActivity extends SherlockActivity implements LocationListener, OnItemGestureListener<Bug>, OnTouchListener {
 
-    public static int REQUESTCODEBUGEDITORACTIVITY = 1;
-    public static int REQUESTCODESETTINGSACTIVITY = 2;
+    public static final int REQUESTCODEBUGEDITORACTIVITY = 1;
+    public static final int REQUESTCODESETTINGSACTIVITY = 2;
 
-    private static int DIALOGFEEDBACK = 1;
-    private static int DIALOGNEWBUG = 2;
-    private static int DIALOGNEWBUGTEXT = 3;
-    private static int DIALOGABOUT = 4;
+    private static final int DIALOGFEEDBACK = 1;
+    private static final int DIALOGNEWBUG = 2;
+    private static final int DIALOGNEWBUGTEXT = 3;
+    private static final int DIALOGABOUT = 4;
 
-    public static int INVALIDPLATFORM = -1;
-    public static int KEEPRIGHT = 1;
-    public static int OPENSTREETBUGS = 2;
-    public static int OPENSTREETMAPNOTES = 3;
+    public static final int INVALIDPLATFORM = -1;
+    public static final int KEEPRIGHT = 1;
+    public static final int OPENSTREETBUGS = 2;
+    public static final int OPENSTREETMAPNOTES = 3;
+    public static final int MAPDUST = 4;
 
     private LocationManager locMgr_ = null;
     private MapView mapView_ = null;
@@ -315,6 +313,8 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
                         newBugPlatform_ = OPENSTREETMAPNOTES;
                     else if (spnPlatform.getSelectedItemPosition() == 1)
                         newBugPlatform_ = OPENSTREETBUGS;
+                    else if (spnPlatform.getSelectedItemPosition() == 2)
+                        newBugPlatform_ = MAPDUST;
                     else
                         newBugPlatform_ = INVALIDPLATFORM;
 
@@ -406,19 +406,9 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
     }
 
     private void createBug(int platform, String text) {
-        Bug bug = null;
-
-        if (platform == OPENSTREETBUGS) {
-            bug = new OpenstreetbugsBug(newBugLocation_.getLatitudeE6() / 1000000.0, newBugLocation_.getLongitudeE6() / 1000000.0, "",
-                    new ArrayList<Comment>(), -1, Bug.STATE.OPEN);
-            bug.addComment(text);
-        } else if (platform == OPENSTREETMAPNOTES) {
-            bug = new OpenstreetmapNote(newBugLocation_.getLatitudeE6() / 1000000.0, newBugLocation_.getLongitudeE6() / 1000000.0, "",
-                    new ArrayList<Comment>(), -1, Bug.STATE.OPEN);
-            bug.addComment(text);
-        } else
-            return;
-
-        new BugCreateTask(this).execute(bug);
+        new BugCreateTask(this,
+                new GeoPoint(newBugLocation_.getLatitudeE6() / 1000000.0, newBugLocation_.getLongitudeE6() / 1000000.0),
+                text,
+                platform).execute();
     }
 }

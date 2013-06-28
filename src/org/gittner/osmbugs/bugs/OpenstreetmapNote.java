@@ -27,10 +27,9 @@ public class OpenstreetmapNote extends Bug {
     private long id_;
 
     public OpenstreetmapNote(double lat, double lon, String text, ArrayList<Comment> comments, long id, STATE state) {
-        super("Openstreetmap Note", text, comments, new GeoPoint(lat, lon));
+        super("Openstreetmap Note", text, comments, new GeoPoint(lat, lon), state);
 
         setId(id);
-        setState(state);
     }
 
     public OpenstreetmapNote(Parcel parcel) {
@@ -51,10 +50,11 @@ public class OpenstreetmapNote extends Bug {
     @Override
     public boolean commit() {
 
-        if(!commentAdded_ || comments_.size() == 0)
+        if(!hasNewComment())
             return false;
 
-        if(getState() != STATE.CLOSED){
+        if(hasNewComment() && !hasNewState()){
+            /* Only Upload a new Comment */
             DefaultHttpClient client = new DefaultHttpClient();
 
             /* Add the Authentication Details if we have a username in the Preferences */
@@ -67,7 +67,7 @@ public class OpenstreetmapNote extends Bug {
 
             /* Add all Arguments */
             ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-            arguments.add(new BasicNameValuePair("text", comments_.get(comments_.size() - 1).getText()));
+            arguments.add(new BasicNameValuePair("text", getNewComment()));
 
             HttpPost request;
             if(!Settings.DEBUG)
@@ -90,7 +90,7 @@ public class OpenstreetmapNote extends Bug {
                 return false;
             }
         }
-        else{
+        else if(hasNewComment() && hasNewState() && getNewState() == STATE.CLOSED){
             DefaultHttpClient client = new DefaultHttpClient();
 
             /* Add the Authentication Details if we have a username in the Preferences */
@@ -103,7 +103,7 @@ public class OpenstreetmapNote extends Bug {
 
             /* Add all Arguments */
             ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-            arguments.add(new BasicNameValuePair("text", comments_.get(comments_.size() - 1).getText()));
+            arguments.add(new BasicNameValuePair("text", getNewComment()));
 
             HttpPost request;
             if(!Settings.DEBUG)
@@ -126,6 +126,8 @@ public class OpenstreetmapNote extends Bug {
                 return false;
             }
         }
+        else
+            return false;
 
         return true;
     }
@@ -156,13 +158,7 @@ public class OpenstreetmapNote extends Bug {
         return Drawings.OpenstreetmapNotesOpen;
     }
 
-    @Override
-    public boolean addNew() {
-        if(comments_.size() == 0)
-            return false;
-
-        if(comments_.get(comments_.size() - 1).getText().equals(""))
-            return false;
+    public static boolean addNew(GeoPoint position, String text) {
 
         DefaultHttpClient client = new DefaultHttpClient();
 
@@ -176,9 +172,9 @@ public class OpenstreetmapNote extends Bug {
 
         /* Add all Arguments */
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-        arguments.add(new BasicNameValuePair("lat", String.valueOf(getPoint().getLatitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("lon", String.valueOf(getPoint().getLongitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("text", comments_.get(comments_.size() - 1).getText()));
+        arguments.add(new BasicNameValuePair("lat", String.valueOf(position.getLatitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("lon", String.valueOf(position.getLongitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("text", text));
 
         HttpPost request;
 

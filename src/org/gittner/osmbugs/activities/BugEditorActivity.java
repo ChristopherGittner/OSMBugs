@@ -19,6 +19,9 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.text.util.Linkify;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -27,7 +30,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class BugEditorActivity extends SherlockActivity{
+public class BugEditorActivity extends SherlockActivity implements OnItemSelectedListener{
 
     public static int DIALOGEDITCOMMENT = 1;
     /* The Bug currently being edited */
@@ -102,6 +105,7 @@ public class BugEditorActivity extends SherlockActivity{
         if(bug_.getState() == Bug.STATE.CLOSED && !bug_.isReopenable())
             spnState_.setEnabled(false);
 
+        spnState_.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -156,7 +160,7 @@ public class BugEditorActivity extends SherlockActivity{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
             final EditText commentEditText = new EditText(this);
-            commentEditText.setText(bug_.getEditCommentText());
+            commentEditText.setText(bug_.getNewComment());
 
             builder.setView(commentEditText);
 
@@ -164,7 +168,7 @@ public class BugEditorActivity extends SherlockActivity{
             builder.setPositiveButton(getString(R.string.ok), new android.content.DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    bug_.addComment(commentEditText.getText().toString());
+                    bug_.setNewComment(commentEditText.getText().toString());
                     commentAdapter_.notifyDataSetChanged();
                     dialog.dismiss();
                 }});
@@ -178,5 +182,38 @@ public class BugEditorActivity extends SherlockActivity{
         }
 
         return super.onCreateDialog(id);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        /* Set the new State to the Bug */
+        if(parent.getId() == R.id.spnState) {
+            switch (position){
+                case 0:
+                    bug_.setState(STATE.OPEN);
+                    break;
+                case 1:
+                    bug_.setState(STATE.CLOSED);
+                    break;
+                case 2:
+                    bug_.setState(STATE.IGNORED);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /* Read the new State from the Bug to get to know if it is a valid State */
+        if(bug_.getNewState() == STATE.IGNORED)
+            spnState_.setSelection(2);
+        else if(bug_.getNewState() == STATE.CLOSED)
+            spnState_.setSelection(1);
+        else
+            spnState_.setSelection(0);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

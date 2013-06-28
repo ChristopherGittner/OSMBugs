@@ -439,10 +439,8 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
                 "," + String.valueOf(bBox_.getLonEastE6() / 1000000.0) +
                 "," + String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
 
-        if(Settings.Openstreetbugs.isShowOnlyOpenEnabled())
+        if(Settings.OpenstreetmapNotes.isShowOnlyOpenEnabled())
             arguments.add(new BasicNameValuePair("closed", "0"));
-        else
-            arguments.add(new BasicNameValuePair("closed", "-1"));
 
         arguments.add(new BasicNameValuePair("limit", String.valueOf(Settings.Openstreetbugs.getBugLimit())));
 

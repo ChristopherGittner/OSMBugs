@@ -3,17 +3,27 @@ package org.gittner.osmbugs.tasks;
 import com.actionbarsherlock.app.SherlockActivity;
 
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.bugs.Bug;
+import org.gittner.osmbugs.activities.OsmBugsActivity;
+import org.gittner.osmbugs.bugs.MapdustBug;
+import org.gittner.osmbugs.bugs.OpenstreetbugsBug;
+import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.osmdroid.util.GeoPoint;
 
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-public class BugCreateTask extends AsyncTask<Bug, Void, Boolean> {
+public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
 
     SherlockActivity activity_;
+    GeoPoint location_;
+    String text_;
+    int platform_;
 
-    public BugCreateTask(SherlockActivity activity) {
+    public BugCreateTask(SherlockActivity activity, GeoPoint location, String text, int platform) {
         activity_ = activity;
+        location_ = location;
+        text_ = text;
+        platform_ = platform;
     }
 
     @Override
@@ -23,12 +33,16 @@ public class BugCreateTask extends AsyncTask<Bug, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Bug... bugs) {
-        for(int i = 0; i != bugs.length; ++i){
-            if(!bugs[i].addNew())
-                return false;
+    protected Boolean doInBackground(Void... v) {
+        switch(platform_) {
+            case OsmBugsActivity.OPENSTREETBUGS:
+                return OpenstreetbugsBug.addNew(location_, text_);
+            case OsmBugsActivity.OPENSTREETMAPNOTES:
+                return OpenstreetmapNote.addNew(location_, text_);
+            case OsmBugsActivity.MAPDUST:
+                return MapdustBug.addNew(location_, text_);
         }
-        return true;
+        return false;
     }
 
     @Override

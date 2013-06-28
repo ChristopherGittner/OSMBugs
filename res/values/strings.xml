@@ -69,6 +69,7 @@
 	<string-array name="new_bug_platforms">
 		<item >Openstreetmap Notes</item>
 		<item >Openstreetbugs</item>
+        <item >Mapdust</item>
 	</string-array>
 	<string name="new_bugs_text">New Bugs Text</string>
 	<string name="mapdust">Mapdust</string>

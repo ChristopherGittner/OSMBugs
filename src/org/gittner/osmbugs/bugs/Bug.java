@@ -17,15 +17,57 @@ public abstract class Bug extends OverlayItem implements Parcelable{
         IGNORED
     }
 
-    protected STATE state_;
-    protected ArrayList<Comment> comments_ = null;
-    protected boolean commentAdded_ = false;
-    protected boolean stateChanged_ = false;
+    private STATE state_ = STATE.OPEN;
+    private STATE newState_ = STATE.OPEN;
+    private ArrayList<Comment> comments_ = null;
+    private String newComment_ = "";
 
-    protected Bug(String title, String text, ArrayList<Comment> comments, GeoPoint point) {
+    protected Bug(String title, String text, ArrayList<Comment> comments, GeoPoint point, STATE state) {
         super(title, text, point);
 
+        state_ = state;
+        newState_ = state;
         comments_ = comments;
+    }
+
+    protected Bug(Parcel parcel) {
+        super(parcel.readString(), parcel.readString(), GeoPoint.CREATOR.createFromParcel(parcel));
+
+        comments_ = new ArrayList<Comment>();
+        int size = parcel.readInt();
+        for(int i = 0; i != size; ++i){
+            comments_.add(new Comment(parcel));
+        }
+
+        newComment_ = parcel.readString();
+
+        switch(parcel.readInt()) {
+            case 1:
+                state_ = Bug.STATE.OPEN;
+                break;
+            case 2:
+                state_ = Bug.STATE.CLOSED;
+                break;
+            case 3:
+                state_ = Bug.STATE.IGNORED;
+                break;
+            default:
+                state_ = Bug.STATE.OPEN;
+        }
+
+        switch(parcel.readInt()) {
+            case 1:
+                newState_ = Bug.STATE.OPEN;
+                break;
+            case 2:
+                newState_ = Bug.STATE.CLOSED;
+                break;
+            case 3:
+                newState_ = Bug.STATE.IGNORED;
+                break;
+            default:
+                newState_ = Bug.STATE.OPEN;
+        }
     }
 
     /* Get the Bugs Comments */
@@ -51,20 +93,33 @@ public abstract class Bug extends OverlayItem implements Parcelable{
         if(state_ == STATE.CLOSED && !isReopenable())
             return;
 
-        if(state == state_)
+        if(state == newState_)
             return;
 
-        stateChanged_ = true;
-        state_ = state;
+        /* Check for Special Functions i.e. Switching from closed to invalid */
+        if(!isValidNewState(state))
+            return;
+
+        newState_ = state;
+    }
+
+    public STATE getNewState() {
+        return newState_;
+    }
+
+    public boolean hasNewState() {
+        return state_ != newState_;
+    }
+
+    //TODO: Check all Spinner Items through such a function and display only needed */
+    protected boolean isValidNewState(STATE state) {
+        return true;
     }
 
     /* Send the Bug to the Server
      * Returns true if commit was successfully
      */
     public abstract boolean commit();
-
-    /* Creates a New Bug on the Server */
-    public abstract boolean addNew();
 
     /* Return true if it is possible to add a Comment to this Bug */
     public abstract boolean isCommentable();
@@ -89,6 +144,8 @@ public abstract class Bug extends OverlayItem implements Parcelable{
         for(Comment comment : comments_)
             comment.writeToParcel(parcel, flags);
 
+        parcel.writeString(newComment_);
+
         if(state_ == Bug.STATE.OPEN)
             parcel.writeInt(1);
         else if(state_ == Bug.STATE.CLOSED)
@@ -97,42 +154,26 @@ public abstract class Bug extends OverlayItem implements Parcelable{
             parcel.writeInt(3);
         else
             parcel.writeInt(0);
-    }
 
-    protected Bug(Parcel parcel) {
-        super(parcel.readString(), parcel.readString(), GeoPoint.CREATOR.createFromParcel(parcel));
-
-        comments_ = new ArrayList<Comment>();
-        int size = parcel.readInt();
-        for(int i = 0; i != size; ++i){
-            comments_.add(new Comment(parcel));
-        }
-
-        switch(parcel.readInt()) {
-            case 1:
-                state_ = Bug.STATE.OPEN;
-                break;
-            case 2:
-                state_ = Bug.STATE.CLOSED;
-                break;
-            case 3:
-                state_ = Bug.STATE.IGNORED;
-                break;
-            default:
-                state_ = Bug.STATE.OPEN;
-        }
-    }
-
-    public String getEditCommentText() {
-        return "";
-    }
-
-    public void addComment(String text) {
-        if(!commentAdded_ || comments_.size() == 0)
-            comments_.add(new Comment(text));
+        if(newState_ == Bug.STATE.OPEN)
+            parcel.writeInt(1);
+        else if(newState_ == Bug.STATE.CLOSED)
+            parcel.writeInt(2);
+        else if(newState_ == Bug.STATE.IGNORED)
+            parcel.writeInt(3);
         else
-            comments_.get(comments_.size() - 1).setText(text);
+            parcel.writeInt(0);
+    }
 
-        commentAdded_ = true;
+    public String getNewComment() {
+        return newComment_;
+    }
+
+    public void setNewComment(String text) {
+        newComment_ = text;
+    }
+
+    public boolean hasNewComment() {
+        return !newComment_.equals("");
     }
 }

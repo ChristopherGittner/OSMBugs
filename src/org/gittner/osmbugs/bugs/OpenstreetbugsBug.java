@@ -1,8 +1,5 @@
 package org.gittner.osmbugs.bugs;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -21,181 +18,179 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class OpenstreetbugsBug extends Bug {
 
-	private long id_;
-	
-	public OpenstreetbugsBug(double lat, double lon, String text, ArrayList<Comment> comments, long id, STATE state) {
-		super("Openstreetbug", text, comments, new GeoPoint(lat, lon));
-		
-		setComments(comments);
-		setId(id);
-		setState(state);
-	}
-	
-	public OpenstreetbugsBug(Parcel parcel) {
-		super(parcel);
-		id_ = parcel.readLong();
-	}
+    private long id_;
 
-	/* Get the Bugs Id */
-	public long getId() {
-		return id_;
-	}
-	
-	/* Set the Bugs Id */
-	public void setId(long id) {
-		id_ = id;
-	}
+    public OpenstreetbugsBug(double lat, double lon, String text, ArrayList<Comment> comments, long id, STATE state) {
+        super("Openstreetbug", text, comments, new GeoPoint(lat, lon), state);
 
-	@Override
-	public boolean commit() {
+        setComments(comments);
+        setId(id);
+    }
 
-		if(commentAdded_ && comments_.size() > 0){
-			HttpClient client = new DefaultHttpClient();
-			
-			ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-			arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
-			arguments.add(new BasicNameValuePair("text", comments_.get(comments_.size() - 1).getText() + " [" + Settings.Openstreetbugs.getUsername() + " ]"));
-	
-			HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/editPOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
-					
-			try {		
-				/* Execute commit */
-				HttpResponse response = client.execute(request);
-				
-				/* Check result for Success*/
-				if(response.getStatusLine().getStatusCode() != 200)
-					return false;
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-				return false;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
-		
-		if(getState() == Bug.STATE.CLOSED) {
-			HttpClient client = new DefaultHttpClient();
-			
-			ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-			arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
-	
-			HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/closePOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
-					
-			try {		
-				/* Execute commit */
-				HttpResponse response = client.execute(request);
-				
-				/* Check result for Success*/
-				if(response.getStatusLine().getStatusCode() != 200)
-					return false;
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-				return false;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
-		
-		return true;
-	}
+    public OpenstreetbugsBug(Parcel parcel) {
+        super(parcel);
+        id_ = parcel.readLong();
+    }
 
-	/* Openstreetbugs can be commented */
-	@Override
-	public boolean isCommentable() {
-		return true;
-	}
+    /* Get the Bugs Id */
+    public long getId() {
+        return id_;
+    }
 
-	/* Openstreetbugs cannot be ignored */
-	@Override
-	public boolean isIgnorable() {
-		return false;
-	}
-	
-	/* Openstreetbugs cannot be reopened */
-	@Override
-	public boolean isReopenable() {
-		return false;
-	}
+    /* Set the Bugs Id */
+    public void setId(long id) {
+        id_ = id;
+    }
 
-	@Override
-	public Drawable getMarker(int bitset) {
-		if(getState() == Bug.STATE.CLOSED)
-			return Drawings.OpenstreetbugsDrawableClosed;
-		
-		return Drawings.OpenstreetbugsDrawableOpen;
-	}
+    @Override
+    public boolean commit() {
 
-	@Override
-	public boolean addNew() {
-		if(comments_.size() == 0)
-			return false;
-		
-		if(comments_.get(comments_.size() - 1).getText().equals(""))
-			return false;
-		
-		HttpClient client = new DefaultHttpClient();
-		
-		ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-		arguments.add(new BasicNameValuePair("lat", String.valueOf(getPoint().getLatitudeE6() / 1000000.0)));
-		arguments.add(new BasicNameValuePair("lon", String.valueOf(getPoint().getLongitudeE6() / 1000000.0)));
-		arguments.add(new BasicNameValuePair("text", comments_.get(comments_.size() - 1).getText() + " [" + Settings.Openstreetbugs.getUsername() + " ]"));
+        if(hasNewComment()){
+            /* Upload a new Comment */
+            HttpClient client = new DefaultHttpClient();
 
-		HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/addPOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
-				
-		try {		
-			/* Execute commit */
-			HttpResponse response = client.execute(request);
-			
-			/* Check result for Success*/
-			if(response.getStatusLine().getStatusCode() != 200)
-				return false;
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			return false;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-		
-		return true;
-	}
-	
-	/* Parcelable interface */
-	@Override
-	public void writeToParcel(Parcel parcel, int flags) {
-		super.writeToParcel(parcel, flags);
-		
-		parcel.writeLong(id_);
-	}
-	
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+            ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
+            arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
+            arguments.add(new BasicNameValuePair("text", getNewComment() + " [" + Settings.Openstreetbugs.getUsername() + " ]"));
 
-	public static final Creator<OpenstreetbugsBug> CREATOR = new Parcelable.Creator<OpenstreetbugsBug>() {
+            HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/editPOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
 
-		@Override
-		public OpenstreetbugsBug createFromParcel(Parcel source) {
-			return new OpenstreetbugsBug(source);
-		}
+            try {
+                /* Execute commit */
+                HttpResponse response = client.execute(request);
 
-		@Override
-		public OpenstreetbugsBug[] newArray(int size) {
-			return new OpenstreetbugsBug[size];
-		}    	
+                /* Check result for Success*/
+                if(response.getStatusLine().getStatusCode() != 200)
+                    return false;
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+                return false;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        if(hasNewState() && getNewState() == STATE.CLOSED) {
+            /* Close the Bug */
+            HttpClient client = new DefaultHttpClient();
+
+            ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
+            arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
+
+            HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/closePOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
+
+            try {
+                /* Execute commit */
+                HttpResponse response = client.execute(request);
+
+                /* Check result for Success*/
+                if(response.getStatusLine().getStatusCode() != 200)
+                    return false;
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+                return false;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /* Openstreetbugs can be commented */
+    @Override
+    public boolean isCommentable() {
+        return true;
+    }
+
+    /* Openstreetbugs cannot be ignored */
+    @Override
+    public boolean isIgnorable() {
+        return false;
+    }
+
+    /* Openstreetbugs cannot be reopened */
+    @Override
+    public boolean isReopenable() {
+        return false;
+    }
+
+    @Override
+    public Drawable getMarker(int bitset) {
+        if(getState() == Bug.STATE.CLOSED)
+            return Drawings.OpenstreetbugsDrawableClosed;
+
+        return Drawings.OpenstreetbugsDrawableOpen;
+    }
+
+    public static boolean addNew(GeoPoint position, String text) {
+
+        HttpClient client = new DefaultHttpClient();
+
+        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
+        arguments.add(new BasicNameValuePair("lat", String.valueOf(position.getLatitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("lon", String.valueOf(position.getLongitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("text", text + " [" + Settings.Openstreetbugs.getUsername() + " ]"));
+
+        HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/addPOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
+
+        try {
+            /* Execute commit */
+            HttpResponse response = client.execute(request);
+
+            /* Check result for Success*/
+            if(response.getStatusLine().getStatusCode() != 200)
+                return false;
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    /* Parcelable interface */
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        super.writeToParcel(parcel, flags);
+
+        parcel.writeLong(id_);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<OpenstreetbugsBug> CREATOR = new Parcelable.Creator<OpenstreetbugsBug>() {
+
+        @Override
+        public OpenstreetbugsBug createFromParcel(Parcel source) {
+            return new OpenstreetbugsBug(source);
+        }
+
+        @Override
+        public OpenstreetbugsBug[] newArray(int size) {
+            return new OpenstreetbugsBug[size];
+        }
     };
 
-	@Override
-	public ArrayList<String> getStateNames(Context context) {
-		ArrayList<String> states = new ArrayList<String>();
-		states.add(context.getString(R.string.open));
-		states.add(context.getString(R.string.closed));
-		
-		return states;
-	}
+    @Override
+    public ArrayList<String> getStateNames(Context context) {
+        ArrayList<String> states = new ArrayList<String>();
+        states.add(context.getString(R.string.open));
+        states.add(context.getString(R.string.closed));
+
+        return states;
+    }
 }
