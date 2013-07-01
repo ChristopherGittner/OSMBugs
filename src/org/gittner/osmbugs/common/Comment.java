@@ -1,4 +1,4 @@
-package org.gittner.osmbugs.bugs;
+package org.gittner.osmbugs.common;
 
 import android.os.Parcel;
 import android.os.Parcelable;

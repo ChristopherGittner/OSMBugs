@@ -1,4 +1,4 @@
-package org.gittner.osmbugs.bugs;
+package org.gittner.osmbugs.common;
 
 import java.util.ArrayList;
 

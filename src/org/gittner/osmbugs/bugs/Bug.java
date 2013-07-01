@@ -1,6 +1,7 @@
 package org.gittner.osmbugs.bugs;
 
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.common.Comment;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.OverlayItem;
 
@@ -97,10 +98,6 @@ public abstract class Bug extends OverlayItem implements Parcelable{
         if(state == newState_)
             return;
 
-        /* Check for Special Functions i.e. Switching from closed to invalid */
-        if(!isValidNewState(state))
-            return;
-
         newState_ = state;
     }
 
@@ -110,11 +107,6 @@ public abstract class Bug extends OverlayItem implements Parcelable{
 
     public boolean hasNewState() {
         return state_ != newState_;
-    }
-
-    //TODO: Check all Spinner Items through such a function and display only needed */
-    protected boolean isValidNewState(STATE state) {
-        return true;
     }
 
     /* Send the Bug to the Server

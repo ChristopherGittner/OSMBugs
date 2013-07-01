@@ -10,6 +10,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.GeoPoint;
@@ -189,20 +190,6 @@ public class MapdustBug extends Bug {
             }
         }
         else
-            return false;
-
-        return true;
-    }
-
-    /* Mapdust requires you to reopen the Bug before switching from closed
-     * to ignored or vice versa
-     */
-    @Override
-    protected boolean isValidNewState(STATE state) {
-        if(state == STATE.CLOSED && getState() == STATE.IGNORED)
-            return false;
-
-        if(state == STATE.IGNORED && getState() == STATE.CLOSED)
             return false;
 
         return true;

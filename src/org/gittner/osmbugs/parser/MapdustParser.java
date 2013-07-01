@@ -1,5 +1,8 @@
-package org.gittner.osmbugs.bugs;
+package org.gittner.osmbugs.parser;
 
+import org.gittner.osmbugs.bugs.Bug;
+import org.gittner.osmbugs.bugs.MapdustBug;
+import org.gittner.osmbugs.common.Comment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

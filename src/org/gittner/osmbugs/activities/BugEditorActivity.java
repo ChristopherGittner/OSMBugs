@@ -7,8 +7,8 @@ import com.actionbarsherlock.view.Window;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
-import org.gittner.osmbugs.bugs.Comment;
-import org.gittner.osmbugs.bugs.CommentAdapter;
+import org.gittner.osmbugs.common.Comment;
+import org.gittner.osmbugs.common.CommentAdapter;
 import org.gittner.osmbugs.tasks.BugUpdateTask;
 
 import android.app.AlertDialog;

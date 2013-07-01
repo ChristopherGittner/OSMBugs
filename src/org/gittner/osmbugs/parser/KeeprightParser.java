@@ -1,4 +1,8 @@
-package org.gittner.osmbugs.bugs;
+package org.gittner.osmbugs.parser;
+
+import org.gittner.osmbugs.bugs.Bug;
+import org.gittner.osmbugs.bugs.KeeprightBug;
+import org.gittner.osmbugs.common.Comment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
