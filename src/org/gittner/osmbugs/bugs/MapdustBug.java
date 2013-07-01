@@ -214,13 +214,27 @@ public class MapdustBug extends Bug {
     }
 
     @Override
+    public boolean isClosable() {
+        if(getState() == STATE.OPEN)
+            return true;
+
+        return false;
+    }
+
+    @Override
     public boolean isIgnorable() {
-        return true;
+        if(getState() == STATE.OPEN)
+            return true;
+
+        return false;
     }
 
     @Override
     public boolean isReopenable() {
-        return true;
+        if(getState() == STATE.CLOSED || getState() == STATE.IGNORED)
+            return true;
+
+        return false;
     }
 
     public static boolean addNew(GeoPoint position, String text) {
@@ -293,12 +307,24 @@ public class MapdustBug extends Bug {
     };
 
     @Override
-    public ArrayList<String> getStateNames(Context context) {
-        ArrayList<String> states = new ArrayList<String>();
-        states.add(context.getString(R.string.open));
-        states.add(context.getString(R.string.closed));
-        states.add(context.getString(R.string.ignored));
+    public String getStringFromState(Context context, STATE state) {
+        if(state == STATE.OPEN)
+            return context.getString(R.string.open);
+        else if(state == STATE.CLOSED)
+            return context.getString(R.string.closed);
+        else if(state == STATE.IGNORED)
+            return context.getString(R.string.software_bug);
+        else
+            return "";
+    }
 
-        return states;
+    @Override
+    public  Bug.STATE getStateFromString(Context context, String state) {
+        if(state.equals(context.getString(R.string.closed)))
+            return STATE.CLOSED;
+        else if(state.equals(context.getString(R.string.software_bug)))
+            return STATE.IGNORED;
+        else
+            return STATE.OPEN;
     }
 }

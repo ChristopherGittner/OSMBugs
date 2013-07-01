@@ -7,7 +7,6 @@ import com.actionbarsherlock.view.Window;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
-import org.gittner.osmbugs.bugs.Bug.STATE;
 import org.gittner.osmbugs.bugs.Comment;
 import org.gittner.osmbugs.bugs.CommentAdapter;
 import org.gittner.osmbugs.tasks.BugUpdateTask;
@@ -20,17 +19,13 @@ import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.text.util.Linkify;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-public class BugEditorActivity extends SherlockActivity implements OnItemSelectedListener{
+public class BugEditorActivity extends SherlockActivity{
 
     public static int DIALOGEDITCOMMENT = 1;
     /* The Bug currently being edited */
@@ -42,8 +37,8 @@ public class BugEditorActivity extends SherlockActivity implements OnItemSelecte
     /* All Views on this Activity */
     private TextView txtvTitle_, txtvText_, txtvNewCommentHeader_, txtvNewComment_;
     private Spinner spnState_;
-    private ArrayList<String> spinnerItems_;
     private ListView lvComments_;
+    private ArrayAdapter<String> stateAdapter_;
     private ArrayAdapter<Comment> commentAdapter_;
 
     /* The Main Menu */
@@ -98,25 +93,21 @@ public class BugEditorActivity extends SherlockActivity implements OnItemSelecte
         /* Setup the State Spinner */
         spnState_ = (Spinner) findViewById(R.id.spnState);
 
-        spinnerItems_ = bug_.getStateNames(this);
+        stateAdapter_ = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        spnState_.setAdapter(stateAdapter_);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_item, spinnerItems_);
-        spnState_.setAdapter(adapter);
+        if(bug_.getState() == Bug.STATE.OPEN || bug_.isReopenable())
+            stateAdapter_.add(bug_.getStringFromState(this, Bug.STATE.OPEN));
 
-        /* Set the current state of the Bug as the selected Spinner State */
-        if(bug_.getState() == Bug.STATE.OPEN)
-            spnState_.setSelection(0);
-        else if(bug_.getState() == Bug.STATE.CLOSED)
-            spnState_.setSelection(1);
-        else if(bug_.getState() == Bug.STATE.IGNORED && bug_.isIgnorable())
-            spnState_.setSelection(2);
-        else
-            spnState_.setSelection(0);
+        if(bug_.getState() == Bug.STATE.CLOSED || bug_.isClosable())
+            stateAdapter_.add(bug_.getStringFromState(this, Bug.STATE.CLOSED));
 
-        if(bug_.getState() == Bug.STATE.CLOSED && !bug_.isReopenable())
-            spnState_.setEnabled(false);
+        if(bug_.getState() == Bug.STATE.IGNORED || bug_.isIgnorable())
+            stateAdapter_.add(bug_.getStringFromState(this, Bug.STATE.IGNORED));
 
-        spnState_.setOnItemSelectedListener(this);
+        spnState_.setSelection(stateAdapter_.getPosition(bug_.getStringFromState(this, bug_.getState())));
+
+        stateAdapter_.notifyDataSetChanged();
     }
 
     @Override
@@ -137,19 +128,7 @@ public class BugEditorActivity extends SherlockActivity implements OnItemSelecte
         }
         else if(item.getItemId() == R.id.action_save){
             /* Save the new Bug state */
-            switch (spnState_.getSelectedItemPosition()){
-                case 0:
-                    bug_.setState(STATE.OPEN);
-                    break;
-                case 1:
-                    bug_.setState(STATE.CLOSED);
-                    break;
-                case 2:
-                    bug_.setState(STATE.IGNORED);
-                    break;
-                default:
-                    break;
-            }
+            bug_.setState(bug_.getStateFromString(this, stateAdapter_.getItem(spnState_.getSelectedItemPosition())));
 
             new BugUpdateTask(this).execute(bug_);
 
@@ -195,41 +174,6 @@ public class BugEditorActivity extends SherlockActivity implements OnItemSelecte
         }
 
         return super.onCreateDialog(id);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        /* Set the new State to the Bug */
-        if(parent.getId() == R.id.spnState) {
-            switch (position){
-                case 0:
-                    bug_.setState(STATE.OPEN);
-                    break;
-                case 1:
-                    bug_.setState(STATE.CLOSED);
-                    break;
-                case 2:
-                    bug_.setState(STATE.IGNORED);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        /* Read the new State from the Bug to get to know if it is a valid State */
-        if(bug_.getNewState() == STATE.IGNORED)
-            spnState_.setSelection(2);
-        else if(bug_.getNewState() == STATE.CLOSED)
-            spnState_.setSelection(1);
-        else
-            spnState_.setSelection(0);
-
-        update();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     private void update() {

@@ -9,12 +9,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.GeoPoint;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -135,7 +133,10 @@ public class OpenstreetmapNote extends Bug {
     /* Openstreetmap Notes can be commented */
     @Override
     public boolean isCommentable() {
-        return true;
+        if(getState() == STATE.OPEN)
+            return true;
+
+        return false;
     }
 
     /* Openstreetmap Notes cannot be ignored */
@@ -226,13 +227,4 @@ public class OpenstreetmapNote extends Bug {
             return new OpenstreetmapNote[size];
         }
     };
-
-    @Override
-    public ArrayList<String> getStateNames(Context context) {
-        ArrayList<String> states = new ArrayList<String>();
-        states.add(context.getString(R.string.open));
-        states.add(context.getString(R.string.closed));
-
-        return states;
-    }
 }

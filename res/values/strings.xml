@@ -128,4 +128,5 @@
     <string name="add_bug">Add Bug</string>
     <string name="bug_creation_mode_enabled">Bug creation Mode enabled</string>
     <string name="bug_creation_mode_disabled">Bug creation Mode disabled</string>
+    <string name="software_bug">Software Bug</string>
 </resources>

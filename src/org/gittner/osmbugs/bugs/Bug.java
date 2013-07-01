@@ -1,5 +1,6 @@
 package org.gittner.osmbugs.bugs;
 
+import org.gittner.osmbugs.R;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.OverlayItem;
 
@@ -127,11 +128,13 @@ public abstract class Bug extends OverlayItem implements Parcelable{
     /* Return true if this Bug can be ignored additionally to open or closed state */
     public abstract boolean isIgnorable();
 
+    /* Return true if the Bug is closable */
+    public boolean isClosable() {
+        return true;
+    }
+
     /* Return true if the Bug state can be switched from Closed to Opened */
     public abstract boolean isReopenable();
-
-    /* Fill the State spinner in the Bug Editor */
-    public abstract ArrayList<String> getStateNames(Context context);
 
     /* Parcelable interface */
     @Override
@@ -175,5 +178,26 @@ public abstract class Bug extends OverlayItem implements Parcelable{
 
     public boolean hasNewComment() {
         return !newComment_.equals("");
+    }
+
+    /* These can be overriden to allow the Display of custom Text for a Bug State */
+    public String getStringFromState(Context context, STATE state) {
+        if(state == STATE.OPEN)
+            return context.getString(R.string.open);
+        else if(state == STATE.CLOSED)
+            return context.getString(R.string.closed);
+        else if(state == STATE.IGNORED)
+            return context.getString(R.string.ignored);
+        else
+            return "";
+    }
+
+    public  Bug.STATE getStateFromString(Context context, String state) {
+        if(state.equals(context.getString(R.string.closed)))
+            return STATE.CLOSED;
+        else if(state.equals(context.getString(R.string.ignored)))
+            return STATE.IGNORED;
+        else
+            return STATE.OPEN;
     }
 }

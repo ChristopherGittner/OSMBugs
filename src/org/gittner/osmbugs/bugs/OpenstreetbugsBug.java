@@ -8,12 +8,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.GeoPoint;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -184,13 +182,4 @@ public class OpenstreetbugsBug extends Bug {
             return new OpenstreetbugsBug[size];
         }
     };
-
-    @Override
-    public ArrayList<String> getStateNames(Context context) {
-        ArrayList<String> states = new ArrayList<String>();
-        states.add(context.getString(R.string.open));
-        states.add(context.getString(R.string.closed));
-
-        return states;
-    }
 }
