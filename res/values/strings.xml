@@ -129,4 +129,5 @@
     <string name="bug_creation_mode_enabled">Bug creation Mode enabled</string>
     <string name="bug_creation_mode_disabled">Bug creation Mode disabled</string>
     <string name="software_bug">Software Bug</string>
+    <string name="load_all_comments">Load all Comments</string>
 </resources>

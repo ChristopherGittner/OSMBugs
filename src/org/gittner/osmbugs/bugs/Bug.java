@@ -184,7 +184,7 @@ public abstract class Bug extends OverlayItem implements Parcelable{
             return "";
     }
 
-    public  Bug.STATE getStateFromString(Context context, String state) {
+    public Bug.STATE getStateFromString(Context context, String state) {
         if(state.equals(context.getString(R.string.closed)))
             return STATE.CLOSED;
         else if(state.equals(context.getString(R.string.ignored)))
@@ -192,4 +192,11 @@ public abstract class Bug extends OverlayItem implements Parcelable{
         else
             return STATE.OPEN;
     }
+
+    /* Override this to retrieve extra Data before displaying the Bug in the Editor */
+    public boolean willRetrieveExtraData() {
+        return false;
+    }
+
+    public void retrieveExtraData() {}
 }

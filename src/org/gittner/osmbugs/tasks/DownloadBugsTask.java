@@ -377,7 +377,7 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
             publishProgress(1);
 
             /* If Request was Successful, parse the Stream */
-            return MapdustParser.parse(response.getEntity().getContent(), activity_);
+            return MapdustParser.parse(response.getEntity().getContent());
         } catch (ClientProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {

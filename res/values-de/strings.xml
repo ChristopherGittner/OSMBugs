@@ -129,4 +129,5 @@
     <string name="bug_creation_mode_enabled">Fehlererstellungsmodus Eingeschaltet</string>
     <string name="bug_creation_mode_disabled">Fehlererstellungsmodus Ausgeschaltet</string>
     <string name="software_bug">Software Fehler</string>
+    <string name="load_all_comments">Alle Kommentare Laden</string>
 </resources>

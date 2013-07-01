@@ -5,12 +5,15 @@ import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.common.Comment;
+import org.gittner.osmbugs.parser.MapdustParser;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.GeoPoint;
@@ -19,7 +22,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -109,8 +111,6 @@ public class MapdustBug extends Bug {
 
     @Override
     public boolean commit() {
-
-        Log.w("", "" + hasNewState());
 
         if(!hasNewComment())
             return false;
@@ -313,5 +313,46 @@ public class MapdustBug extends Bug {
             return STATE.IGNORED;
         else
             return STATE.OPEN;
+    }
+
+    @Override
+    public boolean willRetrieveExtraData() {
+        return true;
+    }
+
+    @Override
+    public void retrieveExtraData() {
+
+        HttpClient client = new DefaultHttpClient();
+
+        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
+
+        arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
+        arguments.add(new BasicNameValuePair("id", String.valueOf(id_)));
+
+        HttpGet request;
+
+        if(Settings.DEBUG)
+            request = new HttpGet("http://st.www.mapdust.com/api/getBug?" + URLEncodedUtils.format(arguments, "utf-8"));
+        else
+            request = new HttpGet("http://www.mapdust.com/api/getBug?" + URLEncodedUtils.format(arguments, "utf-8"));
+
+        try {
+            /* Execute Query */
+            HttpResponse response = client.execute(request);
+
+            /* Check for Success */
+            if(response.getStatusLine().getStatusCode() != 200)
+                return;
+
+            /* If Request was Successful, parse the Stream */
+            getComments().clear();
+            getComments().addAll(MapdustParser.parseSingleBugForComments(response.getEntity().getContent()));
+
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

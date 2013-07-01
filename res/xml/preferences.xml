@@ -116,6 +116,7 @@
 		    	<CheckBoxPreference android:title="@string/roundabout_issue" android:key="pref_mapdust_enabled_roundabout_issue" android:defaultValue="true"/>
 		    	<CheckBoxPreference android:title="@string/missing_speed_info" android:key="pref_mapdust_enabled_missing_speed_info" android:defaultValue="true"/>
 		    	<CheckBoxPreference android:title="@string/other" android:key="pref_mapdust_enabled_other" android:defaultValue="true"/>
+                <CheckBoxPreference android:title="@string/load_all_comments" android:key="pref_mapdust_enabled_load_all_comments" android:defaultValue="true"/>
 	    	</PreferenceCategory>
 	    </PreferenceScreen>
 	    <PreferenceScreen android:title="@string/openstreetmap_notes">

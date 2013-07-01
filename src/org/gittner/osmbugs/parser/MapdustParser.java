@@ -7,8 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +15,7 @@ import java.util.ArrayList;
 
 public class MapdustParser {
 
-    public static ArrayList<Bug> parse(InputStream stream, Context context_){
+    public static ArrayList<Bug> parse(InputStream stream){
         ArrayList<Bug> bugs = new ArrayList<Bug>();
 
         BufferedReader reader;
@@ -62,7 +60,6 @@ public class MapdustParser {
 
                 ArrayList<Comment> comments = new ArrayList<Comment>();
 
-                //TODO: Only the last 3 Comments will be shown due to the API
                 JSONArray commentArray = property.getJSONArray("comments");
                 for(int n = 0; n != commentArray.length(); ++n) {
                     JSONObject comment = commentArray.getJSONObject(n);
@@ -103,5 +100,40 @@ public class MapdustParser {
         }
 
         return bugs;
+    }
+
+    public static ArrayList<Comment> parseSingleBugForComments(InputStream stream){
+        ArrayList<Comment> comments = new ArrayList<Comment>();
+
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new InputStreamReader(stream, "iso-8859-1"));
+
+            String line = reader.readLine();
+
+            /* Little Tweak since this was sometimes missing in Answer. Only on Android not on Desktop */
+            if(!line.endsWith("\"}}"))
+                line += "\"}}";
+
+            JSONObject json = new JSONObject(line);
+
+
+            JSONObject properties = json.getJSONObject("properties");
+
+            JSONArray commentsArray = properties.getJSONArray("comments");
+
+            for(int i = 0; i != commentsArray.length(); ++i){
+                comments.add(new Comment(commentsArray.getJSONObject(i).getString("comment")));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ArrayList<Comment>();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return new ArrayList<Comment>();
+        }
+
+        return comments;
     }
 }
