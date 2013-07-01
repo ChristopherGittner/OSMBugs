@@ -114,6 +114,8 @@ public class BugEditorActivity extends SherlockActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
         menu_ = menu;
         getSupportMenuInflater().inflate(R.menu.bug_editor, menu);
+
+        update();
         return true;
     }
 
@@ -186,6 +188,12 @@ public class BugEditorActivity extends SherlockActivity{
             txtvNewComment_.setVisibility(View.GONE);
             txtvNewCommentHeader_.setVisibility(View.GONE);
         }
+
+        /* Deactivate the Edit Entry if needed */
+        if(!bug_.isCommentable())
+            menu_.findItem(R.id.action_edit).setVisible(false);
+        else
+            menu_.findItem(R.id.action_edit).setVisible(true);
 
         //TODO: Turn only on when the bug is actually commitable i.e. has a comment and changed State */
         /* View or hide the Save Icon */
