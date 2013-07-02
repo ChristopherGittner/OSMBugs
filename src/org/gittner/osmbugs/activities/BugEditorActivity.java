@@ -14,6 +14,7 @@ import org.gittner.osmbugs.tasks.BugUpdateTask;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
@@ -76,7 +77,41 @@ public class BugEditorActivity extends SherlockActivity{
         txtvText_.setText(Html.fromHtml(txtvText_.getText().toString()));
         txtvText_.setMovementMethod(ScrollingMovementMethod.getInstance());
 
-        if(bug_.getComments() != null){
+        /* Start to Download Extra Data if neccessary through an AsyncTask and
+         * set the ListViews adapter Either after download or if no Download needed instantaneous */
+        if(bug_.willRetrieveExtraData()) {
+            new AsyncTask<Bug, Void, Bug>(){
+
+                SherlockActivity activity_;
+
+                public AsyncTask<Bug, Void, Bug> init(SherlockActivity activity) {
+                    activity_ = activity;
+                    return this;
+                }
+
+                @Override
+                protected void onPreExecute() {
+                    activity_.setSupportProgressBarIndeterminate(true);
+                    activity_.setSupportProgressBarIndeterminateVisibility(true);
+                }
+
+                @Override
+                protected Bug doInBackground(Bug... bug) {
+                    bug[0].retrieveExtraData();
+                    return bug[0];
+                }
+
+                @Override
+                protected void onPostExecute(Bug bug) {
+                    activity_.setSupportProgressBarIndeterminate(false);
+                    activity_.setSupportProgressBarIndeterminateVisibility(false);
+                    commentAdapter_ = new CommentAdapter(activity_, R.layout.comment_icon, bug_.getComments());
+                    lvComments_ = (ListView) findViewById(R.id.listView1);
+                    lvComments_.setAdapter(commentAdapter_);
+                    commentAdapter_.notifyDataSetChanged();
+                }}.init(this).execute(bug_);
+        }
+        else{
             commentAdapter_ = new CommentAdapter(this, R.layout.comment_icon, bug_.getComments());
             lvComments_ = (ListView) findViewById(R.id.listView1);
             lvComments_.setAdapter(commentAdapter_);
