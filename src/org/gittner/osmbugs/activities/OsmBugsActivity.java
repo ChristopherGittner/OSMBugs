@@ -22,6 +22,8 @@ import org.osmdroid.views.overlay.OverlayItem;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -29,6 +31,7 @@ import android.graphics.Canvas;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.ArrayAdapter;
@@ -272,12 +275,50 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
 
     @Override
     public boolean onItemSingleTapUp(int n, Bug bug) {
+
+        //TODO: Opening multiple Bugs simultaneously not working as intended
+        /* Create an AsyncTask which will download Extra Data, if a Bug requires so, and
+         * Display a Progressdialog to inform the User */
+        if(bug.willRetrieveExtraData()){
+            new AsyncTask<Bug, Void, Bug>(){
+
+                ProgressDialog dlg;
+                Context context_;
+
+                public AsyncTask<Bug, Void, Bug> init(Context context) {
+                    context_ = context;
+                    return this;
+                }
+
+                @Override
+                protected void onPreExecute() {
+                    dlg = ProgressDialog.show(context_, "", context_.getString(R.string.loading_bug_please_wait));
+                }
+
+                @Override
+                protected Bug doInBackground(Bug... bug) {
+                    bug[0].retrieveExtraData();
+                    return bug[0];
+                }
+
+                @Override
+                protected void onPostExecute(Bug bug) {
+                    dlg.dismiss();
+                    launchBugEditor(bug);
+                }}.init(this).execute(bug);
+        }
+        else
+            launchBugEditor(bug);
+
+        return false;
+    }
+
+    private void launchBugEditor(Bug bug) {
         /* Open the selected Bug in the Bug Editor */
         Intent i = new Intent(this, BugEditorActivity.class);
         i.putExtra(BugEditorActivity.EXTRABUG, bug);
 
         startActivityForResult(i, REQUESTCODEBUGEDITORACTIVITY);
-        return false;
     }
 
     @Override

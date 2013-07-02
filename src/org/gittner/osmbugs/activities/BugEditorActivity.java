@@ -9,10 +9,8 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.common.CommentAdapter;
-import org.gittner.osmbugs.statics.Settings;
 import org.gittner.osmbugs.tasks.BugUpdateTask;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -64,25 +62,6 @@ public class BugEditorActivity extends SherlockActivity{
 
         /* Deparcel the current Bug */
         bug_ = getIntent().getParcelableExtra(EXTRABUG);
-
-        /* Hook for loading Extra Data for some Bug platforms */
-        /* The Thread is needed due to NetworkOnMainThreadException */
-        try {
-            if(bug_.willRetrieveExtraData() && Settings.Mapdust.isLoadAllCommentsEnabled()){
-                Thread t = new Thread(new Runnable(){
-
-                    @Override
-                    public void run() {
-                        bug_.retrieveExtraData();
-                    }});
-                t.start();
-                t.join();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            setResult(Activity.RESULT_CANCELED);
-            finish();
-        }
 
         /* Setup the Bug Icon */
         txtvTitle_ = (TextView) findViewById(R.id.textvTitle);

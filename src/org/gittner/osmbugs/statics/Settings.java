@@ -442,10 +442,6 @@ public class Settings {
         public static boolean isOtherEnabled() {
             return prefs_.getBoolean("pref_mapdust_enabled_other", true);
         }
-
-        public static boolean isLoadAllCommentsEnabled() {
-            return prefs_.getBoolean("pref_mapdust_enabled_load_all_comments", true);
-        }
     }
 
     public static class OpenstreetmapNotes{
