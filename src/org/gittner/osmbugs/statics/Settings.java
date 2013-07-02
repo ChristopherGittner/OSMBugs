@@ -10,8 +10,7 @@ import java.util.Locale;
 
 public class Settings {
 
-    //TODO: Remove Upon Release
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     private static SharedPreferences prefs_;
 
