@@ -1,6 +1,9 @@
 
 package org.gittner.osmbugs.bugs;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
@@ -23,9 +26,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 public class MapdustBug extends Bug {
 
@@ -118,7 +118,7 @@ public class MapdustBug extends Bug {
             }
         }
 
-        return Drawings.KeeprightDrawable100;
+        return Drawings.MapdustOther;
     }
 
     @Override
