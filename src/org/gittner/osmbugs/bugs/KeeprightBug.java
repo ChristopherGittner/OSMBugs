@@ -1,6 +1,9 @@
 
 package org.gittner.osmbugs.bugs;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -16,9 +19,6 @@ import org.osmdroid.util.GeoPoint;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 public class KeeprightBug extends Bug {
     private int type_;
@@ -63,7 +63,7 @@ public class KeeprightBug extends Bug {
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
         arguments.add(new BasicNameValuePair("co", getNewComment()));
 
-        arguments.add(new BasicNameValuePair("st", getUrlState()));
+        arguments.add(new BasicNameValuePair("st", getUrlNewState()));
         arguments.add(new BasicNameValuePair("schema", String.valueOf(getSchema())));
         arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
 
@@ -110,12 +110,12 @@ public class KeeprightBug extends Bug {
     }
 
     /* Return a readable usable String for the Server from the current State */
-    public String getUrlState() {
-        if (getState() == Bug.STATE.OPEN)
+    public String getUrlNewState() {
+        if (getNewState() == Bug.STATE.OPEN)
             return "";
-        else if (getState() == Bug.STATE.CLOSED)
+        else if (getNewState() == Bug.STATE.CLOSED)
             return "ignore_t";
-        else if (getState() == Bug.STATE.IGNORED)
+        else if (getNewState() == Bug.STATE.IGNORED)
             return "ignore";
         else
             return "";
