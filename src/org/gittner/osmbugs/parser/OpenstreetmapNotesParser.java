@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.parser;
 
 import org.gittner.osmbugs.bugs.Bug;
@@ -18,7 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 /* Parser for Openstreetmap Notes bug lists retrieved from notes */
 public class OpenstreetmapNotesParser {
 
-    public static ArrayList<Bug> parse(InputStream stream){
+    public static ArrayList<Bug> parse(InputStream stream) {
         ArrayList<Bug> bugs = new ArrayList<Bug>();
 
         try {
@@ -28,26 +29,28 @@ public class OpenstreetmapNotesParser {
 
             NodeList nList = doc.getElementsByTagName("note");
 
-            for(int i = 0; i != nList.getLength(); ++i) {
+            for (int i = 0; i != nList.getLength(); ++i) {
                 Element wpt = (Element) nList.item(i);
 
                 double lat = Double.parseDouble(wpt.getAttribute("lat"));
                 double lon = Double.parseDouble(wpt.getAttribute("lon"));
 
                 Bug.STATE state = Bug.STATE.CLOSED;
-                if(wpt.getElementsByTagName("status").item(0).getTextContent().equals("open"))
+                if (wpt.getElementsByTagName("status").item(0).getTextContent().equals("open"))
                     state = Bug.STATE.OPEN;
 
                 long id = Long.parseLong(wpt.getElementsByTagName("id").item(0).getTextContent());
 
                 NodeList nListComments = wpt.getElementsByTagName("comment");
                 ArrayList<Comment> comments = new ArrayList<Comment>();
-                for(int n = 0; n != nListComments.getLength(); ++n){
-                    comments.add(new Comment (((Element)nListComments.item(n)).getElementsByTagName("text").item(0).getTextContent()));
+                for (int n = 0; n != nListComments.getLength(); ++n) {
+                    comments.add(new Comment(((Element) nListComments.item(n)).getElementsByTagName("text")
+                            .item(0)
+                            .getTextContent()));
                 }
 
                 String text = "";
-                if(comments.size() > 0){
+                if (comments.size() > 0) {
                     text = comments.get(0).getText();
                     comments.remove(0);
                 }
@@ -55,11 +58,14 @@ public class OpenstreetmapNotesParser {
                 bugs.add(new OpenstreetmapNote(lat, lon, text, comments, id, state));
             }
 
-        } catch (ParserConfigurationException e) {
+        }
+        catch (ParserConfigurationException e) {
             e.printStackTrace();
-        } catch (SAXException e) {
+        }
+        catch (SAXException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
 

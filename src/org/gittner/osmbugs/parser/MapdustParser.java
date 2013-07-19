@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.parser;
 
 import org.gittner.osmbugs.bugs.Bug;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 
 public class MapdustParser {
 
-    public static ArrayList<Bug> parse(InputStream stream){
+    public static ArrayList<Bug> parse(InputStream stream) {
         ArrayList<Bug> bugs = new ArrayList<Bug>();
 
         BufferedReader reader;
@@ -24,15 +25,18 @@ public class MapdustParser {
 
             String line = reader.readLine();
 
-            /* Little Tweak since this was sometimes missing in Answer. Only on Android not on Desktop */
-            if(!line.endsWith("\"}}"))
+            /*
+             * Little Tweak since this was sometimes missing in Answer. Only on Android not on
+             * Desktop
+             */
+            if (!line.endsWith("\"}}"))
                 line += "\"}}";
 
             JSONObject json = new JSONObject(line);
 
             JSONArray bugArray = json.getJSONArray("features");
 
-            for(int i = 0; i != bugArray.length(); ++i) {
+            for (int i = 0; i != bugArray.length(); ++i) {
                 JSONObject bug = bugArray.getJSONObject(i);
 
                 long id = bug.getLong("id");
@@ -46,7 +50,7 @@ public class MapdustParser {
 
                 Bug.STATE state;
 
-                switch(property.getInt("status")) {
+                switch (property.getInt("status")) {
                     case 2:
                         state = Bug.STATE.CLOSED;
                         break;
@@ -61,7 +65,7 @@ public class MapdustParser {
                 ArrayList<Comment> comments = new ArrayList<Comment>();
 
                 JSONArray commentArray = property.getJSONArray("comments");
-                for(int n = 0; n != commentArray.length(); ++n) {
+                for (int n = 0; n != commentArray.length(); ++n) {
                     JSONObject comment = commentArray.getJSONObject(n);
                     comments.add(new Comment(comment.getString("comment")));
                 }
@@ -71,19 +75,19 @@ public class MapdustParser {
                 String type_const = property.getString("type");
 
                 int typeInt;
-                if(type_const.equals("wrong_turn"))
+                if (type_const.equals("wrong_turn"))
                     typeInt = MapdustBug.WRONGTURN;
-                else if(type_const.equals("bad_routing"))
+                else if (type_const.equals("bad_routing"))
                     typeInt = MapdustBug.BADROUTING;
-                else if(type_const.equals("oneway_road"))
+                else if (type_const.equals("oneway_road"))
                     typeInt = MapdustBug.ONEWAYROAD;
-                else if(type_const.equals("blocked_street"))
+                else if (type_const.equals("blocked_street"))
                     typeInt = MapdustBug.BLOCKEDSTREET;
-                else if(type_const.equals("missing_street"))
+                else if (type_const.equals("missing_street"))
                     typeInt = MapdustBug.MISSINGSTREET;
-                else if(type_const.equals("wrong_roundabout"))
+                else if (type_const.equals("wrong_roundabout"))
                     typeInt = MapdustBug.ROUNDABOUTISSUE;
-                else if(type_const.equals("missing_speedlimit"))
+                else if (type_const.equals("missing_speedlimit"))
                     typeInt = MapdustBug.MISSINGSPEEDINFO;
                 else
                     typeInt = MapdustBug.OTHER;
@@ -91,10 +95,12 @@ public class MapdustParser {
                 bugs.add(new MapdustBug(lat, lon, "Mapdust Bug", text, comments, typeInt, id, state));
             }
 
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<Bug>();
-        } catch (JSONException e) {
+        }
+        catch (JSONException e) {
             e.printStackTrace();
             return new ArrayList<Bug>();
         }
@@ -102,7 +108,7 @@ public class MapdustParser {
         return bugs;
     }
 
-    public static ArrayList<Comment> parseSingleBugForComments(InputStream stream){
+    public static ArrayList<Comment> parseSingleBugForComments(InputStream stream) {
         ArrayList<Comment> comments = new ArrayList<Comment>();
 
         BufferedReader reader;
@@ -111,25 +117,29 @@ public class MapdustParser {
 
             String line = reader.readLine();
 
-            /* Little Tweak since this was sometimes missing in Answer. Only on Android not on Desktop */
-            if(!line.endsWith("\"}}"))
+            /*
+             * Little Tweak since this was sometimes missing in Answer. Only on Android not on
+             * Desktop
+             */
+            if (!line.endsWith("\"}}"))
                 line += "\"}}";
 
             JSONObject json = new JSONObject(line);
-
 
             JSONObject properties = json.getJSONObject("properties");
 
             JSONArray commentsArray = properties.getJSONArray("comments");
 
-            for(int i = 0; i != commentsArray.length(); ++i){
+            for (int i = 0; i != commentsArray.length(); ++i) {
                 comments.add(new Comment(commentsArray.getJSONObject(i).getString("comment")));
             }
 
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<Comment>();
-        } catch (JSONException e) {
+        }
+        catch (JSONException e) {
             e.printStackTrace();
             return new ArrayList<Comment>();
         }

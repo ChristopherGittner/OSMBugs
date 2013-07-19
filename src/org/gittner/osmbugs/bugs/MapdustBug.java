@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.bugs;
 
 import org.apache.http.HttpResponse;
@@ -29,18 +30,34 @@ import java.util.ArrayList;
 public class MapdustBug extends Bug {
 
     private long id_;
+
     private int type_;
 
     public static int WRONGTURN = 1;
+
     public static int BADROUTING = 2;
+
     public static int ONEWAYROAD = 3;
+
     public static int BLOCKEDSTREET = 4;
+
     public static int MISSINGSTREET = 5;
+
     public static int ROUNDABOUTISSUE = 6;
+
     public static int MISSINGSPEEDINFO = 7;
+
     public static int OTHER = 8;
 
-    public MapdustBug(double lat, double lon, String title, String text, ArrayList<Comment> comments, int type, long id, Bug.STATE state) {
+    public MapdustBug(
+            double lat,
+            double lon,
+            String title,
+            String text,
+            ArrayList<Comment> comments,
+            int type,
+            long id,
+            Bug.STATE state) {
         super(title, text, comments, new GeoPoint(lat, lon), state);
 
         setType(type);
@@ -76,12 +93,12 @@ public class MapdustBug extends Bug {
 
     @Override
     public Drawable getMarker(int bitset) {
-        if(getState() == Bug.STATE.CLOSED)
+        if (getState() == Bug.STATE.CLOSED)
             return Drawings.MapdustClosed;
-        else if(getState() == Bug.STATE.IGNORED)
+        else if (getState() == Bug.STATE.IGNORED)
             return Drawings.MapdustIgnored;
         else {
-            switch(getType()) {
+            switch (getType()) {
                 case 1:
                     return Drawings.MapdustWrongTurn;
                 case 2:
@@ -112,10 +129,10 @@ public class MapdustBug extends Bug {
     @Override
     public boolean commit() {
 
-        if(!hasNewComment())
+        if (!hasNewComment())
             return false;
 
-        if(!hasNewState() && hasNewComment()){
+        if (!hasNewState() && hasNewComment()) {
             /* Upload a new Comment */
             DefaultHttpClient client = new DefaultHttpClient();
 
@@ -127,28 +144,34 @@ public class MapdustBug extends Bug {
             arguments.add(new BasicNameValuePair("nickname", Settings.Mapdust.getUsername()));
 
             HttpPost request;
-            if(Settings.DEBUG)
-                request = new HttpPost("http://st.www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
+            if (Settings.DEBUG)
+                request =
+                        new HttpPost("http://st.www.mapdust.com/api/commentBug?"
+                                + URLEncodedUtils.format(arguments, "utf-8"));
             else
-                request = new HttpPost("http://www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
+                request =
+                        new HttpPost("http://www.mapdust.com/api/commentBug?"
+                                + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
                 HttpResponse response = client.execute(request);
 
-                /* Check result for Success*/
+                /* Check result for Success */
                 /* Mapdust returns 201 for commentBug as Success */
-                if(response.getStatusLine().getStatusCode() != 201)
+                if (response.getStatusLine().getStatusCode() != 201)
                     return false;
-            } catch (ClientProtocolException e) {
+            }
+            catch (ClientProtocolException e) {
                 e.printStackTrace();
                 return false;
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
         }
-        else if(hasNewState() && hasNewComment()){
+        else if (hasNewState() && hasNewComment()) {
             /* Upload a Status Change along with a comment (Required) */
             DefaultHttpClient client = new DefaultHttpClient();
 
@@ -157,9 +180,9 @@ public class MapdustBug extends Bug {
             arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
             arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
 
-            if(getNewState() == Bug.STATE.OPEN)
+            if (getNewState() == Bug.STATE.OPEN)
                 arguments.add(new BasicNameValuePair("status", "1"));
-            else if(getNewState() == Bug.STATE.CLOSED)
+            else if (getNewState() == Bug.STATE.CLOSED)
                 arguments.add(new BasicNameValuePair("status", "2"));
             else
                 arguments.add(new BasicNameValuePair("status", "3"));
@@ -168,23 +191,29 @@ public class MapdustBug extends Bug {
             arguments.add(new BasicNameValuePair("nickname", Settings.Mapdust.getUsername()));
 
             HttpPost request;
-            if(Settings.DEBUG)
-                request = new HttpPost("http://st.www.mapdust.com/api/changeBugStatus?" + URLEncodedUtils.format(arguments, "utf-8"));
+            if (Settings.DEBUG)
+                request =
+                        new HttpPost("http://st.www.mapdust.com/api/changeBugStatus?"
+                                + URLEncodedUtils.format(arguments, "utf-8"));
             else
-                request = new HttpPost("http://www.mapdust.com/api/changeBugStatus?" + URLEncodedUtils.format(arguments, "utf-8"));
+                request =
+                        new HttpPost("http://www.mapdust.com/api/changeBugStatus?"
+                                + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
                 HttpResponse response = client.execute(request);
 
-                /* Check result for Success*/
+                /* Check result for Success */
                 /* Mapdust returns 201 for changeBugStatus as Success */
-                if(response.getStatusLine().getStatusCode() != 201)
+                if (response.getStatusLine().getStatusCode() != 201)
                     return false;
-            } catch (ClientProtocolException e) {
+            }
+            catch (ClientProtocolException e) {
                 e.printStackTrace();
                 return false;
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
@@ -202,7 +231,7 @@ public class MapdustBug extends Bug {
 
     @Override
     public boolean isClosable() {
-        if(getState() == STATE.OPEN)
+        if (getState() == STATE.OPEN)
             return true;
 
         return false;
@@ -210,7 +239,7 @@ public class MapdustBug extends Bug {
 
     @Override
     public boolean isIgnorable() {
-        if(getState() == STATE.OPEN)
+        if (getState() == STATE.OPEN)
             return true;
 
         return false;
@@ -218,20 +247,19 @@ public class MapdustBug extends Bug {
 
     @Override
     public boolean isReopenable() {
-        if(getState() == STATE.CLOSED || getState() == STATE.IGNORED)
+        if (getState() == STATE.CLOSED || getState() == STATE.IGNORED)
             return true;
 
         return false;
     }
 
     public static boolean addNew(GeoPoint position, String text) {
-        //TODO: Make it possible to add other Bug Types than "other"
+        // TODO: Make it possible to add other Bug Types than "other"
         DefaultHttpClient client = new DefaultHttpClient();
 
         /* Add the Authentication Details if we have a username in the Preferences */
-        if(!Settings.OpenstreetmapNotes.getUsername().equals("")) {
-            client.getCredentialsProvider().setCredentials(
-                    AuthScope.ANY,
+        if (!Settings.OpenstreetmapNotes.getUsername().equals("")) {
+            client.getCredentialsProvider().setCredentials(AuthScope.ANY,
                     new UsernamePasswordCredentials(Settings.OpenstreetmapNotes.getUsername(),
                             Settings.OpenstreetmapNotes.getPassword()));
         }
@@ -240,30 +268,37 @@ public class MapdustBug extends Bug {
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
         arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
-        arguments.add(new BasicNameValuePair("coordinates", String.valueOf(position.getLongitudeE6() / 1000000.0) +
-                "," + String.valueOf(position.getLatitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("coordinates",
+                String.valueOf(position.getLongitudeE6() / 1000000.0) + ","
+                        + String.valueOf(position.getLatitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("description", text));
         arguments.add(new BasicNameValuePair("type", "other"));
         arguments.add(new BasicNameValuePair("nickname", Settings.Mapdust.getUsername()));
 
         HttpPost request;
-        if(Settings.DEBUG)
-            request = new HttpPost("http://st.www.mapdust.com/api/addBug?" + URLEncodedUtils.format(arguments, "utf-8"));
+        if (Settings.DEBUG)
+            request =
+                    new HttpPost("http://st.www.mapdust.com/api/addBug?"
+                            + URLEncodedUtils.format(arguments, "utf-8"));
         else
-            request = new HttpPost("http://www.mapdust.com/api/addBug?" + URLEncodedUtils.format(arguments, "utf-8"));
+            request =
+                    new HttpPost("http://www.mapdust.com/api/addBug?"
+                            + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute commit */
             HttpResponse response = client.execute(request);
 
-            /* Check result for Success*/
+            /* Check result for Success */
             /* Mapdust returns 201 for addBug as Success */
-            if(response.getStatusLine().getStatusCode() != 201)
+            if (response.getStatusLine().getStatusCode() != 201)
                 return false;
-        } catch (ClientProtocolException e) {
+        }
+        catch (ClientProtocolException e) {
             e.printStackTrace();
             return false;
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -295,21 +330,21 @@ public class MapdustBug extends Bug {
 
     @Override
     public String getStringFromState(Context context, STATE state) {
-        if(state == STATE.OPEN)
+        if (state == STATE.OPEN)
             return context.getString(R.string.open);
-        else if(state == STATE.CLOSED)
+        else if (state == STATE.CLOSED)
             return context.getString(R.string.closed);
-        else if(state == STATE.IGNORED)
+        else if (state == STATE.IGNORED)
             return context.getString(R.string.software_bug);
         else
             return "";
     }
 
     @Override
-    public  Bug.STATE getStateFromString(Context context, String state) {
-        if(state.equals(context.getString(R.string.closed)))
+    public Bug.STATE getStateFromString(Context context, String state) {
+        if (state.equals(context.getString(R.string.closed)))
             return STATE.CLOSED;
-        else if(state.equals(context.getString(R.string.software_bug)))
+        else if (state.equals(context.getString(R.string.software_bug)))
             return STATE.IGNORED;
         else
             return STATE.OPEN;
@@ -332,26 +367,33 @@ public class MapdustBug extends Bug {
 
         HttpGet request;
 
-        if(Settings.DEBUG)
-            request = new HttpGet("http://st.www.mapdust.com/api/getBug?" + URLEncodedUtils.format(arguments, "utf-8"));
+        if (Settings.DEBUG)
+            request =
+                    new HttpGet("http://st.www.mapdust.com/api/getBug?"
+                            + URLEncodedUtils.format(arguments, "utf-8"));
         else
-            request = new HttpGet("http://www.mapdust.com/api/getBug?" + URLEncodedUtils.format(arguments, "utf-8"));
+            request =
+                    new HttpGet("http://www.mapdust.com/api/getBug?"
+                            + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute Query */
             HttpResponse response = client.execute(request);
 
             /* Check for Success */
-            if(response.getStatusLine().getStatusCode() != 200)
+            if (response.getStatusLine().getStatusCode() != 200)
                 return;
 
             /* If Request was Successful, parse the Stream */
             getComments().clear();
-            getComments().addAll(MapdustParser.parseSingleBugForComments(response.getEntity().getContent()));
+            getComments().addAll(MapdustParser.parseSingleBugForComments(response.getEntity()
+                    .getContent()));
 
-        } catch (ClientProtocolException e) {
+        }
+        catch (ClientProtocolException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

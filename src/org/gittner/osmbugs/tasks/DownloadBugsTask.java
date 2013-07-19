@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.tasks;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -29,12 +30,20 @@ import java.util.ArrayList;
 public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
     SherlockActivity activity_;
+
     ItemizedIconOverlay<Bug> bugOverlay_;
+
     MapView mapView_;
+
     BoundingBoxE6 bBox_;
+
     int progress_;
 
-    public DownloadBugsTask(SherlockActivity activity, ItemizedIconOverlay<Bug> bugOverlay, MapView mapView, BoundingBoxE6 bBox) {
+    public DownloadBugsTask(
+            SherlockActivity activity,
+            ItemizedIconOverlay<Bug> bugOverlay,
+            MapView mapView,
+            BoundingBoxE6 bBox) {
         activity_ = activity;
         bugOverlay_ = bugOverlay;
         mapView_ = mapView;
@@ -58,13 +67,13 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
     protected void onProgressUpdate(Integer... progress) {
 
         int activeProviders = 0;
-        if(Settings.Keepright.isEnabled())
+        if (Settings.Keepright.isEnabled())
             activeProviders += 1;
-        if(Settings.Openstreetbugs.isEnabled())
+        if (Settings.Openstreetbugs.isEnabled())
             activeProviders += 1;
-        if(Settings.Mapdust.isEnabled())
+        if (Settings.Mapdust.isEnabled())
             activeProviders += 1;
-        if(Settings.OpenstreetmapNotes.isEnabled())
+        if (Settings.OpenstreetmapNotes.isEnabled())
             activeProviders += 1;
 
         progress_ += progress[0];
@@ -75,22 +84,22 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
     protected ArrayList<Bug> doInBackground(Void... v) {
         ArrayList<Bug> result = new ArrayList<Bug>();
 
-        if(Settings.Keepright.isEnabled()){
+        if (Settings.Keepright.isEnabled()) {
             result.addAll(downloadKeeprightBugs());
             publishProgress(1);
         }
 
-        if(Settings.Openstreetbugs.isEnabled()){
+        if (Settings.Openstreetbugs.isEnabled()) {
             result.addAll(downloadOpenstreetbugsBugs());
             publishProgress(1);
         }
 
-        if(Settings.Mapdust.isEnabled()){
+        if (Settings.Mapdust.isEnabled()) {
             result.addAll(downloadMapdustBugs());
             publishProgress(1);
         }
 
-        if(Settings.OpenstreetmapNotes.isEnabled()){
+        if (Settings.OpenstreetmapNotes.isEnabled()) {
             result.addAll(downloadOpenstreetmapNotes());
             publishProgress(1);
         }
@@ -102,7 +111,7 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
     protected void onPostExecute(ArrayList<Bug> result) {
         bugOverlay_.removeAllItems();
 
-        for(int i = 0; i != result.size(); ++i) {
+        for (int i = 0; i != result.size(); ++i) {
             bugOverlay_.addItem(result.get(i));
         }
 
@@ -117,30 +126,34 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
-        if(Settings.Keepright.isShowIgnoredEnabled())
+        if (Settings.Keepright.isShowIgnoredEnabled())
             arguments.add(new BasicNameValuePair("show_ign", "1"));
         else
             arguments.add(new BasicNameValuePair("show_ign", "0"));
 
-        if(Settings.Keepright.isShowTempIgnoredEnabled())
+        if (Settings.Keepright.isShowTempIgnoredEnabled())
             arguments.add(new BasicNameValuePair("show_tmpign", "1"));
         else
             arguments.add(new BasicNameValuePair("show_tmpign", "0"));
 
         arguments.add(new BasicNameValuePair("ch", getKeeprightSelectionString()));
-        arguments.add(new BasicNameValuePair("lat", String.valueOf(bBox_.getCenter().getLatitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("lon", String.valueOf(bBox_.getCenter().getLongitudeE6() / 1000000.0)));
-        if(Settings.isLanguageGerman())
+        arguments.add(new BasicNameValuePair("lat", String.valueOf(bBox_.getCenter()
+                .getLatitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("lon", String.valueOf(bBox_.getCenter()
+                .getLongitudeE6() / 1000000.0)));
+        if (Settings.isLanguageGerman())
             arguments.add(new BasicNameValuePair("lang", "de"));
 
-        HttpGet request = new HttpGet("http://keepright.ipax.at/points.php?" + URLEncodedUtils.format(arguments, "utf-8"));
+        HttpGet request =
+                new HttpGet("http://keepright.ipax.at/points.php?"
+                        + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute Query */
             HttpResponse response = client.execute(request);
 
             /* Check for Success */
-            if(response.getStatusLine().getStatusCode() != 200)
+            if (response.getStatusLine().getStatusCode() != 200)
                 return new ArrayList<Bug>();
 
             /* Update Progress before Parsing */
@@ -148,9 +161,11 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
             /* If Request was Successful, parse the Stream */
             return KeeprightParser.parse(response.getEntity().getContent());
-        } catch (ClientProtocolException e) {
+        }
+        catch (ClientProtocolException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -161,149 +176,148 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
         /* Unknown what 0 stands for but its for compatibility Reasons */
         String result = "0,";
 
-        if(Settings.Keepright.is20Enabled())
+        if (Settings.Keepright.is20Enabled())
             result += "20,";
-        if(Settings.Keepright.is30Enabled())
+        if (Settings.Keepright.is30Enabled())
             result += "30,";
-        if(Settings.Keepright.is40Enabled())
+        if (Settings.Keepright.is40Enabled())
             result += "40,";
-        if(Settings.Keepright.is50Enabled())
+        if (Settings.Keepright.is50Enabled())
             result += "50,";
-        if(Settings.Keepright.is60Enabled())
+        if (Settings.Keepright.is60Enabled())
             result += "60,";
-        if(Settings.Keepright.is70Enabled())
+        if (Settings.Keepright.is70Enabled())
             result += "70,";
-        if(Settings.Keepright.is90Enabled())
+        if (Settings.Keepright.is90Enabled())
             result += "90,";
-        if(Settings.Keepright.is100Enabled())
+        if (Settings.Keepright.is100Enabled())
             result += "100,";
-        if(Settings.Keepright.is110Enabled())
+        if (Settings.Keepright.is110Enabled())
             result += "110,";
-        if(Settings.Keepright.is120Enabled())
+        if (Settings.Keepright.is120Enabled())
             result += "120,";
-        if(Settings.Keepright.is130Enabled())
+        if (Settings.Keepright.is130Enabled())
             result += "130,";
-        if(Settings.Keepright.is150Enabled())
+        if (Settings.Keepright.is150Enabled())
             result += "150,";
-        if(Settings.Keepright.is160Enabled())
+        if (Settings.Keepright.is160Enabled())
             result += "160,";
-        if(Settings.Keepright.is170Enabled())
+        if (Settings.Keepright.is170Enabled())
             result += "170,";
-        if(Settings.Keepright.is180Enabled())
+        if (Settings.Keepright.is180Enabled())
             result += "180,";
-        if(Settings.Keepright.is190Enabled()){
-            if(Settings.Keepright.is191Enabled())
+        if (Settings.Keepright.is190Enabled()) {
+            if (Settings.Keepright.is191Enabled())
                 result += "191,";
-            if(Settings.Keepright.is192Enabled())
+            if (Settings.Keepright.is192Enabled())
                 result += "192,";
-            if(Settings.Keepright.is193Enabled())
+            if (Settings.Keepright.is193Enabled())
                 result += "193,";
-            if(Settings.Keepright.is194Enabled())
+            if (Settings.Keepright.is194Enabled())
                 result += "194,";
-            if(Settings.Keepright.is195Enabled())
+            if (Settings.Keepright.is195Enabled())
                 result += "195,";
-            if(Settings.Keepright.is196Enabled())
+            if (Settings.Keepright.is196Enabled())
                 result += "196,";
-            if(Settings.Keepright.is197Enabled())
+            if (Settings.Keepright.is197Enabled())
                 result += "197,";
-            if(Settings.Keepright.is198Enabled())
+            if (Settings.Keepright.is198Enabled())
                 result += "198,";
         }
-        if(Settings.Keepright.is200Enabled()){
-            if(Settings.Keepright.is201Enabled())
+        if (Settings.Keepright.is200Enabled()) {
+            if (Settings.Keepright.is201Enabled())
                 result += "201,";
-            if(Settings.Keepright.is202Enabled())
+            if (Settings.Keepright.is202Enabled())
                 result += "202,";
-            if(Settings.Keepright.is203Enabled())
+            if (Settings.Keepright.is203Enabled())
                 result += "203,";
-            if(Settings.Keepright.is204Enabled())
+            if (Settings.Keepright.is204Enabled())
                 result += "204,";
-            if(Settings.Keepright.is205Enabled())
+            if (Settings.Keepright.is205Enabled())
                 result += "205,";
-            if(Settings.Keepright.is206Enabled())
+            if (Settings.Keepright.is206Enabled())
                 result += "206,";
-            if(Settings.Keepright.is207Enabled())
+            if (Settings.Keepright.is207Enabled())
                 result += "207,";
-            if(Settings.Keepright.is208Enabled())
+            if (Settings.Keepright.is208Enabled())
                 result += "208,";
         }
-        if(Settings.Keepright.is210Enabled())
+        if (Settings.Keepright.is210Enabled())
             result += "210,";
-        if(Settings.Keepright.is220Enabled())
+        if (Settings.Keepright.is220Enabled())
             result += "220,";
-        if(Settings.Keepright.is230Enabled()){
-            if(Settings.Keepright.is231Enabled())
+        if (Settings.Keepright.is230Enabled()) {
+            if (Settings.Keepright.is231Enabled())
                 result += "231,";
-            if(Settings.Keepright.is232Enabled())
+            if (Settings.Keepright.is232Enabled())
                 result += "232,";
         }
-        if(Settings.Keepright.is270Enabled())
+        if (Settings.Keepright.is270Enabled())
             result += "270,";
-        if(Settings.Keepright.is280Enabled()){
-            if(Settings.Keepright.is281Enabled())
+        if (Settings.Keepright.is280Enabled()) {
+            if (Settings.Keepright.is281Enabled())
                 result += "281,";
-            if(Settings.Keepright.is282Enabled())
+            if (Settings.Keepright.is282Enabled())
                 result += "282,";
-            if(Settings.Keepright.is283Enabled())
+            if (Settings.Keepright.is283Enabled())
                 result += "283,";
-            if(Settings.Keepright.is284Enabled())
+            if (Settings.Keepright.is284Enabled())
                 result += "284,";
-            if(Settings.Keepright.is285Enabled())
+            if (Settings.Keepright.is285Enabled())
                 result += "285,";
         }
-        if(Settings.Keepright.is290Enabled()){
-            if(Settings.Keepright.is291Enabled())
+        if (Settings.Keepright.is290Enabled()) {
+            if (Settings.Keepright.is291Enabled())
                 result += "291,";
-            if(Settings.Keepright.is292Enabled())
+            if (Settings.Keepright.is292Enabled())
                 result += "292,";
-            if(Settings.Keepright.is293Enabled())
+            if (Settings.Keepright.is293Enabled())
                 result += "293,";
-            if(Settings.Keepright.is294Enabled())
+            if (Settings.Keepright.is294Enabled())
                 result += "294,";
         }
-        if(Settings.Keepright.is300Enabled())
+        if (Settings.Keepright.is300Enabled())
             result += "300,";
-        if(Settings.Keepright.is310Enabled()){
-            if(Settings.Keepright.is311Enabled())
+        if (Settings.Keepright.is310Enabled()) {
+            if (Settings.Keepright.is311Enabled())
                 result += "311,";
-            if(Settings.Keepright.is312Enabled())
+            if (Settings.Keepright.is312Enabled())
                 result += "312,";
-            if(Settings.Keepright.is313Enabled())
+            if (Settings.Keepright.is313Enabled())
                 result += "313,";
         }
-        if(Settings.Keepright.is320Enabled())
+        if (Settings.Keepright.is320Enabled())
             result += "320,";
-        if(Settings.Keepright.is350Enabled())
+        if (Settings.Keepright.is350Enabled())
             result += "350,";
-        if(Settings.Keepright.is360Enabled())
+        if (Settings.Keepright.is360Enabled())
             result += "360,";
-        if(Settings.Keepright.is370Enabled())
+        if (Settings.Keepright.is370Enabled())
             result += "370,";
-        if(Settings.Keepright.is380Enabled())
+        if (Settings.Keepright.is380Enabled())
             result += "380,";
-        if(Settings.Keepright.is390Enabled())
+        if (Settings.Keepright.is390Enabled())
             result += "390,";
-        if(Settings.Keepright.is400Enabled()){
-            if(Settings.Keepright.is401Enabled())
+        if (Settings.Keepright.is400Enabled()) {
+            if (Settings.Keepright.is401Enabled())
                 result += "401,";
-            if(Settings.Keepright.is402Enabled())
+            if (Settings.Keepright.is402Enabled())
                 result += "402,";
         }
-        if(Settings.Keepright.is410Enabled()){
-            if(Settings.Keepright.is411Enabled())
+        if (Settings.Keepright.is410Enabled()) {
+            if (Settings.Keepright.is411Enabled())
                 result += "411,";
-            if(Settings.Keepright.is412Enabled())
+            if (Settings.Keepright.is412Enabled())
                 result += "412,";
-            if(Settings.Keepright.is413Enabled())
+            if (Settings.Keepright.is413Enabled())
                 result += "413,";
         }
 
-        if(result.endsWith(","))
+        if (result.endsWith(","))
             result = result.substring(0, result.length() - 1);
 
         return result;
     }
-
 
     private ArrayList<Bug> downloadOpenstreetbugsBugs() {
         HttpClient client = new DefaultHttpClient();
@@ -315,19 +329,22 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
         arguments.add(new BasicNameValuePair("l", String.valueOf(bBox_.getLonWestE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("r", String.valueOf(bBox_.getLonEastE6() / 1000000.0)));
 
-        if(Settings.Openstreetbugs.isShowOnlyOpenEnabled())
+        if (Settings.Openstreetbugs.isShowOnlyOpenEnabled())
             arguments.add(new BasicNameValuePair("open", "1"));
 
-        arguments.add(new BasicNameValuePair("limit", String.valueOf(Settings.Openstreetbugs.getBugLimit())));
+        arguments.add(new BasicNameValuePair("limit",
+                String.valueOf(Settings.Openstreetbugs.getBugLimit())));
 
-        HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/getGPX?" + URLEncodedUtils.format(arguments, "utf-8"));
+        HttpGet request =
+                new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/getGPX?"
+                        + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute Query */
             HttpResponse response = client.execute(request);
 
             /* Check for Success */
-            if(response.getStatusLine().getStatusCode() != 200)
+            if (response.getStatusLine().getStatusCode() != 200)
                 return new ArrayList<Bug>();
 
             /* Update Progress before Parsing */
@@ -335,9 +352,11 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
             /* If Request was Successful, parse the Stream */
             return OpenstreetbugsParser.parse(response.getEntity().getContent());
-        } catch (ClientProtocolException e) {
+        }
+        catch (ClientProtocolException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -350,27 +369,32 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
         arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
-        arguments.add(new BasicNameValuePair("bbox", String.valueOf(bBox_.getLonEastE6() / 1000000.0) + "," +
-                String.valueOf(bBox_.getLatSouthE6() / 1000000.0) + "," +
-                String.valueOf(bBox_.getLonWestE6() / 1000000.0) + "," +
-                String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("bbox",
+                String.valueOf(bBox_.getLonEastE6() / 1000000.0) + ","
+                        + String.valueOf(bBox_.getLatSouthE6() / 1000000.0) + ","
+                        + String.valueOf(bBox_.getLonWestE6() / 1000000.0) + ","
+                        + String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("comments", "1"));
         arguments.add(new BasicNameValuePair("ft", getMapdustSelectionString()));
         arguments.add(new BasicNameValuePair("fs", getMapdustEnabledTypesString()));
 
         HttpGet request;
 
-        if(Settings.DEBUG)
-            request = new HttpGet("http://st.www.mapdust.com/api/getBugs?" + URLEncodedUtils.format(arguments, "utf-8"));
+        if (Settings.DEBUG)
+            request =
+                    new HttpGet("http://st.www.mapdust.com/api/getBugs?"
+                            + URLEncodedUtils.format(arguments, "utf-8"));
         else
-            request = new HttpGet("http://www.mapdust.com/api/getBugs?" + URLEncodedUtils.format(arguments, "utf-8"));
+            request =
+                    new HttpGet("http://www.mapdust.com/api/getBugs?"
+                            + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute Query */
             HttpResponse response = client.execute(request);
 
             /* Check for Success */
-            if(response.getStatusLine().getStatusCode() != 200)
+            if (response.getStatusLine().getStatusCode() != 200)
                 return new ArrayList<Bug>();
 
             /* Update Progress before Parsing */
@@ -378,9 +402,11 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
             /* If Request was Successful, parse the Stream */
             return MapdustParser.parse(response.getEntity().getContent());
-        } catch (ClientProtocolException e) {
+        }
+        catch (ClientProtocolException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -390,24 +416,24 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
     private String getMapdustSelectionString() {
         String result = "";
 
-        if(Settings.Mapdust.isWrongTurnEnabled())
+        if (Settings.Mapdust.isWrongTurnEnabled())
             result += "wrong_turn,";
-        if(Settings.Mapdust.isBadRoutingenabled())
+        if (Settings.Mapdust.isBadRoutingenabled())
             result += "bad_routing,";
-        if(Settings.Mapdust.isOnewayRoadEnabled())
+        if (Settings.Mapdust.isOnewayRoadEnabled())
             result += "oneway_road,";
-        if(Settings.Mapdust.isBlockedStreetEnabled())
+        if (Settings.Mapdust.isBlockedStreetEnabled())
             result += "blocked_street,";
-        if(Settings.Mapdust.isMissingStreetEnabled())
+        if (Settings.Mapdust.isMissingStreetEnabled())
             result += "missing_street,";
-        if(Settings.Mapdust.isRoundaboutIssueEnabled())
+        if (Settings.Mapdust.isRoundaboutIssueEnabled())
             result += "wrong_roundabout,";
-        if(Settings.Mapdust.isMissingSpeedInfoEnabled())
+        if (Settings.Mapdust.isMissingSpeedInfoEnabled())
             result += "missing_speedlimit,";
-        if(Settings.Mapdust.isOtherEnabled())
+        if (Settings.Mapdust.isOtherEnabled())
             result += "other,";
 
-        if(result.endsWith(","))
+        if (result.endsWith(","))
             result = result.substring(0, result.length() - 1);
 
         return result;
@@ -416,14 +442,14 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
     private String getMapdustEnabledTypesString() {
         String result = "";
 
-        if(Settings.Mapdust.isShowOpenEnabled())
+        if (Settings.Mapdust.isShowOpenEnabled())
             result += "1,";
-        if(Settings.Mapdust.isShowClosedEnabled())
+        if (Settings.Mapdust.isShowClosedEnabled())
             result += "2,";
-        if(Settings.Mapdust.isShowIgnoredEnabled())
+        if (Settings.Mapdust.isShowIgnoredEnabled())
             result += "3,";
 
-        if(result.endsWith(","))
+        if (result.endsWith(","))
             result = result.substring(0, result.length() - 1);
 
         return result;
@@ -434,29 +460,35 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
-        arguments.add(new BasicNameValuePair("bbox", String.valueOf(bBox_.getLonWestE6() / 1000000.0) +
-                "," + String.valueOf(bBox_.getLatSouthE6() / 1000000.0) +
-                "," + String.valueOf(bBox_.getLonEastE6() / 1000000.0) +
-                "," + String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("bbox",
+                String.valueOf(bBox_.getLonWestE6() / 1000000.0) + ","
+                        + String.valueOf(bBox_.getLatSouthE6() / 1000000.0) + ","
+                        + String.valueOf(bBox_.getLonEastE6() / 1000000.0) + ","
+                        + String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
 
-        if(Settings.OpenstreetmapNotes.isShowOnlyOpenEnabled())
+        if (Settings.OpenstreetmapNotes.isShowOnlyOpenEnabled())
             arguments.add(new BasicNameValuePair("closed", "0"));
 
-        arguments.add(new BasicNameValuePair("limit", String.valueOf(Settings.Openstreetbugs.getBugLimit())));
+        arguments.add(new BasicNameValuePair("limit",
+                String.valueOf(Settings.Openstreetbugs.getBugLimit())));
 
         HttpGet request;
 
-        if(!Settings.DEBUG)
-            request = new HttpGet("http://api.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
+        if (!Settings.DEBUG)
+            request =
+                    new HttpGet("http://api.openstreetmap.org/api/0.6/notes?"
+                            + URLEncodedUtils.format(arguments, "utf-8"));
         else
-            request = new HttpGet("http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
+            request =
+                    new HttpGet("http://api06.dev.openstreetmap.org/api/0.6/notes?"
+                            + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute Query */
             HttpResponse response = client.execute(request);
 
             /* Check for Success */
-            if(response.getStatusLine().getStatusCode() != 200)
+            if (response.getStatusLine().getStatusCode() != 200)
                 return new ArrayList<Bug>();
 
             /* Update Progress before Parsing */
@@ -464,9 +496,11 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
             /* If Request was Successful, parse the Stream */
             return OpenstreetmapNotesParser.parse(response.getEntity().getContent());
-        } catch (ClientProtocolException e) {
+        }
+        catch (ClientProtocolException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
 

@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.bugs;
 
 import org.apache.http.HttpResponse;
@@ -24,7 +25,13 @@ public class OpenstreetbugsBug extends Bug {
 
     private long id_;
 
-    public OpenstreetbugsBug(double lat, double lon, String text, ArrayList<Comment> comments, long id, STATE state) {
+    public OpenstreetbugsBug(
+            double lat,
+            double lon,
+            String text,
+            ArrayList<Comment> comments,
+            long id,
+            STATE state) {
         super("Openstreetbug", text, comments, new GeoPoint(lat, lon), state);
 
         setComments(comments);
@@ -49,52 +56,61 @@ public class OpenstreetbugsBug extends Bug {
     @Override
     public boolean commit() {
 
-        if(hasNewComment()){
+        if (hasNewComment()) {
             /* Upload a new Comment */
             HttpClient client = new DefaultHttpClient();
 
             ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
             arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
-            arguments.add(new BasicNameValuePair("text", getNewComment() + " [" + Settings.Openstreetbugs.getUsername() + " ]"));
+            arguments.add(new BasicNameValuePair("text", getNewComment() + " ["
+                    + Settings.Openstreetbugs.getUsername() + " ]"));
 
-            HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/editPOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
+            HttpGet request =
+                    new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/editPOIexec?"
+                            + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
                 HttpResponse response = client.execute(request);
 
-                /* Check result for Success*/
-                if(response.getStatusLine().getStatusCode() != 200)
+                /* Check result for Success */
+                if (response.getStatusLine().getStatusCode() != 200)
                     return false;
-            } catch (ClientProtocolException e) {
+            }
+            catch (ClientProtocolException e) {
                 e.printStackTrace();
                 return false;
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
         }
 
-        if(hasNewState() && getNewState() == STATE.CLOSED) {
+        if (hasNewState() && getNewState() == STATE.CLOSED) {
             /* Close the Bug */
             HttpClient client = new DefaultHttpClient();
 
             ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
             arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
 
-            HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/closePOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
+            HttpGet request =
+                    new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/closePOIexec?"
+                            + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
                 HttpResponse response = client.execute(request);
 
-                /* Check result for Success*/
-                if(response.getStatusLine().getStatusCode() != 200)
+                /* Check result for Success */
+                if (response.getStatusLine().getStatusCode() != 200)
                     return false;
-            } catch (ClientProtocolException e) {
+            }
+            catch (ClientProtocolException e) {
                 e.printStackTrace();
                 return false;
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
@@ -123,7 +139,7 @@ public class OpenstreetbugsBug extends Bug {
 
     @Override
     public Drawable getMarker(int bitset) {
-        if(getState() == Bug.STATE.CLOSED)
+        if (getState() == Bug.STATE.CLOSED)
             return Drawings.OpenstreetbugsDrawableClosed;
 
         return Drawings.OpenstreetbugsDrawableOpen;
@@ -134,23 +150,30 @@ public class OpenstreetbugsBug extends Bug {
         HttpClient client = new DefaultHttpClient();
 
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-        arguments.add(new BasicNameValuePair("lat", String.valueOf(position.getLatitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("lon", String.valueOf(position.getLongitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("text", text + " [" + Settings.Openstreetbugs.getUsername() + " ]"));
+        arguments.add(new BasicNameValuePair("lat",
+                String.valueOf(position.getLatitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("lon",
+                String.valueOf(position.getLongitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("text", text + " ["
+                + Settings.Openstreetbugs.getUsername() + " ]"));
 
-        HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/addPOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
+        HttpGet request =
+                new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/addPOIexec?"
+                        + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute commit */
             HttpResponse response = client.execute(request);
 
-            /* Check result for Success*/
-            if(response.getStatusLine().getStatusCode() != 200)
+            /* Check result for Success */
+            if (response.getStatusLine().getStatusCode() != 200)
                 return false;
-        } catch (ClientProtocolException e) {
+        }
+        catch (ClientProtocolException e) {
             e.printStackTrace();
             return false;
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -171,16 +194,17 @@ public class OpenstreetbugsBug extends Bug {
         return 0;
     }
 
-    public static final Creator<OpenstreetbugsBug> CREATOR = new Parcelable.Creator<OpenstreetbugsBug>() {
+    public static final Creator<OpenstreetbugsBug> CREATOR =
+            new Parcelable.Creator<OpenstreetbugsBug>() {
 
-        @Override
-        public OpenstreetbugsBug createFromParcel(Parcel source) {
-            return new OpenstreetbugsBug(source);
-        }
+                @Override
+                public OpenstreetbugsBug createFromParcel(Parcel source) {
+                    return new OpenstreetbugsBug(source);
+                }
 
-        @Override
-        public OpenstreetbugsBug[] newArray(int size) {
-            return new OpenstreetbugsBug[size];
-        }
-    };
+                @Override
+                public OpenstreetbugsBug[] newArray(int size) {
+                    return new OpenstreetbugsBug[size];
+                }
+            };
 }

@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.bugs;
 
 import org.gittner.osmbugs.R;
@@ -11,20 +12,26 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public abstract class Bug extends OverlayItem implements Parcelable{
+public abstract class Bug extends OverlayItem implements Parcelable {
 
-    public enum STATE{
-        OPEN,
-        CLOSED,
-        IGNORED
+    public enum STATE {
+        OPEN, CLOSED, IGNORED
     }
 
     private STATE state_ = STATE.OPEN;
+
     private STATE newState_ = STATE.OPEN;
+
     private ArrayList<Comment> comments_ = null;
+
     private String newComment_ = "";
 
-    protected Bug(String title, String text, ArrayList<Comment> comments, GeoPoint point, STATE state) {
+    protected Bug(
+            String title,
+            String text,
+            ArrayList<Comment> comments,
+            GeoPoint point,
+            STATE state) {
         super(title, text, point);
 
         state_ = state;
@@ -37,13 +44,13 @@ public abstract class Bug extends OverlayItem implements Parcelable{
 
         comments_ = new ArrayList<Comment>();
         int size = parcel.readInt();
-        for(int i = 0; i != size; ++i){
+        for (int i = 0; i != size; ++i) {
             comments_.add(new Comment(parcel));
         }
 
         newComment_ = parcel.readString();
 
-        switch(parcel.readInt()) {
+        switch (parcel.readInt()) {
             case 1:
                 state_ = Bug.STATE.OPEN;
                 break;
@@ -57,7 +64,7 @@ public abstract class Bug extends OverlayItem implements Parcelable{
                 state_ = Bug.STATE.OPEN;
         }
 
-        switch(parcel.readInt()) {
+        switch (parcel.readInt()) {
             case 1:
                 newState_ = Bug.STATE.OPEN;
                 break;
@@ -73,7 +80,7 @@ public abstract class Bug extends OverlayItem implements Parcelable{
     }
 
     /* Get the Bugs Comments */
-    public ArrayList<Comment> getComments(){
+    public ArrayList<Comment> getComments() {
         return comments_;
     }
 
@@ -89,13 +96,13 @@ public abstract class Bug extends OverlayItem implements Parcelable{
 
     /* Set the Bugs State */
     public void setState(STATE state) {
-        if(state == STATE.IGNORED && !isIgnorable())
+        if (state == STATE.IGNORED && !isIgnorable())
             return;
 
-        if(state_ == STATE.CLOSED && !isReopenable())
+        if (state_ == STATE.CLOSED && !isReopenable())
             return;
 
-        if(state == newState_)
+        if (state == newState_)
             return;
 
         newState_ = state;
@@ -109,8 +116,8 @@ public abstract class Bug extends OverlayItem implements Parcelable{
         return state_ != newState_;
     }
 
-    /* Send the Bug to the Server
-     * Returns true if commit was successfully
+    /*
+     * Send the Bug to the Server Returns true if commit was successfully
      */
     public abstract boolean commit();
 
@@ -136,25 +143,25 @@ public abstract class Bug extends OverlayItem implements Parcelable{
         mGeoPoint.writeToParcel(parcel, 0);
 
         parcel.writeInt(comments_.size());
-        for(Comment comment : comments_)
+        for (Comment comment : comments_)
             comment.writeToParcel(parcel, flags);
 
         parcel.writeString(newComment_);
 
-        if(state_ == Bug.STATE.OPEN)
+        if (state_ == Bug.STATE.OPEN)
             parcel.writeInt(1);
-        else if(state_ == Bug.STATE.CLOSED)
+        else if (state_ == Bug.STATE.CLOSED)
             parcel.writeInt(2);
-        else if(state_ == Bug.STATE.IGNORED)
+        else if (state_ == Bug.STATE.IGNORED)
             parcel.writeInt(3);
         else
             parcel.writeInt(0);
 
-        if(newState_ == Bug.STATE.OPEN)
+        if (newState_ == Bug.STATE.OPEN)
             parcel.writeInt(1);
-        else if(newState_ == Bug.STATE.CLOSED)
+        else if (newState_ == Bug.STATE.CLOSED)
             parcel.writeInt(2);
-        else if(newState_ == Bug.STATE.IGNORED)
+        else if (newState_ == Bug.STATE.IGNORED)
             parcel.writeInt(3);
         else
             parcel.writeInt(0);
@@ -174,20 +181,20 @@ public abstract class Bug extends OverlayItem implements Parcelable{
 
     /* These can be overriden to allow the Display of custom Text for a Bug State */
     public String getStringFromState(Context context, STATE state) {
-        if(state == STATE.OPEN)
+        if (state == STATE.OPEN)
             return context.getString(R.string.open);
-        else if(state == STATE.CLOSED)
+        else if (state == STATE.CLOSED)
             return context.getString(R.string.closed);
-        else if(state == STATE.IGNORED)
+        else if (state == STATE.IGNORED)
             return context.getString(R.string.ignored);
         else
             return "";
     }
 
     public Bug.STATE getStateFromString(Context context, String state) {
-        if(state.equals(context.getString(R.string.closed)))
+        if (state.equals(context.getString(R.string.closed)))
             return STATE.CLOSED;
-        else if(state.equals(context.getString(R.string.ignored)))
+        else if (state.equals(context.getString(R.string.ignored)))
             return STATE.IGNORED;
         else
             return STATE.OPEN;
@@ -198,5 +205,6 @@ public abstract class Bug extends OverlayItem implements Parcelable{
         return false;
     }
 
-    public void retrieveExtraData() {}
+    public void retrieveExtraData() {
+    }
 }

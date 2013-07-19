@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.activities;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -26,9 +27,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class BugEditorActivity extends SherlockActivity{
+public class BugEditorActivity extends SherlockActivity {
 
     public static int DIALOGEDITCOMMENT = 1;
+
     /* The Bug currently being edited */
     private Bug bug_;
 
@@ -37,9 +39,13 @@ public class BugEditorActivity extends SherlockActivity{
 
     /* All Views on this Activity */
     private TextView txtvTitle_, txtvText_, txtvNewCommentHeader_, txtvNewComment_;
+
     private Spinner spnState_;
+
     private ListView lvComments_;
+
     private ArrayAdapter<String> stateAdapter_;
+
     private ArrayAdapter<Comment> commentAdapter_;
 
     /* The Main Menu */
@@ -54,7 +60,8 @@ public class BugEditorActivity extends SherlockActivity{
 
         setContentView(R.layout.activity_bug_editor);
 
-        /* For devices that use ActionBarSherlock the Indeterminate State has to be set to false
+        /*
+         * For devices that use ActionBarSherlock the Indeterminate State has to be set to false
          * otherwise it will be displayed at start
          */
         setSupportProgressBarIndeterminate(false);
@@ -77,10 +84,12 @@ public class BugEditorActivity extends SherlockActivity{
         txtvText_.setText(Html.fromHtml(txtvText_.getText().toString()));
         txtvText_.setMovementMethod(ScrollingMovementMethod.getInstance());
 
-        /* Start to Download Extra Data if neccessary through an AsyncTask and
-         * set the ListViews adapter Either after download or if no Download needed instantaneous */
-        if(bug_.willRetrieveExtraData()) {
-            new AsyncTask<Bug, Void, Bug>(){
+        /*
+         * Start to Download Extra Data if neccessary through an AsyncTask and set the ListViews
+         * adapter Either after download or if no Download needed instantaneous
+         */
+        if (bug_.willRetrieveExtraData()) {
+            new AsyncTask<Bug, Void, Bug>() {
 
                 SherlockActivity activity_;
 
@@ -105,13 +114,15 @@ public class BugEditorActivity extends SherlockActivity{
                 protected void onPostExecute(Bug bug) {
                     activity_.setSupportProgressBarIndeterminate(false);
                     activity_.setSupportProgressBarIndeterminateVisibility(false);
-                    commentAdapter_ = new CommentAdapter(activity_, R.layout.comment_icon, bug_.getComments());
+                    commentAdapter_ =
+                            new CommentAdapter(activity_, R.layout.comment_icon, bug_.getComments());
                     lvComments_ = (ListView) findViewById(R.id.listView1);
                     lvComments_.setAdapter(commentAdapter_);
                     commentAdapter_.notifyDataSetChanged();
-                }}.init(this).execute(bug_);
+                }
+            }.init(this).execute(bug_);
         }
-        else{
+        else {
             commentAdapter_ = new CommentAdapter(this, R.layout.comment_icon, bug_.getComments());
             lvComments_ = (ListView) findViewById(R.id.listView1);
             lvComments_.setAdapter(commentAdapter_);
@@ -131,16 +142,17 @@ public class BugEditorActivity extends SherlockActivity{
         stateAdapter_ = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         spnState_.setAdapter(stateAdapter_);
 
-        if(bug_.getState() == Bug.STATE.OPEN || bug_.isReopenable())
+        if (bug_.getState() == Bug.STATE.OPEN || bug_.isReopenable())
             stateAdapter_.add(bug_.getStringFromState(this, Bug.STATE.OPEN));
 
-        if(bug_.getState() == Bug.STATE.CLOSED || bug_.isClosable())
+        if (bug_.getState() == Bug.STATE.CLOSED || bug_.isClosable())
             stateAdapter_.add(bug_.getStringFromState(this, Bug.STATE.CLOSED));
 
-        if(bug_.getState() == Bug.STATE.IGNORED || bug_.isIgnorable())
+        if (bug_.getState() == Bug.STATE.IGNORED || bug_.isIgnorable())
             stateAdapter_.add(bug_.getStringFromState(this, Bug.STATE.IGNORED));
 
-        spnState_.setSelection(stateAdapter_.getPosition(bug_.getStringFromState(this, bug_.getState())));
+        spnState_.setSelection(stateAdapter_.getPosition(bug_.getStringFromState(this,
+                bug_.getState())));
 
         stateAdapter_.notifyDataSetChanged();
     }
@@ -157,21 +169,22 @@ public class BugEditorActivity extends SherlockActivity{
     @SuppressWarnings("deprecation")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_cancel){
+        if (item.getItemId() == R.id.action_cancel) {
             setResult(SherlockActivity.RESULT_CANCELED);
             finish();
 
             return true;
         }
-        else if(item.getItemId() == R.id.action_save){
+        else if (item.getItemId() == R.id.action_save) {
             /* Save the new Bug state */
-            bug_.setState(bug_.getStateFromString(this, stateAdapter_.getItem(spnState_.getSelectedItemPosition())));
+            bug_.setState(bug_.getStateFromString(this,
+                    stateAdapter_.getItem(spnState_.getSelectedItemPosition())));
 
             new BugUpdateTask(this).execute(bug_);
 
             return true;
         }
-        else if(item.getItemId() == R.id.action_edit){
+        else if (item.getItemId() == R.id.action_edit) {
             showDialog(DIALOGEDITCOMMENT);
             return true;
         }
@@ -183,7 +196,7 @@ public class BugEditorActivity extends SherlockActivity{
     @SuppressWarnings("deprecation")
     public Dialog onCreateDialog(int id) {
 
-        if(id == DIALOGEDITCOMMENT){
+        if (id == DIALOGEDITCOMMENT) {
             /* Create a simple Dialog where the Comment can be changed */
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -193,19 +206,23 @@ public class BugEditorActivity extends SherlockActivity{
             builder.setView(commentEditText);
 
             builder.setMessage(getString(R.string.comment));
-            builder.setPositiveButton(getString(R.string.ok), new android.content.DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    bug_.setNewComment(commentEditText.getText().toString());
-                    txtvNewComment_.setText(commentEditText.getText().toString());
-                    dialog.dismiss();
-                    update();
-                }});
-            builder.setNegativeButton(getString(R.string.cancel), new android.content.DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }});
+            builder.setPositiveButton(getString(R.string.ok),
+                    new android.content.DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            bug_.setNewComment(commentEditText.getText().toString());
+                            txtvNewComment_.setText(commentEditText.getText().toString());
+                            dialog.dismiss();
+                            update();
+                        }
+                    });
+            builder.setNegativeButton(getString(R.string.cancel),
+                    new android.content.DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
 
             return builder.create();
         }
@@ -215,24 +232,25 @@ public class BugEditorActivity extends SherlockActivity{
 
     private void update() {
         /* View or hide the New Comment TextViews */
-        if(bug_.hasNewComment()) {
+        if (bug_.hasNewComment()) {
             txtvNewComment_.setVisibility(View.VISIBLE);
             txtvNewCommentHeader_.setVisibility(View.VISIBLE);
         }
-        else{
+        else {
             txtvNewComment_.setVisibility(View.GONE);
             txtvNewCommentHeader_.setVisibility(View.GONE);
         }
 
         /* Deactivate the Edit Entry if needed */
-        if(!bug_.isCommentable())
+        if (!bug_.isCommentable())
             menu_.findItem(R.id.action_edit).setVisible(false);
         else
             menu_.findItem(R.id.action_edit).setVisible(true);
 
-        //TODO: Turn only on when the bug is actually commitable i.e. has a comment and changed State */
+        // TODO: Turn only on when the bug is actually commitable i.e. has a comment and changed
+        // State */
         /* View or hide the Save Icon */
-        if(bug_.hasNewComment() || bug_.hasNewState())
+        if (bug_.hasNewComment() || bug_.hasNewState())
             menu_.findItem(R.id.action_save).setVisible(true);
         else
             menu_.findItem(R.id.action_save).setVisible(false);

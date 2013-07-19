@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.bugs;
 
 import org.apache.http.HttpResponse;
@@ -21,12 +22,26 @@ import java.util.ArrayList;
 
 public class KeeprightBug extends Bug {
     private int type_;
+
     private int schema_;
+
     private int id_;
+
     private long way_;
 
-    public KeeprightBug(double lat, double lon, String title, String text, int type, ArrayList<Comment> comments, long way, int shema, int id, Bug.STATE state) {
-        super(title + " <a href=http://www.openstreetmap.org/browse/way/" + way + ">" + way + "</a>", text, comments, new GeoPoint(lat, lon), state);
+    public KeeprightBug(
+            double lat,
+            double lon,
+            String title,
+            String text,
+            int type,
+            ArrayList<Comment> comments,
+            long way,
+            int shema,
+            int id,
+            Bug.STATE state) {
+        super(title + " <a href=http://www.openstreetmap.org/browse/way/" + way + ">" + way
+                + "</a>", text, comments, new GeoPoint(lat, lon), state);
         setType(type);
         setSchema(shema);
         setId(id);
@@ -52,19 +67,23 @@ public class KeeprightBug extends Bug {
         arguments.add(new BasicNameValuePair("schema", String.valueOf(getSchema())));
         arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
 
-        HttpGet request = new HttpGet("http://keepright.at/comment.php?" + URLEncodedUtils.format(arguments, "utf-8"));
+        HttpGet request =
+                new HttpGet("http://keepright.at/comment.php?"
+                        + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute commit */
             HttpResponse response = client.execute(request);
 
-            /* Check result for Success*/
-            if(response.getStatusLine().getStatusCode() != 200)
+            /* Check result for Success */
+            if (response.getStatusLine().getStatusCode() != 200)
                 return false;
-        } catch (ClientProtocolException e) {
+        }
+        catch (ClientProtocolException e) {
             e.printStackTrace();
             return false;
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -78,7 +97,7 @@ public class KeeprightBug extends Bug {
         return true;
     }
 
-    /* Keepright Bugs can be ignored aka. false positive*/
+    /* Keepright Bugs can be ignored aka. false positive */
     @Override
     public boolean isIgnorable() {
         return true;
@@ -92,11 +111,11 @@ public class KeeprightBug extends Bug {
 
     /* Return a readable usable String for the Server from the current State */
     public String getUrlState() {
-        if(getState() == Bug.STATE.OPEN)
+        if (getState() == Bug.STATE.OPEN)
             return "";
-        else if(getState() == Bug.STATE.CLOSED)
+        else if (getState() == Bug.STATE.CLOSED)
             return "ignore_t";
-        else if(getState() == Bug.STATE.IGNORED)
+        else if (getState() == Bug.STATE.IGNORED)
             return "ignore";
         else
             return "";
@@ -134,12 +153,12 @@ public class KeeprightBug extends Bug {
 
     @Override
     public Drawable getMarker(int bitset) {
-        if(getState() == Bug.STATE.CLOSED)
+        if (getState() == Bug.STATE.CLOSED)
             return Drawings.KeeprightDrawableClosed;
-        else if(getState() == Bug.STATE.IGNORED)
+        else if (getState() == Bug.STATE.IGNORED)
             return Drawings.KeeprightDrawableIgnored;
-        else{
-            switch(type_) {
+        else {
+            switch (type_) {
                 case 20:
                     return Drawings.KeeprightDrawable20;
                 case 30:

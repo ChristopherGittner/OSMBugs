@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.statics;
 
 import android.content.Context;
@@ -31,7 +32,7 @@ public class Settings {
     }
 
     public static boolean isLanguageGerman() {
-        if(Locale.getDefault().getISO3Language().equals("deu"))
+        if (Locale.getDefault().getISO3Language().equals("deu"))
             return true;
 
         return false;
@@ -48,8 +49,12 @@ public class Settings {
     }
 
     public static void setLastKnownLocation(Location location) {
-        prefs_.edit().putString("pref_last_location_lat", String.valueOf(location.getLatitude())).commit();
-        prefs_.edit().putString("pref_last_location_lon", String.valueOf(location.getLongitude())).commit();
+        prefs_.edit()
+                .putString("pref_last_location_lat", String.valueOf(location.getLatitude()))
+                .commit();
+        prefs_.edit()
+                .putString("pref_last_location_lon", String.valueOf(location.getLongitude()))
+                .commit();
     }
 
     public static class Keepright {
@@ -119,14 +124,8 @@ public class Settings {
         }
 
         public static boolean is190Enabled() {
-            return is191Enabled() |
-                    is192Enabled() |
-                    is193Enabled() |
-                    is194Enabled() |
-                    is195Enabled() |
-                    is196Enabled() |
-                    is197Enabled() |
-                    is198Enabled();
+            return is191Enabled() | is192Enabled() | is193Enabled() | is194Enabled()
+                    | is195Enabled() | is196Enabled() | is197Enabled() | is198Enabled();
         }
 
         public static boolean is191Enabled() {
@@ -162,14 +161,8 @@ public class Settings {
         }
 
         public static boolean is200Enabled() {
-            return is201Enabled() |
-                    is202Enabled() |
-                    is203Enabled() |
-                    is204Enabled() |
-                    is205Enabled() |
-                    is206Enabled() |
-                    is207Enabled() |
-                    is208Enabled();
+            return is201Enabled() | is202Enabled() | is203Enabled() | is204Enabled()
+                    | is205Enabled() | is206Enabled() | is207Enabled() | is208Enabled();
         }
 
         public static boolean is201Enabled() {
@@ -229,11 +222,8 @@ public class Settings {
         }
 
         public static boolean is280Enabled() {
-            return is281Enabled() |
-                    is282Enabled() |
-                    is283Enabled() |
-                    is284Enabled() |
-                    is285Enabled();
+            return is281Enabled() | is282Enabled() | is283Enabled() | is284Enabled()
+                    | is285Enabled();
         }
 
         public static boolean is281Enabled() {
@@ -257,10 +247,7 @@ public class Settings {
         }
 
         public static boolean is290Enabled() {
-            return is291Enabled() |
-                    is292Enabled() |
-                    is293Enabled() |
-                    is294Enabled();
+            return is291Enabled() | is292Enabled() | is293Enabled() | is294Enabled();
         }
 
         public static boolean is291Enabled() {
@@ -284,9 +271,7 @@ public class Settings {
         }
 
         public static boolean is310Enabled() {
-            return is311Enabled() |
-                    is312Enabled() |
-                    is313Enabled();
+            return is311Enabled() | is312Enabled() | is313Enabled();
         }
 
         public static boolean is311Enabled() {
@@ -326,8 +311,7 @@ public class Settings {
         }
 
         public static boolean is400Enabled() {
-            return is401Enabled() |
-                    is402Enabled();
+            return is401Enabled() | is402Enabled();
         }
 
         public static boolean is401Enabled() {
@@ -339,9 +323,7 @@ public class Settings {
         }
 
         public static boolean is410Enabled() {
-            return is411Enabled() |
-                    is412Enabled() |
-                    is413Enabled();
+            return is411Enabled() | is412Enabled() | is413Enabled();
         }
 
         public static boolean is411Enabled() {
@@ -443,7 +425,7 @@ public class Settings {
         }
     }
 
-    public static class OpenstreetmapNotes{
+    public static class OpenstreetmapNotes {
 
         public static boolean isEnabled() {
             return prefs_.getBoolean("pref_openstreetmap_notes_enabled", true);

@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.bugs;
 
 import org.apache.http.HttpResponse;
@@ -25,7 +26,13 @@ public class OpenstreetmapNote extends Bug {
 
     private long id_;
 
-    public OpenstreetmapNote(double lat, double lon, String text, ArrayList<Comment> comments, long id, STATE state) {
+    public OpenstreetmapNote(
+            double lat,
+            double lon,
+            String text,
+            ArrayList<Comment> comments,
+            long id,
+            STATE state) {
         super("Openstreetmap Note", text, comments, new GeoPoint(lat, lon), state);
 
         setId(id);
@@ -49,17 +56,16 @@ public class OpenstreetmapNote extends Bug {
     @Override
     public boolean commit() {
 
-        if(!hasNewComment())
+        if (!hasNewComment())
             return false;
 
-        if(hasNewComment() && !hasNewState()){
+        if (hasNewComment() && !hasNewState()) {
             /* Only Upload a new Comment */
             DefaultHttpClient client = new DefaultHttpClient();
 
             /* Add the Authentication Details if we have a username in the Preferences */
-            if(!Settings.OpenstreetmapNotes.getUsername().equals("")) {
-                client.getCredentialsProvider().setCredentials(
-                        AuthScope.ANY,
+            if (!Settings.OpenstreetmapNotes.getUsername().equals("")) {
+                client.getCredentialsProvider().setCredentials(AuthScope.ANY,
                         new UsernamePasswordCredentials(Settings.OpenstreetmapNotes.getUsername(),
                                 Settings.OpenstreetmapNotes.getPassword()));
             }
@@ -69,33 +75,38 @@ public class OpenstreetmapNote extends Bug {
             arguments.add(new BasicNameValuePair("text", getNewComment()));
 
             HttpPost request;
-            if(!Settings.DEBUG)
-                request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id_ + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
+            if (!Settings.DEBUG)
+                request =
+                        new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id_
+                                + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
-                request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id_ + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
+                request =
+                        new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id_
+                                + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
                 HttpResponse response = client.execute(request);
 
-                /* Check result for Success*/
-                if(response.getStatusLine().getStatusCode() != 200)
+                /* Check result for Success */
+                if (response.getStatusLine().getStatusCode() != 200)
                     return false;
-            } catch (ClientProtocolException e) {
+            }
+            catch (ClientProtocolException e) {
                 e.printStackTrace();
                 return false;
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
         }
-        else if(hasNewComment() && hasNewState() && getNewState() == STATE.CLOSED){
+        else if (hasNewComment() && hasNewState() && getNewState() == STATE.CLOSED) {
             DefaultHttpClient client = new DefaultHttpClient();
 
             /* Add the Authentication Details if we have a username in the Preferences */
-            if(!Settings.OpenstreetmapNotes.getUsername().equals("")) {
-                client.getCredentialsProvider().setCredentials(
-                        AuthScope.ANY,
+            if (!Settings.OpenstreetmapNotes.getUsername().equals("")) {
+                client.getCredentialsProvider().setCredentials(AuthScope.ANY,
                         new UsernamePasswordCredentials(Settings.OpenstreetmapNotes.getUsername(),
                                 Settings.OpenstreetmapNotes.getPassword()));
             }
@@ -105,22 +116,28 @@ public class OpenstreetmapNote extends Bug {
             arguments.add(new BasicNameValuePair("text", getNewComment()));
 
             HttpPost request;
-            if(!Settings.DEBUG)
-                request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id_ + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
+            if (!Settings.DEBUG)
+                request =
+                        new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id_
+                                + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
-                request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id_ + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
+                request =
+                        new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id_
+                                + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
                 HttpResponse response = client.execute(request);
 
-                /* Check result for Success*/
-                if(response.getStatusLine().getStatusCode() != 200)
+                /* Check result for Success */
+                if (response.getStatusLine().getStatusCode() != 200)
                     return false;
-            } catch (ClientProtocolException e) {
+            }
+            catch (ClientProtocolException e) {
                 e.printStackTrace();
                 return false;
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
@@ -134,7 +151,7 @@ public class OpenstreetmapNote extends Bug {
     /* Openstreetmap Notes can be commented */
     @Override
     public boolean isCommentable() {
-        if(getState() == STATE.OPEN)
+        if (getState() == STATE.OPEN)
             return true;
 
         return false;
@@ -154,7 +171,7 @@ public class OpenstreetmapNote extends Bug {
 
     @Override
     public Drawable getMarker(int bitset) {
-        if(getState() == Bug.STATE.CLOSED)
+        if (getState() == Bug.STATE.CLOSED)
             return Drawings.OpenstreetmapNotesClosed;
 
         return Drawings.OpenstreetmapNotesOpen;
@@ -165,37 +182,44 @@ public class OpenstreetmapNote extends Bug {
         DefaultHttpClient client = new DefaultHttpClient();
 
         /* Add the Authentication Details if we have a username in the Preferences */
-        if(!Settings.OpenstreetmapNotes.getUsername().equals("")) {
-            client.getCredentialsProvider().setCredentials(
-                    AuthScope.ANY,
+        if (!Settings.OpenstreetmapNotes.getUsername().equals("")) {
+            client.getCredentialsProvider().setCredentials(AuthScope.ANY,
                     new UsernamePasswordCredentials(Settings.OpenstreetmapNotes.getUsername(),
                             Settings.OpenstreetmapNotes.getPassword()));
         }
 
         /* Add all Arguments */
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-        arguments.add(new BasicNameValuePair("lat", String.valueOf(position.getLatitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("lon", String.valueOf(position.getLongitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("lat",
+                String.valueOf(position.getLatitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("lon",
+                String.valueOf(position.getLongitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("text", text));
 
         HttpPost request;
 
-        if(!Settings.DEBUG)
-            request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
+        if (!Settings.DEBUG)
+            request =
+                    new HttpPost("http://api.openstreetmap.org/api/0.6/notes?"
+                            + URLEncodedUtils.format(arguments, "utf-8"));
         else
-            request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
+            request =
+                    new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes?"
+                            + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute commit */
             HttpResponse response = client.execute(request);
 
-            /* Check result for Success*/
-            if(response.getStatusLine().getStatusCode() != 200)
+            /* Check result for Success */
+            if (response.getStatusLine().getStatusCode() != 200)
                 return false;
-        } catch (ClientProtocolException e) {
+        }
+        catch (ClientProtocolException e) {
             e.printStackTrace();
             return false;
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -216,16 +240,17 @@ public class OpenstreetmapNote extends Bug {
         return 0;
     }
 
-    public static final Creator<OpenstreetmapNote> CREATOR = new Parcelable.Creator<OpenstreetmapNote>() {
+    public static final Creator<OpenstreetmapNote> CREATOR =
+            new Parcelable.Creator<OpenstreetmapNote>() {
 
-        @Override
-        public OpenstreetmapNote createFromParcel(Parcel source) {
-            return new OpenstreetmapNote(source);
-        }
+                @Override
+                public OpenstreetmapNote createFromParcel(Parcel source) {
+                    return new OpenstreetmapNote(source);
+                }
 
-        @Override
-        public OpenstreetmapNote[] newArray(int size) {
-            return new OpenstreetmapNote[size];
-        }
-    };
+                @Override
+                public OpenstreetmapNote[] newArray(int size) {
+                    return new OpenstreetmapNote[size];
+                }
+            };
 }

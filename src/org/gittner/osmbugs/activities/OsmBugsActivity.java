@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.activities;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -38,26 +39,39 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class OsmBugsActivity extends SherlockActivity implements LocationListener, OnItemGestureListener<Bug> {
+public class OsmBugsActivity extends SherlockActivity
+        implements
+        LocationListener,
+        OnItemGestureListener<Bug> {
 
     public static final int REQUESTCODEBUGEDITORACTIVITY = 1;
+
     public static final int REQUESTCODESETTINGSACTIVITY = 2;
 
     private static final int DIALOGFEEDBACK = 1;
+
     private static final int DIALOGNEWBUG = 2;
+
     private static final int DIALOGNEWBUGTEXT = 3;
+
     private static final int DIALOGABOUT = 4;
 
     public static final int INVALIDPLATFORM = -1;
+
     public static final int KEEPRIGHT = 1;
+
     public static final int OPENSTREETBUGS = 2;
+
     public static final int OPENSTREETMAPNOTES = 3;
+
     public static final int MAPDUST = 4;
 
     private LocationManager locMgr_ = null;
+
     private MapView mapView_ = null;
 
     private ArrayList<Bug> bugs_;
+
     private ItemizedIconOverlay<Bug> bugOverlay_;
 
     /* The Location Marker Overlay */
@@ -83,7 +97,8 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
 
         setContentView(R.layout.activity_osm_bugs);
 
-        /* For devices that use ActionBarSherlock the Indeterminate State has to be set to false
+        /*
+         * For devices that use ActionBarSherlock the Indeterminate State has to be set to false
          * otherwise it will be displayed at start
          */
         setSupportProgressBarIndeterminate(false);
@@ -98,20 +113,27 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
 
         /* Create Bug Overlay */
         bugs_ = new ArrayList<Bug>();
-        bugOverlay_ = new ItemizedIconOverlay<Bug>(bugs_, Drawings.KeeprightDrawable30, this, new DefaultResourceProxyImpl(this));
+        bugOverlay_ =
+                new ItemizedIconOverlay<Bug>(bugs_,
+                        Drawings.KeeprightDrawable30,
+                        this,
+                        new DefaultResourceProxyImpl(this));
 
         /* Create Position Marker Overlay */
-        locationOverlay_ = new ItemizedIconOverlay<OverlayItem>(new ArrayList<OverlayItem>(), new OnItemGestureListener<OverlayItem>() {
-            @Override
-            public boolean onItemLongPress(int arg0, OverlayItem arg1) {
-                return false;
-            }
+        locationOverlay_ =
+                new ItemizedIconOverlay<OverlayItem>(new ArrayList<OverlayItem>(),
+                        new OnItemGestureListener<OverlayItem>() {
+                            @Override
+                            public boolean onItemLongPress(int arg0, OverlayItem arg1) {
+                                return false;
+                            }
 
-            @Override
-            public boolean onItemSingleTapUp(int arg0, OverlayItem arg1) {
-                return false;
-            }
-        }, new DefaultResourceProxyImpl(this));
+                            @Override
+                            public boolean onItemSingleTapUp(int arg0, OverlayItem arg1) {
+                                return false;
+                            }
+                        },
+                        new DefaultResourceProxyImpl(this));
 
         /* Setup Main MapView */
         mapView_ = (MapView) findViewById(R.id.mapview);
@@ -121,9 +143,9 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
         mapView_.getOverlays().add(bugOverlay_);
         mapView_.getOverlays().add(locationOverlay_);
 
-        /* This adds an empty Overlay to retrieve the Touch Events
-         * This is some sort of Hack, since the OnTouchListener will fire only once
-         * if the Built in Zoom Controls are enabled
+        /*
+         * This adds an empty Overlay to retrieve the Touch Events This is some sort of Hack, since
+         * the OnTouchListener will fire only once if the Built in Zoom Controls are enabled
          */
         mapView_.getOverlays().add(new Overlay(this) {
             @Override
@@ -136,7 +158,9 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
             public boolean onTouchEvent(MotionEvent event, MapView mapView) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN && addNewBugOnNextClick_) {
                     addNewBugOnNextClick_ = false;
-                    newBugLocation_ = (GeoPoint) mapView_.getProjection().fromPixels(event.getX(), event.getY());
+                    newBugLocation_ =
+                            (GeoPoint) mapView_.getProjection().fromPixels(event.getX(),
+                                    event.getY());
                     showDialog(DIALOGNEWBUG);
                     return false;
                 }
@@ -179,7 +203,9 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
         return true;
     }
 
-    @SuppressWarnings({ "deprecation" })
+    @SuppressWarnings({
+        "deprecation"
+    })
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
@@ -187,37 +213,54 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
             Intent i = new Intent(this, SettingsActivity.class);
             startActivityForResult(i, REQUESTCODESETTINGSACTIVITY);
             return true;
-        } else if (item.getItemId() == R.id.center_gps) {
+        }
+        else if (item.getItemId() == R.id.center_gps) {
             /* Toggle GPS Map Following */
             item.setChecked(!item.isChecked());
             Settings.setCenterGps(!Settings.getCenterGps());
 
-            /* On android API <= 10 The Menu won't display a checkbox so we show a Toast with the Status */
+            /*
+             * On android API <= 10 The Menu won't display a checkbox so we show a Toast with the
+             * Status
+             */
             if (android.os.Build.VERSION.SDK_INT <= 10) {
                 if (Settings.getCenterGps())
-                    Toast.makeText(this, getString(R.string.center_on_gps_enabled), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,
+                            getString(R.string.center_on_gps_enabled),
+                            Toast.LENGTH_LONG).show();
                 else
-                    Toast.makeText(this, getString(R.string.center_on_gps_disabled), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,
+                            getString(R.string.center_on_gps_disabled),
+                            Toast.LENGTH_LONG).show();
             }
 
             return true;
-        } else if (item.getItemId() == R.id.refresh) {
+        }
+        else if (item.getItemId() == R.id.refresh) {
             /* Update the current Bugs */
             refreshBugs();
-        } else if (item.getItemId() == R.id.center_gps_action) {
+        }
+        else if (item.getItemId() == R.id.center_gps_action) {
             centerMap(lastLocation_, true);
-        } else if (item.getItemId() == R.id.feedback) {
+        }
+        else if (item.getItemId() == R.id.feedback) {
             this.showDialog(DIALOGFEEDBACK);
-        } else if (item.getItemId() == R.id.about) {
+        }
+        else if (item.getItemId() == R.id.about) {
             this.showDialog(DIALOGABOUT);
-        } else if (item.getItemId() == R.id.add_bug) {
-            if(!addNewBugOnNextClick_) {
+        }
+        else if (item.getItemId() == R.id.add_bug) {
+            if (!addNewBugOnNextClick_) {
                 addNewBugOnNextClick_ = true;
-                Toast.makeText(this, getString(R.string.bug_creation_mode_enabled), Toast.LENGTH_LONG).show();
+                Toast.makeText(this,
+                        getString(R.string.bug_creation_mode_enabled),
+                        Toast.LENGTH_LONG).show();
             }
             else {
                 addNewBugOnNextClick_ = false;
-                Toast.makeText(this, getString(R.string.bug_creation_mode_disabled), Toast.LENGTH_LONG).show();
+                Toast.makeText(this,
+                        getString(R.string.bug_creation_mode_disabled),
+                        Toast.LENGTH_LONG).show();
             }
         }
 
@@ -286,7 +329,8 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
         if (requestCode == REQUESTCODEBUGEDITORACTIVITY) {
             if (resultCode == SherlockActivity.RESULT_OK)
                 refreshBugs();
-        } else
+        }
+        else
             super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -317,7 +361,8 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
             });
 
             return builder.create();
-        } else if (id == DIALOGNEWBUG) {
+        }
+        else if (id == DIALOGNEWBUG) {
             /* Ask the User to select a Bug Platform */
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -329,8 +374,10 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
                 spinnerArray.add(getResources().getStringArray(R.array.new_bug_platforms)[i]);
             }
 
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,
-                    spinnerArray);
+            ArrayAdapter<String> spinnerArrayAdapter =
+                    new ArrayAdapter<String>(this,
+                            android.R.layout.simple_spinner_dropdown_item,
+                            spinnerArray);
             spnPlatform.setAdapter(spinnerArrayAdapter);
 
             builder.setView(spnPlatform);
@@ -362,7 +409,8 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
             });
 
             return builder.create();
-        } else if (id == DIALOGNEWBUGTEXT) {
+        }
+        else if (id == DIALOGNEWBUGTEXT) {
             /* Create a simple Dialog where a Feedback can be entered */
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -387,7 +435,8 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
             });
 
             return builder.create();
-        } else if (id == DIALOGABOUT) {
+        }
+        else if (id == DIALOGABOUT) {
             /* Show the About Information */
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -409,13 +458,12 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
         if (message.length() <= 3000)
             new SendFeedbackTask(this).execute(message);
         else
-            Toast.makeText(this, getString(R.string.feedback_message_too_long), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.feedback_message_too_long), Toast.LENGTH_LONG)
+                    .show();
     }
 
     private void createBug(int platform, String text) {
-        new BugCreateTask(this,
-                new GeoPoint(newBugLocation_.getLatitudeE6() / 1000000.0, newBugLocation_.getLongitudeE6() / 1000000.0),
-                text,
-                platform).execute();
+        new BugCreateTask(this, new GeoPoint(newBugLocation_.getLatitudeE6() / 1000000.0,
+                newBugLocation_.getLongitudeE6() / 1000000.0), text, platform).execute();
     }
 }

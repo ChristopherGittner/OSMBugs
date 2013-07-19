@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.statics;
 
 import org.gittner.osmbugs.R;
@@ -9,119 +10,220 @@ import android.graphics.drawable.Drawable;
 public class Drawings {
 
     public static Drawable LocationMarker;
+
     public static Drawable icMenuCloseClearCancel;
+
     public static Drawable icMenuEdit;
+
     public static Drawable icMenuSave;
+
     public static Drawable icMenuSearch;
 
     public static Drawable KeeprightDrawableIgnored;
+
     public static Drawable KeeprightDrawableClosed;
+
     public static Drawable KeeprightDrawableDefault;
+
     public static Drawable KeeprightDrawable20;
+
     public static Drawable KeeprightDrawable30;
+
     public static Drawable KeeprightDrawable40;
+
     public static Drawable KeeprightDrawable41;
+
     public static Drawable KeeprightDrawable42;
+
     public static Drawable KeeprightDrawable43;
+
     public static Drawable KeeprightDrawable50;
+
     public static Drawable KeeprightDrawable60;
+
     public static Drawable KeeprightDrawable70;
+
     public static Drawable KeeprightDrawable71;
+
     public static Drawable KeeprightDrawable72;
+
     public static Drawable KeeprightDrawable80;
+
     public static Drawable KeeprightDrawable90;
+
     public static Drawable KeeprightDrawable91;
+
     public static Drawable KeeprightDrawable92;
+
     public static Drawable KeeprightDrawable100;
+
     public static Drawable KeeprightDrawable110;
+
     public static Drawable KeeprightDrawable120;
+
     public static Drawable KeeprightDrawable121;
+
     public static Drawable KeeprightDrawable130;
+
     public static Drawable KeeprightDrawable140;
+
     public static Drawable KeeprightDrawable150;
+
     public static Drawable KeeprightDrawable160;
+
     public static Drawable KeeprightDrawable170;
+
     public static Drawable KeeprightDrawable180;
+
     public static Drawable KeeprightDrawable190;
+
     public static Drawable KeeprightDrawable191;
+
     public static Drawable KeeprightDrawable192;
+
     public static Drawable KeeprightDrawable193;
+
     public static Drawable KeeprightDrawable194;
+
     public static Drawable KeeprightDrawable195;
+
     public static Drawable KeeprightDrawable196;
+
     public static Drawable KeeprightDrawable197;
+
     public static Drawable KeeprightDrawable198;
+
     public static Drawable KeeprightDrawable200;
+
     public static Drawable KeeprightDrawable201;
+
     public static Drawable KeeprightDrawable202;
+
     public static Drawable KeeprightDrawable203;
+
     public static Drawable KeeprightDrawable204;
+
     public static Drawable KeeprightDrawable205;
+
     public static Drawable KeeprightDrawable206;
+
     public static Drawable KeeprightDrawable207;
+
     public static Drawable KeeprightDrawable208;
+
     public static Drawable KeeprightDrawable210;
+
     public static Drawable KeeprightDrawable211;
+
     public static Drawable KeeprightDrawable212;
+
     public static Drawable KeeprightDrawable220;
+
     public static Drawable KeeprightDrawable221;
+
     public static Drawable KeeprightDrawable230;
+
     public static Drawable KeeprightDrawable231;
+
     public static Drawable KeeprightDrawable232;
+
     public static Drawable KeeprightDrawable240;
+
     public static Drawable KeeprightDrawable250;
+
     public static Drawable KeeprightDrawable260;
+
     public static Drawable KeeprightDrawable270;
+
     public static Drawable KeeprightDrawable280;
+
     public static Drawable KeeprightDrawable281;
+
     public static Drawable KeeprightDrawable282;
+
     public static Drawable KeeprightDrawable283;
+
     public static Drawable KeeprightDrawable284;
+
     public static Drawable KeeprightDrawable285;
+
     public static Drawable KeeprightDrawable290;
+
     public static Drawable KeeprightDrawable291;
+
     public static Drawable KeeprightDrawable292;
+
     public static Drawable KeeprightDrawable293;
+
     public static Drawable KeeprightDrawable300;
+
     public static Drawable KeeprightDrawable310;
+
     public static Drawable KeeprightDrawable311;
+
     public static Drawable KeeprightDrawable312;
+
     public static Drawable KeeprightDrawable313;
+
     public static Drawable KeeprightDrawable320;
+
     public static Drawable KeeprightDrawable350;
+
     public static Drawable KeeprightDrawable360;
+
     public static Drawable KeeprightDrawable370;
+
     public static Drawable KeeprightDrawable380;
+
     public static Drawable KeeprightDrawable390;
+
     public static Drawable KeeprightDrawable400;
+
     public static Drawable KeeprightDrawable401;
+
     public static Drawable KeeprightDrawable402;
+
     public static Drawable KeeprightDrawable410;
+
     public static Drawable KeeprightDrawable411;
+
     public static Drawable KeeprightDrawable412;
+
     public static Drawable KeeprightDrawable413;
 
     public static Drawable OpenstreetbugsDrawableOpen;
+
     public static Drawable OpenstreetbugsDrawableClosed;
 
     public static Drawable MapdustClosed;
+
     public static Drawable MapdustIgnored;
+
     public static Drawable MapdustWrongTurn;
+
     public static Drawable MapdustBadRouting;
+
     public static Drawable MapdustOnewayRoad;
+
     public static Drawable MapdustBlockedStreet;
+
     public static Drawable MapdustMissingStreet;
+
     public static Drawable MapdustRoundaboutIssue;
+
     public static Drawable MapdustMissingSpeedInfo;
+
     public static Drawable MapdustOther;
 
     public static Drawable OpenstreetmapNotesOpen;
+
     public static Drawable OpenstreetmapNotesClosed;
 
     public static void init(Context context) {
 
         LocationMarker = context.getResources().getDrawable(R.drawable.location);
-        icMenuCloseClearCancel = context.getResources().getDrawable(R.drawable.ic_menu_close_clear_cancel);
+        icMenuCloseClearCancel =
+                context.getResources().getDrawable(R.drawable.ic_menu_close_clear_cancel);
         icMenuEdit = context.getResources().getDrawable(R.drawable.ic_menu_edit);
         icMenuSave = context.getResources().getDrawable(R.drawable.ic_menu_save);
 
@@ -210,8 +312,10 @@ public class Drawings {
         KeeprightDrawable412 = context.getResources().getDrawable(R.drawable.zap412);
         KeeprightDrawable413 = context.getResources().getDrawable(R.drawable.zap413);
 
-        OpenstreetbugsDrawableClosed = context.getResources().getDrawable(R.drawable.openstreetbugs_closed_bug);
-        OpenstreetbugsDrawableOpen = context.getResources().getDrawable(R.drawable.openstreetbugs_open_bug);
+        OpenstreetbugsDrawableClosed =
+                context.getResources().getDrawable(R.drawable.openstreetbugs_closed_bug);
+        OpenstreetbugsDrawableOpen =
+                context.getResources().getDrawable(R.drawable.openstreetbugs_open_bug);
 
         MapdustClosed = context.getResources().getDrawable(R.drawable.bug_green);
         MapdustIgnored = context.getResources().getDrawable(R.drawable.bug_grey);
@@ -224,7 +328,9 @@ public class Drawings {
         MapdustMissingSpeedInfo = context.getResources().getDrawable(R.drawable.missing_speed_info);
         MapdustOther = context.getResources().getDrawable(R.drawable.other);
 
-        OpenstreetmapNotesOpen = context.getResources().getDrawable(R.drawable.openstreetmap_notes_open_bug);
-        OpenstreetmapNotesClosed = context.getResources().getDrawable(R.drawable.openstreetmap_notes_closed_bug);
+        OpenstreetmapNotesOpen =
+                context.getResources().getDrawable(R.drawable.openstreetmap_notes_open_bug);
+        OpenstreetmapNotesClosed =
+                context.getResources().getDrawable(R.drawable.openstreetmap_notes_closed_bug);
     }
 }
