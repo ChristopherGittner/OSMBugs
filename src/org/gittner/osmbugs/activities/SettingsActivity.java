@@ -1,8 +1,6 @@
 
 package org.gittner.osmbugs.activities;
 
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-
 import org.gittner.osmbugs.R;
 
 import android.os.Bundle;
@@ -10,6 +8,8 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
+
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
 public class SettingsActivity extends SherlockPreferenceActivity
         implements
@@ -24,6 +24,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
         findPreference("pref_keepright_reset").setOnPreferenceClickListener(this);
     }
 
+    /* Little Tweak to prevent a Black background in the Settins on some Devices */
     @SuppressWarnings("deprecation")
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
