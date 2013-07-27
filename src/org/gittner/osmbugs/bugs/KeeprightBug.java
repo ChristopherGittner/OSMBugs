@@ -92,11 +92,11 @@ public class KeeprightBug extends Bug {
 
     /* Return a readable usable String for the Server from the current State */
     public String getUrlState() {
-        if(getState() == Bug.STATE.OPEN)
+        if(getNewState() == Bug.STATE.OPEN)
             return "";
-        else if(getState() == Bug.STATE.CLOSED)
+        else if(getNewState() == Bug.STATE.CLOSED)
             return "ignore_t";
-        else if(getState() == Bug.STATE.IGNORED)
+        else if(getNewState() == Bug.STATE.IGNORED)
             return "ignore";
         else
             return "";
