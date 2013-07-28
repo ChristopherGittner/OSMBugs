@@ -58,6 +58,7 @@ public class MapdustBug extends Bug {
             int type,
             long id,
             Bug.STATE state) {
+
         super(title, text, comments, new GeoPoint(lat, lon), state);
 
         setType(type);
@@ -146,12 +147,10 @@ public class MapdustBug extends Bug {
             HttpPost request;
             if (Settings.DEBUG)
                 request =
-                        new HttpPost("http://st.www.mapdust.com/api/commentBug?"
-                                + URLEncodedUtils.format(arguments, "utf-8"));
+                new HttpPost("http://st.www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
                 request =
-                        new HttpPost("http://www.mapdust.com/api/commentBug?"
-                                + URLEncodedUtils.format(arguments, "utf-8"));
+                new HttpPost("http://www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
@@ -193,12 +192,10 @@ public class MapdustBug extends Bug {
             HttpPost request;
             if (Settings.DEBUG)
                 request =
-                        new HttpPost("http://st.www.mapdust.com/api/changeBugStatus?"
-                                + URLEncodedUtils.format(arguments, "utf-8"));
+                new HttpPost("http://st.www.mapdust.com/api/changeBugStatus?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
                 request =
-                        new HttpPost("http://www.mapdust.com/api/changeBugStatus?"
-                                + URLEncodedUtils.format(arguments, "utf-8"));
+                new HttpPost("http://www.mapdust.com/api/changeBugStatus?" + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
@@ -268,22 +265,16 @@ public class MapdustBug extends Bug {
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
         arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
-        arguments.add(new BasicNameValuePair("coordinates",
-                String.valueOf(position.getLongitudeE6() / 1000000.0) + ","
-                        + String.valueOf(position.getLatitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("coordinates",String.valueOf(position.getLongitudeE6() / 1000000.0) + "," + String.valueOf(position.getLatitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("description", text));
         arguments.add(new BasicNameValuePair("type", "other"));
         arguments.add(new BasicNameValuePair("nickname", Settings.Mapdust.getUsername()));
 
         HttpPost request;
         if (Settings.DEBUG)
-            request =
-                    new HttpPost("http://st.www.mapdust.com/api/addBug?"
-                            + URLEncodedUtils.format(arguments, "utf-8"));
+            request = new HttpPost("http://st.www.mapdust.com/api/addBug?" + URLEncodedUtils.format(arguments, "utf-8"));
         else
-            request =
-                    new HttpPost("http://www.mapdust.com/api/addBug?"
-                            + URLEncodedUtils.format(arguments, "utf-8"));
+            request = new HttpPost("http://www.mapdust.com/api/addBug?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute commit */
@@ -368,13 +359,9 @@ public class MapdustBug extends Bug {
         HttpGet request;
 
         if (Settings.DEBUG)
-            request =
-                    new HttpGet("http://st.www.mapdust.com/api/getBug?"
-                            + URLEncodedUtils.format(arguments, "utf-8"));
+            request = new HttpGet("http://st.www.mapdust.com/api/getBug?" + URLEncodedUtils.format(arguments, "utf-8"));
         else
-            request =
-                    new HttpGet("http://www.mapdust.com/api/getBug?"
-                            + URLEncodedUtils.format(arguments, "utf-8"));
+            request = new HttpGet("http://www.mapdust.com/api/getBug?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute Query */
@@ -386,8 +373,7 @@ public class MapdustBug extends Bug {
 
             /* If Request was Successful, parse the Stream */
             getComments().clear();
-            getComments().addAll(MapdustParser.parseSingleBugForComments(response.getEntity()
-                    .getContent()));
+            getComments().addAll(MapdustParser.parseSingleBugForComments(response.getEntity().getContent()));
 
         }
         catch (ClientProtocolException e) {

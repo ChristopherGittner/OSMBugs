@@ -1,6 +1,9 @@
 
 package org.gittner.osmbugs.bugs;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -18,9 +21,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 public class OpenstreetbugsBug extends Bug {
 
     private long id_;
@@ -32,6 +32,7 @@ public class OpenstreetbugsBug extends Bug {
             ArrayList<Comment> comments,
             long id,
             STATE state) {
+
         super("Openstreetbug", text, comments, new GeoPoint(lat, lon), state);
 
         setComments(comments);
@@ -62,12 +63,9 @@ public class OpenstreetbugsBug extends Bug {
 
             ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
             arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
-            arguments.add(new BasicNameValuePair("text", getNewComment() + " ["
-                    + Settings.Openstreetbugs.getUsername() + " ]"));
+            arguments.add(new BasicNameValuePair("text", getNewComment() + " [" + Settings.Openstreetbugs.getUsername() + " ]"));
 
-            HttpGet request =
-                    new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/editPOIexec?"
-                            + URLEncodedUtils.format(arguments, "utf-8"));
+            HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/editPOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
@@ -94,9 +92,7 @@ public class OpenstreetbugsBug extends Bug {
             ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
             arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
 
-            HttpGet request =
-                    new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/closePOIexec?"
-                            + URLEncodedUtils.format(arguments, "utf-8"));
+            HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/closePOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
@@ -150,16 +146,11 @@ public class OpenstreetbugsBug extends Bug {
         HttpClient client = new DefaultHttpClient();
 
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-        arguments.add(new BasicNameValuePair("lat",
-                String.valueOf(position.getLatitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("lon",
-                String.valueOf(position.getLongitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("text", text + " ["
-                + Settings.Openstreetbugs.getUsername() + " ]"));
+        arguments.add(new BasicNameValuePair("lat", String.valueOf(position.getLatitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("lon", String.valueOf(position.getLongitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("text", text + " [" + Settings.Openstreetbugs.getUsername() + " ]"));
 
-        HttpGet request =
-                new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/addPOIexec?"
-                        + URLEncodedUtils.format(arguments, "utf-8"));
+        HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/addPOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute commit */
@@ -194,17 +185,16 @@ public class OpenstreetbugsBug extends Bug {
         return 0;
     }
 
-    public static final Creator<OpenstreetbugsBug> CREATOR =
-            new Parcelable.Creator<OpenstreetbugsBug>() {
+    public static final Creator<OpenstreetbugsBug> CREATOR = new Parcelable.Creator<OpenstreetbugsBug>() {
 
-                @Override
-                public OpenstreetbugsBug createFromParcel(Parcel source) {
-                    return new OpenstreetbugsBug(source);
-                }
+        @Override
+        public OpenstreetbugsBug createFromParcel(Parcel source) {
+            return new OpenstreetbugsBug(source);
+        }
 
-                @Override
-                public OpenstreetbugsBug[] newArray(int size) {
-                    return new OpenstreetbugsBug[size];
-                }
-            };
+        @Override
+        public OpenstreetbugsBug[] newArray(int size) {
+            return new OpenstreetbugsBug[size];
+        }
+    };
 }

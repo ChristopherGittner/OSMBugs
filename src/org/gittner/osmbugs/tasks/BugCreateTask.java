@@ -1,8 +1,6 @@
 
 package org.gittner.osmbugs.tasks;
 
-import com.actionbarsherlock.app.SherlockActivity;
-
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.activities.OsmBugsActivity;
 import org.gittner.osmbugs.bugs.MapdustBug;
@@ -12,6 +10,8 @@ import org.osmdroid.util.GeoPoint;
 
 import android.os.AsyncTask;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockActivity;
 
 public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -55,14 +55,10 @@ public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
         activity_.setSupportProgressBarIndeterminateVisibility(false);
 
         if (result) {
-            Toast.makeText(activity_.getApplicationContext(),
-                    activity_.getApplicationContext().getString(R.string.saved_bug),
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(activity_.getApplicationContext(), activity_.getApplicationContext().getString(R.string.saved_bug), Toast.LENGTH_LONG).show();
         }
         else {
-            Toast.makeText(activity_.getApplicationContext(),
-                    activity_.getApplicationContext().getString(R.string.failed_to_save_bug),
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(activity_.getApplicationContext(), activity_.getApplicationContext().getString(R.string.failed_to_save_bug), Toast.LENGTH_LONG).show();
         }
     }
 }

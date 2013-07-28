@@ -37,9 +37,7 @@ public class SendFeedbackTask extends AsyncTask<String, Void, Boolean> {
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
         arguments.add(new BasicNameValuePair("message", message[0]));
 
-        HttpGet request =
-                new HttpGet("http://gittner.org/osmbugs-scripts/feedback.php?"
-                        + URLEncodedUtils.format(arguments, "utf-8"));
+        HttpGet request = new HttpGet("http://gittner.org/osmbugs-scripts/feedback.php?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Send Feedback */
@@ -62,12 +60,8 @@ public class SendFeedbackTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         if (result)
-            Toast.makeText(context_,
-                    context_.getString(R.string.feedback_transmitted),
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(context_, context_.getString(R.string.feedback_transmitted), Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(context_,
-                    context_.getString(R.string.failed_to_transmit_feedback),
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(context_, context_.getString(R.string.failed_to_transmit_feedback), Toast.LENGTH_LONG).show();
     }
 }

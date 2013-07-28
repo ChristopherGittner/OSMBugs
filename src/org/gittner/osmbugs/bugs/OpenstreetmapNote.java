@@ -1,6 +1,9 @@
 
 package org.gittner.osmbugs.bugs;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
@@ -19,9 +22,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 public class OpenstreetmapNote extends Bug {
 
     private long id_;
@@ -33,6 +33,7 @@ public class OpenstreetmapNote extends Bug {
             ArrayList<Comment> comments,
             long id,
             STATE state) {
+
         super("Openstreetmap Note", text, comments, new GeoPoint(lat, lon), state);
 
         setId(id);
@@ -76,13 +77,9 @@ public class OpenstreetmapNote extends Bug {
 
             HttpPost request;
             if (!Settings.DEBUG)
-                request =
-                        new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id_
-                                + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
+                request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id_ + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
-                request =
-                        new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id_
-                                + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
+                request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id_ + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
@@ -117,13 +114,9 @@ public class OpenstreetmapNote extends Bug {
 
             HttpPost request;
             if (!Settings.DEBUG)
-                request =
-                        new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id_
-                                + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
+                request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id_ + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
-                request =
-                        new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id_
-                                + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
+                request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id_ + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
@@ -199,13 +192,9 @@ public class OpenstreetmapNote extends Bug {
         HttpPost request;
 
         if (!Settings.DEBUG)
-            request =
-                    new HttpPost("http://api.openstreetmap.org/api/0.6/notes?"
-                            + URLEncodedUtils.format(arguments, "utf-8"));
+            request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
         else
-            request =
-                    new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes?"
-                            + URLEncodedUtils.format(arguments, "utf-8"));
+            request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute commit */
@@ -240,17 +229,16 @@ public class OpenstreetmapNote extends Bug {
         return 0;
     }
 
-    public static final Creator<OpenstreetmapNote> CREATOR =
-            new Parcelable.Creator<OpenstreetmapNote>() {
+    public static final Creator<OpenstreetmapNote> CREATOR = new Parcelable.Creator<OpenstreetmapNote>() {
 
-                @Override
-                public OpenstreetmapNote createFromParcel(Parcel source) {
-                    return new OpenstreetmapNote(source);
-                }
+        @Override
+        public OpenstreetmapNote createFromParcel(Parcel source) {
+            return new OpenstreetmapNote(source);
+        }
 
-                @Override
-                public OpenstreetmapNote[] newArray(int size) {
-                    return new OpenstreetmapNote[size];
-                }
-            };
+        @Override
+        public OpenstreetmapNote[] newArray(int size) {
+            return new OpenstreetmapNote[size];
+        }
+    };
 }

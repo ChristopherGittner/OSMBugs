@@ -1,10 +1,7 @@
 
 package org.gittner.osmbugs.activities;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
+import java.util.ArrayList;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
@@ -37,12 +34,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 
 public class OsmBugsActivity extends SherlockActivity
-        implements
-        LocationListener,
-        OnItemGestureListener<Bug> {
+implements
+LocationListener,
+OnItemGestureListener<Bug> {
 
     public static final int REQUESTCODEBUGEDITORACTIVITY = 1;
 
@@ -113,15 +113,12 @@ public class OsmBugsActivity extends SherlockActivity
 
         /* Create Bug Overlay */
         bugs_ = new ArrayList<Bug>();
-        bugOverlay_ =
-                new ItemizedIconOverlay<Bug>(bugs_,
-                        Drawings.KeeprightDrawable30,
-                        this,
-                        new DefaultResourceProxyImpl(this));
+        bugOverlay_ = new ItemizedIconOverlay<Bug>(bugs_, Drawings.KeeprightDrawable30, this, new DefaultResourceProxyImpl(this));
 
         /* Create Position Marker Overlay */
         locationOverlay_ =
-                new ItemizedIconOverlay<OverlayItem>(new ArrayList<OverlayItem>(),
+                new ItemizedIconOverlay<OverlayItem>(
+                        new ArrayList<OverlayItem>(),
                         new OnItemGestureListener<OverlayItem>() {
                             @Override
                             public boolean onItemLongPress(int arg0, OverlayItem arg1) {
@@ -225,13 +222,9 @@ public class OsmBugsActivity extends SherlockActivity
              */
             if (android.os.Build.VERSION.SDK_INT <= 10) {
                 if (Settings.getCenterGps())
-                    Toast.makeText(this,
-                            getString(R.string.center_on_gps_enabled),
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.center_on_gps_enabled), Toast.LENGTH_LONG).show();
                 else
-                    Toast.makeText(this,
-                            getString(R.string.center_on_gps_disabled),
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.center_on_gps_disabled), Toast.LENGTH_LONG).show();
             }
 
             return true;
@@ -252,15 +245,11 @@ public class OsmBugsActivity extends SherlockActivity
         else if (item.getItemId() == R.id.add_bug) {
             if (!addNewBugOnNextClick_) {
                 addNewBugOnNextClick_ = true;
-                Toast.makeText(this,
-                        getString(R.string.bug_creation_mode_enabled),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.bug_creation_mode_enabled), Toast.LENGTH_LONG).show();
             }
             else {
                 addNewBugOnNextClick_ = false;
-                Toast.makeText(this,
-                        getString(R.string.bug_creation_mode_disabled),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.bug_creation_mode_disabled), Toast.LENGTH_LONG).show();
             }
         }
 
@@ -374,10 +363,7 @@ public class OsmBugsActivity extends SherlockActivity
                 spinnerArray.add(getResources().getStringArray(R.array.new_bug_platforms)[i]);
             }
 
-            ArrayAdapter<String> spinnerArrayAdapter =
-                    new ArrayAdapter<String>(this,
-                            android.R.layout.simple_spinner_dropdown_item,
-                            spinnerArray);
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
             spnPlatform.setAdapter(spinnerArrayAdapter);
 
             builder.setView(spnPlatform);
@@ -459,11 +445,16 @@ public class OsmBugsActivity extends SherlockActivity
             new SendFeedbackTask(this).execute(message);
         else
             Toast.makeText(this, getString(R.string.feedback_message_too_long), Toast.LENGTH_LONG)
-                    .show();
+            .show();
     }
 
     private void createBug(int platform, String text) {
-        new BugCreateTask(this, new GeoPoint(newBugLocation_.getLatitudeE6() / 1000000.0,
-                newBugLocation_.getLongitudeE6() / 1000000.0), text, platform).execute();
+        new BugCreateTask(
+                this,
+                new GeoPoint(
+                        newBugLocation_.getLatitudeE6() / 1000000.0,
+                        newBugLocation_.getLongitudeE6() / 1000000.0),
+                        text,
+                        platform).execute();
     }
 }

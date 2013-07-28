@@ -12,8 +12,8 @@ import android.preference.PreferenceScreen;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
 public class SettingsActivity extends SherlockPreferenceActivity
-        implements
-        OnPreferenceClickListener {
+implements
+OnPreferenceClickListener {
 
     @SuppressWarnings("deprecation")
     @Override
@@ -34,13 +34,13 @@ public class SettingsActivity extends SherlockPreferenceActivity
             if (preference instanceof PreferenceScreen) {
                 if (((PreferenceScreen) preference).getDialog() != null) {
                     ((PreferenceScreen) preference).getDialog()
-                            .getWindow()
+                    .getWindow()
+                    .getDecorView()
+                    .setBackgroundDrawable(this.getWindow()
                             .getDecorView()
-                            .setBackgroundDrawable(this.getWindow()
-                                    .getDecorView()
-                                    .getBackground()
-                                    .getConstantState()
-                                    .newDrawable());
+                            .getBackground()
+                            .getConstantState()
+                            .newDrawable());
                 }
             }
         }

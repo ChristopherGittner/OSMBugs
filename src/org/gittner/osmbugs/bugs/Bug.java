@@ -1,6 +1,8 @@
 
 package org.gittner.osmbugs.bugs;
 
+import java.util.ArrayList;
+
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.common.Comment;
 import org.osmdroid.util.GeoPoint;
@@ -9,8 +11,6 @@ import org.osmdroid.views.overlay.OverlayItem;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.ArrayList;
 
 public abstract class Bug extends OverlayItem implements Parcelable {
 
@@ -26,12 +26,7 @@ public abstract class Bug extends OverlayItem implements Parcelable {
 
     private String newComment_ = "";
 
-    protected Bug(
-            String title,
-            String text,
-            ArrayList<Comment> comments,
-            GeoPoint point,
-            STATE state) {
+    protected Bug( String title, String text, ArrayList<Comment> comments, GeoPoint point, STATE state) {
         super(title, text, point);
 
         state_ = state;

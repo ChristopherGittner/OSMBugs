@@ -1,13 +1,13 @@
 
 package org.gittner.osmbugs.statics;
 
+import java.util.Locale;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.preference.PreferenceManager;
-
-import java.util.Locale;
 
 public class Settings {
 
@@ -49,12 +49,8 @@ public class Settings {
     }
 
     public static void setLastKnownLocation(Location location) {
-        prefs_.edit()
-                .putString("pref_last_location_lat", String.valueOf(location.getLatitude()))
-                .commit();
-        prefs_.edit()
-                .putString("pref_last_location_lon", String.valueOf(location.getLongitude()))
-                .commit();
+        prefs_.edit().putString("pref_last_location_lat", String.valueOf(location.getLatitude())).commit();
+        prefs_.edit().putString("pref_last_location_lon", String.valueOf(location.getLongitude())).commit();
     }
 
     public static class Keepright {

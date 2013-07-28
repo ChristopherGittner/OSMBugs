@@ -1,7 +1,8 @@
 
 package org.gittner.osmbugs.tasks;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -23,8 +24,7 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 
 import android.os.AsyncTask;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import com.actionbarsherlock.app.SherlockActivity;
 
 /* Background Worker Class to get a list of Bugs and ad them to the supplied ItemizedIconOverlay */
 public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
@@ -39,11 +39,7 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
     int progress_;
 
-    public DownloadBugsTask(
-            SherlockActivity activity,
-            ItemizedIconOverlay<Bug> bugOverlay,
-            MapView mapView,
-            BoundingBoxE6 bBox) {
+    public DownloadBugsTask(SherlockActivity activity, ItemizedIconOverlay<Bug> bugOverlay, MapView mapView, BoundingBoxE6 bBox) {
         activity_ = activity;
         bugOverlay_ = bugOverlay;
         mapView_ = mapView;
@@ -137,16 +133,12 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
             arguments.add(new BasicNameValuePair("show_tmpign", "0"));
 
         arguments.add(new BasicNameValuePair("ch", getKeeprightSelectionString()));
-        arguments.add(new BasicNameValuePair("lat", String.valueOf(bBox_.getCenter()
-                .getLatitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("lon", String.valueOf(bBox_.getCenter()
-                .getLongitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("lat", String.valueOf(bBox_.getCenter().getLatitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("lon", String.valueOf(bBox_.getCenter().getLongitudeE6() / 1000000.0)));
         if (Settings.isLanguageGerman())
             arguments.add(new BasicNameValuePair("lang", "de"));
 
-        HttpGet request =
-                new HttpGet("http://keepright.ipax.at/points.php?"
-                        + URLEncodedUtils.format(arguments, "utf-8"));
+        HttpGet request = new HttpGet("http://keepright.ipax.at/points.php?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute Query */
@@ -335,9 +327,7 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
         arguments.add(new BasicNameValuePair("limit",
                 String.valueOf(Settings.Openstreetbugs.getBugLimit())));
 
-        HttpGet request =
-                new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/getGPX?"
-                        + URLEncodedUtils.format(arguments, "utf-8"));
+        HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/getGPX?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute Query */
@@ -369,11 +359,10 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
         arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
-        arguments.add(new BasicNameValuePair("bbox",
-                String.valueOf(bBox_.getLonEastE6() / 1000000.0) + ","
-                        + String.valueOf(bBox_.getLatSouthE6() / 1000000.0) + ","
-                        + String.valueOf(bBox_.getLonWestE6() / 1000000.0) + ","
-                        + String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("bbox", String.valueOf(bBox_.getLonEastE6() / 1000000.0) + ","
+                + String.valueOf(bBox_.getLatSouthE6() / 1000000.0) + ","
+                + String.valueOf(bBox_.getLonWestE6() / 1000000.0) + ","
+                + String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("comments", "1"));
         arguments.add(new BasicNameValuePair("ft", getMapdustSelectionString()));
         arguments.add(new BasicNameValuePair("fs", getMapdustEnabledTypesString()));
@@ -381,13 +370,9 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
         HttpGet request;
 
         if (Settings.DEBUG)
-            request =
-                    new HttpGet("http://st.www.mapdust.com/api/getBugs?"
-                            + URLEncodedUtils.format(arguments, "utf-8"));
+            request = new HttpGet("http://st.www.mapdust.com/api/getBugs?" + URLEncodedUtils.format(arguments, "utf-8"));
         else
-            request =
-                    new HttpGet("http://www.mapdust.com/api/getBugs?"
-                            + URLEncodedUtils.format(arguments, "utf-8"));
+            request = new HttpGet("http://www.mapdust.com/api/getBugs?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute Query */
@@ -460,11 +445,10 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
-        arguments.add(new BasicNameValuePair("bbox",
-                String.valueOf(bBox_.getLonWestE6() / 1000000.0) + ","
-                        + String.valueOf(bBox_.getLatSouthE6() / 1000000.0) + ","
-                        + String.valueOf(bBox_.getLonEastE6() / 1000000.0) + ","
-                        + String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("bbox", String.valueOf(bBox_.getLonWestE6() / 1000000.0) + ","
+                + String.valueOf(bBox_.getLatSouthE6() / 1000000.0) + ","
+                + String.valueOf(bBox_.getLonEastE6() / 1000000.0) + ","
+                + String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
 
         if (Settings.OpenstreetmapNotes.isShowOnlyOpenEnabled())
             arguments.add(new BasicNameValuePair("closed", "0"));
@@ -475,13 +459,9 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
         HttpGet request;
 
         if (!Settings.DEBUG)
-            request =
-                    new HttpGet("http://api.openstreetmap.org/api/0.6/notes?"
-                            + URLEncodedUtils.format(arguments, "utf-8"));
+            request = new HttpGet("http://api.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
         else
-            request =
-                    new HttpGet("http://api06.dev.openstreetmap.org/api/0.6/notes?"
-                            + URLEncodedUtils.format(arguments, "utf-8"));
+            request = new HttpGet("http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute Query */

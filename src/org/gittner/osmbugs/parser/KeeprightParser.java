@@ -1,16 +1,16 @@
 
 package org.gittner.osmbugs.parser;
 
-import org.gittner.osmbugs.bugs.Bug;
-import org.gittner.osmbugs.bugs.KeeprightBug;
-import org.gittner.osmbugs.common.Comment;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
+import org.gittner.osmbugs.bugs.Bug;
+import org.gittner.osmbugs.bugs.KeeprightBug;
+import org.gittner.osmbugs.common.Comment;
 
 /* Parser for Keepright bug lists retrieved from points.php */
 public class KeeprightParser {
@@ -100,16 +100,7 @@ public class KeeprightParser {
                         state = Bug.STATE.OPEN;
 
                     /* Finally add our Bug to the results */
-                    bugs.add(new KeeprightBug(lat,
-                            lon,
-                            title,
-                            text,
-                            type,
-                            comments,
-                            way,
-                            schema,
-                            id,
-                            state));
+                    bugs.add(new KeeprightBug(lat, lon, title, text, type, comments, way, schema, id, state));
                 }
                 catch (NumberFormatException e) {
                     e.printStackTrace();

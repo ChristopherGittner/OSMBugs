@@ -1,11 +1,6 @@
 
 package org.gittner.osmbugs.activities;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
-
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.common.Comment;
@@ -26,6 +21,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 
 public class BugEditorActivity extends SherlockActivity {
 
@@ -114,8 +114,7 @@ public class BugEditorActivity extends SherlockActivity {
                 protected void onPostExecute(Bug bug) {
                     activity_.setSupportProgressBarIndeterminate(false);
                     activity_.setSupportProgressBarIndeterminateVisibility(false);
-                    commentAdapter_ =
-                            new CommentAdapter(activity_, R.layout.comment_icon, bug_.getComments());
+                    commentAdapter_ = new CommentAdapter(activity_, R.layout.comment_icon, bug_.getComments());
                     lvComments_ = (ListView) findViewById(R.id.listView1);
                     lvComments_.setAdapter(commentAdapter_);
                     commentAdapter_.notifyDataSetChanged();
@@ -208,21 +207,21 @@ public class BugEditorActivity extends SherlockActivity {
             builder.setMessage(getString(R.string.comment));
             builder.setPositiveButton(getString(R.string.ok),
                     new android.content.DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            bug_.setNewComment(commentEditText.getText().toString());
-                            txtvNewComment_.setText(commentEditText.getText().toString());
-                            dialog.dismiss();
-                            update();
-                        }
-                    });
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    bug_.setNewComment(commentEditText.getText().toString());
+                    txtvNewComment_.setText(commentEditText.getText().toString());
+                    dialog.dismiss();
+                    update();
+                }
+            });
             builder.setNegativeButton(getString(R.string.cancel),
                     new android.content.DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
 
             return builder.create();
         }

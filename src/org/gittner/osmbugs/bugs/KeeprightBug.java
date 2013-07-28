@@ -40,8 +40,13 @@ public class KeeprightBug extends Bug {
             int shema,
             int id,
             Bug.STATE state) {
-        super(title + " <a href=http://www.openstreetmap.org/browse/way/" + way + ">" + way
-                + "</a>", text, comments, new GeoPoint(lat, lon), state);
+
+        super(title + " <a href=http://www.openstreetmap.org/browse/way/" + way + ">" + way + "</a>",
+                text,
+                comments,
+                new GeoPoint(lat, lon),
+                state);
+
         setType(type);
         setSchema(shema);
         setId(id);
@@ -67,9 +72,7 @@ public class KeeprightBug extends Bug {
         arguments.add(new BasicNameValuePair("schema", String.valueOf(getSchema())));
         arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
 
-        HttpGet request =
-                new HttpGet("http://keepright.at/comment.php?"
-                        + URLEncodedUtils.format(arguments, "utf-8"));
+        HttpGet request = new HttpGet("http://keepright.at/comment.php?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute commit */
