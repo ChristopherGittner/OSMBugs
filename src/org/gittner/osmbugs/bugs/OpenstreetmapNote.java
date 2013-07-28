@@ -1,8 +1,9 @@
 
 package org.gittner.osmbugs.bugs;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -18,9 +19,8 @@ import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.GeoPoint;
 
-import android.graphics.drawable.Drawable;
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class OpenstreetmapNote extends Bug {
 
@@ -88,17 +88,14 @@ public class OpenstreetmapNote extends Bug {
                 /* Check result for Success */
                 if (response.getStatusLine().getStatusCode() != 200)
                     return false;
-            }
-            catch (ClientProtocolException e) {
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+                return false;
+            } catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
-            catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        else if (hasNewComment() && hasNewState() && getNewState() == STATE.CLOSED) {
+        } else if (hasNewComment() && hasNewState() && getNewState() == STATE.CLOSED) {
             DefaultHttpClient client = new DefaultHttpClient();
 
             /* Add the Authentication Details if we have a username in the Preferences */
@@ -125,17 +122,14 @@ public class OpenstreetmapNote extends Bug {
                 /* Check result for Success */
                 if (response.getStatusLine().getStatusCode() != 200)
                     return false;
-            }
-            catch (ClientProtocolException e) {
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+                return false;
+            } catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
-            catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        else
+        } else
             return false;
 
         return true;
@@ -203,12 +197,10 @@ public class OpenstreetmapNote extends Bug {
             /* Check result for Success */
             if (response.getStatusLine().getStatusCode() != 200)
                 return false;
-        }
-        catch (ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
             return false;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }

@@ -26,77 +26,82 @@
     <string name="non_closed_areas">Offene Ränder</string>
     <string name="dead_ended_oneways">Einbahn Sackgassen</string>
     <string name="almost_junction">Beinahe-Verbindungen</string>
-	<string name="missing_tags">Fehlende Tags</string>
+    <string name="missing_tags">Fehlende Tags</string>
     <string name="motorways_without_ref">Autobahnen ohne ref</string>
-	<string name="places_of_worship_without_religion">Anbetungshäuser ohne Religion</string>
+    <string name="places_of_worship_without_religion">Anbetungshäuser ohne Religion</string>
     <string name="point_of_interest_without_name">Interessanter Ort (POI) ohne Namen</string>
-	<string name="ways_without_nodes">Linien ohne Punkte</string>
+    <string name="ways_without_nodes">Linien ohne Punkte</string>
     <string name="floating_islands">Schwimmende Inseln</string>
-	<string name="railway_crossing_without_tag">Eisenbahnkreuzung ohne Tag</string>
-    <string name="wrongly_used_railway_crossing_tag">Falsch verwendetes Eisenbahnkreuzungs-Tag</string>
-	<string name="fixme_tagged_items">Korrekturhinweis (FIXME)</string>
+    <string name="railway_crossing_without_tag">Eisenbahnkreuzung ohne Tag</string>
+    <string name="wrongly_used_railway_crossing_tag">Falsch verwendetes Eisenbahnkreuzungs-Tag
+    </string>
+    <string name="fixme_tagged_items">Korrekturhinweis (FIXME)</string>
     <string name="relations_without_type">Relationen ohne Typ</string>
-	<string name="intersection_without_junction">Nicht verbundende Schnittpunkte</string>
+    <string name="intersection_without_junction">Nicht verbundende Schnittpunkte</string>
     <string name="overlapping_ways">Überlagerte Linien</string>
-	<string name="loopings">Schleifen</string>
+    <string name="loopings">Schleifen</string>
     <string name="misspelled_tags">Tippfehler</string>
-	<string name="layer_conflicts">Unterschiedliche Layer</string>
+    <string name="layer_conflicts">Unterschiedliche Layer</string>
     <string name="motorways_connected_directly">Direkte Autobahn-Verbindungen</string>
-	<string name="boundaries">Grenzen</string>
+    <string name="boundaries">Grenzen</string>
     <string name="restrictions">Abbiegeverbote</string>
-	<string name="roundabout">Kreisverkehre</string>
-	<string name="link_connections">Zubringer Verbindungen</string>
-	<string name="bridge_tags">Brücken Tags</string>
-	<string name="doubled_places">Doppelte Ortsangabe</string>
-	<string name="non_physical_use_of_sport_tag">Sport Tag ohne Ort</string>
-	<string name="geometry_glitches">Spitze Ecken</string>
-	<string name="website">Website</string>
-	<string name="multiple_nodes_on_the_same_spot">Mehrere Punkte an einem Fleck</string>
-	<string name="deprecated_tags">Unbeliebte Tags</string>
-	<string name="missing_maxspeed">Keine Geschwindigkeitsangabe</string>
-	<string name="language_unknown">Welche Sprache?</string>
-	<string name="missing_tracktype">Fehlender Tracktype</string>
-	<string name="show_temporary_ignored">Vorübergehend ignorierte Fehler zeigen</string>
-	<string name="show_ignored">Ignorierte Fehler zeigen</string>
-	<string name="openstreetbugs">Openstreetbugs</string>
-	<string name="show_only_open_bugs">Zeige nur offene Fehler</string>
-	<string name="bug_limit">Fehler Limit</string>
-	<string name="enter_new_limit">Enter new Limit</string>
-	<string name="provider">Povider</string>
-	<string name="enter_username">Benutzernamen eingeben</string>
-	<string name="username">Benutzername</string>
-	<string name="platform">Platform</string>
-	<string-array name="new_bug_platforms">
-		<item >Openstreetmap Notes</item>
-		<item >Openstreetbugs</item>
-        <item >Mapdust</item>
-	</string-array>
-	<string name="new_bugs_text">Beschreibung des neuen Fehlers</string>
-	<string name="mapdust">Mapdust</string>
-	<string name="wrong_turn">Falsches Abbiegen</string>
-	<string name="bad_routing">Schlechte Routenführung</string>
-	<string name="oneway_road">Einbahnstraße</string>
-	<string name="blocked_street">Geblockte Straße</string>
-	<string name="missing_street">Fehlende Straße</string>
-	<string name="roundabout_issue">Kreisverkehr-Problem</string>
-	<string name="missing_speed_info">Fehlende Geschwindigkeitsbegrenzung</string>
-	<string name="other">Andere</string>
-	<string name="show_open_bugs">Zeige Offene Fehler</string>
-	<string name="show_fixed_bugs">Zeige Behobene Fehler</string>
-	<string name="show_invalid_bugs">Zeige Ungültige Fehler</string>
-	<string name="bug_symbol">Fehler Symbol</string>
-	<string name="specific">Spezifisch</string>
-	<string name="general">Allgemein</string>
-	<string name="about">Über</string>
-	<string name="dialog_about_text">OSMBugs V0.1 - Beta\nDiese App nutzt Daten von:\n\nDem Openstreetmap Projekt:\nhttp://www.openstreetmap.org\n\nKeepright:\nhttp://www.keepright.at\n\nOpenstreetbugs:\nhttp://openstreetbugs.schokokeks.org\n\nMapdust:\nhttp://www.mapdust.com\n\nAsher (Bug Icon):\nhttp://kyo-tux.deviantart.com</string>
-	<string name="feedback_message_too_long">Feedback Nachricht zu lang (3000 Zeichen)</string>
-	<string name="openstreetmap_notes">Openstreetmap Notes</string>
-	<string name="edit">Edit</string>
-	<string name="comments">Kommentare</string>
-	<string name="open">Offen</string>
-	<string name="closed">Geschlossen</string>
-	<string name="ignored">ignoriert</string>
-	<string name="password">Passwort</string>
+    <string name="roundabout">Kreisverkehre</string>
+    <string name="link_connections">Zubringer Verbindungen</string>
+    <string name="bridge_tags">Brücken Tags</string>
+    <string name="doubled_places">Doppelte Ortsangabe</string>
+    <string name="non_physical_use_of_sport_tag">Sport Tag ohne Ort</string>
+    <string name="geometry_glitches">Spitze Ecken</string>
+    <string name="website">Website</string>
+    <string name="multiple_nodes_on_the_same_spot">Mehrere Punkte an einem Fleck</string>
+    <string name="deprecated_tags">Unbeliebte Tags</string>
+    <string name="missing_maxspeed">Keine Geschwindigkeitsangabe</string>
+    <string name="language_unknown">Welche Sprache?</string>
+    <string name="missing_tracktype">Fehlender Tracktype</string>
+    <string name="show_temporary_ignored">Vorübergehend ignorierte Fehler zeigen</string>
+    <string name="show_ignored">Ignorierte Fehler zeigen</string>
+    <string name="openstreetbugs">Openstreetbugs</string>
+    <string name="show_only_open_bugs">Zeige nur offene Fehler</string>
+    <string name="bug_limit">Fehler Limit</string>
+    <string name="enter_new_limit">Enter new Limit</string>
+    <string name="provider">Povider</string>
+    <string name="enter_username">Benutzernamen eingeben</string>
+    <string name="username">Benutzername</string>
+    <string name="platform">Platform</string>
+    <string-array name="new_bug_platforms">
+        <item>Openstreetmap Notes</item>
+        <item>Openstreetbugs</item>
+        <item>Mapdust</item>
+    </string-array>
+    <string name="new_bugs_text">Beschreibung des neuen Fehlers</string>
+    <string name="mapdust">Mapdust</string>
+    <string name="wrong_turn">Falsches Abbiegen</string>
+    <string name="bad_routing">Schlechte Routenführung</string>
+    <string name="oneway_road">Einbahnstraße</string>
+    <string name="blocked_street">Geblockte Straße</string>
+    <string name="missing_street">Fehlende Straße</string>
+    <string name="roundabout_issue">Kreisverkehr-Problem</string>
+    <string name="missing_speed_info">Fehlende Geschwindigkeitsbegrenzung</string>
+    <string name="other">Andere</string>
+    <string name="show_open_bugs">Zeige Offene Fehler</string>
+    <string name="show_fixed_bugs">Zeige Behobene Fehler</string>
+    <string name="show_invalid_bugs">Zeige Ungültige Fehler</string>
+    <string name="bug_symbol">Fehler Symbol</string>
+    <string name="specific">Spezifisch</string>
+    <string name="general">Allgemein</string>
+    <string name="about">Über</string>
+    <string name="dialog_about_text">OSMBugs V0.1 - Beta\nDiese App nutzt Daten von:\n\nDem
+        Openstreetmap
+        Projekt:\nhttp://www.openstreetmap.org\n\nKeepright:\nhttp://www.keepright.at\n\nOpenstreetbugs:\nhttp://openstreetbugs.schokokeks.org\n\nMapdust:\nhttp://www.mapdust.com\n\nAsher
+        (Bug Icon):\nhttp://kyo-tux.deviantart.com
+    </string>
+    <string name="feedback_message_too_long">Feedback Nachricht zu lang (3000 Zeichen)</string>
+    <string name="openstreetmap_notes">Openstreetmap Notes</string>
+    <string name="edit">Edit</string>
+    <string name="comments">Kommentare</string>
+    <string name="open">Offen</string>
+    <string name="closed">Geschlossen</string>
+    <string name="ignored">ignoriert</string>
+    <string name="password">Passwort</string>
     <string name="highway_highway">highway-highway</string>
     <string name="highway_waterway">highway-waterway</string>
     <string name="highway_riverbank">highway-riverbank</string>

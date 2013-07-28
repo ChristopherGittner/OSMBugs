@@ -1,8 +1,9 @@
 
 package org.gittner.osmbugs.tasks;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import android.os.AsyncTask;
+
+import com.actionbarsherlock.app.SherlockActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -22,9 +23,8 @@ import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 
-import android.os.AsyncTask;
-
-import com.actionbarsherlock.app.SherlockActivity;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /* Background Worker Class to get a list of Bugs and ad them to the supplied ItemizedIconOverlay */
 public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
@@ -153,11 +153,9 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
             /* If Request was Successful, parse the Stream */
             return KeeprightParser.parse(response.getEntity().getContent());
-        }
-        catch (ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -342,11 +340,9 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
             /* If Request was Successful, parse the Stream */
             return OpenstreetbugsParser.parse(response.getEntity().getContent());
-        }
-        catch (ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -387,11 +383,9 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
             /* If Request was Successful, parse the Stream */
             return MapdustParser.parse(response.getEntity().getContent());
-        }
-        catch (ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -476,11 +470,9 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
             /* If Request was Successful, parse the Stream */
             return OpenstreetmapNotesParser.parse(response.getEntity().getContent());
-        }
-        catch (ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

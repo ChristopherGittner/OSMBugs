@@ -1,8 +1,9 @@
 
 package org.gittner.osmbugs.bugs;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -17,9 +18,8 @@ import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.GeoPoint;
 
-import android.graphics.drawable.Drawable;
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class OpenstreetbugsBug extends Bug {
 
@@ -74,12 +74,10 @@ public class OpenstreetbugsBug extends Bug {
                 /* Check result for Success */
                 if (response.getStatusLine().getStatusCode() != 200)
                     return false;
-            }
-            catch (ClientProtocolException e) {
+            } catch (ClientProtocolException e) {
                 e.printStackTrace();
                 return false;
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
@@ -101,12 +99,10 @@ public class OpenstreetbugsBug extends Bug {
                 /* Check result for Success */
                 if (response.getStatusLine().getStatusCode() != 200)
                     return false;
-            }
-            catch (ClientProtocolException e) {
+            } catch (ClientProtocolException e) {
                 e.printStackTrace();
                 return false;
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
@@ -159,12 +155,10 @@ public class OpenstreetbugsBug extends Bug {
             /* Check result for Success */
             if (response.getStatusLine().getStatusCode() != 200)
                 return false;
-        }
-        catch (ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
             return false;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }

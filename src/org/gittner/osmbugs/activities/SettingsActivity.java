@@ -1,8 +1,6 @@
 
 package org.gittner.osmbugs.activities;
 
-import org.gittner.osmbugs.R;
-
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -11,9 +9,11 @@ import android.preference.PreferenceScreen;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
+import org.gittner.osmbugs.R;
+
 public class SettingsActivity extends SherlockPreferenceActivity
-implements
-OnPreferenceClickListener {
+        implements
+        OnPreferenceClickListener {
 
     @SuppressWarnings("deprecation")
     @Override
@@ -34,13 +34,13 @@ OnPreferenceClickListener {
             if (preference instanceof PreferenceScreen) {
                 if (((PreferenceScreen) preference).getDialog() != null) {
                     ((PreferenceScreen) preference).getDialog()
-                    .getWindow()
-                    .getDecorView()
-                    .setBackgroundDrawable(this.getWindow()
+                            .getWindow()
                             .getDecorView()
-                            .getBackground()
-                            .getConstantState()
-                            .newDrawable());
+                            .setBackgroundDrawable(this.getWindow()
+                                    .getDecorView()
+                                    .getBackground()
+                                    .getConstantState()
+                                    .newDrawable());
                 }
             }
         }

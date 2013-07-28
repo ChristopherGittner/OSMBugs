@@ -1,10 +1,6 @@
 
 package org.gittner.osmbugs.common;
 
-import java.util.ArrayList;
-
-import org.gittner.osmbugs.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import org.gittner.osmbugs.R;
+
+import java.util.ArrayList;
 
 public class CommentAdapter extends ArrayAdapter<Comment> {
 

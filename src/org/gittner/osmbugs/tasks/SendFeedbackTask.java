@@ -1,8 +1,9 @@
 
 package org.gittner.osmbugs.tasks;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -14,9 +15,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.gittner.osmbugs.R;
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.widget.Toast;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class SendFeedbackTask extends AsyncTask<String, Void, Boolean> {
 
@@ -46,11 +46,9 @@ public class SendFeedbackTask extends AsyncTask<String, Void, Boolean> {
             /* Check result for Success */
             if (response.getStatusLine().getStatusCode() != 200)
                 return false;
-        }
-        catch (ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

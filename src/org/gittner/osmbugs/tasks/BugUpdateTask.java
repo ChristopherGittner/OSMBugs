@@ -1,14 +1,14 @@
 
 package org.gittner.osmbugs.tasks;
 
-import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.bugs.Bug;
-
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
+
+import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.bugs.Bug;
 
 public class BugUpdateTask extends AsyncTask<Bug, Void, Boolean> {
 
@@ -42,8 +42,7 @@ public class BugUpdateTask extends AsyncTask<Bug, Void, Boolean> {
             Toast.makeText(activity_.getApplicationContext(), activity_.getApplicationContext().getString(R.string.saved_bug), Toast.LENGTH_LONG).show();
             activity_.setResult(Activity.RESULT_OK);
             activity_.finish();
-        }
-        else {
+        } else {
             Toast.makeText(activity_.getApplicationContext(), activity_.getApplicationContext().getString(R.string.failed_to_save_bug), Toast.LENGTH_LONG).show();
         }
     }

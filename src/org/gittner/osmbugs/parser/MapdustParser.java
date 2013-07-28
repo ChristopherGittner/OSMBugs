@@ -1,18 +1,18 @@
 
 package org.gittner.osmbugs.parser;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.common.Comment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class MapdustParser {
 
@@ -92,12 +92,10 @@ public class MapdustParser {
                 bugs.add(new MapdustBug(lat, lon, "Mapdust Bug", text, comments, typeInt, id, state));
             }
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<Bug>();
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
             return new ArrayList<Bug>();
         }
@@ -131,12 +129,10 @@ public class MapdustParser {
                 comments.add(new Comment(commentsArray.getJSONObject(i).getString("comment")));
             }
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<Comment>();
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
             return new ArrayList<Comment>();
         }

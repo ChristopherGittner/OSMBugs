@@ -1,8 +1,10 @@
 
 package org.gittner.osmbugs.bugs;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -22,10 +24,8 @@ import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.GeoPoint;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class MapdustBug extends Bug {
 
@@ -147,10 +147,10 @@ public class MapdustBug extends Bug {
             HttpPost request;
             if (Settings.DEBUG)
                 request =
-                new HttpPost("http://st.www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
+                        new HttpPost("http://st.www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
                 request =
-                new HttpPost("http://www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
+                        new HttpPost("http://www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
@@ -160,17 +160,14 @@ public class MapdustBug extends Bug {
                 /* Mapdust returns 201 for commentBug as Success */
                 if (response.getStatusLine().getStatusCode() != 201)
                     return false;
-            }
-            catch (ClientProtocolException e) {
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+                return false;
+            } catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
-            catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        else if (hasNewState() && hasNewComment()) {
+        } else if (hasNewState() && hasNewComment()) {
             /* Upload a Status Change along with a comment (Required) */
             DefaultHttpClient client = new DefaultHttpClient();
 
@@ -192,10 +189,10 @@ public class MapdustBug extends Bug {
             HttpPost request;
             if (Settings.DEBUG)
                 request =
-                new HttpPost("http://st.www.mapdust.com/api/changeBugStatus?" + URLEncodedUtils.format(arguments, "utf-8"));
+                        new HttpPost("http://st.www.mapdust.com/api/changeBugStatus?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
                 request =
-                new HttpPost("http://www.mapdust.com/api/changeBugStatus?" + URLEncodedUtils.format(arguments, "utf-8"));
+                        new HttpPost("http://www.mapdust.com/api/changeBugStatus?" + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
@@ -205,17 +202,14 @@ public class MapdustBug extends Bug {
                 /* Mapdust returns 201 for changeBugStatus as Success */
                 if (response.getStatusLine().getStatusCode() != 201)
                     return false;
-            }
-            catch (ClientProtocolException e) {
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+                return false;
+            } catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
-            catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        else
+        } else
             return false;
 
         return true;
@@ -265,7 +259,7 @@ public class MapdustBug extends Bug {
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
         arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
-        arguments.add(new BasicNameValuePair("coordinates",String.valueOf(position.getLongitudeE6() / 1000000.0) + "," + String.valueOf(position.getLatitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("coordinates", String.valueOf(position.getLongitudeE6() / 1000000.0) + "," + String.valueOf(position.getLatitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("description", text));
         arguments.add(new BasicNameValuePair("type", "other"));
         arguments.add(new BasicNameValuePair("nickname", Settings.Mapdust.getUsername()));
@@ -284,12 +278,10 @@ public class MapdustBug extends Bug {
             /* Mapdust returns 201 for addBug as Success */
             if (response.getStatusLine().getStatusCode() != 201)
                 return false;
-        }
-        catch (ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
             return false;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -375,11 +367,9 @@ public class MapdustBug extends Bug {
             getComments().clear();
             getComments().addAll(MapdustParser.parseSingleBugForComments(response.getEntity().getContent()));
 
-        }
-        catch (ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

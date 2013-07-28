@@ -1,10 +1,10 @@
 
 package org.gittner.osmbugs.statics;
 
-import org.gittner.osmbugs.R;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+
+import org.gittner.osmbugs.R;
 
 /* Static class to hold all Drawings */
 public class Drawings {

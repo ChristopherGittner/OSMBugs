@@ -1,23 +1,6 @@
 
 package org.gittner.osmbugs.activities;
 
-import java.util.ArrayList;
-
-import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.bugs.Bug;
-import org.gittner.osmbugs.statics.Drawings;
-import org.gittner.osmbugs.statics.Settings;
-import org.gittner.osmbugs.tasks.BugCreateTask;
-import org.gittner.osmbugs.tasks.DownloadBugsTask;
-import org.gittner.osmbugs.tasks.SendFeedbackTask;
-import org.osmdroid.DefaultResourceProxyImpl;
-import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
-import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.OverlayItem;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -39,10 +22,27 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
+import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.bugs.Bug;
+import org.gittner.osmbugs.statics.Drawings;
+import org.gittner.osmbugs.statics.Settings;
+import org.gittner.osmbugs.tasks.BugCreateTask;
+import org.gittner.osmbugs.tasks.DownloadBugsTask;
+import org.gittner.osmbugs.tasks.SendFeedbackTask;
+import org.osmdroid.DefaultResourceProxyImpl;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
+import org.osmdroid.views.overlay.Overlay;
+import org.osmdroid.views.overlay.OverlayItem;
+
+import java.util.ArrayList;
+
 public class OsmBugsActivity extends SherlockActivity
-implements
-LocationListener,
-OnItemGestureListener<Bug> {
+        implements
+        LocationListener,
+        OnItemGestureListener<Bug> {
 
     public static final int REQUESTCODEBUGEDITORACTIVITY = 1;
 
@@ -201,7 +201,7 @@ OnItemGestureListener<Bug> {
     }
 
     @SuppressWarnings({
-        "deprecation"
+            "deprecation"
     })
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -210,8 +210,7 @@ OnItemGestureListener<Bug> {
             Intent i = new Intent(this, SettingsActivity.class);
             startActivityForResult(i, REQUESTCODESETTINGSACTIVITY);
             return true;
-        }
-        else if (item.getItemId() == R.id.center_gps) {
+        } else if (item.getItemId() == R.id.center_gps) {
             /* Toggle GPS Map Following */
             item.setChecked(!item.isChecked());
             Settings.setCenterGps(!Settings.getCenterGps());
@@ -228,26 +227,20 @@ OnItemGestureListener<Bug> {
             }
 
             return true;
-        }
-        else if (item.getItemId() == R.id.refresh) {
+        } else if (item.getItemId() == R.id.refresh) {
             /* Update the current Bugs */
             refreshBugs();
-        }
-        else if (item.getItemId() == R.id.center_gps_action) {
+        } else if (item.getItemId() == R.id.center_gps_action) {
             centerMap(lastLocation_, true);
-        }
-        else if (item.getItemId() == R.id.feedback) {
+        } else if (item.getItemId() == R.id.feedback) {
             this.showDialog(DIALOGFEEDBACK);
-        }
-        else if (item.getItemId() == R.id.about) {
+        } else if (item.getItemId() == R.id.about) {
             this.showDialog(DIALOGABOUT);
-        }
-        else if (item.getItemId() == R.id.add_bug) {
+        } else if (item.getItemId() == R.id.add_bug) {
             if (!addNewBugOnNextClick_) {
                 addNewBugOnNextClick_ = true;
                 Toast.makeText(this, getString(R.string.bug_creation_mode_enabled), Toast.LENGTH_LONG).show();
-            }
-            else {
+            } else {
                 addNewBugOnNextClick_ = false;
                 Toast.makeText(this, getString(R.string.bug_creation_mode_disabled), Toast.LENGTH_LONG).show();
             }
@@ -318,8 +311,7 @@ OnItemGestureListener<Bug> {
         if (requestCode == REQUESTCODEBUGEDITORACTIVITY) {
             if (resultCode == SherlockActivity.RESULT_OK)
                 refreshBugs();
-        }
-        else
+        } else
             super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -350,8 +342,7 @@ OnItemGestureListener<Bug> {
             });
 
             return builder.create();
-        }
-        else if (id == DIALOGNEWBUG) {
+        } else if (id == DIALOGNEWBUG) {
             /* Ask the User to select a Bug Platform */
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -395,8 +386,7 @@ OnItemGestureListener<Bug> {
             });
 
             return builder.create();
-        }
-        else if (id == DIALOGNEWBUGTEXT) {
+        } else if (id == DIALOGNEWBUGTEXT) {
             /* Create a simple Dialog where a Feedback can be entered */
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -421,8 +411,7 @@ OnItemGestureListener<Bug> {
             });
 
             return builder.create();
-        }
-        else if (id == DIALOGABOUT) {
+        } else if (id == DIALOGABOUT) {
             /* Show the About Information */
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -445,7 +434,7 @@ OnItemGestureListener<Bug> {
             new SendFeedbackTask(this).execute(message);
         else
             Toast.makeText(this, getString(R.string.feedback_message_too_long), Toast.LENGTH_LONG)
-            .show();
+                    .show();
     }
 
     private void createBug(int platform, String text) {
@@ -454,7 +443,7 @@ OnItemGestureListener<Bug> {
                 new GeoPoint(
                         newBugLocation_.getLatitudeE6() / 1000000.0,
                         newBugLocation_.getLongitudeE6() / 1000000.0),
-                        text,
-                        platform).execute();
+                text,
+                platform).execute();
     }
 }

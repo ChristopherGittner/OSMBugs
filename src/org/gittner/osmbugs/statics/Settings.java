@@ -1,13 +1,13 @@
 
 package org.gittner.osmbugs.statics;
 
-import java.util.Locale;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.preference.PreferenceManager;
+
+import java.util.Locale;
 
 public class Settings {
 

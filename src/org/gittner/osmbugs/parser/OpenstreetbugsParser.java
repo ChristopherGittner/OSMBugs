@@ -1,13 +1,6 @@
 
 package org.gittner.osmbugs.parser;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.OpenstreetbugsBug;
 import org.gittner.osmbugs.common.Comment;
@@ -15,6 +8,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 /* Parser for Openstreetbugs bug lists retrieved from getGPX.php */
 public class OpenstreetbugsParser {
@@ -63,14 +63,11 @@ public class OpenstreetbugsParser {
                 bugs.add(new OpenstreetbugsBug(lat, lon, text, comments, id, state));
             }
 
-        }
-        catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException e) {
             e.printStackTrace();
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

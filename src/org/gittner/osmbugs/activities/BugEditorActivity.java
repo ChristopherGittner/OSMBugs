@@ -1,12 +1,6 @@
 
 package org.gittner.osmbugs.activities;
 
-import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.bugs.Bug;
-import org.gittner.osmbugs.common.Comment;
-import org.gittner.osmbugs.common.CommentAdapter;
-import org.gittner.osmbugs.tasks.BugUpdateTask;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -26,6 +20,12 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
+
+import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.bugs.Bug;
+import org.gittner.osmbugs.common.Comment;
+import org.gittner.osmbugs.common.CommentAdapter;
+import org.gittner.osmbugs.tasks.BugUpdateTask;
 
 public class BugEditorActivity extends SherlockActivity {
 
@@ -120,8 +120,7 @@ public class BugEditorActivity extends SherlockActivity {
                     commentAdapter_.notifyDataSetChanged();
                 }
             }.init(this).execute(bug_);
-        }
-        else {
+        } else {
             commentAdapter_ = new CommentAdapter(this, R.layout.comment_icon, bug_.getComments());
             lvComments_ = (ListView) findViewById(R.id.listView1);
             lvComments_.setAdapter(commentAdapter_);
@@ -173,8 +172,7 @@ public class BugEditorActivity extends SherlockActivity {
             finish();
 
             return true;
-        }
-        else if (item.getItemId() == R.id.action_save) {
+        } else if (item.getItemId() == R.id.action_save) {
             /* Save the new Bug state */
             bug_.setState(bug_.getStateFromString(this,
                     stateAdapter_.getItem(spnState_.getSelectedItemPosition())));
@@ -182,8 +180,7 @@ public class BugEditorActivity extends SherlockActivity {
             new BugUpdateTask(this).execute(bug_);
 
             return true;
-        }
-        else if (item.getItemId() == R.id.action_edit) {
+        } else if (item.getItemId() == R.id.action_edit) {
             showDialog(DIALOGEDITCOMMENT);
             return true;
         }
@@ -207,21 +204,21 @@ public class BugEditorActivity extends SherlockActivity {
             builder.setMessage(getString(R.string.comment));
             builder.setPositiveButton(getString(R.string.ok),
                     new android.content.DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    bug_.setNewComment(commentEditText.getText().toString());
-                    txtvNewComment_.setText(commentEditText.getText().toString());
-                    dialog.dismiss();
-                    update();
-                }
-            });
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            bug_.setNewComment(commentEditText.getText().toString());
+                            txtvNewComment_.setText(commentEditText.getText().toString());
+                            dialog.dismiss();
+                            update();
+                        }
+                    });
             builder.setNegativeButton(getString(R.string.cancel),
                     new android.content.DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
 
             return builder.create();
         }
@@ -234,8 +231,7 @@ public class BugEditorActivity extends SherlockActivity {
         if (bug_.hasNewComment()) {
             txtvNewComment_.setVisibility(View.VISIBLE);
             txtvNewCommentHeader_.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             txtvNewComment_.setVisibility(View.GONE);
             txtvNewCommentHeader_.setVisibility(View.GONE);
         }

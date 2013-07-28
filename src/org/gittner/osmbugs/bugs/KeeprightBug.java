@@ -1,8 +1,9 @@
 
 package org.gittner.osmbugs.bugs;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -16,9 +17,8 @@ import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Drawings;
 import org.osmdroid.util.GeoPoint;
 
-import android.graphics.drawable.Drawable;
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class KeeprightBug extends Bug {
     private int type_;
@@ -81,12 +81,10 @@ public class KeeprightBug extends Bug {
             /* Check result for Success */
             if (response.getStatusLine().getStatusCode() != 200)
                 return false;
-        }
-        catch (ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
             return false;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }

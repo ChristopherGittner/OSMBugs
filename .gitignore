@@ -19,3 +19,7 @@ local.properties
 .project
 .classpath
 .settings
+
+# Android Studio files
+.idea
+OSMBugs.iml
