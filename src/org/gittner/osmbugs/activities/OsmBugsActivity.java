@@ -117,7 +117,7 @@ public class OsmBugsActivity extends SherlockActivity implements LocationListene
         mapView_ = (MapView) findViewById(R.id.mapview);
         mapView_.setMultiTouchControls(true);
         mapView_.setBuiltInZoomControls(true);
-        mapView_.getController().setZoom(12);
+        mapView_.getController().setZoom(20);
         mapView_.getOverlays().add(bugOverlay_);
         mapView_.getOverlays().add(locationOverlay_);
 
