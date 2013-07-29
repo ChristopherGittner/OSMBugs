@@ -8,5 +8,4 @@
     <item android:id="@+id/feedback" android:title="@string/feedback"></item>
     <item android:id="@+id/about" android:title="@string/about"></item>
     
-    
 </menu>

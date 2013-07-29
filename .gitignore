@@ -17,3 +17,9 @@ local.properties
 
 # Eclipse project files
 .project
+.classpath
+.settings
+
+# Android Studio files
+.idea
+OSMBugs.iml

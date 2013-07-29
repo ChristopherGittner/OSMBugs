@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.parser;
 
 import org.gittner.osmbugs.bugs.Bug;
@@ -11,11 +12,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-
 /* Parser for Keepright bug lists retrieved from points.php */
 public class KeeprightParser {
 
-    public static ArrayList<Bug> parse(InputStream stream){
+    public static ArrayList<Bug> parse(InputStream stream) {
         ArrayList<Bug> bugs = new ArrayList<Bug>();
 
         try {
@@ -23,16 +23,17 @@ public class KeeprightParser {
 
             String line;
 
-            /* Skip the first line which is just the column names eg. Latitude, Longitude etc...*/
+            /* Skip the first line which is just the column names eg. Latitude, Longitude etc... */
             reader.readLine();
 
-            /* Parse the Stream token by token. Entries are separated by tab.
-             * Since it is possible that Entries are empty eg. "" the token itself
-             * must be detokenized which leads to one extra call of nextToken() per token
+            /*
+             * Parse the Stream token by token. Entries are separated by tab. Since it is possible
+             * that Entries are empty eg. "" the token itself must be detokenized which leads to one
+             * extra call of nextToken() per token
              */
-            while((line = reader.readLine()) != null){
-                try{
-                    StringTokenizer token  = new StringTokenizer(line, "\t", true);
+            while ((line = reader.readLine()) != null) {
+                try {
+                    StringTokenizer token = new StringTokenizer(line, "\t", true);
 
                     /* Latitude */
                     double lat = Double.parseDouble(token.nextToken());
@@ -51,7 +52,7 @@ public class KeeprightParser {
                     token.nextToken();
 
                     /* 2 Unused token */
-                    for(int i = 0; i != 4; ++i)
+                    for (int i = 0; i != 4; ++i)
                         token.nextToken();
 
                     /* Way */
@@ -59,7 +60,7 @@ public class KeeprightParser {
                     token.nextToken();
 
                     /* 2 Unused token */
-                    for(int i = 0; i != 4; ++i)
+                    for (int i = 0; i != 4; ++i)
                         token.nextToken();
 
                     /* Schema */
@@ -77,32 +78,30 @@ public class KeeprightParser {
                     ArrayList<Comment> comments = new ArrayList<Comment>();
                     /* Comment or \t if no comment available */
                     String sComment = token.nextToken();
-                    if(!sComment.equals("\t")){
+                    if (!sComment.equals("\t")) {
                         /* Only skip one Token if the Comment wasn't empty */
                         token.nextToken();
                         comments.add(new Comment(sComment));
                     }
 
-                    /* Current state
-                     * Temporarily Ignored == "ignore_t"
-                     * Ignored == "ignore"
-                     * Open == "new" or "" or maybe everything else
+                    /*
+                     * Current state Temporarily Ignored == "ignore_t" Ignored == "ignore" Open ==
+                     * "new" or "" or maybe everything else
                      */
                     String sState = token.nextToken();
                     Bug.STATE state;
 
                     /* Translate the bug State Note: "" or "new" both apply to open bugs */
-                    if(sState.equals("ignore_t"))
+                    if (sState.equals("ignore_t"))
                         state = Bug.STATE.CLOSED;
-                    else if(sState.equals("ignore"))
+                    else if (sState.equals("ignore"))
                         state = Bug.STATE.IGNORED;
                     else
                         state = Bug.STATE.OPEN;
 
                     /* Finally add our Bug to the results */
                     bugs.add(new KeeprightBug(lat, lon, title, text, type, comments, way, schema, id, state));
-                }
-                catch(NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
             }

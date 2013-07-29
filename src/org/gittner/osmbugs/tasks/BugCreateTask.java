@@ -1,4 +1,8 @@
+
 package org.gittner.osmbugs.tasks;
+
+import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
@@ -9,14 +13,14 @@ import org.gittner.osmbugs.bugs.OpenstreetbugsBug;
 import org.gittner.osmbugs.bugs.OpenstreetmapNote;
 import org.osmdroid.util.GeoPoint;
 
-import android.os.AsyncTask;
-import android.widget.Toast;
-
 public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
 
     SherlockActivity activity_;
+
     GeoPoint location_;
+
     String text_;
+
     int platform_;
 
     public BugCreateTask(SherlockActivity activity, GeoPoint location, String text, int platform) {
@@ -34,7 +38,7 @@ public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... v) {
-        switch(platform_) {
+        switch (platform_) {
             case OsmBugsActivity.OPENSTREETBUGS:
                 return OpenstreetbugsBug.addNew(location_, text_);
             case OsmBugsActivity.OPENSTREETMAPNOTES:
@@ -50,10 +54,9 @@ public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
         /* Hide the Spinnign Wheel */
         activity_.setSupportProgressBarIndeterminateVisibility(false);
 
-        if(result){
+        if (result) {
             Toast.makeText(activity_.getApplicationContext(), activity_.getApplicationContext().getString(R.string.saved_bug), Toast.LENGTH_LONG).show();
-        }
-        else{
+        } else {
             Toast.makeText(activity_.getApplicationContext(), activity_.getApplicationContext().getString(R.string.failed_to_save_bug), Toast.LENGTH_LONG).show();
         }
     }

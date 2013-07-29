@@ -1,8 +1,5 @@
+
 package org.gittner.osmbugs.activities;
-
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-
-import org.gittner.osmbugs.R;
 
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -10,7 +7,13 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 
-public class SettingsActivity extends SherlockPreferenceActivity implements OnPreferenceClickListener{
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+
+import org.gittner.osmbugs.R;
+
+public class SettingsActivity extends SherlockPreferenceActivity
+        implements
+        OnPreferenceClickListener {
 
     @SuppressWarnings("deprecation")
     @Override
@@ -21,23 +24,23 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
         findPreference("pref_keepright_reset").setOnPreferenceClickListener(this);
     }
 
+    /* Little Tweak to prevent a Black background in the Settins on some Devices */
     @SuppressWarnings("deprecation")
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         super.onPreferenceTreeClick(preferenceScreen, preference);
 
-        if(preference != null) {
+        if (preference != null) {
             if (preference instanceof PreferenceScreen) {
-                if(((PreferenceScreen) preference).getDialog() != null) {
-                    ((PreferenceScreen) preference)
-                    .getDialog()
-                    .getWindow()
-                    .getDecorView()
-                    .setBackgroundDrawable(this.getWindow()
+                if (((PreferenceScreen) preference).getDialog() != null) {
+                    ((PreferenceScreen) preference).getDialog()
+                            .getWindow()
                             .getDecorView()
-                            .getBackground()
-                            .getConstantState()
-                            .newDrawable());
+                            .setBackgroundDrawable(this.getWindow()
+                                    .getDecorView()
+                                    .getBackground()
+                                    .getConstantState()
+                                    .newDrawable());
                 }
             }
         }
@@ -48,7 +51,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
     @SuppressWarnings("deprecation")
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        if(preference.getKey().equals("pref_keepright_reset")){
+        if (preference.getKey().equals("pref_keepright_reset")) {
             /* Reset all Keepright Preferences to their Original State */
             ((CheckBoxPreference) findPreference("pref_keepright_enabled_20")).setChecked(false);
             ((CheckBoxPreference) findPreference("pref_keepright_enabled_30")).setChecked(true);

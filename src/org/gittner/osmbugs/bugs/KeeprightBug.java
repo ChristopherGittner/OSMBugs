@@ -1,4 +1,9 @@
+
 package org.gittner.osmbugs.bugs;
+
+import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -12,21 +17,36 @@ import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Drawings;
 import org.osmdroid.util.GeoPoint;
 
-import android.graphics.drawable.Drawable;
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class KeeprightBug extends Bug {
     private int type_;
+
     private int schema_;
+
     private int id_;
+
     private long way_;
 
-    public KeeprightBug(double lat, double lon, String title, String text, int type, ArrayList<Comment> comments, long way, int shema, int id, Bug.STATE state) {
-        super(title + " <a href=http://www.openstreetmap.org/browse/way/" + way + ">" + way + "</a>", text, comments, new GeoPoint(lat, lon), state);
+    public KeeprightBug(
+            double lat,
+            double lon,
+            String title,
+            String text,
+            int type,
+            ArrayList<Comment> comments,
+            long way,
+            int shema,
+            int id,
+            Bug.STATE state) {
+
+        super(title + " <a href=http://www.openstreetmap.org/browse/way/" + way + ">" + way + "</a>",
+                text,
+                comments,
+                new GeoPoint(lat, lon),
+                state);
+
         setType(type);
         setSchema(shema);
         setId(id);
@@ -48,7 +68,7 @@ public class KeeprightBug extends Bug {
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
         arguments.add(new BasicNameValuePair("co", getNewComment()));
 
-        arguments.add(new BasicNameValuePair("st", getUrlState()));
+        arguments.add(new BasicNameValuePair("st", getUrlNewState()));
         arguments.add(new BasicNameValuePair("schema", String.valueOf(getSchema())));
         arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
 
@@ -58,8 +78,8 @@ public class KeeprightBug extends Bug {
             /* Execute commit */
             HttpResponse response = client.execute(request);
 
-            /* Check result for Success*/
-            if(response.getStatusLine().getStatusCode() != 200)
+            /* Check result for Success */
+            if (response.getStatusLine().getStatusCode() != 200)
                 return false;
         } catch (ClientProtocolException e) {
             e.printStackTrace();
@@ -78,7 +98,7 @@ public class KeeprightBug extends Bug {
         return true;
     }
 
-    /* Keepright Bugs can be ignored aka. false positive*/
+    /* Keepright Bugs can be ignored aka. false positive */
     @Override
     public boolean isIgnorable() {
         return true;
@@ -91,12 +111,21 @@ public class KeeprightBug extends Bug {
     }
 
     /* Return a readable usable String for the Server from the current State */
+<<<<<<< HEAD
     public String getUrlState() {
         if(getNewState() == Bug.STATE.OPEN)
             return "";
         else if(getNewState() == Bug.STATE.CLOSED)
             return "ignore_t";
         else if(getNewState() == Bug.STATE.IGNORED)
+=======
+    public String getUrlNewState() {
+        if (getNewState() == Bug.STATE.OPEN)
+            return "";
+        else if (getNewState() == Bug.STATE.CLOSED)
+            return "ignore_t";
+        else if (getNewState() == Bug.STATE.IGNORED)
+>>>>>>> dev
             return "ignore";
         else
             return "";
@@ -134,12 +163,12 @@ public class KeeprightBug extends Bug {
 
     @Override
     public Drawable getMarker(int bitset) {
-        if(getState() == Bug.STATE.CLOSED)
+        if (getState() == Bug.STATE.CLOSED)
             return Drawings.KeeprightDrawableClosed;
-        else if(getState() == Bug.STATE.IGNORED)
+        else if (getState() == Bug.STATE.IGNORED)
             return Drawings.KeeprightDrawableIgnored;
-        else{
-            switch(type_) {
+        else {
+            switch (type_) {
                 case 20:
                     return Drawings.KeeprightDrawable20;
                 case 30:

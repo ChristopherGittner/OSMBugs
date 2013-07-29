@@ -1,4 +1,9 @@
+
 package org.gittner.osmbugs.bugs;
+
+import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -13,10 +18,6 @@ import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.GeoPoint;
 
-import android.graphics.drawable.Drawable;
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,7 +25,14 @@ public class OpenstreetbugsBug extends Bug {
 
     private long id_;
 
-    public OpenstreetbugsBug(double lat, double lon, String text, ArrayList<Comment> comments, long id, STATE state) {
+    public OpenstreetbugsBug(
+            double lat,
+            double lon,
+            String text,
+            ArrayList<Comment> comments,
+            long id,
+            STATE state) {
+
         super("Openstreetbug", text, comments, new GeoPoint(lat, lon), state);
 
         setComments(comments);
@@ -49,7 +57,7 @@ public class OpenstreetbugsBug extends Bug {
     @Override
     public boolean commit() {
 
-        if(hasNewComment()){
+        if (hasNewComment()) {
             /* Upload a new Comment */
             HttpClient client = new DefaultHttpClient();
 
@@ -63,8 +71,8 @@ public class OpenstreetbugsBug extends Bug {
                 /* Execute commit */
                 HttpResponse response = client.execute(request);
 
-                /* Check result for Success*/
-                if(response.getStatusLine().getStatusCode() != 200)
+                /* Check result for Success */
+                if (response.getStatusLine().getStatusCode() != 200)
                     return false;
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
@@ -75,7 +83,7 @@ public class OpenstreetbugsBug extends Bug {
             }
         }
 
-        if(hasNewState() && getNewState() == STATE.CLOSED) {
+        if (hasNewState() && getNewState() == STATE.CLOSED) {
             /* Close the Bug */
             HttpClient client = new DefaultHttpClient();
 
@@ -88,8 +96,8 @@ public class OpenstreetbugsBug extends Bug {
                 /* Execute commit */
                 HttpResponse response = client.execute(request);
 
-                /* Check result for Success*/
-                if(response.getStatusLine().getStatusCode() != 200)
+                /* Check result for Success */
+                if (response.getStatusLine().getStatusCode() != 200)
                     return false;
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
@@ -123,7 +131,7 @@ public class OpenstreetbugsBug extends Bug {
 
     @Override
     public Drawable getMarker(int bitset) {
-        if(getState() == Bug.STATE.CLOSED)
+        if (getState() == Bug.STATE.CLOSED)
             return Drawings.OpenstreetbugsDrawableClosed;
 
         return Drawings.OpenstreetbugsDrawableOpen;
@@ -144,8 +152,8 @@ public class OpenstreetbugsBug extends Bug {
             /* Execute commit */
             HttpResponse response = client.execute(request);
 
-            /* Check result for Success*/
-            if(response.getStatusLine().getStatusCode() != 200)
+            /* Check result for Success */
+            if (response.getStatusLine().getStatusCode() != 200)
                 return false;
         } catch (ClientProtocolException e) {
             e.printStackTrace();

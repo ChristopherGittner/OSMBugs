@@ -1,3 +1,4 @@
+
 package org.gittner.osmbugs.parser;
 
 import org.gittner.osmbugs.bugs.Bug;
@@ -18,7 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 /* Parser for Openstreetbugs bug lists retrieved from getGPX.php */
 public class OpenstreetbugsParser {
 
-    public static ArrayList<Bug> parse(InputStream stream){
+    public static ArrayList<Bug> parse(InputStream stream) {
         ArrayList<Bug> bugs = new ArrayList<Bug>();
 
         try {
@@ -28,7 +29,7 @@ public class OpenstreetbugsParser {
 
             NodeList nList = doc.getElementsByTagName("wpt");
 
-            for(int i = 0; i != nList.getLength(); ++i) {
+            for (int i = 0; i != nList.getLength(); ++i) {
                 Element wpt = (Element) nList.item(i);
                 Element extensions = (Element) wpt.getElementsByTagName("extensions").item(0);
 
@@ -41,7 +42,7 @@ public class OpenstreetbugsParser {
                 int start = 0;
                 int end = 0;
 
-                while((end = text.indexOf("<hr />", start)) != -1){
+                while ((end = text.indexOf("<hr />", start)) != -1) {
                     comments.add(new Comment(text.substring(start, end)));
                     start = end + 6;
                 }
@@ -50,12 +51,14 @@ public class OpenstreetbugsParser {
                 text = comments.get(0).getText();
                 comments.remove(0);
 
-
                 Bug.STATE state = Bug.STATE.OPEN;
-                if(extensions.getElementsByTagName("closed").item(0).getTextContent().equals("1"))
+                if (extensions.getElementsByTagName("closed").item(0).getTextContent().equals("1"))
                     state = Bug.STATE.CLOSED;
 
-                long id = Long.parseLong(extensions.getElementsByTagName("id").item(0).getTextContent());
+                long id =
+                        Long.parseLong(extensions.getElementsByTagName("id")
+                                .item(0)
+                                .getTextContent());
 
                 bugs.add(new OpenstreetbugsBug(lat, lon, text, comments, id, state));
             }
