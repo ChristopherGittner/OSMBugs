@@ -111,21 +111,12 @@ public class KeeprightBug extends Bug {
     }
 
     /* Return a readable usable String for the Server from the current State */
-<<<<<<< HEAD
-    public String getUrlState() {
-        if(getNewState() == Bug.STATE.OPEN)
-            return "";
-        else if(getNewState() == Bug.STATE.CLOSED)
-            return "ignore_t";
-        else if(getNewState() == Bug.STATE.IGNORED)
-=======
     public String getUrlNewState() {
         if (getNewState() == Bug.STATE.OPEN)
             return "";
         else if (getNewState() == Bug.STATE.CLOSED)
             return "ignore_t";
         else if (getNewState() == Bug.STATE.IGNORED)
->>>>>>> dev
             return "ignore";
         else
             return "";

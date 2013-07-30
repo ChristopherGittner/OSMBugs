@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class Settings {
 
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     private static SharedPreferences prefs_;
 

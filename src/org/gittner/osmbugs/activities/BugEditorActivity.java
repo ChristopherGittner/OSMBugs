@@ -3,6 +3,7 @@ package org.gittner.osmbugs.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.text.util.Linkify;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -24,8 +26,9 @@ import com.actionbarsherlock.view.Window;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.common.Comment;
-import org.gittner.osmbugs.common.CommentAdapter;
 import org.gittner.osmbugs.tasks.BugUpdateTask;
+
+import java.util.ArrayList;
 
 public class BugEditorActivity extends SherlockActivity {
 
@@ -114,14 +117,14 @@ public class BugEditorActivity extends SherlockActivity {
                 protected void onPostExecute(Bug bug) {
                     activity_.setSupportProgressBarIndeterminate(false);
                     activity_.setSupportProgressBarIndeterminateVisibility(false);
-                    commentAdapter_ = new CommentAdapter(activity_, R.layout.comment_icon, bug_.getComments());
+                    commentAdapter_ = new CommentAdapter(activity_, bug_.getComments());
                     lvComments_ = (ListView) findViewById(R.id.listView1);
                     lvComments_.setAdapter(commentAdapter_);
                     commentAdapter_.notifyDataSetChanged();
                 }
             }.init(this).execute(bug_);
         } else {
-            commentAdapter_ = new CommentAdapter(this, R.layout.comment_icon, bug_.getComments());
+            commentAdapter_ = new CommentAdapter(this, bug_.getComments());
             lvComments_ = (ListView) findViewById(R.id.listView1);
             lvComments_.setAdapter(commentAdapter_);
         }
@@ -249,5 +252,30 @@ public class BugEditorActivity extends SherlockActivity {
             menu_.findItem(R.id.action_save).setVisible(true);
         else
             menu_.findItem(R.id.action_save).setVisible(false);
+    }
+
+    public class CommentAdapter extends ArrayAdapter<Comment> {
+
+        public CommentAdapter(Context context, ArrayList<Comment> data) {
+            super(context, R.id.comment_text, data);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View returnView = null;
+
+            /* Try to reuse old Views for performance reasons */
+            if (convertView == null) {
+                returnView = BugEditorActivity.this.getLayoutInflater().inflate(R.layout.comment_icon, null);
+            } else {
+                returnView = convertView;
+            }
+
+            Comment c = this.getItem(position);
+
+            ((TextView) returnView.findViewById(R.id.comment_text)).setText(c.getText());
+
+            return returnView;
+        }
     }
 }
