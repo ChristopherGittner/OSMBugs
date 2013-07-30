@@ -19,10 +19,6 @@ public class Settings {
         prefs_ = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static SharedPreferences getSharedPreferences() {
-        return prefs_;
-    }
-
     public static boolean getCenterGps() {
         return prefs_.getBoolean("pref_center_gps", true);
     }
@@ -32,10 +28,7 @@ public class Settings {
     }
 
     public static boolean isLanguageGerman() {
-        if (Locale.getDefault().getISO3Language().equals("deu"))
-            return true;
-
-        return false;
+        return Locale.getDefault().getISO3Language().equals("deu");
     }
 
     /* Location will be saved as String since Prefernces can not store Double */

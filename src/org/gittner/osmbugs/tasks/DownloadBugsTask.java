@@ -448,7 +448,7 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
             arguments.add(new BasicNameValuePair("closed", "0"));
 
         arguments.add(new BasicNameValuePair("limit",
-                String.valueOf(Settings.Openstreetbugs.getBugLimit())));
+                String.valueOf(Settings.OpenstreetmapNotes.getBugLimit())));
 
         HttpGet request;
 
