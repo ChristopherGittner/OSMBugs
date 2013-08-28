@@ -1,19 +1,17 @@
 
 package org.gittner.osmbugs.activities;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.text.util.Linkify;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,7 +39,7 @@ public class BugEditorActivity extends SherlockActivity {
     public static String EXTRABUG = "BUG";
 
     /* All Views on this Activity */
-    private TextView txtvTitle_, txtvText_, txtvNewCommentHeader_, txtvNewComment_;
+    private TextView txtvTitle_, txtvText_, txtvNewCommentHeader_, edttxtNewComment_;
 
     private Spinner spnState_;
 
@@ -129,13 +127,32 @@ public class BugEditorActivity extends SherlockActivity {
             lvComments_.setAdapter(commentAdapter_);
         }
 
-        /* Setup the new Comment Textview */
+        /* Setup the new Comment Textviews */
         txtvNewCommentHeader_ = (TextView) findViewById(R.id.txtvNewCommentHeader);
-        txtvNewCommentHeader_.setVisibility(View.GONE);
+        edttxtNewComment_ = (TextView) findViewById(R.id.edttxtNewComment);
+        if (bug_.isCommentable()) {
+            edttxtNewComment_.setVisibility(View.VISIBLE);
+            txtvNewCommentHeader_.setVisibility(View.VISIBLE);
+        } else {
+            edttxtNewComment_.setVisibility(View.GONE);
+            txtvNewCommentHeader_.setVisibility(View.GONE);
+        }
+        edttxtNewComment_.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-        txtvNewComment_ = (TextView) findViewById(R.id.txtvNewComment);
-        txtvNewComment_.setVisibility(View.GONE);
-        txtvNewComment_.setText("");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                update();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         /* Setup the State Spinner */
         spnState_ = (Spinner) findViewById(R.id.spnState);
@@ -183,67 +200,14 @@ public class BugEditorActivity extends SherlockActivity {
             new BugUpdateTask(this).execute(bug_);
 
             return true;
-        } else if (item.getItemId() == R.id.action_edit) {
-            showDialog(DIALOGEDITCOMMENT);
-            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public Dialog onCreateDialog(int id) {
-
-        if (id == DIALOGEDITCOMMENT) {
-            /* Create a simple Dialog where the Comment can be changed */
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            final EditText commentEditText = new EditText(this);
-            commentEditText.setText(bug_.getNewComment());
-
-            builder.setView(commentEditText);
-
-            builder.setMessage(getString(R.string.comment));
-            builder.setPositiveButton(getString(R.string.ok),
-                    new android.content.DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            bug_.setNewComment(commentEditText.getText().toString());
-                            txtvNewComment_.setText(commentEditText.getText().toString());
-                            dialog.dismiss();
-                            update();
-                        }
-                    });
-            builder.setNegativeButton(getString(R.string.cancel),
-                    new android.content.DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-
-            return builder.create();
-        }
-
-        return super.onCreateDialog(id);
-    }
-
     private void update() {
-        /* View or hide the New Comment TextViews */
-        if (bug_.hasNewComment()) {
-            txtvNewComment_.setVisibility(View.VISIBLE);
-            txtvNewCommentHeader_.setVisibility(View.VISIBLE);
-        } else {
-            txtvNewComment_.setVisibility(View.GONE);
-            txtvNewCommentHeader_.setVisibility(View.GONE);
-        }
-
-        /* Deactivate the Edit Entry if needed */
-        if (!bug_.isCommentable())
-            menu_.findItem(R.id.action_edit).setVisible(false);
-        else
-            menu_.findItem(R.id.action_edit).setVisible(true);
+        /* Update the Bugs Comment */
+        bug_.setNewComment(edttxtNewComment_.getText().toString());
 
         // TODO: Turn only on when the bug is actually commitable i.e. has a comment and changed
         // State */

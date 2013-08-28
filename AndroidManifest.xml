@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="org.gittner.osmbugs.activities.BugEditorActivity"></activity>
+        <activity android:name="org.gittner.osmbugs.activities.BugEditorActivity" android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name="org.gittner.osmbugs.activities.SettingsActivity"></activity>
     </application>
 
