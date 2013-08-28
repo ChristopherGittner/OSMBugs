@@ -135,4 +135,6 @@
     <string name="software_bug">Software Bug</string>
     <string name="load_all_comments">Load all Comments</string>
     <string name="loading_bug_please_wait">Loading Bug.\nPleas Wait</string>
+    <string name="debug">Debug</string>
+    <string name="use_debug_server">Use Debug Server</string>
 </resources>

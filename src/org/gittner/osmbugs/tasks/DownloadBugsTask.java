@@ -365,7 +365,7 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
         HttpGet request;
 
-        if (Settings.DEBUG)
+        if (Settings.isDebugEnabled())
             request = new HttpGet("http://st.www.mapdust.com/api/getBugs?" + URLEncodedUtils.format(arguments, "utf-8"));
         else
             request = new HttpGet("http://www.mapdust.com/api/getBugs?" + URLEncodedUtils.format(arguments, "utf-8"));
@@ -452,7 +452,7 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
         HttpGet request;
 
-        if (!Settings.DEBUG)
+        if (!Settings.isDebugEnabled())
             request = new HttpGet("http://api.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
         else
             request = new HttpGet("http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));

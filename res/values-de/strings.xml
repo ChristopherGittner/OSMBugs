@@ -136,4 +136,6 @@
     <string name="software_bug">Software Fehler</string>
     <string name="load_all_comments">Alle Kommentare Laden</string>
     <string name="loading_bug_please_wait">Bitte Warten\nFehler wird geladen</string>
+    <string name="debug">Debug</string>
+    <string name="use_debug_server">Debug Server nutzen</string>
 </resources>

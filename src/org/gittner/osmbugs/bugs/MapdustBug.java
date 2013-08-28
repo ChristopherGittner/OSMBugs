@@ -145,7 +145,7 @@ public class MapdustBug extends Bug {
             arguments.add(new BasicNameValuePair("nickname", Settings.Mapdust.getUsername()));
 
             HttpPost request;
-            if (Settings.DEBUG)
+            if (Settings.isDebugEnabled())
                 request =
                         new HttpPost("http://st.www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
@@ -187,7 +187,7 @@ public class MapdustBug extends Bug {
             arguments.add(new BasicNameValuePair("nickname", Settings.Mapdust.getUsername()));
 
             HttpPost request;
-            if (Settings.DEBUG)
+            if (Settings.isDebugEnabled())
                 request =
                         new HttpPost("http://st.www.mapdust.com/api/changeBugStatus?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
@@ -265,7 +265,7 @@ public class MapdustBug extends Bug {
         arguments.add(new BasicNameValuePair("nickname", Settings.Mapdust.getUsername()));
 
         HttpPost request;
-        if (Settings.DEBUG)
+        if (Settings.isDebugEnabled())
             request = new HttpPost("http://st.www.mapdust.com/api/addBug?" + URLEncodedUtils.format(arguments, "utf-8"));
         else
             request = new HttpPost("http://www.mapdust.com/api/addBug?" + URLEncodedUtils.format(arguments, "utf-8"));
@@ -350,7 +350,7 @@ public class MapdustBug extends Bug {
 
         HttpGet request;
 
-        if (Settings.DEBUG)
+        if (Settings.isDebugEnabled())
             request = new HttpGet("http://st.www.mapdust.com/api/getBug?" + URLEncodedUtils.format(arguments, "utf-8"));
         else
             request = new HttpGet("http://www.mapdust.com/api/getBug?" + URLEncodedUtils.format(arguments, "utf-8"));

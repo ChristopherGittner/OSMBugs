@@ -390,4 +390,10 @@
             </PreferenceCategory>
         </PreferenceScreen>
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/debug">
+        <CheckBoxPreference
+            android:title="@string/use_debug_server"
+            android:key="pref_debug"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -76,7 +76,7 @@ public class OpenstreetmapNote extends Bug {
             arguments.add(new BasicNameValuePair("text", getNewComment()));
 
             HttpPost request;
-            if (!Settings.DEBUG)
+            if (!Settings.isDebugEnabled())
                 request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id_ + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
                 request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id_ + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
@@ -110,7 +110,7 @@ public class OpenstreetmapNote extends Bug {
             arguments.add(new BasicNameValuePair("text", getNewComment()));
 
             HttpPost request;
-            if (!Settings.DEBUG)
+            if (!Settings.isDebugEnabled())
                 request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id_ + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
                 request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id_ + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
@@ -185,7 +185,7 @@ public class OpenstreetmapNote extends Bug {
 
         HttpPost request;
 
-        if (!Settings.DEBUG)
+        if (!Settings.isDebugEnabled())
             request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
         else
             request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));

@@ -11,8 +11,6 @@ import java.util.Locale;
 
 public class Settings {
 
-    public static final boolean DEBUG = true;
-
     private static SharedPreferences prefs_;
 
     public static void init(Context context) {
@@ -44,6 +42,10 @@ public class Settings {
     public static void setLastKnownLocation(Location location) {
         prefs_.edit().putString("pref_last_location_lat", String.valueOf(location.getLatitude())).commit();
         prefs_.edit().putString("pref_last_location_lon", String.valueOf(location.getLongitude())).commit();
+    }
+
+    public static boolean isDebugEnabled() {
+        return prefs_.getBoolean("pref_debug", false);
     }
 
     public static class Keepright {
