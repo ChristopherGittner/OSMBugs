@@ -19,3 +19,7 @@ Eclipse:
 	
 	Include the ActionBarSherlock Project in Project->Android->Library
 	and in Project->Properties->Java-Build-Path->Projects
+
+License
+=======
+The Code is licensed under WTFPL. See "license"
