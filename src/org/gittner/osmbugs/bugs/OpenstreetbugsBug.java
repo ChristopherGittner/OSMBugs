@@ -137,35 +137,6 @@ public class OpenstreetbugsBug extends Bug {
         return Drawings.OpenstreetbugsDrawableOpen;
     }
 
-    public static boolean addNew(GeoPoint position, String text) {
-
-        HttpClient client = new DefaultHttpClient();
-
-        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-        arguments.add(new BasicNameValuePair("lat", String.valueOf(position.getLatitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("lon", String.valueOf(position.getLongitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("text", text + " [" + Settings.Openstreetbugs.getUsername() + " ]"));
-
-        HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/addPOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
-
-        try {
-            /* Execute commit */
-            HttpResponse response = client.execute(request);
-
-            /* Check result for Success */
-            if (response.getStatusLine().getStatusCode() != 200)
-                return false;
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
-
     /* Parcelable interface */
     @Override
     public void writeToParcel(Parcel parcel, int flags) {

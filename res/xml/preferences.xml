@@ -8,7 +8,7 @@
         <CheckBoxPreference
                 android:title="@string/openstreetbugs"
                 android:key="pref_openstreetbugs_enabled"
-                android:defaultValue="true"/>
+                android:defaultValue="false"/>
         <CheckBoxPreference
                 android:title="@string/mapdust"
                 android:key="pref_mapdust_enabled"

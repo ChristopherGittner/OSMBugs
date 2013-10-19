@@ -39,8 +39,6 @@ public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... v) {
         switch (platform_) {
-            case OsmBugsActivity.OPENSTREETBUGS:
-                return OpenstreetbugsBug.addNew(location_, text_);
             case OsmBugsActivity.OPENSTREETMAPNOTES:
                 return OpenstreetmapNote.addNew(location_, text_);
             case OsmBugsActivity.MAPDUST:

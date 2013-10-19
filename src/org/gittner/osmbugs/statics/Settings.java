@@ -341,7 +341,7 @@ public class Settings {
     public static class Openstreetbugs {
 
         public static boolean isEnabled() {
-            return prefs_.getBoolean("pref_openstreetbugs_enabled", true);
+            return prefs_.getBoolean("pref_openstreetbugs_enabled", false);
         }
 
         public static boolean isShowOnlyOpenEnabled() {

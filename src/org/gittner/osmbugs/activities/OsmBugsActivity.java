@@ -365,8 +365,6 @@ public class OsmBugsActivity extends SherlockActivity
                 public void onClick(DialogInterface dialog, int which) {
                     if (spnPlatform.getSelectedItemPosition() == 0)
                         newBugPlatform_ = OPENSTREETMAPNOTES;
-                    else if (spnPlatform.getSelectedItemPosition() == 1)
-                        newBugPlatform_ = OPENSTREETBUGS;
                     else if (spnPlatform.getSelectedItemPosition() == 2)
                         newBugPlatform_ = MAPDUST;
                     else
