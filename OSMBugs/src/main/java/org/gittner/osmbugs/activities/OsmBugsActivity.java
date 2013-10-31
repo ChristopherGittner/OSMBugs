@@ -91,8 +91,8 @@ public class OsmBugsActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
 
         /* Enable the Spinning Wheel for undetermined Progress */
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        requestWindowFeature(Window.FEATURE_PROGRESS);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        supportRequestWindowFeature(Window.FEATURE_PROGRESS);
 
         setContentView(R.layout.activity_osm_bugs);
 

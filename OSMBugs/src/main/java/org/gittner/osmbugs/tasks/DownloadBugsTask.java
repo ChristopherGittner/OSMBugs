@@ -2,7 +2,6 @@
 package org.gittner.osmbugs.tasks;
 
 import android.os.AsyncTask;
-
 import android.support.v7.app.ActionBarActivity;
 
 import org.apache.http.HttpResponse;

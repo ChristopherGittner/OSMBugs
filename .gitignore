@@ -22,4 +22,7 @@ local.properties
 
 # Android Studio files
 .idea
-OSMBugs.iml
+*.iml
+
+# Gradle files
+.gradle

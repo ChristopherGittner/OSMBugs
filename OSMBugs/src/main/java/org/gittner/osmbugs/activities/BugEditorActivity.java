@@ -56,7 +56,7 @@ public class BugEditorActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         /* Enable the Spinning Wheel for undetermined Progress */
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         setContentView(R.layout.activity_bug_editor);
 

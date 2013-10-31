@@ -8,7 +8,6 @@ import android.widget.Toast;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.activities.OsmBugsActivity;
 import org.gittner.osmbugs.bugs.MapdustBug;
-import org.gittner.osmbugs.bugs.OpenstreetbugsBug;
 import org.gittner.osmbugs.bugs.OpenstreetmapNote;
 import org.osmdroid.util.GeoPoint;
 
