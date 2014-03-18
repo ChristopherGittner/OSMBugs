@@ -1,8 +1,8 @@
 
 package org.gittner.osmbugs.tasks;
 
+import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
 import org.gittner.osmbugs.R;
@@ -13,7 +13,7 @@ import org.osmdroid.util.GeoPoint;
 
 public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
 
-    ActionBarActivity activity_;
+    Activity activity_;
 
     GeoPoint location_;
 
@@ -21,7 +21,7 @@ public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
 
     int platform_;
 
-    public BugCreateTask(ActionBarActivity activity, GeoPoint location, String text, int platform) {
+    public BugCreateTask(Activity activity, GeoPoint location, String text, int platform) {
         activity_ = activity;
         location_ = location;
         text_ = text;
@@ -31,7 +31,7 @@ public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPreExecute() {
         /* Show the Round Spinning wheel do display the Upload is running */
-        activity_.setSupportProgressBarIndeterminateVisibility(true);
+        activity_.setProgressBarIndeterminateVisibility(true);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         /* Hide the Spinnign Wheel */
-        activity_.setSupportProgressBarIndeterminateVisibility(false);
+        activity_.setProgressBarIndeterminateVisibility(false);
 
         if (result) {
             Toast.makeText(activity_.getApplicationContext(), activity_.getApplicationContext().getString(R.string.saved_bug), Toast.LENGTH_LONG).show();

@@ -1,10 +1,10 @@
 
 package org.gittner.osmbugs.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -28,7 +28,7 @@ import org.gittner.osmbugs.tasks.BugUpdateTask;
 
 import java.util.ArrayList;
 
-public class BugEditorActivity extends ActionBarActivity {
+public class BugEditorActivity extends Activity {
 
     public static int DIALOGEDITCOMMENT = 1;
 
@@ -57,7 +57,7 @@ public class BugEditorActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         /* Enable the Spinning Wheel for undetermined Progress */
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         setContentView(R.layout.activity_bug_editor);
 
@@ -65,9 +65,9 @@ public class BugEditorActivity extends ActionBarActivity {
          * For devices that use ActionBarSherlock the Indeterminate State has to be set to false
          * otherwise it will be displayed at start
          */
-        setSupportProgressBarIndeterminate(false);
-        setSupportProgressBarIndeterminateVisibility(false);
-        setSupportProgressBarVisibility(false);
+        setProgressBarIndeterminate(false);
+        setProgressBarIndeterminateVisibility(false);
+        setProgressBarVisibility(false);
 
         /* Deparcel the current Bug */
         bug_ = getIntent().getParcelableExtra(EXTRABUG);
@@ -92,17 +92,17 @@ public class BugEditorActivity extends ActionBarActivity {
         if (bug_.willRetrieveExtraData()) {
             new AsyncTask<Bug, Void, Bug>() {
 
-                ActionBarActivity activity_;
+                Activity activity_;
 
-                public AsyncTask<Bug, Void, Bug> init(ActionBarActivity activity) {
+                public AsyncTask<Bug, Void, Bug> init(Activity activity) {
                     activity_ = activity;
                     return this;
                 }
 
                 @Override
                 protected void onPreExecute() {
-                    activity_.setSupportProgressBarIndeterminate(true);
-                    activity_.setSupportProgressBarIndeterminateVisibility(true);
+                    activity_.setProgressBarIndeterminate(true);
+                    activity_.setProgressBarIndeterminateVisibility(true);
                 }
 
                 @Override
@@ -113,8 +113,8 @@ public class BugEditorActivity extends ActionBarActivity {
 
                 @Override
                 protected void onPostExecute(Bug bug) {
-                    activity_.setSupportProgressBarIndeterminate(false);
-                    activity_.setSupportProgressBarIndeterminateVisibility(false);
+                    activity_.setProgressBarIndeterminate(false);
+                    activity_.setProgressBarIndeterminateVisibility(false);
                     commentAdapter_ = new CommentAdapter(activity_, bug_.getComments());
                     lvComments_ = (ListView) findViewById(R.id.listView1);
                     lvComments_.setAdapter(commentAdapter_);
@@ -189,7 +189,7 @@ public class BugEditorActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_cancel) {
-            setResult(ActionBarActivity.RESULT_CANCELED);
+            setResult(Activity.RESULT_CANCELED);
             finish();
 
             return true;

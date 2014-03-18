@@ -1,6 +1,7 @@
 
 package org.gittner.osmbugs.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -11,7 +12,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -38,7 +38,7 @@ import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
 
-public class OsmBugsActivity extends ActionBarActivity
+public class OsmBugsActivity extends Activity
         implements
         LocationListener,
         OnItemGestureListener<Bug> {
@@ -91,8 +91,8 @@ public class OsmBugsActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
 
         /* Enable the Spinning Wheel for undetermined Progress */
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        supportRequestWindowFeature(Window.FEATURE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_PROGRESS);
 
         setContentView(R.layout.activity_osm_bugs);
 
@@ -100,9 +100,9 @@ public class OsmBugsActivity extends ActionBarActivity
          * For devices that use ActionBarSherlock the Indeterminate State has to be set to false
          * otherwise it will be displayed at start
          */
-        setSupportProgressBarIndeterminate(false);
-        setSupportProgressBarIndeterminateVisibility(false);
-        setSupportProgressBarVisibility(false);
+        setProgressBarIndeterminate(false);
+        setProgressBarIndeterminateVisibility(false);
+        setProgressBarVisibility(false);
 
         /* Init Settings Class */
         Settings.init(this);
@@ -308,7 +308,7 @@ public class OsmBugsActivity extends ActionBarActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUESTCODEBUGEDITORACTIVITY) {
-            if (resultCode == ActionBarActivity.RESULT_OK)
+            if (resultCode == Activity.RESULT_OK)
                 refreshBugs();
         } else
             super.onActivityResult(requestCode, resultCode, data);

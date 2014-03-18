@@ -5,8 +5,8 @@ android {
     buildToolsVersion "19.0.0"
 
     defaultConfig {
-        minSdkVersion 10
-        targetSdkVersion 18
+        minSdkVersion 17
+        targetSdkVersion 19
         versionCode 1
         versionName "1.0"
     }
@@ -20,6 +20,4 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:18.0.0'
-    compile 'com.android.support:appcompat-v7:18.0.+'
 }

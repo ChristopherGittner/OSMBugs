@@ -1,8 +1,8 @@
 
 package org.gittner.osmbugs.tasks;
 
+import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 /* Background Worker Class to get a list of Bugs and ad them to the supplied ItemizedIconOverlay */
 public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
-    ActionBarActivity activity_;
+    Activity activity_;
 
     ItemizedIconOverlay<Bug> bugOverlay_;
 
@@ -38,7 +38,7 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
     int progress_;
 
-    public DownloadBugsTask(ActionBarActivity activity, ItemizedIconOverlay<Bug> bugOverlay, MapView mapView, BoundingBoxE6 bBox) {
+    public DownloadBugsTask(Activity activity, ItemizedIconOverlay<Bug> bugOverlay, MapView mapView, BoundingBoxE6 bBox) {
         activity_ = activity;
         bugOverlay_ = bugOverlay;
         mapView_ = mapView;
@@ -48,8 +48,8 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
     @Override
     protected void onPreExecute() {
         /* Manage Progress Display */
-        activity_.setSupportProgressBarIndeterminateVisibility(true);
-        activity_.setSupportProgressBarVisibility(true);
+        activity_.setProgressBarIndeterminateVisibility(true);
+        activity_.setProgressBarVisibility(true);
 
         progress_ = 0;
         publishProgress(0);
@@ -72,7 +72,7 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
             activeProviders += 1;
 
         progress_ += progress[0];
-        activity_.setSupportProgress(progress_ * 10000 / activeProviders / 2);
+        activity_.setProgress(progress_ * 10000 / activeProviders / 2);
     }
 
     @Override
@@ -112,8 +112,8 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
         mapView_.invalidate();
 
-        activity_.setSupportProgressBarIndeterminateVisibility(false);
-        activity_.setSupportProgressBarVisibility(false);
+        activity_.setProgressBarIndeterminateVisibility(false);
+        activity_.setProgressBarVisibility(false);
     }
 
     private ArrayList<Bug> downloadKeeprightBugs() {
