@@ -10,6 +10,7 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -177,6 +178,8 @@ public class BugEditorActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.bug_editor, menu);
+
+        menu_ = menu;
 
         update();
         return true;

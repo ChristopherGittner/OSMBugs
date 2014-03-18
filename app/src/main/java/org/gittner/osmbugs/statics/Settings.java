@@ -7,6 +7,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.preference.PreferenceManager;
 
+import org.osmdroid.api.IGeoPoint;
+
 import java.util.Locale;
 
 public class Settings {
@@ -40,6 +42,11 @@ public class Settings {
     }
 
     public static void setLastKnownLocation(Location location) {
+        prefs_.edit().putString("pref_last_location_lat", String.valueOf(location.getLatitude())).commit();
+        prefs_.edit().putString("pref_last_location_lon", String.valueOf(location.getLongitude())).commit();
+    }
+
+    public static void setLastKnownLocation(IGeoPoint location) {
         prefs_.edit().putString("pref_last_location_lat", String.valueOf(location.getLatitude())).commit();
         prefs_.edit().putString("pref_last_location_lon", String.valueOf(location.getLongitude())).commit();
     }

@@ -189,7 +189,7 @@ public class OsmBugsActivity extends ActionBarActivity
         locMgr_.removeUpdates(this);
 
         /* Save the last Location */
-        Settings.setLastKnownLocation(lastLocation_);
+        Settings.setLastKnownLocation(mapView_.getMapCenter());
     }
 
     @Override
