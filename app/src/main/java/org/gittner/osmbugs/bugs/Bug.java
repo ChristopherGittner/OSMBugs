@@ -134,7 +134,8 @@ public abstract class Bug extends OverlayItem implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(mTitle);
-        parcel.writeString(mDescription);
+        //TODO Broken after osmdroid update
+        //parcel.writeString("");
         mGeoPoint.writeToParcel(parcel, 0);
 
         parcel.writeInt(comments_.size());

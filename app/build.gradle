@@ -22,7 +22,4 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:18.0.0'
     compile 'com.android.support:appcompat-v7:18.0.+'
-    compile files('libs/osmdroid-android-3.0.8.jar')
-    compile files('libs/slf4j-android-1.5.8.jar')
-    compile files('libs/volley.jar')
 }
