@@ -3,7 +3,7 @@
 
     <string name="app_name">OSMBugs</string>
     <string name="action_settings">Einstellungen</string>
-    <string name="got_to_gps">Gehe zu GPS</string>
+    <string name="go_to_gps">Gehe zu GPS</string>
     <string name="follow_gps">GPS Folgen</string>
     <string name="refresh">Aktualisieren</string>
     <string name="save">Speichern</string>
@@ -86,7 +86,7 @@
     <string name="specific">Spezifisch</string>
     <string name="general">Allgemein</string>
     <string name="about">Über</string>
-    <string name="dialog_about_text">OSMBugs V0.5.3 - Beta\nDiese App nutzt Daten von:\n\nDem
+    <string name="dialog_about_text">OSMBugs V0.6.1 - Beta\nDiese App nutzt Daten von:\n\nDem
         Openstreetmap
         Projekt:\nhttp://www.openstreetmap.org\n\nKeepright:\nhttp://www.keepright.at\n\nOpenstreetbugs:\nhttp://openstreetbugs.schokokeks.org\n\nMapdust:\nhttp://www.mapdust.com\n\nAsher
         (Bug Icon):\nhttp://kyo-tux.deviantart.com
