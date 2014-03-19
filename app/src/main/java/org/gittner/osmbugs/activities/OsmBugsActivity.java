@@ -27,7 +27,6 @@ import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
 import org.gittner.osmbugs.tasks.BugCreateTask;
 import org.gittner.osmbugs.tasks.DownloadBugsTask;
-import org.gittner.osmbugs.tasks.SendFeedbackTask;
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -47,13 +46,11 @@ public class OsmBugsActivity extends Activity
 
     public static final int REQUESTCODESETTINGSACTIVITY = 2;
 
-    private static final int DIALOGFEEDBACK = 1;
+    private static final int DIALOGNEWBUG = 1;
 
-    private static final int DIALOGNEWBUG = 2;
+    private static final int DIALOGNEWBUGTEXT = 2;
 
-    private static final int DIALOGNEWBUGTEXT = 3;
-
-    private static final int DIALOGABOUT = 4;
+    private static final int DIALOGABOUT = 3;
 
     public static final int INVALIDPLATFORM = -1;
 
@@ -231,8 +228,6 @@ public class OsmBugsActivity extends Activity
             refreshBugs();
         } else if (item.getItemId() == R.id.center_gps_action) {
             centerMap(mLastLocation, true);
-        } else if (item.getItemId() == R.id.feedback) {
-            this.showDialog(DIALOGFEEDBACK);
         } else if (item.getItemId() == R.id.about) {
             this.showDialog(DIALOGABOUT);
         } else if (item.getItemId() == R.id.add_bug) {
@@ -318,30 +313,7 @@ public class OsmBugsActivity extends Activity
     @Override
     public Dialog onCreateDialog(int id) {
 
-        if (id == DIALOGFEEDBACK) {
-            /* Create a simple Dialog where a Feedback can be entered */
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            final EditText feedbackEditText = new EditText(this);
-            builder.setView(feedbackEditText);
-
-            builder.setMessage(getString(R.string.feedback));
-            builder.setPositiveButton(getString(R.string.ok), new OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    onOkClickFeedbackDialog(feedbackEditText.getText().toString());
-                    dialog.dismiss();
-                }
-            });
-            builder.setNegativeButton(getString(R.string.cancel), new OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-
-            return builder.create();
-        } else if (id == DIALOGNEWBUG) {
+        if (id == DIALOGNEWBUG) {
             /* Ask the User to select a Bug Platform */
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -384,7 +356,6 @@ public class OsmBugsActivity extends Activity
 
             return builder.create();
         } else if (id == DIALOGNEWBUGTEXT) {
-            /* Create a simple Dialog where a Feedback can be entered */
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
             final EditText newBugText = new EditText(this);
@@ -424,14 +395,6 @@ public class OsmBugsActivity extends Activity
         }
 
         return super.onCreateDialog(id);
-    }
-
-    private void onOkClickFeedbackDialog(String message) {
-        if (message.length() <= 3000)
-            new SendFeedbackTask(this).execute(message);
-        else
-            Toast.makeText(this, getString(R.string.feedback_message_too_long), Toast.LENGTH_LONG)
-                    .show();
     }
 
     private void createBug(int platform, String text) {

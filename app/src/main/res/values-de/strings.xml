@@ -17,10 +17,7 @@
     <string name="ignored_errors">Ignorierte Fehler</string>
     <string name="center_on_gps_enabled">Zentrierung auf GPS Eingeschaltet</string>
     <string name="center_on_gps_disabled">Zentrierung auf GPS ausgeschaltet</string>
-    <string name="feedback">Feedback</string>
     <string name="ok">OK</string>
-    <string name="feedback_transmitted">Feedback übertragen\nDanke</string>
-    <string name="failed_to_transmit_feedback">Fehler beim Senden des Feedback</string>
     <string name="saved_bug">Fehler gesichert</string>
     <string name="failed_to_save_bug">Fehler beim sichern des Fehlers</string>
     <string name="non_closed_areas">Offene Ränder</string>
@@ -93,7 +90,6 @@
         Projekt:\nhttp://www.openstreetmap.org\n\nKeepright:\nhttp://www.keepright.at\n\nOpenstreetbugs:\nhttp://openstreetbugs.schokokeks.org\n\nMapdust:\nhttp://www.mapdust.com\n\nAsher
         (Bug Icon):\nhttp://kyo-tux.deviantart.com
     </string>
-    <string name="feedback_message_too_long">Feedback Nachricht zu lang (3000 Zeichen)</string>
     <string name="openstreetmap_notes">Openstreetmap Notes</string>
     <string name="edit">Edit</string>
     <string name="comments">Kommentare</string>
