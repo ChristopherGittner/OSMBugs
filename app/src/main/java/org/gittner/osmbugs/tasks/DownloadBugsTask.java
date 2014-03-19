@@ -28,34 +28,34 @@ import java.util.ArrayList;
 /* Background Worker Class to get a list of Bugs and ad them to the supplied ItemizedIconOverlay */
 public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
-    Activity activity_;
+    Activity mActivity;
 
-    ItemizedIconOverlay<Bug> bugOverlay_;
+    ItemizedIconOverlay<Bug> mBugOverlay;
 
-    MapView mapView_;
+    MapView mMapView;
 
-    BoundingBoxE6 bBox_;
+    BoundingBoxE6 mBBox;
 
-    int progress_;
+    int mProgress;
 
     public DownloadBugsTask(Activity activity, ItemizedIconOverlay<Bug> bugOverlay, MapView mapView, BoundingBoxE6 bBox) {
-        activity_ = activity;
-        bugOverlay_ = bugOverlay;
-        mapView_ = mapView;
-        bBox_ = bBox;
+        mActivity = activity;
+        mBugOverlay = bugOverlay;
+        mMapView = mapView;
+        mBBox = bBox;
     }
 
     @Override
     protected void onPreExecute() {
         /* Manage Progress Display */
-        activity_.setProgressBarIndeterminateVisibility(true);
-        activity_.setProgressBarVisibility(true);
+        mActivity.setProgressBarIndeterminateVisibility(true);
+        mActivity.setProgressBarVisibility(true);
 
-        progress_ = 0;
+        mProgress = 0;
         publishProgress(0);
 
-        bugOverlay_.removeAllItems();
-        mapView_.invalidate();
+        mBugOverlay.removeAllItems();
+        mMapView.invalidate();
     }
 
     @Override
@@ -71,8 +71,8 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
         if (Settings.OpenstreetmapNotes.isEnabled())
             activeProviders += 1;
 
-        progress_ += progress[0];
-        activity_.setProgress(progress_ * 10000 / activeProviders / 2);
+        mProgress += progress[0];
+        mActivity.setProgress(mProgress * 10000 / activeProviders / 2);
     }
 
     @Override
@@ -104,16 +104,16 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
     @Override
     protected void onPostExecute(ArrayList<Bug> result) {
-        bugOverlay_.removeAllItems();
+        mBugOverlay.removeAllItems();
 
         for (int i = 0; i != result.size(); ++i) {
-            bugOverlay_.addItem(result.get(i));
+            mBugOverlay.addItem(result.get(i));
         }
 
-        mapView_.invalidate();
+        mMapView.invalidate();
 
-        activity_.setProgressBarIndeterminateVisibility(false);
-        activity_.setProgressBarVisibility(false);
+        mActivity.setProgressBarIndeterminateVisibility(false);
+        mActivity.setProgressBarVisibility(false);
     }
 
     private ArrayList<Bug> downloadKeeprightBugs() {
@@ -132,8 +132,8 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
             arguments.add(new BasicNameValuePair("show_tmpign", "0"));
 
         arguments.add(new BasicNameValuePair("ch", getKeeprightSelectionString()));
-        arguments.add(new BasicNameValuePair("lat", String.valueOf(bBox_.getCenter().getLatitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("lon", String.valueOf(bBox_.getCenter().getLongitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("lat", String.valueOf(mBBox.getCenter().getLatitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("lon", String.valueOf(mBBox.getCenter().getLongitudeE6() / 1000000.0)));
         if (Settings.isLanguageGerman())
             arguments.add(new BasicNameValuePair("lang", "de"));
 
@@ -313,10 +313,10 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
-        arguments.add(new BasicNameValuePair("b", String.valueOf(bBox_.getLatSouthE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("t", String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("l", String.valueOf(bBox_.getLonWestE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("r", String.valueOf(bBox_.getLonEastE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("b", String.valueOf(mBBox.getLatSouthE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("t", String.valueOf(mBBox.getLatNorthE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("l", String.valueOf(mBBox.getLonWestE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("r", String.valueOf(mBBox.getLonEastE6() / 1000000.0)));
 
         if (Settings.Openstreetbugs.isShowOnlyOpenEnabled())
             arguments.add(new BasicNameValuePair("open", "1"));
@@ -354,10 +354,10 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
         arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
-        arguments.add(new BasicNameValuePair("bbox", String.valueOf(bBox_.getLonEastE6() / 1000000.0) + ","
-                + String.valueOf(bBox_.getLatSouthE6() / 1000000.0) + ","
-                + String.valueOf(bBox_.getLonWestE6() / 1000000.0) + ","
-                + String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("bbox", String.valueOf(mBBox.getLonEastE6() / 1000000.0) + ","
+                + String.valueOf(mBBox.getLatSouthE6() / 1000000.0) + ","
+                + String.valueOf(mBBox.getLonWestE6() / 1000000.0) + ","
+                + String.valueOf(mBBox.getLatNorthE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("comments", "1"));
         arguments.add(new BasicNameValuePair("ft", getMapdustSelectionString()));
         arguments.add(new BasicNameValuePair("fs", getMapdustEnabledTypesString()));
@@ -438,10 +438,10 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
-        arguments.add(new BasicNameValuePair("bbox", String.valueOf(bBox_.getLonWestE6() / 1000000.0) + ","
-                + String.valueOf(bBox_.getLatSouthE6() / 1000000.0) + ","
-                + String.valueOf(bBox_.getLonEastE6() / 1000000.0) + ","
-                + String.valueOf(bBox_.getLatNorthE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("bbox", String.valueOf(mBBox.getLonWestE6() / 1000000.0) + ","
+                + String.valueOf(mBBox.getLatSouthE6() / 1000000.0) + ","
+                + String.valueOf(mBBox.getLonEastE6() / 1000000.0) + ","
+                + String.valueOf(mBBox.getLatNorthE6() / 1000000.0)));
 
         if (Settings.OpenstreetmapNotes.isShowOnlyOpenEnabled())
             arguments.add(new BasicNameValuePair("closed", "0"));

@@ -18,75 +18,75 @@ public abstract class Bug extends OverlayItem implements Parcelable {
         OPEN, CLOSED, IGNORED
     }
 
-    private STATE state_ = STATE.OPEN;
+    private STATE mState = STATE.OPEN;
 
-    private STATE newState_ = STATE.OPEN;
+    private STATE mNewState = STATE.OPEN;
 
-    private ArrayList<Comment> comments_ = null;
+    private ArrayList<Comment> mComments = null;
 
-    private String newComment_ = "";
+    private String mNewComment = "";
 
     protected Bug(String title, String text, ArrayList<Comment> comments, GeoPoint point, STATE state) {
         super(title, text, point);
 
-        state_ = state;
-        newState_ = state;
-        comments_ = comments;
+        mState = state;
+        mNewState = state;
+        mComments = comments;
     }
 
     protected Bug(Parcel parcel) {
         super(parcel.readString(), parcel.readString(), GeoPoint.CREATOR.createFromParcel(parcel));
 
-        comments_ = new ArrayList<Comment>();
+        mComments = new ArrayList<Comment>();
         int size = parcel.readInt();
         for (int i = 0; i != size; ++i) {
-            comments_.add(new Comment(parcel));
+            mComments.add(new Comment(parcel));
         }
 
-        newComment_ = parcel.readString();
+        mNewComment = parcel.readString();
 
         switch (parcel.readInt()) {
             case 1:
-                state_ = Bug.STATE.OPEN;
+                mState = Bug.STATE.OPEN;
                 break;
             case 2:
-                state_ = Bug.STATE.CLOSED;
+                mState = Bug.STATE.CLOSED;
                 break;
             case 3:
-                state_ = Bug.STATE.IGNORED;
+                mState = Bug.STATE.IGNORED;
                 break;
             default:
-                state_ = Bug.STATE.OPEN;
+                mState = Bug.STATE.OPEN;
         }
 
         switch (parcel.readInt()) {
             case 1:
-                newState_ = Bug.STATE.OPEN;
+                mNewState = Bug.STATE.OPEN;
                 break;
             case 2:
-                newState_ = Bug.STATE.CLOSED;
+                mNewState = Bug.STATE.CLOSED;
                 break;
             case 3:
-                newState_ = Bug.STATE.IGNORED;
+                mNewState = Bug.STATE.IGNORED;
                 break;
             default:
-                newState_ = Bug.STATE.OPEN;
+                mNewState = Bug.STATE.OPEN;
         }
     }
 
     /* Get the Bugs Comments */
     public ArrayList<Comment> getComments() {
-        return comments_;
+        return mComments;
     }
 
     /* Set the Bugs Comment */
     public void setComments(ArrayList<Comment> comments) {
-        comments_ = comments;
+        mComments = comments;
     }
 
     /* Get the Bugs State */
     public STATE getState() {
-        return state_;
+        return mState;
     }
 
     /* Set the Bugs State */
@@ -94,21 +94,21 @@ public abstract class Bug extends OverlayItem implements Parcelable {
         if (state == STATE.IGNORED && !isIgnorable())
             return;
 
-        if (state_ == STATE.CLOSED && !isReopenable())
+        if (mState == STATE.CLOSED && !isReopenable())
             return;
 
-        if (state == newState_)
+        if (state == mNewState)
             return;
 
-        newState_ = state;
+        mNewState = state;
     }
 
     public STATE getNewState() {
-        return newState_;
+        return mNewState;
     }
 
     public boolean hasNewState() {
-        return state_ != newState_;
+        return mState != mNewState;
     }
 
     /*
@@ -137,41 +137,41 @@ public abstract class Bug extends OverlayItem implements Parcelable {
         parcel.writeString(getSnippet());
         mGeoPoint.writeToParcel(parcel, 0);
 
-        parcel.writeInt(comments_.size());
-        for (Comment comment : comments_)
+        parcel.writeInt(mComments.size());
+        for (Comment comment : mComments)
             comment.writeToParcel(parcel, flags);
 
-        parcel.writeString(newComment_);
+        parcel.writeString(mNewComment);
 
-        if (state_ == Bug.STATE.OPEN)
+        if (mState == Bug.STATE.OPEN)
             parcel.writeInt(1);
-        else if (state_ == Bug.STATE.CLOSED)
+        else if (mState == Bug.STATE.CLOSED)
             parcel.writeInt(2);
-        else if (state_ == Bug.STATE.IGNORED)
+        else if (mState == Bug.STATE.IGNORED)
             parcel.writeInt(3);
         else
             parcel.writeInt(0);
 
-        if (newState_ == Bug.STATE.OPEN)
+        if (mNewState == Bug.STATE.OPEN)
             parcel.writeInt(1);
-        else if (newState_ == Bug.STATE.CLOSED)
+        else if (mNewState == Bug.STATE.CLOSED)
             parcel.writeInt(2);
-        else if (newState_ == Bug.STATE.IGNORED)
+        else if (mNewState == Bug.STATE.IGNORED)
             parcel.writeInt(3);
         else
             parcel.writeInt(0);
     }
 
     public String getNewComment() {
-        return newComment_;
+        return mNewComment;
     }
 
     public void setNewComment(String text) {
-        newComment_ = text;
+        mNewComment = text;
     }
 
     public boolean hasNewComment() {
-        return !newComment_.equals("");
+        return !mNewComment.equals("");
     }
 
     /* These can be overriden to allow the Display of custom Text for a Bug State */

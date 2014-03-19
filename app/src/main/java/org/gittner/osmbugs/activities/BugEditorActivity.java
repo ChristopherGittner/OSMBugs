@@ -10,7 +10,6 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,24 +32,24 @@ public class BugEditorActivity extends Activity {
     public static int DIALOGEDITCOMMENT = 1;
 
     /* The Bug currently being edited */
-    private Bug bug_;
+    private Bug mBug;
 
     /* Used for passing the Bugs Position in the Buglist to this Intent */
     public static String EXTRABUG = "BUG";
 
     /* All Views on this Activity */
-    private TextView txtvTitle_, txtvText_, txtvNewCommentHeader_, edttxtNewComment_;
+    private TextView mTxtvTitle, mTxtvText, mTxtvNewCommentHeader, mEdttxtNewComment;
 
-    private Spinner spnState_;
+    private Spinner mSpnState;
 
-    private ListView lvComments_;
+    private ListView mLvComments;
 
-    private ArrayAdapter<String> stateAdapter_;
+    private ArrayAdapter<String> mStateAdapter;
 
-    private ArrayAdapter<Comment> commentAdapter_;
+    private ArrayAdapter<Comment> mCommentAdapter;
 
     /* The Main Menu */
-    Menu menu_;
+    Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,26 +69,26 @@ public class BugEditorActivity extends Activity {
         setProgressBarVisibility(false);
 
         /* Deparcel the current Bug */
-        bug_ = getIntent().getParcelableExtra(EXTRABUG);
+        mBug = getIntent().getParcelableExtra(EXTRABUG);
 
         /* Setup the Bug Icon */
-        txtvTitle_ = (TextView) findViewById(R.id.textvTitle);
-        txtvTitle_.setText(bug_.getTitle());
-        Linkify.addLinks(txtvTitle_, Linkify.WEB_URLS);
-        txtvTitle_.setText(Html.fromHtml(txtvTitle_.getText().toString()));
+        mTxtvTitle = (TextView) findViewById(R.id.textvTitle);
+        mTxtvTitle.setText(mBug.getTitle());
+        Linkify.addLinks(mTxtvTitle, Linkify.WEB_URLS);
+        mTxtvTitle.setText(Html.fromHtml(mTxtvTitle.getText().toString()));
 
         /* Setup the Description EditText */
-        txtvText_ = (TextView) findViewById(R.id.txtvText);
-        txtvText_.setText(bug_.getSnippet());
-        Linkify.addLinks(txtvText_, Linkify.WEB_URLS);
-        txtvText_.setText(Html.fromHtml(txtvText_.getText().toString()));
-        txtvText_.setMovementMethod(ScrollingMovementMethod.getInstance());
+        mTxtvText = (TextView) findViewById(R.id.txtvText);
+        mTxtvText.setText(mBug.getSnippet());
+        Linkify.addLinks(mTxtvText, Linkify.WEB_URLS);
+        mTxtvText.setText(Html.fromHtml(mTxtvText.getText().toString()));
+        mTxtvText.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         /*
          * Start to Download Extra Data if neccessary through an AsyncTask and set the ListViews
          * adapter Either after download or if no Download needed instantaneous
          */
-        if (bug_.willRetrieveExtraData()) {
+        if (mBug.willRetrieveExtraData()) {
             new AsyncTask<Bug, Void, Bug>() {
 
                 Activity activity_;
@@ -115,29 +114,29 @@ public class BugEditorActivity extends Activity {
                 protected void onPostExecute(Bug bug) {
                     activity_.setProgressBarIndeterminate(false);
                     activity_.setProgressBarIndeterminateVisibility(false);
-                    commentAdapter_ = new CommentAdapter(activity_, bug_.getComments());
-                    lvComments_ = (ListView) findViewById(R.id.listView1);
-                    lvComments_.setAdapter(commentAdapter_);
-                    commentAdapter_.notifyDataSetChanged();
+                    mCommentAdapter = new CommentAdapter(activity_, mBug.getComments());
+                    mLvComments = (ListView) findViewById(R.id.listView1);
+                    mLvComments.setAdapter(mCommentAdapter);
+                    mCommentAdapter.notifyDataSetChanged();
                 }
-            }.init(this).execute(bug_);
+            }.init(this).execute(mBug);
         } else {
-            commentAdapter_ = new CommentAdapter(this, bug_.getComments());
-            lvComments_ = (ListView) findViewById(R.id.listView1);
-            lvComments_.setAdapter(commentAdapter_);
+            mCommentAdapter = new CommentAdapter(this, mBug.getComments());
+            mLvComments = (ListView) findViewById(R.id.listView1);
+            mLvComments.setAdapter(mCommentAdapter);
         }
 
         /* Setup the new Comment Textviews */
-        txtvNewCommentHeader_ = (TextView) findViewById(R.id.txtvNewCommentHeader);
-        edttxtNewComment_ = (TextView) findViewById(R.id.edttxtNewComment);
-        if (bug_.isCommentable()) {
-            edttxtNewComment_.setVisibility(View.VISIBLE);
-            txtvNewCommentHeader_.setVisibility(View.VISIBLE);
+        mTxtvNewCommentHeader = (TextView) findViewById(R.id.txtvNewCommentHeader);
+        mEdttxtNewComment = (TextView) findViewById(R.id.edttxtNewComment);
+        if (mBug.isCommentable()) {
+            mEdttxtNewComment.setVisibility(View.VISIBLE);
+            mTxtvNewCommentHeader.setVisibility(View.VISIBLE);
         } else {
-            edttxtNewComment_.setVisibility(View.GONE);
-            txtvNewCommentHeader_.setVisibility(View.GONE);
+            mEdttxtNewComment.setVisibility(View.GONE);
+            mTxtvNewCommentHeader.setVisibility(View.GONE);
         }
-        edttxtNewComment_.addTextChangedListener(new TextWatcher() {
+        mEdttxtNewComment.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
@@ -155,31 +154,31 @@ public class BugEditorActivity extends Activity {
         });
 
         /* Setup the State Spinner */
-        spnState_ = (Spinner) findViewById(R.id.spnState);
+        mSpnState = (Spinner) findViewById(R.id.spnState);
 
-        stateAdapter_ = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-        spnState_.setAdapter(stateAdapter_);
+        mStateAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        mSpnState.setAdapter(mStateAdapter);
 
-        if (bug_.getState() == Bug.STATE.OPEN || bug_.isReopenable())
-            stateAdapter_.add(bug_.getStringFromState(this, Bug.STATE.OPEN));
+        if (mBug.getState() == Bug.STATE.OPEN || mBug.isReopenable())
+            mStateAdapter.add(mBug.getStringFromState(this, Bug.STATE.OPEN));
 
-        if (bug_.getState() == Bug.STATE.CLOSED || bug_.isClosable())
-            stateAdapter_.add(bug_.getStringFromState(this, Bug.STATE.CLOSED));
+        if (mBug.getState() == Bug.STATE.CLOSED || mBug.isClosable())
+            mStateAdapter.add(mBug.getStringFromState(this, Bug.STATE.CLOSED));
 
-        if (bug_.getState() == Bug.STATE.IGNORED || bug_.isIgnorable())
-            stateAdapter_.add(bug_.getStringFromState(this, Bug.STATE.IGNORED));
+        if (mBug.getState() == Bug.STATE.IGNORED || mBug.isIgnorable())
+            mStateAdapter.add(mBug.getStringFromState(this, Bug.STATE.IGNORED));
 
-        spnState_.setSelection(stateAdapter_.getPosition(bug_.getStringFromState(this,
-                bug_.getState())));
+        mSpnState.setSelection(mStateAdapter.getPosition(mBug.getStringFromState(this,
+                mBug.getState())));
 
-        stateAdapter_.notifyDataSetChanged();
+        mStateAdapter.notifyDataSetChanged();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.bug_editor, menu);
 
-        menu_ = menu;
+        mMenu = menu;
 
         update();
         return true;
@@ -195,10 +194,10 @@ public class BugEditorActivity extends Activity {
             return true;
         } else if (item.getItemId() == R.id.action_save) {
             /* Save the new Bug state */
-            bug_.setState(bug_.getStateFromString(this,
-                    stateAdapter_.getItem(spnState_.getSelectedItemPosition())));
+            mBug.setState(mBug.getStateFromString(this,
+                    mStateAdapter.getItem(mSpnState.getSelectedItemPosition())));
 
-            new BugUpdateTask(this).execute(bug_);
+            new BugUpdateTask(this).execute(mBug);
 
             return true;
         }
@@ -208,15 +207,15 @@ public class BugEditorActivity extends Activity {
 
     private void update() {
         /* Update the Bugs Comment */
-        bug_.setNewComment(edttxtNewComment_.getText().toString());
+        mBug.setNewComment(mEdttxtNewComment.getText().toString());
 
         // TODO: Turn only on when the bug is actually commitable i.e. has a comment and changed
         // State */
         /* View or hide the Save Icon */
-        if (bug_.hasNewComment() || bug_.hasNewState())
-            menu_.findItem(R.id.action_save).setVisible(true);
+        if (mBug.hasNewComment() || mBug.hasNewState())
+            mMenu.findItem(R.id.action_save).setVisible(true);
         else
-            menu_.findItem(R.id.action_save).setVisible(false);
+            mMenu.findItem(R.id.action_save).setVisible(false);
     }
 
     public class CommentAdapter extends ArrayAdapter<Comment> {

@@ -5,22 +5,22 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Comment implements Parcelable {
-    private String text_;
+    private String mText;
 
     public Comment(String text) {
-        text_ = text;
+        mText = text;
     }
 
     public Comment(Parcel parcel) {
-        text_ = parcel.readString();
+        mText = parcel.readString();
     }
 
     public String getText() {
-        return text_;
+        return mText;
     }
 
     public void setText(String text) {
-        text_ = text;
+        mText = text;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class Comment implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeString(text_);
+        parcel.writeString(mText);
     }
 
     public static final Creator<Comment> CREATOR = new Parcelable.Creator<Comment>() {

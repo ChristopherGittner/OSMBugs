@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class OpenstreetmapNote extends Bug {
 
-    private long id_;
+    private long mId;
 
     public OpenstreetmapNote(
             double lat,
@@ -41,17 +41,17 @@ public class OpenstreetmapNote extends Bug {
 
     public OpenstreetmapNote(Parcel parcel) {
         super(parcel);
-        id_ = parcel.readLong();
+        mId = parcel.readLong();
     }
 
     /* Get the Bugs Id */
     public long getId() {
-        return id_;
+        return mId;
     }
 
     /* Set the Bugs Id */
     public void setId(long id) {
-        id_ = id;
+        mId = id;
     }
 
     @Override
@@ -77,9 +77,9 @@ public class OpenstreetmapNote extends Bug {
 
             HttpPost request;
             if (!Settings.isDebugEnabled())
-                request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id_ + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
+                request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + mId + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
-                request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id_ + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
+                request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + mId + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
@@ -111,9 +111,9 @@ public class OpenstreetmapNote extends Bug {
 
             HttpPost request;
             if (!Settings.isDebugEnabled())
-                request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id_ + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
+                request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + mId + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
             else
-                request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id_ + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
+                request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + mId + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
 
             try {
                 /* Execute commit */
@@ -213,7 +213,7 @@ public class OpenstreetmapNote extends Bug {
     public void writeToParcel(Parcel parcel, int flags) {
         super.writeToParcel(parcel, flags);
 
-        parcel.writeLong(id_);
+        parcel.writeLong(mId);
     }
 
     @Override

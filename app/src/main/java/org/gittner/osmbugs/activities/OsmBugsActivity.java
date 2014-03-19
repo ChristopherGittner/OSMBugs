@@ -65,26 +65,26 @@ public class OsmBugsActivity extends Activity
 
     public static final int MAPDUST = 4;
 
-    private LocationManager locMgr_ = null;
+    private LocationManager mLocMgr = null;
 
-    private MapView mapView_ = null;
+    private MapView mMapView = null;
 
-    private ArrayList<Bug> bugs_;
+    private ArrayList<Bug> mBugs;
 
-    private ItemizedIconOverlay<Bug> bugOverlay_;
+    private ItemizedIconOverlay<Bug> mBugOverlay;
 
     /* The Location Marker Overlay */
-    private ItemizedIconOverlay<OverlayItem> locationOverlay_;
+    private ItemizedIconOverlay<OverlayItem> mLocationOverlay;
 
-    private boolean addNewBugOnNextClick_ = false;
+    private boolean mAddNewBugOnNextClick = false;
 
     /* Used to save the Point where to create the new Bug */
-    private static GeoPoint newBugLocation_;
+    private static GeoPoint mNewBugLocation;
 
     /* Used to save the new Bugs platform */
-    private static int newBugPlatform_;
+    private static int mNewBugPlatform;
 
-    private Location lastLocation_;
+    private Location mLastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,11 +111,11 @@ public class OsmBugsActivity extends Activity
         Drawings.init(this);
 
         /* Create Bug Overlay */
-        bugs_ = new ArrayList<Bug>();
-        bugOverlay_ = new ItemizedIconOverlay<Bug>(bugs_, Drawings.KeeprightDrawable30, this, new DefaultResourceProxyImpl(this));
+        mBugs = new ArrayList<Bug>();
+        mBugOverlay = new ItemizedIconOverlay<Bug>(mBugs, Drawings.KeeprightDrawable30, this, new DefaultResourceProxyImpl(this));
 
         /* Create Position Marker Overlay */
-        locationOverlay_ =
+        mLocationOverlay =
                 new ItemizedIconOverlay<OverlayItem>(
                         new ArrayList<OverlayItem>(),
                         new OnItemGestureListener<OverlayItem>() {
@@ -132,18 +132,18 @@ public class OsmBugsActivity extends Activity
                         new DefaultResourceProxyImpl(this));
 
         /* Setup Main MapView */
-        mapView_ = (MapView) findViewById(R.id.mapview);
-        mapView_.setMultiTouchControls(true);
-        mapView_.setBuiltInZoomControls(true);
-        mapView_.getController().setZoom(20);
-        mapView_.getOverlays().add(bugOverlay_);
-        mapView_.getOverlays().add(locationOverlay_);
+        mMapView = (MapView) findViewById(R.id.mapview);
+        mMapView.setMultiTouchControls(true);
+        mMapView.setBuiltInZoomControls(true);
+        mMapView.getController().setZoom(20);
+        mMapView.getOverlays().add(mBugOverlay);
+        mMapView.getOverlays().add(mLocationOverlay);
 
         /*
          * This adds an empty Overlay to retrieve the Touch Events This is some sort of Hack, since
          * the OnTouchListener will fire only once if the Built in Zoom Controls are enabled
          */
-        mapView_.getOverlays().add(new Overlay(this) {
+        mMapView.getOverlays().add(new Overlay(this) {
             @Override
             protected void draw(Canvas arg0, MapView arg1, boolean arg2) {
 
@@ -152,10 +152,10 @@ public class OsmBugsActivity extends Activity
             @SuppressWarnings("deprecation")
             @Override
             public boolean onTouchEvent(MotionEvent event, MapView mapView) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN && addNewBugOnNextClick_) {
-                    addNewBugOnNextClick_ = false;
-                    newBugLocation_ =
-                            (GeoPoint) mapView_.getProjection().fromPixels(event.getX(),
+                if (event.getAction() == MotionEvent.ACTION_DOWN && mAddNewBugOnNextClick) {
+                    mAddNewBugOnNextClick = false;
+                    mNewBugLocation =
+                            (GeoPoint) mMapView.getProjection().fromPixels(event.getX(),
                                     event.getY());
                     showDialog(DIALOGNEWBUG);
                     return false;
@@ -166,11 +166,11 @@ public class OsmBugsActivity extends Activity
         });
 
         /* Setup the LocationManager */
-        locMgr_ = (LocationManager) getSystemService(LOCATION_SERVICE);
+        mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         /* Set the start Location */
-        lastLocation_ = Settings.getLastKnownLocation();
-        centerMap(lastLocation_, true);
+        mLastLocation = Settings.getLastKnownLocation();
+        centerMap(mLastLocation, true);
     }
 
     @Override
@@ -178,7 +178,7 @@ public class OsmBugsActivity extends Activity
         super.onResume();
 
         /* Start Listening to Location updates */
-        locMgr_.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        mLocMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
 
     @Override
@@ -186,10 +186,10 @@ public class OsmBugsActivity extends Activity
         super.onPause();
 
         /* Stop Listening to Location updates */
-        locMgr_.removeUpdates(this);
+        mLocMgr.removeUpdates(this);
 
         /* Save the last Location */
-        Settings.setLastKnownLocation(mapView_.getMapCenter());
+        Settings.setLastKnownLocation(mMapView.getMapCenter());
     }
 
     @Override
@@ -230,17 +230,17 @@ public class OsmBugsActivity extends Activity
             /* Update the current Bugs */
             refreshBugs();
         } else if (item.getItemId() == R.id.center_gps_action) {
-            centerMap(lastLocation_, true);
+            centerMap(mLastLocation, true);
         } else if (item.getItemId() == R.id.feedback) {
             this.showDialog(DIALOGFEEDBACK);
         } else if (item.getItemId() == R.id.about) {
             this.showDialog(DIALOGABOUT);
         } else if (item.getItemId() == R.id.add_bug) {
-            if (!addNewBugOnNextClick_) {
-                addNewBugOnNextClick_ = true;
+            if (!mAddNewBugOnNextClick) {
+                mAddNewBugOnNextClick = true;
                 Toast.makeText(this, getString(R.string.bug_creation_mode_enabled), Toast.LENGTH_LONG).show();
             } else {
-                addNewBugOnNextClick_ = false;
+                mAddNewBugOnNextClick = false;
                 Toast.makeText(this, getString(R.string.bug_creation_mode_disabled), Toast.LENGTH_LONG).show();
             }
         }
@@ -249,29 +249,29 @@ public class OsmBugsActivity extends Activity
     }
 
     private void refreshBugs() {
-        new DownloadBugsTask(this, bugOverlay_, mapView_, mapView_.getBoundingBox()).execute();
+        new DownloadBugsTask(this, mBugOverlay, mMapView, mMapView.getBoundingBox()).execute();
     }
 
     @Override
     public void onLocationChanged(Location location) {
 
-        lastLocation_ = location;
+        mLastLocation = location;
 
-        centerMap(lastLocation_, false);
+        centerMap(mLastLocation, false);
     }
 
     private void centerMap(Location location, boolean force) {
         /* Center Map on GPS Position if activated */
         if (Settings.getCenterGps() || force) {
-            mapView_.getController().setCenter(new GeoPoint(location));
+            mMapView.getController().setCenter(new GeoPoint(location));
         }
 
         /* Update the Location Marker */
-        locationOverlay_.removeAllItems();
+        mLocationOverlay.removeAllItems();
         OverlayItem i = new OverlayItem("", "", new GeoPoint(location));
         i.setMarker(Drawings.LocationMarker);
-        locationOverlay_.addItem(i);
-        mapView_.invalidate();
+        mLocationOverlay.addItem(i);
+        mMapView.invalidate();
     }
 
     @Override
@@ -363,13 +363,13 @@ public class OsmBugsActivity extends Activity
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (spnPlatform.getSelectedItemPosition() == 0)
-                        newBugPlatform_ = OPENSTREETMAPNOTES;
+                        mNewBugPlatform = OPENSTREETMAPNOTES;
                     else if (spnPlatform.getSelectedItemPosition() == 2)
-                        newBugPlatform_ = MAPDUST;
+                        mNewBugPlatform = MAPDUST;
                     else
-                        newBugPlatform_ = INVALIDPLATFORM;
+                        mNewBugPlatform = INVALIDPLATFORM;
 
-                    if (newBugPlatform_ != INVALIDPLATFORM)
+                    if (mNewBugPlatform != INVALIDPLATFORM)
                         showDialog(DIALOGNEWBUGTEXT);
 
                     dialog.dismiss();
@@ -395,7 +395,7 @@ public class OsmBugsActivity extends Activity
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (!newBugText.getText().toString().equals(""))
-                        createBug(newBugPlatform_, newBugText.getText().toString());
+                        createBug(mNewBugPlatform, newBugText.getText().toString());
 
                     dialog.dismiss();
                 }
@@ -438,8 +438,8 @@ public class OsmBugsActivity extends Activity
         new BugCreateTask(
                 this,
                 new GeoPoint(
-                        newBugLocation_.getLatitudeE6() / 1000000.0,
-                        newBugLocation_.getLongitudeE6() / 1000000.0),
+                        mNewBugLocation.getLatitudeE6() / 1000000.0,
+                        mNewBugLocation.getLongitudeE6() / 1000000.0),
                 text,
                 platform).execute();
     }

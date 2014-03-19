@@ -29,9 +29,9 @@ import java.util.ArrayList;
 
 public class MapdustBug extends Bug {
 
-    private long id_;
+    private long mId;
 
-    private int type_;
+    private int mType;
 
     public static int WRONGTURN = 1;
 
@@ -68,28 +68,28 @@ public class MapdustBug extends Bug {
     protected MapdustBug(Parcel parcel) {
         super(parcel);
 
-        id_ = parcel.readLong();
-        type_ = parcel.readInt();
+        mId = parcel.readLong();
+        mType = parcel.readInt();
     }
 
     /* Get the Bugs Id */
     public long getId() {
-        return id_;
+        return mId;
     }
 
     /* Set the Bugs Id */
     public void setId(long id) {
-        id_ = id;
+        mId = id;
     }
 
     /* Get the Bugs Type */
     public int getType() {
-        return type_;
+        return mType;
     }
 
     /* Set the Bugs Type */
     public void setType(int type) {
-        type_ = type;
+        mType = type;
     }
 
     @Override
@@ -294,8 +294,8 @@ public class MapdustBug extends Bug {
     public void writeToParcel(Parcel parcel, int flags) {
         super.writeToParcel(parcel, flags);
 
-        parcel.writeLong(id_);
-        parcel.writeInt(type_);
+        parcel.writeLong(mId);
+        parcel.writeInt(mType);
     }
 
     public static final Creator<MapdustBug> CREATOR = new Parcelable.Creator<MapdustBug>() {
@@ -346,7 +346,7 @@ public class MapdustBug extends Bug {
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
         arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
-        arguments.add(new BasicNameValuePair("id", String.valueOf(id_)));
+        arguments.add(new BasicNameValuePair("id", String.valueOf(mId)));
 
         HttpGet request;
 

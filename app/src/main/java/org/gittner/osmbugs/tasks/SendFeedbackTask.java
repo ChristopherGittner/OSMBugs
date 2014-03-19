@@ -20,10 +20,10 @@ import java.util.ArrayList;
 
 public class SendFeedbackTask extends AsyncTask<String, Void, Boolean> {
 
-    Context context_;
+    Context mContext;
 
     public SendFeedbackTask(Context context) {
-        context_ = context;
+        mContext = context;
     }
 
     @Override
@@ -58,8 +58,8 @@ public class SendFeedbackTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         if (result)
-            Toast.makeText(context_, context_.getString(R.string.feedback_transmitted), Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, mContext.getString(R.string.feedback_transmitted), Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(context_, context_.getString(R.string.failed_to_transmit_feedback), Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, mContext.getString(R.string.failed_to_transmit_feedback), Toast.LENGTH_LONG).show();
     }
 }

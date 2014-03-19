@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class OpenstreetbugsBug extends Bug {
 
-    private long id_;
+    private long mId;
 
     public OpenstreetbugsBug(
             double lat,
@@ -41,17 +41,17 @@ public class OpenstreetbugsBug extends Bug {
 
     public OpenstreetbugsBug(Parcel parcel) {
         super(parcel);
-        id_ = parcel.readLong();
+        mId = parcel.readLong();
     }
 
     /* Get the Bugs Id */
     public long getId() {
-        return id_;
+        return mId;
     }
 
     /* Set the Bugs Id */
     public void setId(long id) {
-        id_ = id;
+        mId = id;
     }
 
     @Override
@@ -142,7 +142,7 @@ public class OpenstreetbugsBug extends Bug {
     public void writeToParcel(Parcel parcel, int flags) {
         super.writeToParcel(parcel, flags);
 
-        parcel.writeLong(id_);
+        parcel.writeLong(mId);
     }
 
     @Override

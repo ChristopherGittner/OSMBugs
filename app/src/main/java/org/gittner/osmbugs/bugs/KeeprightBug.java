@@ -21,13 +21,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class KeeprightBug extends Bug {
-    private int type_;
+    private int mType;
 
-    private int schema_;
+    private int mSchema;
 
-    private int id_;
+    private int mId;
 
-    private long way_;
+    private long mWay;
 
     public KeeprightBug(
             double lat,
@@ -54,10 +54,10 @@ public class KeeprightBug extends Bug {
 
     public KeeprightBug(Parcel parcel) {
         super(parcel);
-        type_ = parcel.readInt();
-        schema_ = parcel.readInt();
-        id_ = parcel.readInt();
-        way_ = parcel.readLong();
+        mType = parcel.readInt();
+        mSchema = parcel.readInt();
+        mId = parcel.readInt();
+        mWay = parcel.readLong();
     }
 
     /* Commit the Bug to the Keepright Server */
@@ -124,32 +124,32 @@ public class KeeprightBug extends Bug {
 
     /* Get the Bugs Type */
     public int getType() {
-        return type_;
+        return mType;
     }
 
     /* Set the Bugs Type */
     public void setType(int type) {
-        type_ = type;
+        mType = type;
     }
 
     /* Get the Bugs Schema */
     public int getSchema() {
-        return schema_;
+        return mSchema;
     }
 
     /* Set the Bugs Schema */
     public void setSchema(int schema) {
-        schema_ = schema;
+        mSchema = schema;
     }
 
     /* Get the Bugs Id */
     public int getId() {
-        return id_;
+        return mId;
     }
 
     /* Set the Bugs Id */
     public void setId(int id) {
-        id_ = id;
+        mId = id;
     }
 
     @Override
@@ -159,7 +159,7 @@ public class KeeprightBug extends Bug {
         else if (getState() == Bug.STATE.IGNORED)
             return Drawings.KeeprightDrawableIgnored;
         else {
-            switch (type_) {
+            switch (mType) {
                 case 20:
                     return Drawings.KeeprightDrawable20;
                 case 30:
@@ -323,10 +323,10 @@ public class KeeprightBug extends Bug {
     public void writeToParcel(Parcel parcel, int flags) {
         super.writeToParcel(parcel, flags);
 
-        parcel.writeInt(type_);
-        parcel.writeInt(schema_);
-        parcel.writeInt(id_);
-        parcel.writeLong(way_);
+        parcel.writeInt(mType);
+        parcel.writeInt(mSchema);
+        parcel.writeInt(mId);
+        parcel.writeLong(mWay);
     }
 
     @Override
