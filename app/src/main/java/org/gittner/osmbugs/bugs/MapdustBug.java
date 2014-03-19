@@ -1,4 +1,3 @@
-
 package org.gittner.osmbugs.bugs;
 
 import android.content.Context;
@@ -29,24 +28,14 @@ import java.util.ArrayList;
 
 public class MapdustBug extends Bug {
 
-    private long mId;
-
-    private int mType;
-
+    /* All Mapdust Types */
     public static int WRONGTURN = 1;
-
     public static int BADROUTING = 2;
-
     public static int ONEWAYROAD = 3;
-
     public static int BLOCKEDSTREET = 4;
-
     public static int MISSINGSTREET = 5;
-
     public static int ROUNDABOUTISSUE = 6;
-
     public static int MISSINGSPEEDINFO = 7;
-
     public static int OTHER = 8;
 
     public MapdustBug(
@@ -252,7 +241,8 @@ public class MapdustBug extends Bug {
         if (!Settings.OpenstreetmapNotes.getUsername().equals("")) {
             client.getCredentialsProvider().setCredentials(AuthScope.ANY,
                     new UsernamePasswordCredentials(Settings.OpenstreetmapNotes.getUsername(),
-                            Settings.OpenstreetmapNotes.getPassword()));
+                            Settings.OpenstreetmapNotes.getPassword())
+            );
         }
 
         /* Add all Arguments */
@@ -373,4 +363,10 @@ public class MapdustBug extends Bug {
             e.printStackTrace();
         }
     }
+
+    /* Holds the Mapdust Id of this Bug */
+    private long mId;
+
+    /* Holds the Mapdust Type of this Bug */
+    private int mType;
 }

@@ -1,4 +1,3 @@
-
 package org.gittner.osmbugs.bugs;
 
 import android.graphics.drawable.Drawable;
@@ -22,8 +21,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class OpenstreetbugsBug extends Bug {
-
-    private long mId;
 
     public OpenstreetbugsBug(
             double lat,
@@ -162,4 +159,7 @@ public class OpenstreetbugsBug extends Bug {
             return new OpenstreetbugsBug[size];
         }
     };
+
+    /* Holds the Openstreetbugs Id of this Bug */
+    private long mId;
 }

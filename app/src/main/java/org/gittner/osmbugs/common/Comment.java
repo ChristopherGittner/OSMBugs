@@ -1,12 +1,9 @@
-
 package org.gittner.osmbugs.common;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Comment implements Parcelable {
-    private String mText;
-
     public Comment(String text) {
         mText = text;
     }
@@ -45,4 +42,7 @@ public class Comment implements Parcelable {
             return new Comment[size];
         }
     };
+
+    /* Holds the Text of the Comment */
+    private String mText;
 }

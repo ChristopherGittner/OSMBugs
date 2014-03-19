@@ -3,7 +3,8 @@
 
     <string name="app_name">OSMBugs</string>
     <string name="action_settings">Settings</string>
-    <string name="center_on_gps">Center on GPS</string>
+    <string name="go_to_gps">Go to GPS</string>
+    <string name="follow_gps">Follow GPS</string>
     <string name="refresh">Refresh</string>
     <string name="save">Save</string>
     <string name="comment">Comment</string>

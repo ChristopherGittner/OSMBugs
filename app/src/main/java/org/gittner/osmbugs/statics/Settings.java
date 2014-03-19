@@ -1,10 +1,8 @@
-
 package org.gittner.osmbugs.statics;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.location.LocationManager;
 import android.preference.PreferenceManager;
 
 import org.osmdroid.api.IGeoPoint;
@@ -14,18 +12,16 @@ import java.util.Locale;
 
 public class Settings {
 
-    private static SharedPreferences mPrefs;
-
     public static void init(Context context) {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static boolean getCenterGps() {
-        return mPrefs.getBoolean("pref_center_gps", true);
+    public static boolean getFollowGps() {
+        return mPrefs.getBoolean("pref_follow_gps", true);
     }
 
     public static void setCenterGps(boolean state) {
-        mPrefs.edit().putBoolean("pref_center_gps", state).commit();
+        mPrefs.edit().putBoolean("pref_follow_gps", state).commit();
     }
 
     public static boolean isLanguageGerman() {
@@ -443,4 +439,7 @@ public class Settings {
             return mPrefs.getString("pref_openstreetmap_notes_password", "");
         }
     }
+
+    /* The shared preferences used by all Methods */
+    private static SharedPreferences mPrefs;
 }

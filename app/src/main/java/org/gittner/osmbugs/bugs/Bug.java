@@ -1,4 +1,3 @@
-
 package org.gittner.osmbugs.bugs;
 
 import android.content.Context;
@@ -17,14 +16,6 @@ public abstract class Bug extends OverlayItem implements Parcelable {
     public enum STATE {
         OPEN, CLOSED, IGNORED
     }
-
-    private STATE mState = STATE.OPEN;
-
-    private STATE mNewState = STATE.OPEN;
-
-    private ArrayList<Comment> mComments = null;
-
-    private String mNewComment = "";
 
     protected Bug(String title, String text, ArrayList<Comment> comments, GeoPoint point, STATE state) {
         super(title, text, point);
@@ -202,4 +193,16 @@ public abstract class Bug extends OverlayItem implements Parcelable {
 
     public void retrieveExtraData() {
     }
+
+    /* Holds the current state of this Bug */
+    private STATE mState = STATE.OPEN;
+
+    /* Holds the new State of the Bug */
+    private STATE mNewState = STATE.OPEN;
+
+    /* Holds all Comments of this Bug */
+    private ArrayList<Comment> mComments = null;
+
+    /* Holds the new Comment of this Bug*/
+    private String mNewComment = "";
 }

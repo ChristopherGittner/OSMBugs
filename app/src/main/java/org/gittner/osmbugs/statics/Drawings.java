@@ -1,4 +1,3 @@
-
 package org.gittner.osmbugs.statics;
 
 import android.content.Context;

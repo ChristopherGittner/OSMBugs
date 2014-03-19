@@ -1,4 +1,3 @@
-
 package org.gittner.osmbugs.bugs;
 
 import android.graphics.drawable.Drawable;
@@ -21,13 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class KeeprightBug extends Bug {
-    private int mType;
-
-    private int mSchema;
-
-    private int mId;
-
-    private long mWay;
 
     public KeeprightBug(
             double lat,
@@ -346,4 +338,16 @@ public class KeeprightBug extends Bug {
             return new KeeprightBug[size];
         }
     };
+
+    /* Holds the Keepright Type of this Bug */
+    private int mType;
+
+    /* Holds the Keepright Schema of this Bug */
+    private int mSchema;
+
+    /* Holds the Keepright ID of this Bug */
+    private int mId;
+
+    /* Holds the Openstreetmap Way id of this Bug */
+    private long mWay;
 }

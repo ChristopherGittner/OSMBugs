@@ -1,4 +1,3 @@
-
 package org.gittner.osmbugs.tasks;
 
 import android.app.Activity;
@@ -9,8 +8,6 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 
 public class BugUpdateTask extends AsyncTask<Bug, Void, Boolean> {
-
-    Activity mActivity;
 
     public BugUpdateTask(Activity activity) {
         mActivity = activity;
@@ -44,4 +41,7 @@ public class BugUpdateTask extends AsyncTask<Bug, Void, Boolean> {
             Toast.makeText(mActivity.getApplicationContext(), mActivity.getApplicationContext().getString(R.string.failed_to_save_bug), Toast.LENGTH_LONG).show();
         }
     }
+
+    /* The Activity on which the Task should update Information */
+    Activity mActivity;
 }

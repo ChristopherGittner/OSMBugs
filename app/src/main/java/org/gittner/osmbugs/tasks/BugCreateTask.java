@@ -1,4 +1,3 @@
-
 package org.gittner.osmbugs.tasks;
 
 import android.app.Activity;
@@ -13,17 +12,9 @@ import org.osmdroid.util.GeoPoint;
 
 public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
 
-    Activity mActivity;
-
-    GeoPoint mLocation;
-
-    String mText;
-
-    int mPlatform;
-
     public BugCreateTask(Activity activity, GeoPoint location, String text, int platform) {
         mActivity = activity;
-        mLocation = location;
+        mGeoPoint = location;
         mText = text;
         mPlatform = platform;
     }
@@ -38,9 +29,9 @@ public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... v) {
         switch (mPlatform) {
             case OsmBugsActivity.OPENSTREETMAPNOTES:
-                return OpenstreetmapNote.addNew(mLocation, mText);
+                return OpenstreetmapNote.addNew(mGeoPoint, mText);
             case OsmBugsActivity.MAPDUST:
-                return MapdustBug.addNew(mLocation, mText);
+                return MapdustBug.addNew(mGeoPoint, mText);
         }
         return false;
     }
@@ -56,4 +47,16 @@ public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
             Toast.makeText(mActivity.getApplicationContext(), mActivity.getApplicationContext().getString(R.string.failed_to_save_bug), Toast.LENGTH_LONG).show();
         }
     }
+
+    /* The Activity on which the Task should update Information */
+    Activity mActivity;
+
+    /* The Geopoint where the Bug is to be created */
+    GeoPoint mGeoPoint;
+
+    /* The Text to be added to the new Bug */
+    String mText;
+
+    /* The Platform on which the Bug is to be created */
+    int mPlatform;
 }

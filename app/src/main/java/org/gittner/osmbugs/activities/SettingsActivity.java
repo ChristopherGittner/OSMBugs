@@ -1,4 +1,3 @@
-
 package org.gittner.osmbugs.activities;
 
 import android.os.Bundle;

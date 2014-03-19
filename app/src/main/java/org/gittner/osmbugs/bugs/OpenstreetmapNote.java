@@ -1,4 +1,3 @@
-
 package org.gittner.osmbugs.bugs;
 
 import android.graphics.drawable.Drawable;
@@ -23,8 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class OpenstreetmapNote extends Bug {
-
-    private long mId;
 
     public OpenstreetmapNote(
             double lat,
@@ -68,7 +65,8 @@ public class OpenstreetmapNote extends Bug {
             if (!Settings.OpenstreetmapNotes.getUsername().equals("")) {
                 client.getCredentialsProvider().setCredentials(AuthScope.ANY,
                         new UsernamePasswordCredentials(Settings.OpenstreetmapNotes.getUsername(),
-                                Settings.OpenstreetmapNotes.getPassword()));
+                                Settings.OpenstreetmapNotes.getPassword())
+                );
             }
 
             /* Add all Arguments */
@@ -102,7 +100,8 @@ public class OpenstreetmapNote extends Bug {
             if (!Settings.OpenstreetmapNotes.getUsername().equals("")) {
                 client.getCredentialsProvider().setCredentials(AuthScope.ANY,
                         new UsernamePasswordCredentials(Settings.OpenstreetmapNotes.getUsername(),
-                                Settings.OpenstreetmapNotes.getPassword()));
+                                Settings.OpenstreetmapNotes.getPassword())
+                );
             }
 
             /* Add all Arguments */
@@ -172,7 +171,8 @@ public class OpenstreetmapNote extends Bug {
         if (!Settings.OpenstreetmapNotes.getUsername().equals("")) {
             client.getCredentialsProvider().setCredentials(AuthScope.ANY,
                     new UsernamePasswordCredentials(Settings.OpenstreetmapNotes.getUsername(),
-                            Settings.OpenstreetmapNotes.getPassword()));
+                            Settings.OpenstreetmapNotes.getPassword())
+            );
         }
 
         /* Add all Arguments */
@@ -233,4 +233,7 @@ public class OpenstreetmapNote extends Bug {
             return new OpenstreetmapNote[size];
         }
     };
+
+    /* Holds the Openstreetmap Notes Id of this Bug */
+    private long mId;
 }

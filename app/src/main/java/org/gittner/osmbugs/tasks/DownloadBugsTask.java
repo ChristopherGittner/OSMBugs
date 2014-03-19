@@ -1,4 +1,3 @@
-
 package org.gittner.osmbugs.tasks;
 
 import android.app.Activity;
@@ -27,16 +26,6 @@ import java.util.ArrayList;
 
 /* Background Worker Class to get a list of Bugs and ad them to the supplied ItemizedIconOverlay */
 public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
-
-    Activity mActivity;
-
-    ItemizedIconOverlay<Bug> mBugOverlay;
-
-    MapView mMapView;
-
-    BoundingBoxE6 mBBox;
-
-    int mProgress;
 
     public DownloadBugsTask(Activity activity, ItemizedIconOverlay<Bug> bugOverlay, MapView mapView, BoundingBoxE6 bBox) {
         mActivity = activity;
@@ -477,4 +466,19 @@ public class DownloadBugsTask extends AsyncTask<Void, Integer, ArrayList<Bug>> {
 
         return new ArrayList<Bug>();
     }
+
+    /* The Activity on which the Task should update Information */
+    Activity mActivity;
+
+    /* The Destination Overlay for the downloaded Bugs */
+    ItemizedIconOverlay<Bug> mBugOverlay;
+
+    /* The MapView of the Bug Overlay */
+    MapView mMapView;
+
+    /* The Bounding Box to be downloaded */
+    BoundingBoxE6 mBBox;
+
+    /* Holds the current Progress */
+    int mProgress;
 }

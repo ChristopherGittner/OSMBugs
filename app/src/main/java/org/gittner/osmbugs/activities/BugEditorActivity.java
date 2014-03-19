@@ -1,4 +1,3 @@
-
 package org.gittner.osmbugs.activities;
 
 import android.app.Activity;
@@ -29,27 +28,11 @@ import java.util.ArrayList;
 
 public class BugEditorActivity extends Activity {
 
+    /* Dialog Ids */
     public static int DIALOGEDITCOMMENT = 1;
 
-    /* The Bug currently being edited */
-    private Bug mBug;
-
-    /* Used for passing the Bugs Position in the Buglist to this Intent */
+    /* Intent Extras Descriptions */
     public static String EXTRABUG = "BUG";
-
-    /* All Views on this Activity */
-    private TextView mTxtvTitle, mTxtvText, mTxtvNewCommentHeader, mEdttxtNewComment;
-
-    private Spinner mSpnState;
-
-    private ListView mLvComments;
-
-    private ArrayAdapter<String> mStateAdapter;
-
-    private ArrayAdapter<Comment> mCommentAdapter;
-
-    /* The Main Menu */
-    Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +43,7 @@ public class BugEditorActivity extends Activity {
 
         setContentView(R.layout.activity_bug_editor);
 
-        /*
-         * For devices that use ActionBarSherlock the Indeterminate State has to be set to false
-         * otherwise it will be displayed at start
-         */
+        /* Hide the Progress Bars at start */
         setProgressBarIndeterminate(false);
         setProgressBarIndeterminateVisibility(false);
         setProgressBarVisibility(false);
@@ -90,18 +70,10 @@ public class BugEditorActivity extends Activity {
          */
         if (mBug.willRetrieveExtraData()) {
             new AsyncTask<Bug, Void, Bug>() {
-
-                Activity activity_;
-
-                public AsyncTask<Bug, Void, Bug> init(Activity activity) {
-                    activity_ = activity;
-                    return this;
-                }
-
                 @Override
                 protected void onPreExecute() {
-                    activity_.setProgressBarIndeterminate(true);
-                    activity_.setProgressBarIndeterminateVisibility(true);
+                    BugEditorActivity.this.setProgressBarIndeterminate(true);
+                    BugEditorActivity.this.setProgressBarIndeterminateVisibility(true);
                 }
 
                 @Override
@@ -112,14 +84,14 @@ public class BugEditorActivity extends Activity {
 
                 @Override
                 protected void onPostExecute(Bug bug) {
-                    activity_.setProgressBarIndeterminate(false);
-                    activity_.setProgressBarIndeterminateVisibility(false);
-                    mCommentAdapter = new CommentAdapter(activity_, mBug.getComments());
+                    BugEditorActivity.this.setProgressBarIndeterminate(false);
+                    BugEditorActivity.this.setProgressBarIndeterminateVisibility(false);
+                    mCommentAdapter = new CommentAdapter(BugEditorActivity.this, mBug.getComments());
                     mLvComments = (ListView) findViewById(R.id.listView1);
                     mLvComments.setAdapter(mCommentAdapter);
                     mCommentAdapter.notifyDataSetChanged();
                 }
-            }.init(this).execute(mBug);
+            }.execute(mBug);
         } else {
             mCommentAdapter = new CommentAdapter(this, mBug.getComments());
             mLvComments = (ListView) findViewById(R.id.listView1);
@@ -184,7 +156,6 @@ public class BugEditorActivity extends Activity {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_cancel) {
@@ -217,6 +188,27 @@ public class BugEditorActivity extends Activity {
         else
             mMenu.findItem(R.id.action_save).setVisible(false);
     }
+
+    /* The Bug currently being edited */
+    private Bug mBug;
+
+    /* All Views on this Activity */
+    private TextView mTxtvTitle, mTxtvText, mTxtvNewCommentHeader, mEdttxtNewComment;
+
+    /* Spinner which holds the selectable states for the Bug */
+    private Spinner mSpnState;
+
+    /* Adapter for the State Spinner */
+    private ArrayAdapter<String> mStateAdapter;
+
+    /* ListView for the Bugs Comments */
+    private ListView mLvComments;
+
+    /* Adapter for the Comments ListView */
+    private ArrayAdapter<Comment> mCommentAdapter;
+
+    /* The Main Menu */
+    Menu mMenu;
 
     public class CommentAdapter extends ArrayAdapter<Comment> {
 

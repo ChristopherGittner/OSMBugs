@@ -1,4 +1,3 @@
-
 package org.gittner.osmbugs.activities;
 
 import android.app.Activity;
@@ -13,7 +12,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -39,48 +37,23 @@ import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
 
-public class OsmBugsActivity extends Activity implements OnItemGestureListener<Bug> {
+public class OsmBugsActivity extends Activity {
 
+    /* Request Codes for activities */
     public static final int REQUESTCODEBUGEDITORACTIVITY = 1;
-
     public static final int REQUESTCODESETTINGSACTIVITY = 2;
 
+    /* Dialog Ids */
     private static final int DIALOGNEWBUG = 1;
-
     private static final int DIALOGNEWBUGTEXT = 2;
-
     private static final int DIALOGABOUT = 3;
 
+    /* Platform Ids */
     public static final int INVALIDPLATFORM = -1;
-
     public static final int KEEPRIGHT = 1;
-
     public static final int OPENSTREETBUGS = 2;
-
     public static final int OPENSTREETMAPNOTES = 3;
-
     public static final int MAPDUST = 4;
-
-    private LocationManager mLocMgr = null;
-
-    private MapView mMapView = null;
-
-    private ArrayList<Bug> mBugs;
-
-    private ItemizedIconOverlay<Bug> mBugOverlay;
-
-    /* The Location Marker Overlay */
-    private ItemizedIconOverlay<OverlayItem> mLocationOverlay;
-
-    private boolean mAddNewBugOnNextClick = false;
-
-    /* Used to save the Point where to create the new Bug */
-    private static GeoPoint mNewBugLocation;
-
-    /* Used to save the new Bugs platform */
-    private static int mNewBugPlatform;
-
-    private Location mLastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +78,11 @@ public class OsmBugsActivity extends Activity implements OnItemGestureListener<B
 
         /* Create Bug Overlay */
         mBugs = new ArrayList<Bug>();
-        mBugOverlay = new ItemizedIconOverlay<Bug>(mBugs, Drawings.KeeprightDrawable30, this, new DefaultResourceProxyImpl(this));
+        mBugOverlay = new ItemizedIconOverlay<Bug>(
+                mBugs,
+                Drawings.KeeprightDrawable30,
+                mOnitemGestureListener,
+                new DefaultResourceProxyImpl(this));
 
         /* Create Position Marker Overlay */
         mLocationOverlay =
@@ -122,7 +99,8 @@ public class OsmBugsActivity extends Activity implements OnItemGestureListener<B
                                 return false;
                             }
                         },
-                        new DefaultResourceProxyImpl(this));
+                        new DefaultResourceProxyImpl(this)
+                );
 
         /* Setup Main MapView */
         mMapView = (MapView) findViewById(R.id.mapview);
@@ -175,7 +153,7 @@ public class OsmBugsActivity extends Activity implements OnItemGestureListener<B
 
         String bestProvider = mLocMgr.getBestProvider(locationCriteria, true);
 
-        if(bestProvider == null)
+        if (bestProvider == null)
             return;
 
         mLocMgr.requestLocationUpdates(bestProvider, 0, 0, mLocationListener);
@@ -195,109 +173,39 @@ public class OsmBugsActivity extends Activity implements OnItemGestureListener<B
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.osm_bugs, menu);
-        menu.findItem(R.id.center_gps).setChecked(Settings.getCenterGps());
+        menu.findItem(R.id.follow_gps).setChecked(Settings.getFollowGps());
         return true;
     }
 
-    @SuppressWarnings({
-            "deprecation"
-    })
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
-            /* Start the Settings Activity */
-            Intent i = new Intent(this, SettingsActivity.class);
-            startActivityForResult(i, REQUESTCODESETTINGSACTIVITY);
-            return true;
-        } else if (item.getItemId() == R.id.center_gps) {
-            /* Toggle GPS Map Following */
-            item.setChecked(!item.isChecked());
-            Settings.setCenterGps(!Settings.getCenterGps());
+        switch(item.getItemId()){
+            case R.id.action_settings:
+                menuSettingsClicked(item);
+                return true;
 
-            /*
-             * On android API <= 10 The Menu won't display a checkbox so we show a Toast with the
-             * Status
-             */
-            if (android.os.Build.VERSION.SDK_INT <= 10) {
-                if (Settings.getCenterGps())
-                    Toast.makeText(this, getString(R.string.center_on_gps_enabled), Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(this, getString(R.string.center_on_gps_disabled), Toast.LENGTH_LONG).show();
-            }
+            case R.id.follow_gps:
+                menuCenterGpsClicked(item);
+                return true;
 
-            return true;
-        } else if (item.getItemId() == R.id.refresh) {
-            /* Update the current Bugs */
-            refreshBugs();
-        } else if (item.getItemId() == R.id.center_gps_action) {
-            mMapView.getController().setCenter(new GeoPoint(mLastLocation));
-        } else if (item.getItemId() == R.id.about) {
-            this.showDialog(DIALOGABOUT);
-        } else if (item.getItemId() == R.id.add_bug) {
-            if (!mAddNewBugOnNextClick) {
-                mAddNewBugOnNextClick = true;
-                Toast.makeText(this, getString(R.string.bug_creation_mode_enabled), Toast.LENGTH_LONG).show();
-            } else {
-                mAddNewBugOnNextClick = false;
-                Toast.makeText(this, getString(R.string.bug_creation_mode_disabled), Toast.LENGTH_LONG).show();
-            }
+            case R.id.refresh:
+                menuRefreshClicked(item);
+                return true;
+
+            case R.id.go_to_gps:
+                menuGoToGPSClicked(item);
+                return true;
+
+            case R.id.about:
+                menuAboutClicked(item);
+                return true;
+
+            case R.id.add_bug:
+                menuAddBugClicked(item);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void refreshBugs() {
-        new DownloadBugsTask(this, mBugOverlay, mMapView, mMapView.getBoundingBox()).execute();
-    }
-
-    private LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            /* Store the location for later use */
-            mLastLocation = location;
-
-            /* Center Map on GPS Position if activated */
-            if(Settings.getCenterGps())
-                mMapView.getController().setCenter(new GeoPoint(location));
-
-            /* Update the Location Marker */
-            mLocationOverlay.removeAllItems();
-            OverlayItem i = new OverlayItem("", "", new GeoPoint(location));
-            i.setMarker(Drawings.LocationMarker);
-            mLocationOverlay.addItem(i);
-            mMapView.invalidate();
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-
-        }
-    };
-
-    @Override
-    public boolean onItemLongPress(int n, Bug bug) {
-        return false;
-    }
-
-    @Override
-    public boolean onItemSingleTapUp(int index, Bug bug) {
-        /* Open the selected Bug in the Bug Editor */
-        Intent i = new Intent(this, BugEditorActivity.class);
-        i.putExtra(BugEditorActivity.EXTRABUG, bug);
-
-        startActivityForResult(i, REQUESTCODEBUGEDITORACTIVITY);
-
-        return false;
     }
 
     @Override
@@ -397,6 +305,50 @@ public class OsmBugsActivity extends Activity implements OnItemGestureListener<B
         return super.onCreateDialog(id);
     }
 
+    private void menuSettingsClicked(MenuItem item) {
+        /* Start the Settings Activity */
+        Intent i = new Intent(this, SettingsActivity.class);
+        startActivityForResult(i, REQUESTCODESETTINGSACTIVITY);
+    }
+
+    private void menuCenterGpsClicked(MenuItem item) {
+        /* Toggle GPS Map Following */
+        item.setChecked(!item.isChecked());
+        Settings.setCenterGps(!Settings.getFollowGps());
+    }
+
+    private void menuRefreshClicked(MenuItem item) {
+        /* Update all Bugs */
+        refreshBugs();
+    }
+
+    private void menuGoToGPSClicked(MenuItem item) {
+        /* Center the GPS on the last known Location */
+        if(mLastLocation != null)
+            mMapView.getController().setCenter(new GeoPoint(mLastLocation));
+    }
+
+    private void menuAboutClicked(MenuItem item) {
+        //noinspection deprecation
+        this.showDialog(DIALOGABOUT);
+    }
+
+    private void menuAddBugClicked(MenuItem item) {
+        /* Enable or Disable the Bug creation mode */
+        if (!mAddNewBugOnNextClick) {
+            mAddNewBugOnNextClick = true;
+            Toast.makeText(this, getString(R.string.bug_creation_mode_enabled), Toast.LENGTH_LONG).show();
+        } else {
+            mAddNewBugOnNextClick = false;
+            Toast.makeText(this, getString(R.string.bug_creation_mode_disabled), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void refreshBugs() {
+        /* Reload all Bugs */
+        new DownloadBugsTask(this, mBugOverlay, mMapView, mMapView.getBoundingBox()).execute();
+    }
+
     private void createBug(int platform, String text) {
         new BugCreateTask(
                 this,
@@ -404,6 +356,86 @@ public class OsmBugsActivity extends Activity implements OnItemGestureListener<B
                         mNewBugLocation.getLatitudeE6() / 1000000.0,
                         mNewBugLocation.getLongitudeE6() / 1000000.0),
                 text,
-                platform).execute();
+                platform
+        ).execute();
     }
+
+    /* The LocationManager to retrieve the current position */
+    private LocationManager mLocMgr = null;
+
+    /* The last location retrieved from the LocationListener */
+    private Location mLastLocation;
+
+    /* The main map */
+    private MapView mMapView = null;
+
+    /* Bugs displayed on the map */
+    private ArrayList<Bug> mBugs;
+
+    /* The Overlay for Bugs displayed on the map */
+    private ItemizedIconOverlay<Bug> mBugOverlay;
+
+    /* The Location Marker Overlay */
+    private ItemizedIconOverlay<OverlayItem> mLocationOverlay;
+
+    /* The next touch event on the map opens the add Bug Prompt */
+    private boolean mAddNewBugOnNextClick = false;
+
+    /* Used to save the Point where to create the new Bug */
+    private static GeoPoint mNewBugLocation;
+
+    /* Used to save the new Bugs platform */
+    private static int mNewBugPlatform;
+
+    private LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            /* Store the location for later use */
+            mLastLocation = location;
+
+            /* Center Map on GPS Position if activated */
+            if (Settings.getFollowGps())
+                mMapView.getController().setCenter(new GeoPoint(location));
+
+            /* Update the Location Marker */
+            mLocationOverlay.removeAllItems();
+            OverlayItem i = new OverlayItem("", "", new GeoPoint(location));
+            i.setMarker(Drawings.LocationMarker);
+            mLocationOverlay.addItem(i);
+            mMapView.invalidate();
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    };
+
+    private OnItemGestureListener<Bug> mOnitemGestureListener = new OnItemGestureListener<Bug>() {
+        @Override
+        public boolean onItemSingleTapUp(int position, Bug bug) {
+            /* Open the selected Bug in the Bug Editor */
+            Intent i = new Intent(OsmBugsActivity.this, BugEditorActivity.class);
+            i.putExtra(BugEditorActivity.EXTRABUG, bug);
+
+            startActivityForResult(i, REQUESTCODEBUGEDITORACTIVITY);
+
+            return false;
+        }
+
+        @Override
+        public boolean onItemLongPress(int i, Bug bug) {
+            return false;
+        }
+    };
 }

@@ -1,4 +1,3 @@
-
 package org.gittner.osmbugs.parser;
 
 import org.gittner.osmbugs.bugs.Bug;
