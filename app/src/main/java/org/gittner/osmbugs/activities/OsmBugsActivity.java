@@ -8,10 +8,12 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -37,10 +39,7 @@ import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
 
-public class OsmBugsActivity extends Activity
-        implements
-        LocationListener,
-        OnItemGestureListener<Bug> {
+public class OsmBugsActivity extends Activity implements OnItemGestureListener<Bug> {
 
     public static final int REQUESTCODEBUGEDITORACTIVITY = 1;
 
@@ -93,10 +92,7 @@ public class OsmBugsActivity extends Activity
 
         setContentView(R.layout.activity_osm_bugs);
 
-        /*
-         * For devices that use ActionBarSherlock the Indeterminate State has to be set to false
-         * otherwise it will be displayed at start
-         */
+        /* Hide the ProgressBars at start */
         setProgressBarIndeterminate(false);
         setProgressBarIndeterminateVisibility(false);
         setProgressBarVisibility(false);
@@ -165,9 +161,8 @@ public class OsmBugsActivity extends Activity
         /* Setup the LocationManager */
         mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-        /* Set the start Location */
-        mLastLocation = Settings.getLastKnownLocation();
-        centerMap(mLastLocation, true);
+        /* Set the Initial Center of the map */
+        mMapView.getController().setCenter(Settings.getLastKnownLocation());
     }
 
     @Override
@@ -175,7 +170,15 @@ public class OsmBugsActivity extends Activity
         super.onResume();
 
         /* Start Listening to Location updates */
-        mLocMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        Criteria locationCriteria = new Criteria();
+        locationCriteria.setAccuracy(Criteria.ACCURACY_FINE);
+
+        String bestProvider = mLocMgr.getBestProvider(locationCriteria, true);
+
+        if(bestProvider == null)
+            return;
+
+        mLocMgr.requestLocationUpdates(bestProvider, 0, 0, mLocationListener);
     }
 
     @Override
@@ -183,7 +186,7 @@ public class OsmBugsActivity extends Activity
         super.onPause();
 
         /* Stop Listening to Location updates */
-        mLocMgr.removeUpdates(this);
+        mLocMgr.removeUpdates(mLocationListener);
 
         /* Save the last Location */
         Settings.setLastKnownLocation(mMapView.getMapCenter());
@@ -227,7 +230,7 @@ public class OsmBugsActivity extends Activity
             /* Update the current Bugs */
             refreshBugs();
         } else if (item.getItemId() == R.id.center_gps_action) {
-            centerMap(mLastLocation, true);
+            mMapView.getController().setCenter(new GeoPoint(mLastLocation));
         } else if (item.getItemId() == R.id.about) {
             this.showDialog(DIALOGABOUT);
         } else if (item.getItemId() == R.id.add_bug) {
@@ -247,42 +250,39 @@ public class OsmBugsActivity extends Activity
         new DownloadBugsTask(this, mBugOverlay, mMapView, mMapView.getBoundingBox()).execute();
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
+    private LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            /* Store the location for later use */
+            mLastLocation = location;
 
-        mLastLocation = location;
+            /* Center Map on GPS Position if activated */
+            if(Settings.getCenterGps())
+                mMapView.getController().setCenter(new GeoPoint(location));
 
-        centerMap(mLastLocation, false);
-    }
-
-    private void centerMap(Location location, boolean force) {
-        /* Center Map on GPS Position if activated */
-        if (Settings.getCenterGps() || force) {
-            mMapView.getController().setCenter(new GeoPoint(location));
+            /* Update the Location Marker */
+            mLocationOverlay.removeAllItems();
+            OverlayItem i = new OverlayItem("", "", new GeoPoint(location));
+            i.setMarker(Drawings.LocationMarker);
+            mLocationOverlay.addItem(i);
+            mMapView.invalidate();
         }
 
-        /* Update the Location Marker */
-        mLocationOverlay.removeAllItems();
-        OverlayItem i = new OverlayItem("", "", new GeoPoint(location));
-        i.setMarker(Drawings.LocationMarker);
-        mLocationOverlay.addItem(i);
-        mMapView.invalidate();
-    }
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
 
-    @Override
-    public void onProviderDisabled(String provider) {
+        }
 
-    }
+        @Override
+        public void onProviderEnabled(String s) {
 
-    @Override
-    public void onProviderEnabled(String provider) {
+        }
 
-    }
+        @Override
+        public void onProviderDisabled(String s) {
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
+        }
+    };
 
     @Override
     public boolean onItemLongPress(int n, Bug bug) {

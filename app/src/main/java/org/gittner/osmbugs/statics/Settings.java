@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.preference.PreferenceManager;
 
 import org.osmdroid.api.IGeoPoint;
+import org.osmdroid.util.GeoPoint;
 
 import java.util.Locale;
 
@@ -32,13 +33,10 @@ public class Settings {
     }
 
     /* Location will be saved as String since Prefernces can not store Double */
-    public static Location getLastKnownLocation() {
-        Location location = new Location(LocationManager.GPS_PROVIDER);
-
-        location.setLatitude(Double.parseDouble(mPrefs.getString("pref_last_location_lat", "0")));
-        location.setLongitude(Double.parseDouble(mPrefs.getString("pref_last_location_lon", "0")));
-
-        return location;
+    public static GeoPoint getLastKnownLocation() {
+        return new GeoPoint(
+                Double.parseDouble(mPrefs.getString("pref_last_location_lat", "0")),
+                Double.parseDouble(mPrefs.getString("pref_last_location_lon", "0")));
     }
 
     public static void setLastKnownLocation(Location location) {
