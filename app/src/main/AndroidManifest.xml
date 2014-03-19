@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.gittner.osmbugs" >
+    package="org.gittner.osmbugs">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,10 +13,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name="org.gittner.osmbugs.activities.OsmBugsActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,8 +29,10 @@
         <activity android:name="org.gittner.osmbugs.activities.SettingsActivity" />
         <activity
             android:name="org.gittner.osmbugs.activities.AddMapdustBugActivity"
-            android:label="@string/title_activity_add_mapdust_bug" >
-        </activity>
+            android:label="@string/title_activity_add_mapdust_bug"></activity>
+        <activity
+            android:name=".activities.AddOpenstreetmapNote"
+            android:label="@string/title_activity_add_openstreetmap_note"></activity>
     </application>
 
 </manifest>

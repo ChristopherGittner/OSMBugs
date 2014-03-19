@@ -9,16 +9,14 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.bugs.MapdustBug;
+import org.gittner.osmbugs.bugs.OpenstreetmapNote;
 import org.osmdroid.util.GeoPoint;
 
-public class AddMapdustBugActivity extends Activity {
+public class AddOpenstreetmapNote extends Activity {
 
     /* The Intents Extras */
     public static final String EXTRALATITUDE = "EXTRALATITUDE";
@@ -31,7 +29,7 @@ public class AddMapdustBugActivity extends Activity {
         requestWindowFeature(Window.FEATURE_PROGRESS);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_mapdust_bug);
+        setContentView(R.layout.activity_add_openstreetmap_note);
 
         /* Hide the ProgressBars at start */
         setProgressBarIndeterminate(false);
@@ -43,25 +41,6 @@ public class AddMapdustBugActivity extends Activity {
         mLatitude = intent.getDoubleExtra(EXTRALATITUDE, 0);
         mLongitude = intent.getDoubleExtra(EXTRALONGITUDE, 0);
 
-        /* Setup the Type Adapter */
-        mSpnType = (Spinner) findViewById(R.id.spnType);
-
-        mTypeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-        mSpnType.setAdapter(mTypeAdapter);
-
-        mTypeAdapter.add(getString(R.string.wrong_turn));
-        mTypeAdapter.add(getString(R.string.bad_routing));
-        mTypeAdapter.add(getString(R.string.oneway_road));
-        mTypeAdapter.add(getString(R.string.blocked_street));
-        mTypeAdapter.add(getString(R.string.missing_street));
-        mTypeAdapter.add(getString(R.string.roundabout));
-        mTypeAdapter.add(getString(R.string.missing_speed_info));
-        mTypeAdapter.add(getString(R.string.other));
-
-        mSpnType.setSelection(7);
-
-        mTypeAdapter.notifyDataSetChanged();
-
         /* Setup the Descriptions EditText */
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
         if (edttxtDescription != null) {
@@ -72,7 +51,7 @@ public class AddMapdustBugActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.add_mapdust_bug, menu);
+        getMenuInflater().inflate(R.menu.add_openstreetmap_note, menu);
 
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
         MenuItem menuItemSave = menu.findItem(R.id.action_save);
@@ -114,70 +93,33 @@ public class AddMapdustBugActivity extends Activity {
         class TaskParameter {
             GeoPoint geoPoint;
             String description;
-            int type;
         }
 
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
-
-        int type = 7;
-        switch (mSpnType.getSelectedItemPosition()) {
-            case 0:
-                type = MapdustBug.WRONGTURN;
-                break;
-
-            case 1:
-                type = MapdustBug.BADROUTING;
-                break;
-
-            case 2:
-                type = MapdustBug.ONEWAYROAD;
-                break;
-
-            case 3:
-                type = MapdustBug.BLOCKEDSTREET;
-                break;
-
-            case 4:
-                type = MapdustBug.MISSINGSTREET;
-                break;
-
-            case 5:
-                type = MapdustBug.ROUNDABOUTISSUE;
-                break;
-
-            case 6:
-                type = MapdustBug.MISSINGSPEEDINFO;
-                break;
-
-            case 7:
-                type = MapdustBug.OTHER;
-                break;
-        }
 
         /* Prepare Parameters */
         TaskParameter parameter = new TaskParameter();
         parameter.geoPoint = new GeoPoint(mLatitude, mLongitude);
         parameter.description = edttxtDescription.getText().toString();
-        parameter.type = type;
 
         /* Create and execute AsyncTask */
         new AsyncTask<TaskParameter, Void, Boolean>() {
             @Override
             protected void onPreExecute() {
-                AddMapdustBugActivity.this.setProgressBarIndeterminateVisibility(true);
+                AddOpenstreetmapNote.this.setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
             protected Boolean doInBackground(TaskParameter... parameters) {
-                return MapdustBug.addNew(parameters[0].geoPoint, parameters[0].type, parameters[0].description);
+                return OpenstreetmapNote.addNew(parameters[0].geoPoint, parameters[0].description);
             }
 
             @Override
             protected void onPostExecute(Boolean success) {
-                AddMapdustBugActivity.this.setProgressBarIndeterminateVisibility(false);
+                AddOpenstreetmapNote.this.setProgressBarIndeterminateVisibility(false);
 
                 if (!success) {
-                    Toast.makeText(AddMapdustBugActivity.this, "Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddOpenstreetmapNote.this, "Error", Toast.LENGTH_LONG).show();
                 } else {
                     finish();
                 }
@@ -204,15 +146,10 @@ public class AddMapdustBugActivity extends Activity {
         }
     };
 
-    /* The Spinner of different Types */
-    private Spinner mSpnType;
-
-    /* The Adapter for the types Spinner */
-    private ArrayAdapter<String> mTypeAdapter;
-
     /* Holds the Latitude of the new Bug */
     private double mLatitude;
 
     /* Holds the Longitude of the new Bug */
     private double mLongitude;
+
 }

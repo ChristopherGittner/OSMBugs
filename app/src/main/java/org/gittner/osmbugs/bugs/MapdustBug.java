@@ -251,7 +251,7 @@ public class MapdustBug extends Bug {
         arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
         arguments.add(new BasicNameValuePair("coordinates", String.valueOf(position.getLongitudeE6() / 1000000.0) + "," + String.valueOf(position.getLatitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("description", text));
-        switch(type) {
+        switch (type) {
             case WRONGTURN:
                 arguments.add(new BasicNameValuePair("type", "wrong_turn"));
                 break;

@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.gittner.osmbugs.activities.AddMapdustBugActivity">
+    tools:context="org.gittner.osmbugs.activities.AddOpenstreetmapNote">
 
     <item
         android:id="@+id/action_cancel"

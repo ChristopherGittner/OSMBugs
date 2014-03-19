@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -25,7 +24,6 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
-import org.gittner.osmbugs.tasks.BugCreateTask;
 import org.gittner.osmbugs.tasks.DownloadBugsTask;
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.util.GeoPoint;
@@ -179,7 +177,7 @@ public class OsmBugsActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 menuSettingsClicked(item);
                 return true;
@@ -242,10 +240,8 @@ public class OsmBugsActivity extends Activity {
             builder.setPositiveButton(getString(R.string.ok), new OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if (spnPlatform.getSelectedItemPosition() == 0)
-                        mNewBugPlatform = OPENSTREETMAPNOTES;
-                    else if (spnPlatform.getSelectedItemPosition() == 1) {
-                        Intent i = new Intent(OsmBugsActivity.this, AddMapdustBugActivity.class);
+                    if (spnPlatform.getSelectedItemPosition() == 0) {
+                        Intent i = new Intent(OsmBugsActivity.this, AddOpenstreetmapNote.class);
 
                         i.putExtra(AddMapdustBugActivity.EXTRALATITUDE, mNewBugLocation.getLatitude());
                         i.putExtra(AddMapdustBugActivity.EXTRALONGITUDE, mNewBugLocation.getLongitude());
@@ -253,39 +249,18 @@ public class OsmBugsActivity extends Activity {
                         startActivity(i);
 
                         dialog.dismiss();
-                        return;
+                    } else if (spnPlatform.getSelectedItemPosition() == 1) {
+                        Intent i = new Intent(OsmBugsActivity.this, AddMapdustBugActivity.class);
+
+                        i.putExtra(AddOpenstreetmapNote.EXTRALATITUDE, mNewBugLocation.getLatitude());
+                        i.putExtra(AddOpenstreetmapNote.EXTRALONGITUDE, mNewBugLocation.getLongitude());
+
+                        startActivity(i);
+
+                        dialog.dismiss();
+                    } else {
+                        dialog.dismiss();
                     }
-                    else
-                        mNewBugPlatform = INVALIDPLATFORM;
-
-                    if (mNewBugPlatform != INVALIDPLATFORM)
-                        showDialog(DIALOGNEWBUGTEXT);
-
-                    dialog.dismiss();
-                }
-            });
-            builder.setNegativeButton(getString(R.string.cancel), new OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-
-            return builder.create();
-        } else if (id == DIALOGNEWBUGTEXT) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            final EditText newBugText = new EditText(this);
-            builder.setView(newBugText);
-
-            builder.setMessage(getString(R.string.new_bugs_text));
-            builder.setPositiveButton(getString(R.string.ok), new OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (!newBugText.getText().toString().equals(""))
-                        createBug(mNewBugPlatform, newBugText.getText().toString());
-
-                    dialog.dismiss();
                 }
             });
             builder.setNegativeButton(getString(R.string.cancel), new OnClickListener() {
@@ -333,7 +308,7 @@ public class OsmBugsActivity extends Activity {
 
     private void menuGoToGPSClicked(MenuItem item) {
         /* Center the GPS on the last known Location */
-        if(mLastLocation != null)
+        if (mLastLocation != null)
             mMapView.getController().setCenter(new GeoPoint(mLastLocation));
     }
 
@@ -356,17 +331,6 @@ public class OsmBugsActivity extends Activity {
     private void refreshBugs() {
         /* Reload all Bugs */
         new DownloadBugsTask(this, mBugOverlay, mMapView, mMapView.getBoundingBox()).execute();
-    }
-
-    private void createBug(int platform, String text) {
-        new BugCreateTask(
-                this,
-                new GeoPoint(
-                        mNewBugLocation.getLatitudeE6() / 1000000.0,
-                        mNewBugLocation.getLongitudeE6() / 1000000.0),
-                text,
-                platform
-        ).execute();
     }
 
     /* The LocationManager to retrieve the current position */

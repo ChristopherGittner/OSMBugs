@@ -134,5 +134,8 @@
     <string name="loading_bug_please_wait">Bitte Warten\nFehler wird geladen</string>
     <string name="debug">Debug</string>
     <string name="use_debug_server">Debug Server nutzen</string>
+    <string name="title_activity_add_mapdust_bug">Mapdust Fehler hinzufügen</string>
     <string name="type">Typ</string>
+    <string name="title_activity_add_openstreetmap_note">Openstreetmap Note hinzufügen</string>
+
 </resources>

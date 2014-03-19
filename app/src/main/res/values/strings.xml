@@ -135,7 +135,7 @@
     <string name="debug">Debug</string>
     <string name="use_debug_server">Use Debug Server</string>
     <string name="title_activity_add_mapdust_bug">Add Mapdust Bug</string>
-    <string name="hello_world">Hello world!</string>
     <string name="type">Type</string>
+    <string name="title_activity_add_openstreetmap_note">Add Openstreetmap Note</string>
 
 </resources>
