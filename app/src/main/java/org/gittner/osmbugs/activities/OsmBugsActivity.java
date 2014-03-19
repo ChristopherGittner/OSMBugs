@@ -244,8 +244,17 @@ public class OsmBugsActivity extends Activity {
                 public void onClick(DialogInterface dialog, int which) {
                     if (spnPlatform.getSelectedItemPosition() == 0)
                         mNewBugPlatform = OPENSTREETMAPNOTES;
-                    else if (spnPlatform.getSelectedItemPosition() == 2)
-                        mNewBugPlatform = MAPDUST;
+                    else if (spnPlatform.getSelectedItemPosition() == 1) {
+                        Intent i = new Intent(OsmBugsActivity.this, AddMapdustBugActivity.class);
+
+                        i.putExtra(AddMapdustBugActivity.EXTRALATITUDE, mNewBugLocation.getLatitude());
+                        i.putExtra(AddMapdustBugActivity.EXTRALONGITUDE, mNewBugLocation.getLongitude());
+
+                        startActivity(i);
+
+                        dialog.dismiss();
+                        return;
+                    }
                     else
                         mNewBugPlatform = INVALIDPLATFORM;
 

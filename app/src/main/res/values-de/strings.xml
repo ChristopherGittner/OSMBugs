@@ -134,4 +134,5 @@
     <string name="loading_bug_please_wait">Bitte Warten\nFehler wird geladen</string>
     <string name="debug">Debug</string>
     <string name="use_debug_server">Debug Server nutzen</string>
+    <string name="type">Typ</string>
 </resources>

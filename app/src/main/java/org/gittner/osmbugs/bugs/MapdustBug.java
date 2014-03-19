@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -29,14 +30,14 @@ import java.util.ArrayList;
 public class MapdustBug extends Bug {
 
     /* All Mapdust Types */
-    public static int WRONGTURN = 1;
-    public static int BADROUTING = 2;
-    public static int ONEWAYROAD = 3;
-    public static int BLOCKEDSTREET = 4;
-    public static int MISSINGSTREET = 5;
-    public static int ROUNDABOUTISSUE = 6;
-    public static int MISSINGSPEEDINFO = 7;
-    public static int OTHER = 8;
+    public static final int WRONGTURN = 1;
+    public static final int BADROUTING = 2;
+    public static final int ONEWAYROAD = 3;
+    public static final int BLOCKEDSTREET = 4;
+    public static final int MISSINGSTREET = 5;
+    public static final int ROUNDABOUTISSUE = 6;
+    public static final int MISSINGSPEEDINFO = 7;
+    public static final int OTHER = 8;
 
     public MapdustBug(
             double lat,
@@ -233,8 +234,7 @@ public class MapdustBug extends Bug {
         return false;
     }
 
-    public static boolean addNew(GeoPoint position, String text) {
-        // TODO: Make it possible to add other Bug Types than "other"
+    public static boolean addNew(GeoPoint position, int type, String text) {
         DefaultHttpClient client = new DefaultHttpClient();
 
         /* Add the Authentication Details if we have a username in the Preferences */
@@ -251,8 +251,45 @@ public class MapdustBug extends Bug {
         arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
         arguments.add(new BasicNameValuePair("coordinates", String.valueOf(position.getLongitudeE6() / 1000000.0) + "," + String.valueOf(position.getLatitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("description", text));
-        arguments.add(new BasicNameValuePair("type", "other"));
+        switch(type) {
+            case WRONGTURN:
+                arguments.add(new BasicNameValuePair("type", "wrong_turn"));
+                break;
+
+            case BADROUTING:
+                arguments.add(new BasicNameValuePair("type", "bad_routing"));
+                break;
+
+            case ONEWAYROAD:
+                arguments.add(new BasicNameValuePair("type", "oneway_road"));
+                break;
+
+            case BLOCKEDSTREET:
+                arguments.add(new BasicNameValuePair("type", "blocked_street"));
+                break;
+
+            case MISSINGSTREET:
+                arguments.add(new BasicNameValuePair("type", "missing_street"));
+                break;
+
+            case ROUNDABOUTISSUE:
+                arguments.add(new BasicNameValuePair("type", "wrong_roundabout"));
+                break;
+
+            case MISSINGSPEEDINFO:
+                arguments.add(new BasicNameValuePair("type", "missing_speedlimit"));
+                break;
+
+            case OTHER:
+                arguments.add(new BasicNameValuePair("type", "other"));
+                break;
+
+            default:
+                return false;
+        }
         arguments.add(new BasicNameValuePair("nickname", Settings.Mapdust.getUsername()));
+
+        Log.w("", "http://st.www.mapdust.com/api/addBug?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         HttpPost request;
         if (Settings.isDebugEnabled())

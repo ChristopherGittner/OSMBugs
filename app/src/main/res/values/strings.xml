@@ -64,10 +64,12 @@
     <string name="enter_username">Enter Username</string>
     <string name="username">Username</string>
     <string name="platform">Platform</string>
+
     <string-array name="new_bug_platforms">
         <item>Openstreetmap Notes</item>
         <item>Mapdust</item>
     </string-array>
+
     <string name="new_bugs_text">New Bugs Text</string>
     <string name="mapdust">Mapdust</string>
     <string name="wrong_turn">Wrong Turn</string>
@@ -88,8 +90,7 @@
     <string name="dialog_about_text">OSMBugs V0.6.1 - Beta\nThis App uses Data from:\n\nThe
         Openstreetmap
         Project:\nhttp://www.openstreetmap.org\n\nKeepright:\nhttp://www.keepright.at\n\nOpenstreetbugs:\nhttp://openstreetbugs.schokokeks.org\n\nMapdust:\nhttp://www.mapdust.com\n\nAsher
-        (Bug Icon):\nhttp://kyo-tux.deviantart.com
-    </string>
+        (Bug Icon):\nhttp://kyo-tux.deviantart.com</string>
     <string name="openstreetmap_notes">Openstreetmap Notes</string>
     <string name="edit">Edit</string>
     <string name="comments">Comments</string>
@@ -133,4 +134,8 @@
     <string name="loading_bug_please_wait">Loading Bug.\nPleas Wait</string>
     <string name="debug">Debug</string>
     <string name="use_debug_server">Use Debug Server</string>
+    <string name="title_activity_add_mapdust_bug">Add Mapdust Bug</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="type">Type</string>
+
 </resources>

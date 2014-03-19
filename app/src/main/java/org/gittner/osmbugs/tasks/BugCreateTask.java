@@ -30,8 +30,6 @@ public class BugCreateTask extends AsyncTask<Void, Void, Boolean> {
         switch (mPlatform) {
             case OsmBugsActivity.OPENSTREETMAPNOTES:
                 return OpenstreetmapNote.addNew(mGeoPoint, mText);
-            case OsmBugsActivity.MAPDUST:
-                return MapdustBug.addNew(mGeoPoint, mText);
         }
         return false;
     }
