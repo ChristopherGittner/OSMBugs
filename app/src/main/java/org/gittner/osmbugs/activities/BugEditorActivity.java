@@ -213,6 +213,7 @@ public class BugEditorActivity extends Activity {
                 @Override
                 protected void onPostExecute(Boolean result) {
                     if(result) {
+                        BugEditorActivity.this.setResult(RESULT_OK);
                         BugEditorActivity.this.finish();
                     }
                     else {
