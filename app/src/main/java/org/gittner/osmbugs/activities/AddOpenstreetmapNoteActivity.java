@@ -16,7 +16,7 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.OpenstreetmapNote;
 import org.osmdroid.util.GeoPoint;
 
-public class AddOpenstreetmapNote extends Activity {
+public class AddOpenstreetmapNoteActivity extends Activity {
 
     /* The Intents Extras */
     public static final String EXTRALATITUDE = "EXTRALATITUDE";
@@ -106,7 +106,7 @@ public class AddOpenstreetmapNote extends Activity {
         new AsyncTask<TaskParameter, Void, Boolean>() {
             @Override
             protected void onPreExecute() {
-                AddOpenstreetmapNote.this.setProgressBarIndeterminateVisibility(true);
+                AddOpenstreetmapNoteActivity.this.setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -116,10 +116,10 @@ public class AddOpenstreetmapNote extends Activity {
 
             @Override
             protected void onPostExecute(Boolean success) {
-                AddOpenstreetmapNote.this.setProgressBarIndeterminateVisibility(false);
+                AddOpenstreetmapNoteActivity.this.setProgressBarIndeterminateVisibility(false);
 
                 if (!success) {
-                    Toast.makeText(AddOpenstreetmapNote.this, "Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddOpenstreetmapNoteActivity.this, "Error", Toast.LENGTH_LONG).show();
                 } else {
                     finish();
                 }

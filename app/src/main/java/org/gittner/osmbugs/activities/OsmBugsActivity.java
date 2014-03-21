@@ -250,7 +250,7 @@ public class OsmBugsActivity extends Activity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (spnPlatform.getSelectedItemPosition() == 0) {
-                        Intent i = new Intent(OsmBugsActivity.this, AddOpenstreetmapNote.class);
+                        Intent i = new Intent(OsmBugsActivity.this, AddOpenstreetmapNoteActivity.class);
 
                         i.putExtra(AddMapdustBugActivity.EXTRALATITUDE, mNewBugLocation.getLatitude());
                         i.putExtra(AddMapdustBugActivity.EXTRALONGITUDE, mNewBugLocation.getLongitude());
@@ -261,8 +261,8 @@ public class OsmBugsActivity extends Activity {
                     } else if (spnPlatform.getSelectedItemPosition() == 1) {
                         Intent i = new Intent(OsmBugsActivity.this, AddMapdustBugActivity.class);
 
-                        i.putExtra(AddOpenstreetmapNote.EXTRALATITUDE, mNewBugLocation.getLatitude());
-                        i.putExtra(AddOpenstreetmapNote.EXTRALONGITUDE, mNewBugLocation.getLongitude());
+                        i.putExtra(AddOpenstreetmapNoteActivity.EXTRALATITUDE, mNewBugLocation.getLatitude());
+                        i.putExtra(AddOpenstreetmapNoteActivity.EXTRALONGITUDE, mNewBugLocation.getLongitude());
 
                         startActivity(i);
 

@@ -32,7 +32,7 @@
             android:name="org.gittner.osmbugs.activities.AddMapdustBugActivity"
             android:label="@string/title_activity_add_mapdust_bug"></activity>
         <activity
-            android:name=".activities.AddOpenstreetmapNote"
+            android:name=".activities.AddOpenstreetmapNoteActivity"
             android:label="@string/title_activity_add_openstreetmap_note"></activity>
     </application>
 
