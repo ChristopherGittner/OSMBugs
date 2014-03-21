@@ -1,6 +1,5 @@
 package org.gittner.osmbugs.parser;
 
-import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.OpenstreetmapNote;
 import org.gittner.osmbugs.common.Comment;
 import org.w3c.dom.Document;
@@ -18,8 +17,8 @@ import javax.xml.parsers.ParserConfigurationException;
 /* Parser for Openstreetmap Notes bug lists retrieved from notes */
 public class OpenstreetmapNotesParser {
 
-    public static ArrayList<Bug> parse(InputStream stream) {
-        ArrayList<Bug> bugs = new ArrayList<Bug>();
+    public static ArrayList<OpenstreetmapNote> parse(InputStream stream) {
+        ArrayList<OpenstreetmapNote> bugs = new ArrayList<OpenstreetmapNote>();
 
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
@@ -34,9 +33,9 @@ public class OpenstreetmapNotesParser {
                 double lat = Double.parseDouble(wpt.getAttribute("lat"));
                 double lon = Double.parseDouble(wpt.getAttribute("lon"));
 
-                Bug.STATE state = Bug.STATE.CLOSED;
+                OpenstreetmapNote.STATE state = OpenstreetmapNote.STATE.CLOSED;
                 if (wpt.getElementsByTagName("status").item(0).getTextContent().equals("open"))
-                    state = Bug.STATE.OPEN;
+                    state = OpenstreetmapNote.STATE.OPEN;
 
                 long id = Long.parseLong(wpt.getElementsByTagName("id").item(0).getTextContent());
 

@@ -1,6 +1,5 @@
 package org.gittner.osmbugs.parser;
 
-import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.common.Comment;
 import org.json.JSONArray;
@@ -15,8 +14,8 @@ import java.util.ArrayList;
 
 public class MapdustParser {
 
-    public static ArrayList<Bug> parse(InputStream stream) {
-        ArrayList<Bug> bugs = new ArrayList<Bug>();
+    public static ArrayList<MapdustBug> parse(InputStream stream) {
+        ArrayList<MapdustBug> bugs = new ArrayList<MapdustBug>();
 
         BufferedReader reader;
         try {
@@ -44,17 +43,17 @@ public class MapdustParser {
 
                 JSONObject property = bug.getJSONObject("properties");
 
-                Bug.STATE state;
+                MapdustBug.STATE state;
 
                 switch (property.getInt("status")) {
                     case 2:
-                        state = Bug.STATE.CLOSED;
+                        state = MapdustBug.STATE.CLOSED;
                         break;
                     case 3:
-                        state = Bug.STATE.IGNORED;
+                        state = MapdustBug.STATE.IGNORED;
                         break;
                     default:
-                        state = Bug.STATE.OPEN;
+                        state = MapdustBug.STATE.OPEN;
                         break;
                 }
 
@@ -93,10 +92,10 @@ public class MapdustParser {
 
         } catch (IOException e) {
             e.printStackTrace();
-            return new ArrayList<Bug>();
+            return new ArrayList<MapdustBug>();
         } catch (JSONException e) {
             e.printStackTrace();
-            return new ArrayList<Bug>();
+            return new ArrayList<MapdustBug>();
         }
 
         return bugs;

@@ -1,6 +1,5 @@
 package org.gittner.osmbugs.bugs;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -17,6 +16,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.gittner.osmbugs.App;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.parser.MapdustParser;
@@ -39,6 +39,12 @@ public class MapdustBug extends Bug {
     public static final int MISSINGSPEEDINFO = 7;
     public static final int OTHER = 8;
 
+    public enum STATE {
+        OPEN,
+        CLOSED,
+        IGNORED
+    }
+
     public MapdustBug(
             double lat,
             double lon,
@@ -47,12 +53,13 @@ public class MapdustBug extends Bug {
             ArrayList<Comment> comments,
             int type,
             long id,
-            Bug.STATE state) {
+            STATE state) {
 
-        super(title, text, comments, new GeoPoint(lat, lon), state);
+        super(title, text, comments, new GeoPoint(lat, lon));
 
         setType(type);
         setId(id);
+        setState(state);
     }
 
     protected MapdustBug(Parcel parcel) {
@@ -60,6 +67,29 @@ public class MapdustBug extends Bug {
 
         mId = parcel.readLong();
         mType = parcel.readInt();
+        switch (parcel.readInt()) {
+            case 1:
+                mState = STATE.OPEN;
+                break;
+
+            case 2:
+                mState = STATE.CLOSED;
+                break;
+
+            case 3:
+                mState = STATE.IGNORED;
+                break;
+        }
+    }
+
+    /* Get the Bugs State */
+    public STATE getState() {
+        return mState;
+    }
+
+    /* Set the Bugs State */
+    public void setState(STATE state) {
+        mState = state;
     }
 
     /* Get the Bugs Id */
@@ -84,9 +114,9 @@ public class MapdustBug extends Bug {
 
     @Override
     public Drawable getMarker(int bitset) {
-        if (getState() == Bug.STATE.CLOSED)
+        if (getState() == STATE.CLOSED)
             return Drawings.MapdustClosed;
-        else if (getState() == Bug.STATE.IGNORED)
+        else if (getState() == STATE.IGNORED)
             return Drawings.MapdustIgnored;
         else {
             switch (getType()) {
@@ -118,12 +148,69 @@ public class MapdustBug extends Bug {
     }
 
     @Override
-    public boolean commit() {
+    public ArrayList<String> getSStates() {
+        ArrayList<String> states = new ArrayList<String>();
 
-        if (!hasNewComment())
-            return false;
+        if(mState == STATE.CLOSED || mState == STATE.IGNORED)
+            states.add(App.getContext().getString(R.string.open));
 
-        if (!hasNewState() && hasNewComment()) {
+        if(mState == STATE.OPEN) {
+            states.add(App.getContext().getString(R.string.closed));
+            states.add(App.getContext().getString(R.string.software_bug));
+        }
+
+        return states;
+    }
+
+    @Override
+    public boolean isCommitable(String newSState, String newComment) {
+
+        /* Retrieve the new State */
+        STATE newState = STATE.OPEN;
+        if (newSState.equals(App.getContext().getString(R.string.closed))) {
+            newState = STATE.CLOSED;
+        } else if (newSState.equals(App.getContext().getString(R.string.software_bug))) {
+            newState = STATE.IGNORED;
+        }
+
+        if(mState == STATE.OPEN) {
+            if(!newComment.equals(""))
+                return true;
+            else
+                return false;
+        }
+        else if(mState == STATE.CLOSED) {
+            if(newState != STATE.OPEN)
+                return false;
+
+            if(!newComment.equals(""))
+                return true;
+            else
+                return false;
+        }
+        else {
+            if(newState != STATE.OPEN)
+                return false;
+
+            if(!newComment.equals(""))
+                return true;
+            else
+                return false;
+        }
+    }
+
+    @Override
+    public boolean commit(String newSState, String newComment) {
+
+        /* Retrieve the new State */
+        STATE newState = STATE.OPEN;
+        if (newSState.equals(App.getContext().getString(R.string.closed))) {
+            newState = STATE.CLOSED;
+        } else if (newSState.equals(App.getContext().getString(R.string.software_bug))) {
+            newState = STATE.IGNORED;
+        }
+
+        if (newState == mState) {
             /* Upload a new Comment */
             DefaultHttpClient client = new DefaultHttpClient();
 
@@ -131,7 +218,7 @@ public class MapdustBug extends Bug {
             ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
             arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
             arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
-            arguments.add(new BasicNameValuePair("comment", getNewComment()));
+            arguments.add(new BasicNameValuePair("comment", newComment));
             arguments.add(new BasicNameValuePair("nickname", Settings.Mapdust.getUsername()));
 
             HttpPost request;
@@ -157,7 +244,7 @@ public class MapdustBug extends Bug {
                 e.printStackTrace();
                 return false;
             }
-        } else if (hasNewState() && hasNewComment()) {
+        } else if (newState != mState && !newComment.equals("")) {
             /* Upload a Status Change along with a comment (Required) */
             DefaultHttpClient client = new DefaultHttpClient();
 
@@ -166,14 +253,14 @@ public class MapdustBug extends Bug {
             arguments.add(new BasicNameValuePair("key", Settings.Mapdust.getApiKey()));
             arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
 
-            if (getNewState() == Bug.STATE.OPEN)
+            if (newState == STATE.OPEN)
                 arguments.add(new BasicNameValuePair("status", "1"));
-            else if (getNewState() == Bug.STATE.CLOSED)
+            else if (newState == STATE.CLOSED)
                 arguments.add(new BasicNameValuePair("status", "2"));
             else
                 arguments.add(new BasicNameValuePair("status", "3"));
 
-            arguments.add(new BasicNameValuePair("comment", getNewComment()));
+            arguments.add(new BasicNameValuePair("comment", newComment));
             arguments.add(new BasicNameValuePair("nickname", Settings.Mapdust.getUsername()));
 
             HttpPost request;
@@ -208,30 +295,6 @@ public class MapdustBug extends Bug {
     @Override
     public boolean isCommentable() {
         return true;
-    }
-
-    @Override
-    public boolean isClosable() {
-        if (getState() == STATE.OPEN)
-            return true;
-
-        return false;
-    }
-
-    @Override
-    public boolean isIgnorable() {
-        if (getState() == STATE.OPEN)
-            return true;
-
-        return false;
-    }
-
-    @Override
-    public boolean isReopenable() {
-        if (getState() == STATE.CLOSED || getState() == STATE.IGNORED)
-            return true;
-
-        return false;
     }
 
     public static boolean addNew(GeoPoint position, int type, String text) {
@@ -323,6 +386,19 @@ public class MapdustBug extends Bug {
 
         parcel.writeLong(mId);
         parcel.writeInt(mType);
+        switch (mState) {
+            case OPEN:
+                parcel.writeInt(1);
+                break;
+
+            case CLOSED:
+                parcel.writeInt(2);
+                break;
+
+            case IGNORED:
+                parcel.writeInt(3);
+                break;
+        }
     }
 
     public static final Creator<MapdustBug> CREATOR = new Parcelable.Creator<MapdustBug>() {
@@ -337,28 +413,6 @@ public class MapdustBug extends Bug {
             return new MapdustBug[size];
         }
     };
-
-    @Override
-    public String getStringFromState(Context context, STATE state) {
-        if (state == STATE.OPEN)
-            return context.getString(R.string.open);
-        else if (state == STATE.CLOSED)
-            return context.getString(R.string.closed);
-        else if (state == STATE.IGNORED)
-            return context.getString(R.string.software_bug);
-        else
-            return "";
-    }
-
-    @Override
-    public Bug.STATE getStateFromString(Context context, String state) {
-        if (state.equals(context.getString(R.string.closed)))
-            return STATE.CLOSED;
-        else if (state.equals(context.getString(R.string.software_bug)))
-            return STATE.IGNORED;
-        else
-            return STATE.OPEN;
-    }
 
     @Override
     public boolean willRetrieveExtraData() {
@@ -400,6 +454,9 @@ public class MapdustBug extends Bug {
             e.printStackTrace();
         }
     }
+
+    /* Holds the Bugs State */
+    private STATE mState = STATE.OPEN;
 
     /* Holds the Mapdust Id of this Bug */
     private long mId;

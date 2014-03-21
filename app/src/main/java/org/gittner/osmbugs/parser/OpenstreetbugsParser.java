@@ -1,6 +1,5 @@
 package org.gittner.osmbugs.parser;
 
-import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.OpenstreetbugsBug;
 import org.gittner.osmbugs.common.Comment;
 import org.w3c.dom.Document;
@@ -18,8 +17,8 @@ import javax.xml.parsers.ParserConfigurationException;
 /* Parser for Openstreetbugs bug lists retrieved from getGPX.php */
 public class OpenstreetbugsParser {
 
-    public static ArrayList<Bug> parse(InputStream stream) {
-        ArrayList<Bug> bugs = new ArrayList<Bug>();
+    public static ArrayList<OpenstreetbugsBug> parse(InputStream stream) {
+        ArrayList<OpenstreetbugsBug> bugs = new ArrayList<OpenstreetbugsBug>();
 
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
@@ -50,9 +49,9 @@ public class OpenstreetbugsParser {
                 text = comments.get(0).getText();
                 comments.remove(0);
 
-                Bug.STATE state = Bug.STATE.OPEN;
+                OpenstreetbugsBug.STATE state = OpenstreetbugsBug.STATE.OPEN;
                 if (extensions.getElementsByTagName("closed").item(0).getTextContent().equals("1"))
-                    state = Bug.STATE.CLOSED;
+                    state = OpenstreetbugsBug.STATE.CLOSED;
 
                 long id =
                         Long.parseLong(extensions.getElementsByTagName("id")

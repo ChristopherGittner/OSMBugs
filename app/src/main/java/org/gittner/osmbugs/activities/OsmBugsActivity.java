@@ -12,6 +12,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -22,9 +23,13 @@ import android.widget.Toast;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
+import org.gittner.osmbugs.bugs.KeeprightBug;
+import org.gittner.osmbugs.bugs.MapdustBug;
+import org.gittner.osmbugs.bugs.OpenstreetbugsBug;
+import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
-import org.gittner.osmbugs.tasks.DownloadBugsTask;
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -45,13 +50,6 @@ public class OsmBugsActivity extends Activity {
     private static final int DIALOGNEWBUG = 1;
     private static final int DIALOGNEWBUGTEXT = 2;
     private static final int DIALOGABOUT = 3;
-
-    /* Platform Ids */
-    public static final int INVALIDPLATFORM = -1;
-    public static final int KEEPRIGHT = 1;
-    public static final int OPENSTREETBUGS = 2;
-    public static final int OPENSTREETMAPNOTES = 3;
-    public static final int MAPDUST = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +169,18 @@ public class OsmBugsActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.osm_bugs, menu);
+
+        /* Set the checked state of the follow GPS Button according to the System Settings */
         menu.findItem(R.id.follow_gps).setChecked(Settings.getFollowGps());
+
+        /* Hide the Refresh Button if a Download is in Progress */
+        if(mDownloadActive) {
+            menu.findItem(R.id.refresh).setVisible(false);
+        }
+        else {
+            menu.findItem(R.id.refresh).setVisible(true);
+        }
+
         return true;
     }
 
@@ -328,9 +337,78 @@ public class OsmBugsActivity extends Activity {
         }
     }
 
+    /* Reload all Bugs */
     private void refreshBugs() {
-        /* Reload all Bugs */
-        new DownloadBugsTask(this, mBugOverlay, mMapView, mMapView.getBoundingBox()).execute();
+        BugDatabase database = BugDatabase.getInstance();
+
+        mDownloadActive = true;
+
+        /* Start the Progress Bar */
+        setProgressBarIndeterminateVisibility(true);
+        setProgressBarVisibility(true);
+        setProgress(0);
+
+        /* Request Options Menu reload */
+        invalidateOptionsMenu();
+
+        /* Remove all old Bugs from the map */
+        mBugOverlay.removeAllItems();
+        mMapView.invalidate();
+
+        database.DownloadBBox(mMapView.getBoundingBox(), new BugDatabase.OnDownloadEndListener() {
+            @Override
+            public void onSuccess(int platform) { }
+
+            @Override
+            public void onError(int platform) {
+                Log.w("", "Error loading Bugs: " + platform);
+            }
+
+            @Override
+            public void onCompletion() {
+
+                mDownloadActive = false;
+
+                /* Stop the Progressbar */
+                setProgressBarIndeterminateVisibility(false);
+                setProgressBarVisibility(false);
+
+                /* Request Options Menu reload */
+                invalidateOptionsMenu();
+
+                /* Add all Bugs to the Map */
+                if(Settings.Keepright.isEnabled()) {
+                    for (KeeprightBug bug : BugDatabase.getInstance().getKeeprightBugs()) {
+                        mBugOverlay.addItem(bug);
+                    }
+                }
+
+                if(Settings.Mapdust.isEnabled()) {
+                    for (MapdustBug bug : BugDatabase.getInstance().getMapdustBugs()) {
+                        mBugOverlay.addItem(bug);
+                    }
+                }
+
+                if(Settings.Openstreetbugs.isEnabled()) {
+                    for (OpenstreetbugsBug bug : BugDatabase.getInstance().getOpenstreetbugsBugs()) {
+                        mBugOverlay.addItem(bug);
+                    }
+                }
+
+                if(Settings.OpenstreetmapNotes.isEnabled()) {
+                    for (OpenstreetmapNote bug : BugDatabase.getInstance().getOpenstreetmapNotes()) {
+                        mBugOverlay.addItem(bug);
+                    }
+                }
+
+                mMapView.invalidate();
+            }
+
+            @Override
+            public void onProgressUpdate(double progress) {
+                setProgress((int)(progress * 10000));
+            }
+        });
     }
 
     /* The LocationManager to retrieve the current position */
@@ -411,4 +489,7 @@ public class OsmBugsActivity extends Activity {
             return false;
         }
     };
+
+    /* True if a Bug Download is currently active */
+    private boolean mDownloadActive = false;
 }

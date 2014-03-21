@@ -23,10 +23,11 @@
     <item
         android:id="@+id/go_to_gps"
         android:title="@string/go_to_gps"
-        android:showAsAction="ifRoom"
+        android:showAsAction="never"
         android:icon="@drawable/ic_menu_mylocation"></item>
     <item
         android:id="@+id/about"
+        android:showAsAction="never"
         android:title="@string/about"></item>
 
 </menu>

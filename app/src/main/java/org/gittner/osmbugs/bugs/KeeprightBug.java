@@ -12,6 +12,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.gittner.osmbugs.App;
+import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Drawings;
 import org.osmdroid.util.GeoPoint;
@@ -20,6 +22,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class KeeprightBug extends Bug {
+
+    public enum STATE {
+        OPEN,
+        IGNORED,
+        IGNORED_TMP
+    }
 
     public KeeprightBug(
             double lat,
@@ -31,17 +39,17 @@ public class KeeprightBug extends Bug {
             long way,
             int shema,
             int id,
-            Bug.STATE state) {
+            STATE state) {
 
         super(title + " <a href=http://www.openstreetmap.org/browse/way/" + way + ">" + way + "</a>",
                 text,
                 comments,
-                new GeoPoint(lat, lon),
-                state);
+                new GeoPoint(lat, lon));
 
         setType(type);
         setSchema(shema);
         setId(id);
+        setState(state);
     }
 
     public KeeprightBug(Parcel parcel) {
@@ -50,17 +58,71 @@ public class KeeprightBug extends Bug {
         mSchema = parcel.readInt();
         mId = parcel.readInt();
         mWay = parcel.readLong();
+        switch (parcel.readInt()) {
+            case 1:
+                mState = STATE.OPEN;
+                break;
+
+            case 2:
+                mState = STATE.IGNORED;
+                break;
+
+            case 3:
+                mState = STATE.IGNORED_TMP;
+                break;
+        }
     }
+
+    @Override
+    public ArrayList<String> getSStates() {
+        ArrayList<String> states = new ArrayList<String>();
+
+        if(mState != STATE.OPEN)
+            states.add(App.getContext().getString(R.string.open));
+
+        if(mState != STATE.IGNORED_TMP)
+            states.add(App.getContext().getString(R.string.closed));
+
+        if(mState != STATE.IGNORED)
+            states.add(App.getContext().getString(R.string.ignored));
+
+        return states;
+    }
+
+    @Override
+    public boolean isCommitable(String newSState, String newComment) { return true; }
 
     /* Commit the Bug to the Keepright Server */
     @Override
-    public boolean commit() {
+    public boolean commit(String newSState, String newComment) {
+
+        /* Retrieve the new State */
+        STATE newState = STATE.OPEN;
+        if (newSState.equals(App.getContext().getString(R.string.ignored))) {
+            newState = STATE.IGNORED;
+        } else if (newSState.equals(App.getContext().getString(R.string.closed))) {
+            newState = STATE.IGNORED_TMP;
+        }
+
         HttpClient client = new DefaultHttpClient();
 
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-        arguments.add(new BasicNameValuePair("co", getNewComment()));
+        arguments.add(new BasicNameValuePair("co", newComment));
 
-        arguments.add(new BasicNameValuePair("st", getUrlNewState()));
+        switch (newState) {
+            case OPEN:
+                arguments.add(new BasicNameValuePair("st", "open"));
+                break;
+
+            case IGNORED:
+                arguments.add(new BasicNameValuePair("st", "ignore"));
+                break;
+
+            case IGNORED_TMP:
+                arguments.add(new BasicNameValuePair("st", "ignore_t"));
+                break;
+        }
+
         arguments.add(new BasicNameValuePair("schema", String.valueOf(getSchema())));
         arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
 
@@ -90,28 +152,14 @@ public class KeeprightBug extends Bug {
         return true;
     }
 
-    /* Keepright Bugs can be ignored aka. false positive */
-    @Override
-    public boolean isIgnorable() {
-        return true;
+    /* Get the Bugs State */
+    public STATE getState() {
+        return mState;
     }
 
-    /* Keepright Bugs can be reopened */
-    @Override
-    public boolean isReopenable() {
-        return true;
-    }
-
-    /* Return a readable usable String for the Server from the current State */
-    public String getUrlNewState() {
-        if (getNewState() == Bug.STATE.OPEN)
-            return "";
-        else if (getNewState() == Bug.STATE.CLOSED)
-            return "ignore_t";
-        else if (getNewState() == Bug.STATE.IGNORED)
-            return "ignore";
-        else
-            return "";
+    /* Set the Bugs State */
+    public void setState(STATE state) {
+        mState = state;
     }
 
     /* Get the Bugs Type */
@@ -146,9 +194,9 @@ public class KeeprightBug extends Bug {
 
     @Override
     public Drawable getMarker(int bitset) {
-        if (getState() == Bug.STATE.CLOSED)
+        if (mState == STATE.IGNORED_TMP)
             return Drawings.KeeprightDrawableClosed;
-        else if (getState() == Bug.STATE.IGNORED)
+        else if (mState == STATE.IGNORED)
             return Drawings.KeeprightDrawableIgnored;
         else {
             switch (mType) {
@@ -319,6 +367,19 @@ public class KeeprightBug extends Bug {
         parcel.writeInt(mSchema);
         parcel.writeInt(mId);
         parcel.writeLong(mWay);
+        switch (mState) {
+            case OPEN:
+                parcel.writeInt(1);
+                break;
+
+            case IGNORED:
+                parcel.writeInt(2);
+                break;
+
+            case IGNORED_TMP:
+                parcel.writeInt(3);
+                break;
+        }
     }
 
     @Override
@@ -338,6 +399,9 @@ public class KeeprightBug extends Bug {
             return new KeeprightBug[size];
         }
     };
+
+    /* Holds the Bugs state */
+    private STATE mState = STATE.OPEN;
 
     /* Holds the Keepright Type of this Bug */
     private int mType;

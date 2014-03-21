@@ -14,15 +14,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.gittner.osmbugs.App;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.common.Comment;
-import org.gittner.osmbugs.tasks.BugUpdateTask;
 
 import java.util.ArrayList;
 
@@ -116,7 +119,7 @@ public class BugEditorActivity extends Activity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                update();
+                invalidateOptionsMenu();
             }
 
             @Override
@@ -131,17 +134,19 @@ public class BugEditorActivity extends Activity {
         mStateAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         mSpnState.setAdapter(mStateAdapter);
 
-        if (mBug.getState() == Bug.STATE.OPEN || mBug.isReopenable())
-            mStateAdapter.add(mBug.getStringFromState(this, Bug.STATE.OPEN));
+        mSpnState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                invalidateOptionsMenu();
+            }
 
-        if (mBug.getState() == Bug.STATE.CLOSED || mBug.isClosable())
-            mStateAdapter.add(mBug.getStringFromState(this, Bug.STATE.CLOSED));
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                invalidateOptionsMenu();
+            }
+        });
 
-        if (mBug.getState() == Bug.STATE.IGNORED || mBug.isIgnorable())
-            mStateAdapter.add(mBug.getStringFromState(this, Bug.STATE.IGNORED));
-
-        mSpnState.setSelection(mStateAdapter.getPosition(mBug.getStringFromState(this,
-                mBug.getState())));
+        mStateAdapter.addAll(mBug.getSStates());
 
         mStateAdapter.notifyDataSetChanged();
     }
@@ -150,9 +155,21 @@ public class BugEditorActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.bug_editor, menu);
 
-        mMenu = menu;
+        EditText edttxtNewComment = (EditText) findViewById(R.id.edttxtNewComment);
+        String newComment = edttxtNewComment.getText().toString();
 
-        update();
+        String newSState = (String) mSpnState.getSelectedItem();
+        if(newSState == null)
+            newSState = "";
+
+        /* Set the Save Buttons Visibility based on the Commitable State of the Bug */
+        if(mBug.isCommitable(newSState, newComment)) {
+            menu.findItem(R.id.action_save).setVisible(true);
+        }
+        else {
+            menu.findItem(R.id.action_save).setVisible(false);
+        }
+
         return true;
     }
 
@@ -165,28 +182,44 @@ public class BugEditorActivity extends Activity {
             return true;
         } else if (item.getItemId() == R.id.action_save) {
             /* Save the new Bug state */
-            mBug.setState(mBug.getStateFromString(this,
-                    mStateAdapter.getItem(mSpnState.getSelectedItemPosition())));
 
-            new BugUpdateTask(this).execute(mBug);
+            new AsyncTask<Bug, Void, Boolean>(){
+                @Override
+                protected void onPreExecute() {
+                    EditText edttxtNewComment = (EditText) findViewById(R.id.edttxtNewComment);
+                    mNewComment = edttxtNewComment.getText().toString();
+
+                    mNewSState = (String) mSpnState.getSelectedItem();
+                    if(mNewSState == null)
+                        mNewSState = "";
+                }
+
+                @Override
+                protected Boolean doInBackground(Bug... bugs) {
+                    return bugs[0].commit(mNewSState, mNewComment);
+                }
+
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if(result) {
+                        BugEditorActivity.this.finish();
+                    }
+                    else {
+                        Toast.makeText(BugEditorActivity.this, App.getContext().getString(R.string.failed_to_save_bug), Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                /* The Comment to be commited */
+                private String mNewComment;
+
+                /* The new State to be commited */
+                private String mNewSState;
+            }.execute(mBug);
 
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void update() {
-        /* Update the Bugs Comment */
-        mBug.setNewComment(mEdttxtNewComment.getText().toString());
-
-        // TODO: Turn only on when the bug is actually commitable i.e. has a comment and changed
-        // State */
-        /* View or hide the Save Icon */
-        if (mBug.hasNewComment() || mBug.hasNewState())
-            mMenu.findItem(R.id.action_save).setVisible(true);
-        else
-            mMenu.findItem(R.id.action_save).setVisible(false);
     }
 
     /* The Bug currently being edited */
@@ -206,9 +239,6 @@ public class BugEditorActivity extends Activity {
 
     /* Adapter for the Comments ListView */
     private ArrayAdapter<Comment> mCommentAdapter;
-
-    /* The Main Menu */
-    Menu mMenu;
 
     public class CommentAdapter extends ArrayAdapter<Comment> {
 

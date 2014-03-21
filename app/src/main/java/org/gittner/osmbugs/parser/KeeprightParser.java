@@ -1,6 +1,5 @@
 package org.gittner.osmbugs.parser;
 
-import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.common.Comment;
 
@@ -14,8 +13,8 @@ import java.util.StringTokenizer;
 /* Parser for Keepright bug lists retrieved from points.php */
 public class KeeprightParser {
 
-    public static ArrayList<Bug> parse(InputStream stream) {
-        ArrayList<Bug> bugs = new ArrayList<Bug>();
+    public static ArrayList<KeeprightBug> parse(InputStream stream) {
+        ArrayList<KeeprightBug> bugs = new ArrayList<KeeprightBug>();
 
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
@@ -88,15 +87,15 @@ public class KeeprightParser {
                      * "new" or "" or maybe everything else
                      */
                     String sState = token.nextToken();
-                    Bug.STATE state;
+                    KeeprightBug.STATE state;
 
                     /* Translate the bug State Note: "" or "new" both apply to open bugs */
                     if (sState.equals("ignore_t"))
-                        state = Bug.STATE.CLOSED;
+                        state = KeeprightBug.STATE.IGNORED_TMP;
                     else if (sState.equals("ignore"))
-                        state = Bug.STATE.IGNORED;
+                        state = KeeprightBug.STATE.IGNORED;
                     else
-                        state = Bug.STATE.OPEN;
+                        state = KeeprightBug.STATE.OPEN;
 
                     /* Finally add our Bug to the results */
                     bugs.add(new KeeprightBug(lat, lon, title, text, type, comments, way, schema, id, state));

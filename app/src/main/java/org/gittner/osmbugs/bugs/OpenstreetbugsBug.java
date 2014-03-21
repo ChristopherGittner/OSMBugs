@@ -12,6 +12,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.gittner.osmbugs.App;
+import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
@@ -22,6 +24,11 @@ import java.util.ArrayList;
 
 public class OpenstreetbugsBug extends Bug {
 
+    public enum STATE {
+        OPEN,
+        CLOSED
+    }
+
     public OpenstreetbugsBug(
             double lat,
             double lon,
@@ -30,15 +37,35 @@ public class OpenstreetbugsBug extends Bug {
             long id,
             STATE state) {
 
-        super("Openstreetbug", text, comments, new GeoPoint(lat, lon), state);
+        super("Openstreetbug", text, comments, new GeoPoint(lat, lon));
 
         setComments(comments);
         setId(id);
+        setState(state);
     }
 
     public OpenstreetbugsBug(Parcel parcel) {
         super(parcel);
         mId = parcel.readLong();
+        switch (parcel.readInt()) {
+            case 1:
+                mState = STATE.OPEN;
+                break;
+
+            case 2:
+                mState = STATE.CLOSED;
+                break;
+        }
+    }
+
+    /* Get the Bugs State */
+    public STATE getState() {
+        return mState;
+    }
+
+    /* Set the Bugs State */
+    public void setState(STATE state) {
+        mState = state;
     }
 
     /* Get the Bugs Id */
@@ -52,15 +79,42 @@ public class OpenstreetbugsBug extends Bug {
     }
 
     @Override
-    public boolean commit() {
+    public ArrayList<String> getSStates() {
+        ArrayList<String> states = new ArrayList<String>();
 
-        if (hasNewComment()) {
+        if(mState != STATE.OPEN)
+            states.add(App.getContext().getString(R.string.open));
+
+        if(mState != STATE.CLOSED)
+            states.add(App.getContext().getString(R.string.closed));
+
+        return states;
+    }
+
+    @Override
+    public boolean isCommitable(String newSState, String newComment) {
+        if(mState == STATE.OPEN)
+            return true;
+
+        return false;
+    }
+
+    @Override
+    public boolean commit(String newSState, String newComment) {
+
+        /* Retrieve the new State */
+        STATE newState = STATE.OPEN;
+        if (newSState.equals(App.getContext().getString(R.string.closed))) {
+            newState = STATE.CLOSED;
+        }
+
+        if (!newComment.equals("")) {
             /* Upload a new Comment */
             HttpClient client = new DefaultHttpClient();
 
             ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
             arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
-            arguments.add(new BasicNameValuePair("text", getNewComment() + " [" + Settings.Openstreetbugs.getUsername() + " ]"));
+            arguments.add(new BasicNameValuePair("text", newComment + " [" + Settings.Openstreetbugs.getUsername() + " ]"));
 
             HttpGet request = new HttpGet("http://openstreetbugs.schokokeks.org/api/0.1/editPOIexec?" + URLEncodedUtils.format(arguments, "utf-8"));
 
@@ -80,7 +134,7 @@ public class OpenstreetbugsBug extends Bug {
             }
         }
 
-        if (hasNewState() && getNewState() == STATE.CLOSED) {
+        if (mState == STATE.OPEN && newState == STATE.CLOSED) {
             /* Close the Bug */
             HttpClient client = new DefaultHttpClient();
 
@@ -114,21 +168,9 @@ public class OpenstreetbugsBug extends Bug {
         return true;
     }
 
-    /* Openstreetbugs cannot be ignored */
-    @Override
-    public boolean isIgnorable() {
-        return false;
-    }
-
-    /* Openstreetbugs cannot be reopened */
-    @Override
-    public boolean isReopenable() {
-        return false;
-    }
-
     @Override
     public Drawable getMarker(int bitset) {
-        if (getState() == Bug.STATE.CLOSED)
+        if (mState == STATE.CLOSED)
             return Drawings.OpenstreetbugsDrawableClosed;
 
         return Drawings.OpenstreetbugsDrawableOpen;
@@ -140,6 +182,15 @@ public class OpenstreetbugsBug extends Bug {
         super.writeToParcel(parcel, flags);
 
         parcel.writeLong(mId);
+        switch (mState) {
+            case OPEN:
+                parcel.writeInt(1);
+                break;
+
+            case CLOSED:
+                parcel.writeInt(2);
+                break;
+        }
     }
 
     @Override
@@ -159,6 +210,9 @@ public class OpenstreetbugsBug extends Bug {
             return new OpenstreetbugsBug[size];
         }
     };
+
+    /* Holds the Bugs State */
+    private STATE mState = STATE.OPEN;
 
     /* Holds the Openstreetbugs Id of this Bug */
     private long mId;

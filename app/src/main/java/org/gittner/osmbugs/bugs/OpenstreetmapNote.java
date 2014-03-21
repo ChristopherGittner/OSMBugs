@@ -13,6 +13,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.gittner.osmbugs.App;
+import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
@@ -23,6 +25,11 @@ import java.util.ArrayList;
 
 public class OpenstreetmapNote extends Bug {
 
+    public enum STATE {
+        OPEN,
+        CLOSED
+    }
+
     public OpenstreetmapNote(
             double lat,
             double lon,
@@ -31,14 +38,34 @@ public class OpenstreetmapNote extends Bug {
             long id,
             STATE state) {
 
-        super("Openstreetmap Note", text, comments, new GeoPoint(lat, lon), state);
+        super("Openstreetmap Note", text, comments, new GeoPoint(lat, lon));
 
         setId(id);
+        setState(state);
     }
 
     public OpenstreetmapNote(Parcel parcel) {
         super(parcel);
         mId = parcel.readLong();
+        switch (parcel.readInt()) {
+            case 1:
+                mState = STATE.OPEN;
+                break;
+
+            case 2:
+                mState = STATE.CLOSED;
+                break;
+        }
+    }
+
+    /* Get the Bugs State */
+    public STATE getState() {
+        return mState;
+    }
+
+    /* Set the Bugs State */
+    public void setState(STATE state) {
+        mState = state;
     }
 
     /* Get the Bugs Id */
@@ -52,12 +79,36 @@ public class OpenstreetmapNote extends Bug {
     }
 
     @Override
-    public boolean commit() {
+    public ArrayList<String> getSStates() {
+        ArrayList<String> states = new ArrayList<String>();
 
-        if (!hasNewComment())
+        if(mState != STATE.OPEN)
+            states.add(App.getContext().getString(R.string.open));
+
+        if(mState != STATE.CLOSED)
+            states.add(App.getContext().getString(R.string.closed));
+
+        return states;
+    }
+
+    @Override
+    public boolean isCommitable(String newSState, String newComment) {
+        return true;
+    }
+
+    @Override
+    public boolean commit(String newSState, String newComment) {
+
+        /* Retrieve the new State */
+        STATE newState = STATE.OPEN;
+        if (newSState.equals(App.getContext().getString(R.string.closed))) {
+            newState = STATE.CLOSED;
+        }
+
+        if (!newComment.equals(""))
             return false;
 
-        if (hasNewComment() && !hasNewState()) {
+        if (false) {
             /* Only Upload a new Comment */
             DefaultHttpClient client = new DefaultHttpClient();
 
@@ -71,7 +122,7 @@ public class OpenstreetmapNote extends Bug {
 
             /* Add all Arguments */
             ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-            arguments.add(new BasicNameValuePair("text", getNewComment()));
+            arguments.add(new BasicNameValuePair("text", newComment));
 
             HttpPost request;
             if (!Settings.isDebugEnabled())
@@ -93,7 +144,7 @@ public class OpenstreetmapNote extends Bug {
                 e.printStackTrace();
                 return false;
             }
-        } else if (hasNewComment() && hasNewState() && getNewState() == STATE.CLOSED) {
+        } else if (!newComment.equals("") && mState == STATE.OPEN && newState == STATE.CLOSED) {
             DefaultHttpClient client = new DefaultHttpClient();
 
             /* Add the Authentication Details if we have a username in the Preferences */
@@ -106,7 +157,7 @@ public class OpenstreetmapNote extends Bug {
 
             /* Add all Arguments */
             ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-            arguments.add(new BasicNameValuePair("text", getNewComment()));
+            arguments.add(new BasicNameValuePair("text", newComment));
 
             HttpPost request;
             if (!Settings.isDebugEnabled())
@@ -137,27 +188,15 @@ public class OpenstreetmapNote extends Bug {
     /* Openstreetmap Notes can be commented */
     @Override
     public boolean isCommentable() {
-        if (getState() == STATE.OPEN)
+        if (mState == STATE.OPEN)
             return true;
 
         return false;
     }
 
-    /* Openstreetmap Notes cannot be ignored */
-    @Override
-    public boolean isIgnorable() {
-        return false;
-    }
-
-    /* Openstreetmap Notes cannot be reopened */
-    @Override
-    public boolean isReopenable() {
-        return false;
-    }
-
     @Override
     public Drawable getMarker(int bitset) {
-        if (getState() == Bug.STATE.CLOSED)
+        if (mState == STATE.CLOSED)
             return Drawings.OpenstreetmapNotesClosed;
 
         return Drawings.OpenstreetmapNotesOpen;
@@ -214,6 +253,15 @@ public class OpenstreetmapNote extends Bug {
         super.writeToParcel(parcel, flags);
 
         parcel.writeLong(mId);
+        switch (mState) {
+            case OPEN:
+                parcel.writeInt(1);
+                break;
+
+            case CLOSED:
+                parcel.writeInt(2);
+                break;
+        }
     }
 
     @Override
@@ -233,6 +281,9 @@ public class OpenstreetmapNote extends Bug {
             return new OpenstreetmapNote[size];
         }
     };
+
+    /* Holds the Bugs State */
+    private STATE mState = STATE.OPEN;
 
     /* Holds the Openstreetmap Notes Id of this Bug */
     private long mId;
