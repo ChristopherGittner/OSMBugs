@@ -77,14 +77,9 @@ public class KeeprightBug extends Bug {
     public ArrayList<String> getSStates() {
         ArrayList<String> states = new ArrayList<String>();
 
-        if(mState != STATE.OPEN)
-            states.add(App.getContext().getString(R.string.open));
-
-        if(mState != STATE.IGNORED_TMP)
-            states.add(App.getContext().getString(R.string.closed));
-
-        if(mState != STATE.IGNORED)
-            states.add(App.getContext().getString(R.string.ignored));
+        states.add(App.getContext().getString(R.string.open));
+        states.add(App.getContext().getString(R.string.closed));
+        states.add(App.getContext().getString(R.string.ignored));
 
         return states;
     }

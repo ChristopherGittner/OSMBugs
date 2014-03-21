@@ -151,8 +151,7 @@ public class MapdustBug extends Bug {
     public ArrayList<String> getSStates() {
         ArrayList<String> states = new ArrayList<String>();
 
-        if(mState == STATE.CLOSED || mState == STATE.IGNORED)
-            states.add(App.getContext().getString(R.string.open));
+        states.add(App.getContext().getString(R.string.open));
 
         if(mState == STATE.OPEN) {
             states.add(App.getContext().getString(R.string.closed));

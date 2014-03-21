@@ -82,18 +82,17 @@ public class OpenstreetbugsBug extends Bug {
     public ArrayList<String> getSStates() {
         ArrayList<String> states = new ArrayList<String>();
 
-        if(mState != STATE.OPEN)
+        if(mState == STATE.OPEN) {
             states.add(App.getContext().getString(R.string.open));
-
-        if(mState != STATE.CLOSED)
             states.add(App.getContext().getString(R.string.closed));
+        }
 
         return states;
     }
 
     @Override
     public boolean isCommitable(String newSState, String newComment) {
-        if(mState == STATE.OPEN)
+        if(mState == STATE.OPEN && !newComment.equals(""))
             return true;
 
         return false;
@@ -162,10 +161,12 @@ public class OpenstreetbugsBug extends Bug {
         return true;
     }
 
-    /* Openstreetbugs can be commented */
     @Override
     public boolean isCommentable() {
-        return true;
+        if(mState == STATE.OPEN)
+            return true;
+
+        return false;
     }
 
     @Override

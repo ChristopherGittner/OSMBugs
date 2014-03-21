@@ -26,6 +26,7 @@ import org.gittner.osmbugs.App;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.common.Comment;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -131,24 +132,34 @@ public class BugEditorActivity extends Activity {
         /* Setup the State Spinner */
         mSpnState = (Spinner) findViewById(R.id.spnState);
 
-        mStateAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-        mSpnState.setAdapter(mStateAdapter);
+        ArrayList<String> sStates = mBug.getSStates();
+        if(sStates.size() > 0) {
 
-        mSpnState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                invalidateOptionsMenu();
-            }
+            mStateAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+            mSpnState.setAdapter(mStateAdapter);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                invalidateOptionsMenu();
-            }
-        });
+            mSpnState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    invalidateOptionsMenu();
+                }
 
-        mStateAdapter.addAll(mBug.getSStates());
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    invalidateOptionsMenu();
+                }
+            });
 
-        mStateAdapter.notifyDataSetChanged();
+            mStateAdapter.addAll(mBug.getSStates());
+
+            mStateAdapter.notifyDataSetChanged();
+        } else
+        {
+            mSpnState.setVisibility(View.GONE);
+
+            TextView txtvState = (TextView) findViewById(R.id.txtvState);
+            txtvState.setVisibility(View.GONE);
+        }
     }
 
     @Override

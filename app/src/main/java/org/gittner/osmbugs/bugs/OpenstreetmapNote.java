@@ -82,18 +82,20 @@ public class OpenstreetmapNote extends Bug {
     public ArrayList<String> getSStates() {
         ArrayList<String> states = new ArrayList<String>();
 
-        if(mState != STATE.OPEN)
+        if(mState == STATE.OPEN) {
             states.add(App.getContext().getString(R.string.open));
-
-        if(mState != STATE.CLOSED)
             states.add(App.getContext().getString(R.string.closed));
+        }
 
         return states;
     }
 
     @Override
     public boolean isCommitable(String newSState, String newComment) {
-        return true;
+        if(mState == STATE.OPEN && !newComment.equals(""))
+            return true;
+
+        return false;
     }
 
     @Override
@@ -105,10 +107,10 @@ public class OpenstreetmapNote extends Bug {
             newState = STATE.CLOSED;
         }
 
-        if (!newComment.equals(""))
+        if (newComment.equals(""))
             return false;
 
-        if (false) {
+        if (newState == STATE.OPEN) {
             /* Only Upload a new Comment */
             DefaultHttpClient client = new DefaultHttpClient();
 
@@ -185,7 +187,6 @@ public class OpenstreetmapNote extends Bug {
         return true;
     }
 
-    /* Openstreetmap Notes can be commented */
     @Override
     public boolean isCommentable() {
         if (mState == STATE.OPEN)
