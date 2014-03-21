@@ -102,7 +102,6 @@ public class OsmBugsActivity extends Activity {
         mMapView = (MapView) findViewById(R.id.mapview);
         mMapView.setMultiTouchControls(true);
         mMapView.setBuiltInZoomControls(true);
-        mMapView.getController().setZoom(20);
         mMapView.getOverlays().add(mBugOverlay);
         mMapView.getOverlays().add(mLocationOverlay);
 
@@ -135,8 +134,11 @@ public class OsmBugsActivity extends Activity {
         /* Setup the LocationManager */
         mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
 
+        /* Set the Initial Map Zoom */
+        mMapView.getController().setZoom(Settings.getLastZoom());
+
         /* Set the Initial Center of the map */
-        mMapView.getController().setCenter(Settings.getLastKnownLocation());
+        mMapView.getController().setCenter(Settings.getLastMapCenter());
     }
 
     @Override
@@ -162,8 +164,11 @@ public class OsmBugsActivity extends Activity {
         /* Stop Listening to Location updates */
         mLocMgr.removeUpdates(mLocationListener);
 
-        /* Save the last Location */
-        Settings.setLastKnownLocation(mMapView.getMapCenter());
+        /* Save the last Center of the Map */
+        Settings.setLastMapCenter(mMapView.getMapCenter());
+
+        /* Save the last Map Zoom */
+        Settings.setLastZoom(mMapView.getZoomLevel());
     }
 
     @Override

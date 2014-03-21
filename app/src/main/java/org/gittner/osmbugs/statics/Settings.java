@@ -29,20 +29,23 @@ public class Settings {
     }
 
     /* Location will be saved as String since Prefernces can not store Double */
-    public static GeoPoint getLastKnownLocation() {
+    public static GeoPoint getLastMapCenter() {
         return new GeoPoint(
-                Double.parseDouble(mPrefs.getString("pref_last_location_lat", "0")),
-                Double.parseDouble(mPrefs.getString("pref_last_location_lon", "0")));
+                Double.parseDouble(mPrefs.getString("pref_last_map_center_lat", "51")),
+                Double.parseDouble(mPrefs.getString("pref_last_map_center_lon", "8")));
     }
 
-    public static void setLastKnownLocation(Location location) {
-        mPrefs.edit().putString("pref_last_location_lat", String.valueOf(location.getLatitude())).commit();
-        mPrefs.edit().putString("pref_last_location_lon", String.valueOf(location.getLongitude())).commit();
+    public static void setLastMapCenter(IGeoPoint location) {
+        mPrefs.edit().putString("pref_last_map_center_lat", String.valueOf(location.getLatitude())).commit();
+        mPrefs.edit().putString("pref_last_map_center_lon", String.valueOf(location.getLongitude())).commit();
     }
 
-    public static void setLastKnownLocation(IGeoPoint location) {
-        mPrefs.edit().putString("pref_last_location_lat", String.valueOf(location.getLatitude())).commit();
-        mPrefs.edit().putString("pref_last_location_lon", String.valueOf(location.getLongitude())).commit();
+    public static int getLastZoom(){
+        return mPrefs.getInt("pref_last_zoom", 20);
+    }
+
+    public static void setLastZoom(int zoom) {
+        mPrefs.edit().putInt("pref_last_zoom", zoom).commit();
     }
 
     public static boolean isDebugEnabled() {
