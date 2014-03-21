@@ -6,19 +6,23 @@ Repository for the Android App OSMBugs
 
 Downloading
 ===========
-Checkout this repository and ActionBarSherlock (https://github.com/JakeWharton/ActionBarSherlock.git)
+Clone this repository
 
 
 Building
 ========
-Create a new Android Project from Existing Code OsmBugs
-Create a new Android Project from Existing Code ActionBarSherlock/actionbarsherlock
+Set Environment Variable ANDROID_HOME to your Android SDK
 
-Eclipse:
-	If Location Differs on your Machine:
-	
-	Include the ActionBarSherlock Project in Project->Android->Library
-	and in Project->Properties->Java-Build-Path->Projects
+    ./gradlew assembleRelease
+
+You will be prompted for the Keystore and it's Password
+
+
+Or
+
+
+Load the Project with Android Studio
+
 
 License
 =======
