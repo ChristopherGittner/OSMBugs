@@ -36,7 +36,7 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 
@@ -77,33 +77,22 @@ public class OsmBugsActivity extends Activity {
         mBugOverlay = new ItemizedIconOverlay<Bug>(
                 mBugs,
                 Drawings.KeeprightDrawable30,
-                mOnitemGestureListener,
+                mOnItemGestureListener,
                 new DefaultResourceProxyImpl(this));
-
-        /* Create Position Marker Overlay */
-        mLocationOverlay =
-                new ItemizedIconOverlay<OverlayItem>(
-                        new ArrayList<OverlayItem>(),
-                        new OnItemGestureListener<OverlayItem>() {
-                            @Override
-                            public boolean onItemLongPress(int arg0, OverlayItem arg1) {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onItemSingleTapUp(int arg0, OverlayItem arg1) {
-                                return false;
-                            }
-                        },
-                        new DefaultResourceProxyImpl(this)
-                );
 
         /* Setup Main MapView */
         mMapView = (MapView) findViewById(R.id.mapview);
         mMapView.setMultiTouchControls(true);
         mMapView.setBuiltInZoomControls(true);
         mMapView.getOverlays().add(mBugOverlay);
+
+        mLocationOverlay = new MyLocationNewOverlay(this, mMapView);
         mMapView.getOverlays().add(mLocationOverlay);
+        mLocationOverlay.enableMyLocation();
+        if(Settings.getFollowGps())
+            mLocationOverlay.enableFollowLocation();
+        else
+            mLocationOverlay.disableFollowLocation();
 
         /*
          * This adds an empty Overlay to retrieve the Touch Events This is some sort of Hack, since
@@ -197,7 +186,7 @@ public class OsmBugsActivity extends Activity {
                 return true;
 
             case R.id.follow_gps:
-                menuCenterGpsClicked(item);
+                menuFollowGpsClicked(item);
                 return true;
 
             case R.id.refresh:
@@ -309,10 +298,16 @@ public class OsmBugsActivity extends Activity {
         startActivityForResult(i, REQUESTCODESETTINGSACTIVITY);
     }
 
-    private void menuCenterGpsClicked(MenuItem item) {
+    private void menuFollowGpsClicked(MenuItem item) {
         /* Toggle GPS Map Following */
-        item.setChecked(!item.isChecked());
         Settings.setCenterGps(!Settings.getFollowGps());
+
+        if(Settings.getFollowGps())
+            mLocationOverlay.enableFollowLocation();
+        else
+            mLocationOverlay.disableFollowLocation();
+
+        invalidateOptionsMenu();
     }
 
     private void menuRefreshClicked(MenuItem item) {
@@ -432,7 +427,7 @@ public class OsmBugsActivity extends Activity {
     private ItemizedIconOverlay<Bug> mBugOverlay;
 
     /* The Location Marker Overlay */
-    private ItemizedIconOverlay<OverlayItem> mLocationOverlay;
+    private MyLocationNewOverlay mLocationOverlay;
 
     /* The next touch event on the map opens the add Bug Prompt */
     private boolean mAddNewBugOnNextClick = false;
@@ -448,17 +443,6 @@ public class OsmBugsActivity extends Activity {
         public void onLocationChanged(Location location) {
             /* Store the location for later use */
             mLastLocation = location;
-
-            /* Center Map on GPS Position if activated */
-            if (Settings.getFollowGps())
-                mMapView.getController().setCenter(new GeoPoint(location));
-
-            /* Update the Location Marker */
-            mLocationOverlay.removeAllItems();
-            OverlayItem i = new OverlayItem("", "", new GeoPoint(location));
-            i.setMarker(Drawings.LocationMarker);
-            mLocationOverlay.addItem(i);
-            mMapView.invalidate();
         }
 
         @Override
@@ -477,7 +461,7 @@ public class OsmBugsActivity extends Activity {
         }
     };
 
-    private OnItemGestureListener<Bug> mOnitemGestureListener = new OnItemGestureListener<Bug>() {
+    private OnItemGestureListener<Bug> mOnItemGestureListener = new OnItemGestureListener<Bug>() {
         @Override
         public boolean onItemSingleTapUp(int position, Bug bug) {
             /* Open the selected Bug in the Bug Editor */
