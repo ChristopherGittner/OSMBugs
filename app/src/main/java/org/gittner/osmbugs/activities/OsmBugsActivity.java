@@ -110,8 +110,8 @@ public class OsmBugsActivity extends Activity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN && mAddNewBugOnNextClick) {
                     mAddNewBugOnNextClick = false;
                     mNewBugLocation =
-                            (GeoPoint) mMapView.getProjection().fromPixels(event.getX(),
-                                    event.getY());
+                            (GeoPoint) mMapView.getProjection().fromPixels((int)event.getX(),
+                                    (int)event.getY());
                     showDialog(DIALOGNEWBUG);
                     return false;
                 }
