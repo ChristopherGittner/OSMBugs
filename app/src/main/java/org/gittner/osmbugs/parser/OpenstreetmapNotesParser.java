@@ -42,7 +42,16 @@ public class OpenstreetmapNotesParser {
                 NodeList nListComments = wpt.getElementsByTagName("comment");
                 ArrayList<Comment> comments = new ArrayList<Comment>();
                 for (int n = 0; n != nListComments.getLength(); ++n) {
-                    comments.add(new Comment(((Element) nListComments.item(n)).getElementsByTagName("text").item(0).getTextContent()));
+                    Comment comment = new Comment();
+
+                    comment.setText(((Element) nListComments.item(n)).getElementsByTagName("text").item(0).getTextContent());
+
+                    NodeList element = ((Element) nListComments.item(n)).getElementsByTagName("user");
+
+                    if(element.getLength() != 0)
+                        comment.setUsername(element.item(0).getTextContent());
+
+                    comments.add(comment);
                 }
 
                 String text = "";

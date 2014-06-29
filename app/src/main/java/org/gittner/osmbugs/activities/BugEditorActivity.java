@@ -254,7 +254,7 @@ public class BugEditorActivity extends Activity {
     public class CommentAdapter extends ArrayAdapter<Comment> {
 
         public CommentAdapter(Context context, ArrayList<Comment> data) {
-            super(context, R.id.comment_text, data);
+            super(context, R.layout.comment_icon, data);
         }
 
         @Override
@@ -269,6 +269,14 @@ public class BugEditorActivity extends Activity {
             }
 
             Comment c = this.getItem(position);
+
+            if(!c.getUsername().equals("")) {
+                ((TextView) returnView.findViewById(R.id.comment_username)).setVisibility(View.VISIBLE);
+                ((TextView) returnView.findViewById(R.id.comment_username)).setText(c.getUsername());
+            }
+            else {
+                ((TextView) returnView.findViewById(R.id.comment_username)).setVisibility(View.GONE);
+            }
 
             ((TextView) returnView.findViewById(R.id.comment_text)).setText(c.getText());
 

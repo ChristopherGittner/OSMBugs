@@ -124,7 +124,9 @@ public class MapdustParser {
             JSONArray commentsArray = properties.getJSONArray("comments");
 
             for (int i = 0; i != commentsArray.length(); ++i) {
-                comments.add(new Comment(commentsArray.getJSONObject(i).getString("comment")));
+                comments.add(new Comment(
+                        commentsArray.getJSONObject(i).getString("comment"),
+                        commentsArray.getJSONObject(i).getString("nickname")));
             }
 
         } catch (IOException e) {

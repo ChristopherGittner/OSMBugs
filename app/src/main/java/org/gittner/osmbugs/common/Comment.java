@@ -4,12 +4,25 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Comment implements Parcelable {
+
+    public Comment()
+    {
+        this("", "");
+    }
+
     public Comment(String text) {
+        this(text, "");
+    }
+
+    public Comment(String text, String username)
+    {
         mText = text;
+        mUsername = username;
     }
 
     public Comment(Parcel parcel) {
         mText = parcel.readString();
+        mUsername = parcel.readString();
     }
 
     public String getText() {
@@ -20,6 +33,16 @@ public class Comment implements Parcelable {
         mText = text;
     }
 
+    public String getUsername()
+    {
+        return mUsername;
+    }
+
+    public void setUsername(String username)
+    {
+        mUsername = username;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -28,6 +51,7 @@ public class Comment implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(mText);
+        parcel.writeString(mUsername);
     }
 
     public static final Creator<Comment> CREATOR = new Parcelable.Creator<Comment>() {
@@ -45,4 +69,7 @@ public class Comment implements Parcelable {
 
     /* Holds the Text of the Comment */
     private String mText;
+
+    /* Holds the Username of the Creator */
+    private String mUsername;
 }
