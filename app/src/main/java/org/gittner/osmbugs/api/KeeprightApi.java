@@ -1,6 +1,4 @@
-package org.gittner.osmbugs.tasks;
-
-import android.os.AsyncTask;
+package org.gittner.osmbugs.api;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -18,31 +16,28 @@ import org.osmdroid.util.BoundingBoxE6;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by christopher on 3/20/14.
- */
-public abstract class DownloadKeeprightBugsTask extends AsyncTask<BoundingBoxE6, Void, ArrayList<KeeprightBug>> {
+public class KeeprightApi {
 
-    @Override
-    protected ArrayList<KeeprightBug> doInBackground(BoundingBoxE6... bBoxes) {
+    public static ArrayList<KeeprightBug> downloadBBox(BoundingBoxE6 bBox, boolean showIgnored, boolean showTempIgnored, boolean langGerman) {
         HttpClient client = new DefaultHttpClient();
 
         ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
 
-        if (Settings.Keepright.isShowIgnoredEnabled())
+        if (showIgnored)
             arguments.add(new BasicNameValuePair("show_ign", "1"));
         else
             arguments.add(new BasicNameValuePair("show_ign", "0"));
 
-        if (Settings.Keepright.isShowTempIgnoredEnabled())
+        if (showTempIgnored)
             arguments.add(new BasicNameValuePair("show_tmpign", "1"));
         else
             arguments.add(new BasicNameValuePair("show_tmpign", "0"));
 
         arguments.add(new BasicNameValuePair("ch", getKeeprightSelectionString()));
-        arguments.add(new BasicNameValuePair("lat", String.valueOf(bBoxes[0].getCenter().getLatitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("lon", String.valueOf(bBoxes[0].getCenter().getLongitudeE6() / 1000000.0)));
-        if (Settings.isLanguageGerman())
+        arguments.add(new BasicNameValuePair("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0)));
+
+        if (langGerman)
             arguments.add(new BasicNameValuePair("lang", "de"));
 
         HttpGet request = new HttpGet("http://keepright.ipax.at/points.php?" + URLEncodedUtils.format(arguments, "utf-8"));
@@ -66,10 +61,51 @@ public abstract class DownloadKeeprightBugsTask extends AsyncTask<BoundingBoxE6,
         return null;
     }
 
-    @Override
-    protected abstract void onPostExecute(ArrayList<KeeprightBug> bugs);
+    public static boolean comment(int shema, int id, String comment, KeeprightBug.STATE state)
+    {
+        HttpClient client = new DefaultHttpClient();
 
-    private String getKeeprightSelectionString() {
+        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
+        arguments.add(new BasicNameValuePair("co", comment));
+
+        switch (state) {
+            case OPEN:
+                arguments.add(new BasicNameValuePair("st", "open"));
+                break;
+
+            case IGNORED:
+                arguments.add(new BasicNameValuePair("st", "ignore"));
+                break;
+
+            case IGNORED_TMP:
+                arguments.add(new BasicNameValuePair("st", "ignore_t"));
+                break;
+        }
+
+        arguments.add(new BasicNameValuePair("schema", String.valueOf(shema)));
+        arguments.add(new BasicNameValuePair("id", String.valueOf(id)));
+
+        HttpGet request = new HttpGet("http://keepright.at/comment.php?" + URLEncodedUtils.format(arguments, "utf-8"));
+
+        try {
+            /* Execute commit */
+            HttpResponse response = client.execute(request);
+
+            /* Check result for Success */
+            if (response.getStatusLine().getStatusCode() != 200)
+                return false;
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    private static String getKeeprightSelectionString() {
         /* Unknown what 0 stands for but its for compatibility Reasons */
         String result = "0,";
 

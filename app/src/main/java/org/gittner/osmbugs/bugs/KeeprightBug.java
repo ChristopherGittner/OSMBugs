@@ -4,21 +4,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.gittner.osmbugs.App;
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.api.KeeprightApi;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Drawings;
 import org.osmdroid.util.GeoPoint;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class KeeprightBug extends Bug {
@@ -99,46 +91,7 @@ public class KeeprightBug extends Bug {
             newState = STATE.IGNORED_TMP;
         }
 
-        HttpClient client = new DefaultHttpClient();
-
-        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-        arguments.add(new BasicNameValuePair("co", newComment));
-
-        switch (newState) {
-            case OPEN:
-                arguments.add(new BasicNameValuePair("st", "open"));
-                break;
-
-            case IGNORED:
-                arguments.add(new BasicNameValuePair("st", "ignore"));
-                break;
-
-            case IGNORED_TMP:
-                arguments.add(new BasicNameValuePair("st", "ignore_t"));
-                break;
-        }
-
-        arguments.add(new BasicNameValuePair("schema", String.valueOf(getSchema())));
-        arguments.add(new BasicNameValuePair("id", String.valueOf(getId())));
-
-        HttpGet request = new HttpGet("http://keepright.at/comment.php?" + URLEncodedUtils.format(arguments, "utf-8"));
-
-        try {
-            /* Execute commit */
-            HttpResponse response = client.execute(request);
-
-            /* Check result for Success */
-            if (response.getStatusLine().getStatusCode() != 200)
-                return false;
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
+        return KeeprightApi.comment(mSchema, mId, newComment, newState);
     }
 
     /* Keepright Bugs can be commented */

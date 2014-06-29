@@ -15,6 +15,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.gittner.osmbugs.App;
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.api.OpenstreetmapNotesApi;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
@@ -111,76 +112,17 @@ public class OpenstreetmapNote extends Bug {
             return false;
 
         if (newState == STATE.OPEN) {
-            /* Only Upload a new Comment */
-            DefaultHttpClient client = new DefaultHttpClient();
-
-            /* Add the Authentication Details if we have a username in the Preferences */
-            if (!Settings.OpenstreetmapNotes.getUsername().equals("")) {
-                client.getCredentialsProvider().setCredentials(AuthScope.ANY,
-                        new UsernamePasswordCredentials(Settings.OpenstreetmapNotes.getUsername(),
-                                Settings.OpenstreetmapNotes.getPassword())
-                );
-            }
-
-            /* Add all Arguments */
-            ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-            arguments.add(new BasicNameValuePair("text", newComment));
-
-            HttpPost request;
-            if (!Settings.isDebugEnabled())
-                request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + mId + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
-            else
-                request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + mId + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
-
-            try {
-                /* Execute commit */
-                HttpResponse response = client.execute(request);
-
-                /* Check result for Success */
-                if (response.getStatusLine().getStatusCode() != 200)
-                    return false;
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-                return false;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
+            OpenstreetmapNotesApi.addComment(
+                    mId,
+                    Settings.OpenstreetmapNotes.getUsername(),
+                    Settings.OpenstreetmapNotes.getPassword(),
+                    newComment);
         } else if (!newComment.equals("") && mState == STATE.OPEN && newState == STATE.CLOSED) {
-            DefaultHttpClient client = new DefaultHttpClient();
-
-            /* Add the Authentication Details if we have a username in the Preferences */
-            if (!Settings.OpenstreetmapNotes.getUsername().equals("")) {
-                client.getCredentialsProvider().setCredentials(AuthScope.ANY,
-                        new UsernamePasswordCredentials(Settings.OpenstreetmapNotes.getUsername(),
-                                Settings.OpenstreetmapNotes.getPassword())
-                );
-            }
-
-            /* Add all Arguments */
-            ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-            arguments.add(new BasicNameValuePair("text", newComment));
-
-            HttpPost request;
-            if (!Settings.isDebugEnabled())
-                request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + mId + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
-            else
-                request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + mId + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
-
-            try {
-                /* Execute commit */
-                HttpResponse response = client.execute(request);
-
-                /* Check result for Success */
-                if (response.getStatusLine().getStatusCode() != 200)
-                    return false;
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-                return false;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
+            OpenstreetmapNotesApi.closeBug(
+                    mId,
+                    Settings.OpenstreetmapNotes.getUsername(),
+                    Settings.OpenstreetmapNotes.getPassword(),
+                    newComment);
         } else
             return false;
 

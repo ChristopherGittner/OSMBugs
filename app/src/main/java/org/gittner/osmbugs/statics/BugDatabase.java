@@ -1,18 +1,17 @@
 package org.gittner.osmbugs.statics;
 
+import android.os.AsyncTask;
+
+import org.gittner.osmbugs.api.KeeprightApi;
+import org.gittner.osmbugs.api.MapdustApi;
+import org.gittner.osmbugs.api.OpenstreetmapNotesApi;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OpenstreetmapNote;
-import org.gittner.osmbugs.tasks.DownloadKeeprightBugsTask;
-import org.gittner.osmbugs.tasks.DownloadMapdustBugsTask;
-import org.gittner.osmbugs.tasks.DownloadOpenstreetmapNotesTask;
 import org.osmdroid.util.BoundingBoxE6;
 
 import java.util.ArrayList;
 
-/**
- * Created by christopher on 3/20/14.
- */
 public class BugDatabase {
 
     public interface OnDownloadEndListener {
@@ -47,10 +46,10 @@ public class BugDatabase {
     }
 
     /* Download a Bounding Box to the Database */
-    public void DownloadBBox(BoundingBoxE6 bBox, final OnDownloadEndListener listener) {
+    public void DownloadBBox(final BoundingBoxE6 bBox, final OnDownloadEndListener listener) {
 
         /* Only start Downloading if all Downloads finished */
-        if(mActiveDownloads > 0)
+        if (mActiveDownloads > 0)
             return;
 
         mActiveDownloads = 0;
@@ -61,20 +60,27 @@ public class BugDatabase {
         mMapdustBugs.clear();
         mOpenstreetmapNotes.clear();
 
-        if(Settings.Keepright.isEnabled()) {
+        if (Settings.Keepright.isEnabled()) {
 
             ++mActiveDownloads;
 
-            new DownloadKeeprightBugsTask(){
+            new AsyncTask<BoundingBoxE6, Void, ArrayList<KeeprightBug>>() {
                 @Override
-                protected void onPostExecute(ArrayList<KeeprightBug> bugs) {
+                protected ArrayList<KeeprightBug> doInBackground(BoundingBoxE6... bBoxes) {
+                    return KeeprightApi.downloadBBox(bBoxes[0],
+                            Settings.Keepright.isShowIgnoredEnabled(),
+                            Settings.Keepright.isShowTempIgnoredEnabled(),
+                            Settings.isLanguageGerman());
+                }
+
+                @Override
+                protected void onPostExecute(ArrayList<KeeprightBug> keeprightBugs) {
                     ++mCompletedDownloads;
 
-                    if(bugs != null) {
-                        mKeeprightBugs = bugs;
+                    if (keeprightBugs != null) {
+                        mKeeprightBugs = keeprightBugs;
                         listener.onSuccess(Globals.KEEPRIGHT);
-                    }
-                    else {
+                    } else {
                         listener.onError(Globals.KEEPRIGHT);
                     }
 
@@ -83,20 +89,24 @@ public class BugDatabase {
             }.execute(bBox);
         }
 
-        if(Settings.Mapdust.isEnabled()) {
+        if (Settings.Mapdust.isEnabled()) {
 
             ++mActiveDownloads;
 
-            new DownloadMapdustBugsTask(){
+            new AsyncTask<BoundingBoxE6, Void, ArrayList<MapdustBug>>() {
                 @Override
-                protected void onPostExecute(ArrayList<MapdustBug> bugs) {
+                protected ArrayList<MapdustBug> doInBackground(BoundingBoxE6... bBoxes) {
+                    return MapdustApi.downloadBBox(bBoxes[0]);
+                }
+
+                @Override
+                protected void onPostExecute(ArrayList<MapdustBug> mapdustBugs) {
                     ++mCompletedDownloads;
 
-                    if(bugs != null) {
-                        mMapdustBugs = bugs;
+                    if (mapdustBugs != null) {
+                        mMapdustBugs = mapdustBugs;
                         listener.onSuccess(Globals.MAPDUST);
-                    }
-                    else {
+                    } else {
                         listener.onError(Globals.MAPDUST);
                     }
 
@@ -105,20 +115,27 @@ public class BugDatabase {
             }.execute(bBox);
         }
 
-        if(Settings.OpenstreetmapNotes.isEnabled()) {
+        if (Settings.OpenstreetmapNotes.isEnabled()) {
 
             ++mActiveDownloads;
 
-            new DownloadOpenstreetmapNotesTask(){
+            new AsyncTask<BoundingBoxE6, Void, ArrayList<OpenstreetmapNote>>() {
                 @Override
-                protected void onPostExecute(ArrayList<OpenstreetmapNote> notes) {
+                protected ArrayList<OpenstreetmapNote> doInBackground(BoundingBoxE6... bBoxes) {
+                    return OpenstreetmapNotesApi.downloadBBox(
+                            bBoxes[0],
+                            Settings.OpenstreetmapNotes.getBugLimit(),
+                            !Settings.OpenstreetmapNotes.isShowOnlyOpenEnabled());
+                }
+
+                @Override
+                protected void onPostExecute(ArrayList<OpenstreetmapNote> openstreetmapNotes) {
                     ++mCompletedDownloads;
 
-                    if(notes != null) {
-                        mOpenstreetmapNotes = notes;
+                    if (openstreetmapNotes != null) {
+                        mOpenstreetmapNotes = openstreetmapNotes;
                         listener.onSuccess(Globals.OPENSTREETMAPNOTES);
-                    }
-                    else {
+                    } else {
                         listener.onError(Globals.OPENSTREETMAPNOTES);
                     }
 
@@ -127,7 +144,7 @@ public class BugDatabase {
             }.execute(bBox);
         }
 
-        if(mActiveDownloads == 0)
+        if (mActiveDownloads == 0)
             return;
 
         listener.onProgressUpdate(0);
@@ -135,9 +152,9 @@ public class BugDatabase {
 
     /* Check if all Downloads completed and execute callbacks */
     private void checkProgress(OnDownloadEndListener listener) {
-        listener.onProgressUpdate(((double)mCompletedDownloads) / ((double)mActiveDownloads));
+        listener.onProgressUpdate(((double) mCompletedDownloads) / ((double) mActiveDownloads));
 
-        if(mCompletedDownloads == mActiveDownloads) {
+        if (mCompletedDownloads == mActiveDownloads) {
             mActiveDownloads = 0;
             mCompletedDownloads = 0;
             listener.onCompletion();
