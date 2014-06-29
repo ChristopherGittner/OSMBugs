@@ -25,7 +25,6 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
-import org.gittner.osmbugs.bugs.OpenstreetbugsBug;
 import org.gittner.osmbugs.bugs.OpenstreetmapNote;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Drawings;
@@ -385,12 +384,6 @@ public class OsmBugsActivity extends Activity {
 
                 if(Settings.Mapdust.isEnabled()) {
                     for (MapdustBug bug : BugDatabase.getInstance().getMapdustBugs()) {
-                        mBugOverlay.addItem(bug);
-                    }
-                }
-
-                if(Settings.Openstreetbugs.isEnabled()) {
-                    for (OpenstreetbugsBug bug : BugDatabase.getInstance().getOpenstreetbugsBugs()) {
                         mBugOverlay.addItem(bug);
                     }
                 }

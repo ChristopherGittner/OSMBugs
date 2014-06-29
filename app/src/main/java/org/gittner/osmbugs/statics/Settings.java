@@ -342,25 +342,6 @@ public class Settings {
         }
     }
 
-    public static class Openstreetbugs {
-
-        public static boolean isEnabled() {
-            return mPrefs.getBoolean("pref_openstreetbugs_enabled", false);
-        }
-
-        public static boolean isShowOnlyOpenEnabled() {
-            return mPrefs.getBoolean("pref_openstreetbugs_enabled_only_open", true);
-        }
-
-        public static int getBugLimit() {
-            return Integer.parseInt(mPrefs.getString("pref_openstreetbugs_bug_limit", "1000"));
-        }
-
-        public static String getUsername() {
-            return mPrefs.getString("pref_openstreetbugs_username", "John Doe");
-        }
-    }
-
     public static class Mapdust {
 
         public static String getApiKey() {

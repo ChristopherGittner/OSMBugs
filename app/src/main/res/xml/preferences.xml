@@ -6,10 +6,6 @@
             android:key="pref_keepright_enabled"
             android:defaultValue="true" />
         <CheckBoxPreference
-            android:title="@string/openstreetbugs"
-            android:key="pref_openstreetbugs_enabled"
-            android:defaultValue="false" />
-        <CheckBoxPreference
             android:title="@string/mapdust"
             android:key="pref_mapdust_enabled"
             android:defaultValue="true" />
@@ -295,26 +291,6 @@
 
             </PreferenceCategory>
         </PreferenceScreen>
-        <PreferenceScreen android:title="@string/openstreetbugs">
-            <PreferenceCategory android:title="@string/openstreetbugs">
-                <CheckBoxPreference
-                    android:title="@string/show_only_open_bugs"
-                    android:key="pref_openstreetbugs_enabled_only_open"
-                    android:defaultValue="true" />
-                <EditTextPreference
-                    android:numeric="integer"
-                    android:maxLength="5"
-                    android:defaultValue="1000"
-                    android:title="@string/bug_limit"
-                    android:key="pref_openstreetbugs_bug_limit"
-                    android:dialogTitle="@string/enter_new_limit" />
-                <EditTextPreference
-                    android:defaultValue="John Doe"
-                    android:title="@string/username"
-                    android:key="pref_openstreetbugs_username"
-                    android:dialogTitle="@string/enter_username" />
-            </PreferenceCategory>
-        </PreferenceScreen>
         <PreferenceScreen android:title="@string/mapdust">
             <PreferenceCategory android:title="@string/mapdust">
                 <EditTextPreference
@@ -378,7 +354,7 @@
                     android:maxLength="5"
                     android:defaultValue="1000"
                     android:title="@string/bug_limit"
-                    android:key="pref_openstreetbugs_bug_limit"
+                    android:key="pref_openstreetmap_notes_bug_limit"
                     android:dialogTitle="@string/enter_new_limit" />
                 <EditTextPreference
                     android:key="pref_openstreetmap_notes_username"

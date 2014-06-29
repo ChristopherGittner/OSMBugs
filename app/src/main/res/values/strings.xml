@@ -56,7 +56,6 @@
     <string name="missing_tracktype">Missing Tracktype</string>
     <string name="show_temporary_ignored">Show Temporary Ignored</string>
     <string name="show_ignored">Show Ignored</string>
-    <string name="openstreetbugs">Openstreetbugs</string>
     <string name="show_only_open_bugs">Show only open Bugs</string>
     <string name="bug_limit">Bug Limit</string>
     <string name="enter_new_limit">Enter new Limit</string>
@@ -89,7 +88,7 @@
     <string name="about">About</string>
     <string name="dialog_about_text">OSMBugs V0.6.1 - Beta\nThis App uses Data from:\n\nThe
         Openstreetmap
-        Project:\nhttp://www.openstreetmap.org\n\nKeepright:\nhttp://www.keepright.at\n\nOpenstreetbugs:\nhttp://openstreetbugs.schokokeks.org\n\nMapdust:\nhttp://www.mapdust.com\n\nAsher
+        Project:\nhttp://www.openstreetmap.org\n\nKeepright:\nhttp://www.keepright.at\n\nMapdust:\nhttp://www.mapdust.com\n\nAsher
         (Bug Icon):\nhttp://kyo-tux.deviantart.com</string>
     <string name="openstreetmap_notes">Openstreetmap Notes</string>
     <string name="edit">Edit</string>

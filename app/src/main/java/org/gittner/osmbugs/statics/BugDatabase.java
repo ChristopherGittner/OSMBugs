@@ -2,11 +2,9 @@ package org.gittner.osmbugs.statics;
 
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
-import org.gittner.osmbugs.bugs.OpenstreetbugsBug;
 import org.gittner.osmbugs.bugs.OpenstreetmapNote;
 import org.gittner.osmbugs.tasks.DownloadKeeprightBugsTask;
 import org.gittner.osmbugs.tasks.DownloadMapdustBugsTask;
-import org.gittner.osmbugs.tasks.DownloadOpenstreetbugsBugsTask;
 import org.gittner.osmbugs.tasks.DownloadOpenstreetmapNotesTask;
 import org.osmdroid.util.BoundingBoxE6;
 
@@ -44,10 +42,6 @@ public class BugDatabase {
         return mMapdustBugs;
     }
 
-    public ArrayList<OpenstreetbugsBug> getOpenstreetbugsBugs() {
-        return mOpenstreetbugsBugs;
-    }
-
     public ArrayList<OpenstreetmapNote> getOpenstreetmapNotes() {
         return mOpenstreetmapNotes;
     }
@@ -65,7 +59,6 @@ public class BugDatabase {
         /* Clear all Bugs */
         mKeeprightBugs.clear();
         mMapdustBugs.clear();
-        mOpenstreetbugsBugs.clear();
         mOpenstreetmapNotes.clear();
 
         if(Settings.Keepright.isEnabled()) {
@@ -105,28 +98,6 @@ public class BugDatabase {
                     }
                     else {
                         listener.onError(Globals.MAPDUST);
-                    }
-
-                    checkProgress(listener);
-                }
-            }.execute(bBox);
-        }
-
-        if(Settings.Openstreetbugs.isEnabled()) {
-
-            ++mActiveDownloads;
-
-            new DownloadOpenstreetbugsBugsTask(){
-                @Override
-                protected void onPostExecute(ArrayList<OpenstreetbugsBug> bugs) {
-                    ++mCompletedDownloads;
-
-                    if(bugs != null) {
-                        mOpenstreetbugsBugs = bugs;
-                        listener.onSuccess(Globals.OPENSTREETBUGS);
-                    }
-                    else {
-                        listener.onError(Globals.OPENSTREETBUGS);
                     }
 
                     checkProgress(listener);
@@ -187,9 +158,6 @@ public class BugDatabase {
 
     /* Holds all Mapdust Bugs */
     private ArrayList<MapdustBug> mMapdustBugs = new ArrayList<MapdustBug>();
-
-    /* Holds all Openstreetbugs Bugs */
-    private ArrayList<OpenstreetbugsBug> mOpenstreetbugsBugs = new ArrayList<OpenstreetbugsBug>();
 
     /* Holds all Openstreetmap Notes */
     private ArrayList<OpenstreetmapNote> mOpenstreetmapNotes = new ArrayList<OpenstreetmapNote>();

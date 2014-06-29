@@ -311,11 +311,6 @@ public class Drawings {
         KeeprightDrawable412 = context.getResources().getDrawable(R.drawable.zap412);
         KeeprightDrawable413 = context.getResources().getDrawable(R.drawable.zap413);
 
-        OpenstreetbugsDrawableClosed =
-                context.getResources().getDrawable(R.drawable.openstreetbugs_closed_bug);
-        OpenstreetbugsDrawableOpen =
-                context.getResources().getDrawable(R.drawable.openstreetbugs_open_bug);
-
         MapdustClosed = context.getResources().getDrawable(R.drawable.bug_green);
         MapdustIgnored = context.getResources().getDrawable(R.drawable.bug_grey);
         MapdustWrongTurn = context.getResources().getDrawable(R.drawable.wrong_turn);
