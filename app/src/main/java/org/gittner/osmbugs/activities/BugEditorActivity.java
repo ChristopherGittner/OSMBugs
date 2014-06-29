@@ -26,7 +26,6 @@ import org.gittner.osmbugs.App;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.common.Comment;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 

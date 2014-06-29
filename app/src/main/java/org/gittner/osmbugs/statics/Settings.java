@@ -2,7 +2,6 @@ package org.gittner.osmbugs.statics;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.preference.PreferenceManager;
 
 import org.osmdroid.api.IGeoPoint;
