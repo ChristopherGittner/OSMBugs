@@ -1,7 +1,5 @@
 package org.gittner.osmbugs.api;
 
-import android.util.Log;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
