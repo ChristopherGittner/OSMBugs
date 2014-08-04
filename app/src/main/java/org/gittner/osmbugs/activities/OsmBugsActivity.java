@@ -3,43 +3,34 @@ package org.gittner.osmbugs.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
-import org.gittner.osmbugs.bugs.KeeprightBug;
-import org.gittner.osmbugs.bugs.MapdustBug;
-import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.fragments.BugListFragment;
+import org.gittner.osmbugs.fragments.BugMapFragment;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
-import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
-import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 
-public class OsmBugsActivity extends Activity {
+public class OsmBugsActivity extends Activity implements
+        BugMapFragment.OnFragmentInteractionListener,
+        BugListFragment.OnFragmentInteractionListener {
 
     /* Request Codes for activities */
     public static final int REQUESTCODEBUGEDITORACTIVITY = 1;
@@ -47,8 +38,10 @@ public class OsmBugsActivity extends Activity {
 
     /* Dialog Ids */
     private static final int DIALOGNEWBUG = 1;
-    private static final int DIALOGNEWBUGTEXT = 2;
-    private static final int DIALOGABOUT = 3;
+    private static final int DIALOGABOUT = 2;
+
+    private static final String TAG_BUG_MAP_FRAGMENT = "BUGMAPFRAGMENT";
+    private static final String TAG_BUG_LIST_FRAGMENT = "BUGLISTFRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +52,11 @@ public class OsmBugsActivity extends Activity {
         requestWindowFeature(Window.FEATURE_PROGRESS);
 
         setContentView(R.layout.activity_osm_bugs);
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, BugMapFragment.newInstance(), TAG_BUG_MAP_FRAGMENT)
+                    .commit();
+        }
 
         /* Hide the ProgressBars at start */
         setProgressBarIndeterminate(false);
@@ -70,101 +68,11 @@ public class OsmBugsActivity extends Activity {
 
         /* Init the Drawings Class to load all Resources */
         Drawings.init(this);
-
-        /* Create Bug Overlay */
-        mBugs = new ArrayList<Bug>();
-        mBugOverlay = new ItemizedIconOverlay<Bug>(
-                mBugs,
-                Drawings.KeeprightDrawable30,
-                mOnItemGestureListener,
-                new DefaultResourceProxyImpl(this));
-
-        /* Setup Main MapView */
-        mMapView = (MapView) findViewById(R.id.mapview);
-        mMapView.setMultiTouchControls(true);
-        mMapView.setBuiltInZoomControls(true);
-        mMapView.getOverlays().add(mBugOverlay);
-
-        mLocationOverlay = new MyLocationNewOverlay(this, mMapView);
-        mMapView.getOverlays().add(mLocationOverlay);
-        mLocationOverlay.enableMyLocation();
-        if(Settings.getFollowGps())
-            mLocationOverlay.enableFollowLocation();
-        else
-            mLocationOverlay.disableFollowLocation();
-
-        /*
-         * This adds an empty Overlay to retrieve the Touch Events This is some sort of Hack, since
-         * the OnTouchListener will fire only once if the Built in Zoom Controls are enabled
-         */
-        mMapView.getOverlays().add(new Overlay(this) {
-            @Override
-            protected void draw(Canvas arg0, MapView arg1, boolean arg2) {
-
-            }
-
-            @SuppressWarnings("deprecation")
-            @Override
-            public boolean onTouchEvent(MotionEvent event, MapView mapView) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN && mAddNewBugOnNextClick) {
-                    mAddNewBugOnNextClick = false;
-                    mNewBugLocation =
-                            (GeoPoint) mMapView.getProjection().fromPixels((int)event.getX(),
-                                    (int)event.getY());
-                    showDialog(DIALOGNEWBUG);
-                    return false;
-                }
-
-                return super.onTouchEvent(event, mapView);
-            }
-        });
-
-        /* Setup the LocationManager */
-        mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        /* Set the Initial Map Zoom */
-        mMapView.getController().setZoom(Settings.getLastZoom());
-
-        /* Set the Initial Center of the map */
-        mMapView.getController().setCenter(Settings.getLastMapCenter());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        /* Start Listening to Location updates */
-        Criteria locationCriteria = new Criteria();
-        locationCriteria.setAccuracy(Criteria.ACCURACY_FINE);
-
-        String bestProvider = mLocMgr.getBestProvider(locationCriteria, true);
-
-        if (bestProvider == null)
-            return;
-
-        mLocMgr.requestLocationUpdates(bestProvider, 0, 0, mLocationListener);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        /* Stop Listening to Location updates */
-        mLocMgr.removeUpdates(mLocationListener);
-
-        /* Save the last Center of the Map */
-        Settings.setLastMapCenter(mMapView.getMapCenter());
-
-        /* Save the last Map Zoom */
-        Settings.setLastZoom(mMapView.getZoomLevel());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.osm_bugs, menu);
-
-        /* Set the checked state of the follow GPS Button according to the System Settings */
-        menu.findItem(R.id.follow_gps).setChecked(Settings.getFollowGps());
 
         /* Hide the Refresh Button if a Download is in Progress */
         if(mDownloadActive) {
@@ -180,28 +88,21 @@ public class OsmBugsActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                menuSettingsClicked(item);
-                return true;
-
-            case R.id.follow_gps:
-                menuFollowGpsClicked(item);
-                return true;
 
             case R.id.refresh:
-                menuRefreshClicked(item);
+                menuRefreshClicked();
                 return true;
 
-            case R.id.go_to_gps:
-                menuGoToGPSClicked(item);
+            case R.id.action_settings:
+                menuSettingsClicked();
                 return true;
 
             case R.id.about:
-                menuAboutClicked(item);
+                menuAboutClicked();
                 return true;
 
-            case R.id.add_bug:
-                menuAddBugClicked(item);
+            case R.id.list:
+                menuListClicked();
                 return true;
         }
 
@@ -291,55 +192,32 @@ public class OsmBugsActivity extends Activity {
         return super.onCreateDialog(id);
     }
 
-    private void menuSettingsClicked(MenuItem item) {
+    private void menuSettingsClicked() {
         /* Start the Settings Activity */
         Intent i = new Intent(this, SettingsActivity.class);
         startActivityForResult(i, REQUESTCODESETTINGSACTIVITY);
     }
 
-    private void menuFollowGpsClicked(MenuItem item) {
-        /* Toggle GPS Map Following */
-        Settings.setCenterGps(!Settings.getFollowGps());
-
-        if(Settings.getFollowGps())
-            mLocationOverlay.enableFollowLocation();
-        else
-            mLocationOverlay.disableFollowLocation();
-
-        invalidateOptionsMenu();
-    }
-
-    private void menuRefreshClicked(MenuItem item) {
+    private void menuRefreshClicked() {
         /* Update all Bugs */
         refreshBugs();
     }
 
-    private void menuGoToGPSClicked(MenuItem item) {
-        /* Center the GPS on the last known Location */
-        if (mLastLocation != null)
-            mMapView.getController().setCenter(new GeoPoint(mLastLocation));
-    }
-
-    private void menuAboutClicked(MenuItem item) {
+    private void menuAboutClicked() {
         //noinspection deprecation
         this.showDialog(DIALOGABOUT);
     }
 
-    private void menuAddBugClicked(MenuItem item) {
-        /* Enable or Disable the Bug creation mode */
-        if (!mAddNewBugOnNextClick) {
-            mAddNewBugOnNextClick = true;
-            Toast.makeText(this, getString(R.string.bug_creation_mode_enabled), Toast.LENGTH_LONG).show();
-        } else {
-            mAddNewBugOnNextClick = false;
-            Toast.makeText(this, getString(R.string.bug_creation_mode_disabled), Toast.LENGTH_LONG).show();
-        }
+    private void menuListClicked()
+    {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, BugListFragment.newInstance(), TAG_BUG_LIST_FRAGMENT)
+                .addToBackStack(TAG_BUG_LIST_FRAGMENT)
+                .commit();
     }
 
     /* Reload all Bugs */
     private void refreshBugs() {
-        BugDatabase database = BugDatabase.getInstance();
-
         mDownloadActive = true;
 
         /* Start the Progress Bar */
@@ -350,127 +228,81 @@ public class OsmBugsActivity extends Activity {
         /* Request Options Menu reload */
         invalidateOptionsMenu();
 
-        /* Remove all old Bugs from the map */
-        mBugOverlay.removeAllItems();
-        mMapView.invalidate();
-
-        database.DownloadBBox(mMapView.getBoundingBox(), new BugDatabase.OnDownloadEndListener() {
-            @Override
-            public void onSuccess(int platform) { }
-
-            @Override
-            public void onError(int platform) {
-                Log.w("", "Error loading Bugs: " + platform);
-            }
-
-            @Override
-            public void onCompletion() {
-
-                mDownloadActive = false;
-
-                /* Stop the Progressbar */
-                setProgressBarIndeterminateVisibility(false);
-                setProgressBarVisibility(false);
-
-                /* Request Options Menu reload */
-                invalidateOptionsMenu();
-
-                /* Add all Bugs to the Map */
-                if(Settings.Keepright.isEnabled()) {
-                    for (KeeprightBug bug : BugDatabase.getInstance().getKeeprightBugs()) {
-                        mBugOverlay.addItem(bug);
-                    }
-                }
-
-                if(Settings.Mapdust.isEnabled()) {
-                    for (MapdustBug bug : BugDatabase.getInstance().getMapdustBugs()) {
-                        mBugOverlay.addItem(bug);
-                    }
-                }
-
-                if(Settings.OpenstreetmapNotes.isEnabled()) {
-                    for (OpenstreetmapNote bug : BugDatabase.getInstance().getOpenstreetmapNotes()) {
-                        mBugOverlay.addItem(bug);
-                    }
-                }
-
-                mMapView.invalidate();
-            }
-
-            @Override
-            public void onProgressUpdate(double progress) {
-                setProgress((int)(progress * 10000));
-            }
-        });
+        Fragment fragment = getFragmentManager().findFragmentById(R.id.container);
+        if(fragment instanceof BugMapFragment)
+        {
+            BugDatabase.getInstance().DownloadBBox(((BugMapFragment) fragment).getBBox(), mOnDownloadEndListener);
+        }
+        else
+        {
+            BugDatabase.getInstance().Reload(mOnDownloadEndListener);
+        }
     }
 
-    /* The LocationManager to retrieve the current position */
-    private LocationManager mLocMgr = null;
+    private BugDatabase.OnDownloadEndListener mOnDownloadEndListener = new BugDatabase.OnDownloadEndListener() {
+        @Override
+        public void onSuccess(int platform) {
+        }
 
-    /* The last location retrieved from the LocationListener */
-    private Location mLastLocation;
+        @Override
+        public void onError(int platform) {
+        }
 
-    /* The main map */
-    private MapView mMapView = null;
+        @Override
+        public void onCompletion() {
 
-    /* Bugs displayed on the map */
-    private ArrayList<Bug> mBugs;
+            mDownloadActive = false;
 
-    /* The Overlay for Bugs displayed on the map */
-    private ItemizedIconOverlay<Bug> mBugOverlay;
+            /* Stop the Progressbar */
+            setProgressBarIndeterminateVisibility(false);
+            setProgressBarVisibility(false);
 
-    /* The Location Marker Overlay */
-    private MyLocationNewOverlay mLocationOverlay;
+            invalidateOptionsMenu();
+        }
 
-    /* The next touch event on the map opens the add Bug Prompt */
-    private boolean mAddNewBugOnNextClick = false;
+        @Override
+        public void onProgressUpdate(double progress) {
+            setProgress((int) (progress * 10000));
+        }
+    };
 
     /* Used to save the Point where to create the new Bug */
     private static GeoPoint mNewBugLocation;
 
-    /* Used to save the new Bugs platform */
-    private static int mNewBugPlatform;
+    @Override
+    public void onBugClicked(Bug bug) {
+        /* Open the selected Bug in the Bug Editor */
+        Intent i = new Intent(OsmBugsActivity.this, BugEditorActivity.class);
+        i.putExtra(BugEditorActivity.EXTRABUG, bug);
 
-    private LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            /* Store the location for later use */
-            mLastLocation = location;
-        }
+        startActivityForResult(i, REQUESTCODEBUGEDITORACTIVITY);
 
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
+        Log.w("", "Bug " + bug.getPoint().toString());
+    }
 
-        }
+    @Override
+    public void onBugMapClicked(final Bug bug) {
+        /* Display the Map centered at the clicked Bug
+         * and disable gps Following  */
 
-        @Override
-        public void onProviderEnabled(String s) {
+        BugMapFragment bugMapFragment = BugMapFragment.newInstance(17, bug.getPoint());
 
-        }
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, bugMapFragment, TAG_BUG_MAP_FRAGMENT)
+                .addToBackStack(TAG_BUG_MAP_FRAGMENT)
+                .commit();
 
-        @Override
-        public void onProviderDisabled(String s) {
+        Settings.setFollowGps(false);
+        invalidateOptionsMenu();
+    }
 
-        }
-    };
+    @Override
+    public void onAddNewBug(GeoPoint point) {
+        mNewBugLocation = point;
 
-    private OnItemGestureListener<Bug> mOnItemGestureListener = new OnItemGestureListener<Bug>() {
-        @Override
-        public boolean onItemSingleTapUp(int position, Bug bug) {
-            /* Open the selected Bug in the Bug Editor */
-            Intent i = new Intent(OsmBugsActivity.this, BugEditorActivity.class);
-            i.putExtra(BugEditorActivity.EXTRABUG, bug);
-
-            startActivityForResult(i, REQUESTCODEBUGEDITORACTIVITY);
-
-            return false;
-        }
-
-        @Override
-        public boolean onItemLongPress(int i, Bug bug) {
-            return false;
-        }
-    };
+        //noinspection deprecation
+        showDialog(DIALOGNEWBUG);
+    }
 
     /* True if a Bug Download is currently active */
     private boolean mDownloadActive = false;

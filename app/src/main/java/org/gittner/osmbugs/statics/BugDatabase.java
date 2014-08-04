@@ -1,6 +1,7 @@
 package org.gittner.osmbugs.statics;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.gittner.osmbugs.api.KeeprightApi;
 import org.gittner.osmbugs.api.MapdustApi;
@@ -22,6 +23,13 @@ public class BugDatabase {
         public void onCompletion();
 
         public void onProgressUpdate(double progress);
+    }
+
+    public interface DatabaseWatcher {
+
+        public void onDatabaseUpdated();
+
+        public void onDatabaseCleared();
     }
 
     /* Retrieve an Instance to the Bug Database */
@@ -46,11 +54,20 @@ public class BugDatabase {
     }
 
     /* Download a Bounding Box to the Database */
-    public void DownloadBBox(final BoundingBoxE6 bBox, final OnDownloadEndListener listener) {
 
+
+    public void Reload(final OnDownloadEndListener listener) {
+        DownloadBBox(Settings.getLastBBox(), listener);
+    }
+
+    public void DownloadBBox(final BoundingBoxE6 bBox, final OnDownloadEndListener listener) {
         /* Only start Downloading if all Downloads finished */
         if (mActiveDownloads > 0)
             return;
+
+        Settings.setLastBBox(bBox);
+
+        Log.w("", bBox.toString());
 
         mActiveDownloads = 0;
         mCompletedDownloads = 0;
@@ -59,6 +76,11 @@ public class BugDatabase {
         mKeeprightBugs.clear();
         mMapdustBugs.clear();
         mOpenstreetmapNotes.clear();
+
+        for(DatabaseWatcher watcher : mDatabaseWatchers)
+        {
+            watcher.onDatabaseCleared();
+        }
 
         if (Settings.Keepright.isEnabled()) {
 
@@ -158,7 +180,21 @@ public class BugDatabase {
             mActiveDownloads = 0;
             mCompletedDownloads = 0;
             listener.onCompletion();
+            for(DatabaseWatcher watcher : mDatabaseWatchers)
+            {
+                watcher.onDatabaseUpdated();
+            }
         }
+    }
+
+    public void addDatabaseWatcher(DatabaseWatcher watcher)
+    {
+        mDatabaseWatchers.add(watcher);
+    }
+
+    public void removeDatabaseWatcher(DatabaseWatcher watcher)
+    {
+        mDatabaseWatchers.remove(watcher);
     }
 
     /* The Singletons Instance */
@@ -178,4 +214,7 @@ public class BugDatabase {
 
     /* Holds all Openstreetmap Notes */
     private ArrayList<OpenstreetmapNote> mOpenstreetmapNotes = new ArrayList<OpenstreetmapNote>();
+
+    /* All Registered Database Watchers */
+    private ArrayList<DatabaseWatcher> mDatabaseWatchers = new ArrayList<DatabaseWatcher>();
 }

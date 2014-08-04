@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import org.osmdroid.api.IGeoPoint;
+import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.Locale;
@@ -19,7 +20,7 @@ public class Settings {
         return mPrefs.getBoolean("pref_follow_gps", true);
     }
 
-    public static void setCenterGps(boolean state) {
+    public static void setFollowGps(boolean state) {
         mPrefs.edit().putBoolean("pref_follow_gps", state).commit();
     }
 
@@ -37,6 +38,22 @@ public class Settings {
     public static void setLastMapCenter(IGeoPoint location) {
         mPrefs.edit().putString("pref_last_map_center_lat", String.valueOf(location.getLatitude())).commit();
         mPrefs.edit().putString("pref_last_map_center_lon", String.valueOf(location.getLongitude())).commit();
+    }
+
+    public static BoundingBoxE6 getLastBBox() {
+        return new BoundingBoxE6(
+                mPrefs.getInt("pref_last_bbox_lat_north", 0),
+                mPrefs.getInt("pref_last_bbox_lon_east", 0),
+                mPrefs.getInt("pref_last_bbox_lat_south", 0),
+                mPrefs.getInt("pref_last_bbox_lon_west", 0));
+    }
+
+    public static void setLastBBox(BoundingBoxE6 bBox) {
+        mPrefs.edit()
+                .putInt("pref_last_bbox_lat_north", bBox.getLatNorthE6())
+                .putInt("pref_last_bbox_lon_east", bBox.getLonEastE6())
+                .putInt("pref_last_bbox_lat_south", bBox.getLatSouthE6())
+                .putInt("pref_last_bbox_lon_west", bBox.getLonWestE6()).commit();
     }
 
     public static int getLastZoom(){

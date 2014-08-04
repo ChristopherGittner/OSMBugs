@@ -1,33 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item
+        android:id="@+id/refresh"
+        android:title="@string/refresh"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_menu_refresh" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings" />
     <item
-        android:id="@+id/follow_gps"
-        android:title="@string/follow_gps"
-        android:checked="true"
-        android:checkable="true"></item>
-    <item
-        android:id="@+id/refresh"
-        android:title="@string/refresh"
-        android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_menu_refresh"></item>
-    <item
-        android:id="@+id/add_bug"
-        android:title="@string/add_bug"
-        android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_menu_add_bug"></item>
-    <item
-        android:id="@+id/go_to_gps"
-        android:title="@string/go_to_gps"
-        android:showAsAction="never"
-        android:icon="@drawable/ic_menu_mylocation"></item>
-    <item
         android:id="@+id/about"
         android:showAsAction="never"
-        android:title="@string/about"></item>
+        android:title="@string/about" />
+    <item
+        android:id="@+id/list"
+        android:title="List" />
 
 </menu>
