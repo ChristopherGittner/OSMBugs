@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/follow_gps"
+        android:title="@string/follow_gps"
+        android:checked="true"
+        android:checkable="true" />
+    <item
+        android:id="@+id/go_to_gps"
+        android:title="@string/go_to_gps"
+        android:showAsAction="never"
+        android:icon="@drawable/ic_menu_mylocation" />
+    <item
+        android:id="@+id/add_bug"
+        android:title="@string/add_bug"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_menu_add_bug" />
+</menu>
