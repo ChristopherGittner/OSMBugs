@@ -8,8 +8,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -76,10 +74,17 @@ public class OsmBugsActivity extends Activity implements
 
         /* Hide the Refresh Button if a Download is in Progress */
         if(mDownloadActive) {
-            menu.findItem(R.id.refresh).setVisible(false);
+            menu.findItem(R.id.refresh).setEnabled(false);
         }
         else {
-            menu.findItem(R.id.refresh).setVisible(true);
+            menu.findItem(R.id.refresh).setEnabled(true);
+        }
+
+        if(getFragmentManager().findFragmentById(R.id.container).getTag().equals(TAG_BUG_LIST_FRAGMENT)) {
+            menu.findItem(R.id.list).setVisible(false);
+        }
+        else {
+            menu.findItem(R.id.list).setVisible(true);
         }
 
         return true;
@@ -212,7 +217,7 @@ public class OsmBugsActivity extends Activity implements
     {
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, BugListFragment.newInstance(), TAG_BUG_LIST_FRAGMENT)
-                .addToBackStack(TAG_BUG_LIST_FRAGMENT)
+                .addToBackStack(TAG_BUG_MAP_FRAGMENT)
                 .commit();
     }
 
@@ -266,9 +271,6 @@ public class OsmBugsActivity extends Activity implements
         }
     };
 
-    /* Used to save the Point where to create the new Bug */
-    private static GeoPoint mNewBugLocation;
-
     @Override
     public void onBugClicked(Bug bug) {
         /* Open the selected Bug in the Bug Editor */
@@ -281,7 +283,7 @@ public class OsmBugsActivity extends Activity implements
     }
 
     @Override
-    public void onBugMapClicked(final Bug bug) {
+    public void onBugMiniMapClicked(final Bug bug) {
         /* Display the Map centered at the clicked Bug
          * and disable gps Following  */
 
@@ -303,6 +305,9 @@ public class OsmBugsActivity extends Activity implements
         //noinspection deprecation
         showDialog(DIALOGNEWBUG);
     }
+
+    /* Used to save the Point where to create the new Bug */
+    private static GeoPoint mNewBugLocation;
 
     /* True if a Bug Download is currently active */
     private boolean mDownloadActive = false;

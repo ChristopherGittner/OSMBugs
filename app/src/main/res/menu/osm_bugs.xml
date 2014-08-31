@@ -1,20 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/refresh"
+        android:orderInCategory="20"
         android:title="@string/refresh"
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_menu_refresh" />
     <item
+        android:id="@+id/list"
+        android:orderInCategory="30"
+        android:title="List"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_view_as_list"/>
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings" />
+        android:showAsAction="ifRoom"
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_action_settings"/>
     <item
         android:id="@+id/about"
-        android:showAsAction="never"
-        android:title="@string/about" />
-    <item
-        android:id="@+id/list"
-        android:title="List" />
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="@string/about"
+        android:icon="@drawable/ic_action_about"/>
 
 </menu>

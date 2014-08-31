@@ -11,7 +11,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +29,6 @@ import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.DefaultResourceProxyImpl;
-import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -39,8 +37,6 @@ import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class BugMapFragment extends Fragment {
 
@@ -185,15 +181,6 @@ public class BugMapFragment extends Fragment {
         mMapView.invalidate();
 
         return v;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(ZOOM_LEVEL, mMapView.getZoomLevel());
-        outState.putDouble(CENTER_LAT, mMapView.getMapCenter().getLatitude());
-        outState.putDouble(CENTER_LON, mMapView.getMapCenter().getLongitude());
-
-        super.onSaveInstanceState(outState);
     }
 
     @Override

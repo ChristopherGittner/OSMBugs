@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
-import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,7 +20,6 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Settings;
-import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
 public class BugListFragment extends ListFragment {
@@ -94,7 +92,7 @@ public class BugListFragment extends ListFragment {
     public interface OnFragmentInteractionListener {
         public void onBugClicked(Bug bug);
 
-        public void onBugMapClicked(Bug bug);
+        public void onBugMiniMapClicked(Bug bug);
     }
 
     /* Listener for Database Updates */
@@ -146,7 +144,7 @@ public class BugListFragment extends ListFragment {
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     if(motionEvent.getAction() == MotionEvent.ACTION_DOWN)
                     {
-                        mListener.onBugMapClicked(bug);
+                        mListener.onBugMiniMapClicked(bug);
                     }
                     return true;
                 }
