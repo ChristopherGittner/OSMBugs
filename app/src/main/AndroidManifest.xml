@@ -33,14 +33,6 @@
         <activity
             android:name=".activities.AddOpenstreetmapNoteActivity"
             android:label="@string/title_activity_add_openstreetmap_note" />
-        <activity
-            android:name=".activities.BugListActivity"
-            android:label="@string/title_activity_bug_list" >
-        </activity>
-        <activity
-            android:name=".activities.MainActivity"
-            android:label="@string/title_activity_main" >
-        </activity>
     </application>
 
 </manifest>

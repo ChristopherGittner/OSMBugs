@@ -205,7 +205,7 @@ public class OsmBugsActivity extends Activity implements
 
     private void menuAboutClicked() {
         //noinspection deprecation
-        this.showDialog(DIALOGABOUT);
+        showDialog(DIALOGABOUT);
     }
 
     private void menuListClicked()
