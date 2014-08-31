@@ -136,6 +136,7 @@
     <string name="title_activity_add_mapdust_bug">Mapdust Fehler hinzufügen</string>
     <string name="type">Typ</string>
     <string name="title_activity_add_openstreetmap_note">Openstreetmap Note hinzufügen</string>
+    <string name="title_activity_bug_list">Fehler Liste</string>
     <string name="list">Liste</string>
 
 </resources>

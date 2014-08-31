@@ -136,10 +136,7 @@
     <string name="title_activity_add_mapdust_bug">Add Mapdust Bug</string>
     <string name="type">Type</string>
     <string name="title_activity_add_openstreetmap_note">Add Openstreetmap Note</string>
-    <string name="title_activity_bug_list">BugListActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_my">MyActivity</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_bug_list">Bug List</string>
+    <string name="list">List</string>
 
 </resources>

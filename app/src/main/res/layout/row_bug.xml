@@ -34,7 +34,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Title"
+                android:text="@string/title"
                 android:id="@+id/txtvTitle"
                 android:layout_marginLeft="4dp"
                 android:layout_marginBottom="4dp" />
@@ -53,7 +53,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Description"
+            android:text="@string/description"
             android:id="@+id/txtvDescription"
             android:layout_marginTop="4dp" />
     </LinearLayout>
