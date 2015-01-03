@@ -138,5 +138,6 @@
     <string name="title_activity_add_openstreetmap_note">Add Openstreetmap Note</string>
     <string name="title_activity_bug_list">Bug List</string>
     <string name="list">List</string>
+    <string name="osmose">Osmose</string>
 
 </resources>

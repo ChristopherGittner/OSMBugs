@@ -6,6 +6,10 @@
             android:key="pref_keepright_enabled"
             android:defaultValue="true" />
         <CheckBoxPreference
+            android:title="@string/osmose"
+            android:key="pref_osmose_enabled"
+            android:defaultValue="true" />
+        <CheckBoxPreference
             android:title="@string/mapdust"
             android:key="pref_mapdust_enabled"
             android:defaultValue="true" />
@@ -341,6 +345,17 @@
                     android:title="@string/other"
                     android:key="pref_mapdust_enabled_other"
                     android:defaultValue="true" />
+            </PreferenceCategory>
+        </PreferenceScreen>
+        <PreferenceScreen android:title="@string/osmose">
+            <PreferenceCategory android:title="@string/osmose">
+                <EditTextPreference
+                    android:numeric="integer"
+                    android:maxLength="3"
+                    android:defaultValue="100"
+                    android:title="@string/bug_limit"
+                    android:key="pref_osmose_bug_limit"
+                    android:dialogTitle="@string/enter_new_limit" />
             </PreferenceCategory>
         </PreferenceScreen>
         <PreferenceScreen android:title="@string/openstreetmap_notes">

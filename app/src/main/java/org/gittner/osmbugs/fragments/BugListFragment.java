@@ -80,6 +80,10 @@ public class BugListFragment extends ListFragment {
             mBugListAdapter.addAll(BugDatabase.getInstance().getKeeprightBugs());
         }
 
+        if(Settings.Osmose.isEnabled()) {
+            mBugListAdapter.addAll(BugDatabase.getInstance().getOsmoseBugs());
+        }
+
         if(Settings.Mapdust.isEnabled()) {
             mBugListAdapter.addAll(BugDatabase.getInstance().getMapdustBugs());
         }

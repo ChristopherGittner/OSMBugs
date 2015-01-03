@@ -25,6 +25,7 @@ import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Settings;
@@ -338,6 +339,12 @@ public class BugMapFragment extends Fragment {
             /* Add all Bugs to the Map */
             if(Settings.Keepright.isEnabled()) {
                 for (KeeprightBug bug : BugDatabase.getInstance().getKeeprightBugs()) {
+                    mBugOverlay.addItem(bug);
+                }
+            }
+
+            if(Settings.Osmose.isEnabled()) {
+                for (OsmoseBug bug : BugDatabase.getInstance().getOsmoseBugs()) {
                     mBugOverlay.addItem(bug);
                 }
             }

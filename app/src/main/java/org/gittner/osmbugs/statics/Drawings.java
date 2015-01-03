@@ -16,8 +16,6 @@ public class Drawings {
 
     public static Drawable icMenuSave;
 
-    public static Drawable icMenuSearch;
-
     public static Drawable KeeprightDrawableIgnored;
 
     public static Drawable KeeprightDrawableClosed;
@@ -43,8 +41,6 @@ public class Drawings {
     public static Drawable KeeprightDrawable70;
 
     public static Drawable KeeprightDrawable71;
-
-    public static Drawable KeeprightDrawable72;
 
     public static Drawable KeeprightDrawable80;
 
@@ -170,8 +166,6 @@ public class Drawings {
 
     public static Drawable KeeprightDrawable360;
 
-    public static Drawable KeeprightDrawable370;
-
     public static Drawable KeeprightDrawable380;
 
     public static Drawable KeeprightDrawable390;
@@ -190,9 +184,227 @@ public class Drawings {
 
     public static Drawable KeeprightDrawable413;
 
-    public static Drawable OpenstreetbugsDrawableOpen;
+    public static Drawable OsmoseMarkerB0;
 
-    public static Drawable OpenstreetbugsDrawableClosed;
+    public static Drawable OsmoseMarkerB1010;
+
+    public static Drawable OsmoseMarkerB1040;
+
+    public static Drawable OsmoseMarkerB1050;
+
+    public static Drawable OsmoseMarkerB1060;
+
+    public static Drawable OsmoseMarkerB1070;
+
+    public static Drawable OsmoseMarkerB1080;
+
+    public static Drawable OsmoseMarkerB1090;
+
+    public static Drawable OsmoseMarkerB1100;
+
+    public static Drawable OsmoseMarkerB1110;
+
+    public static Drawable OsmoseMarkerB1120;
+
+    public static Drawable OsmoseMarkerB1140;
+
+    public static Drawable OsmoseMarkerB1150;
+
+    public static Drawable OsmoseMarkerB1160;
+
+    public static Drawable OsmoseMarkerB1170;
+
+    public static Drawable OsmoseMarkerB1180;
+
+    public static Drawable OsmoseMarkerB1190;
+
+    public static Drawable OsmoseMarkerB1200;
+
+    public static Drawable OsmoseMarkerB1210;
+
+    public static Drawable OsmoseMarkerB1220;
+
+    public static Drawable OsmoseMarkerB1230;
+
+    public static Drawable OsmoseMarkerB1240;
+
+    public static Drawable OsmoseMarkerB2010;
+
+    public static Drawable OsmoseMarkerB2020;
+
+    public static Drawable OsmoseMarkerB2030;
+
+    public static Drawable OsmoseMarkerB2040;
+
+    public static Drawable OsmoseMarkerB2060;
+
+    public static Drawable OsmoseMarkerB2080;
+
+    public static Drawable OsmoseMarkerB2090;
+
+    public static Drawable OsmoseMarkerB3010;
+
+    public static Drawable OsmoseMarkerB3020;
+
+    public static Drawable OsmoseMarkerB3030;
+
+    public static Drawable OsmoseMarkerB3031;
+
+    public static Drawable OsmoseMarkerB3032;
+
+    public static Drawable OsmoseMarkerB3033;
+
+    public static Drawable OsmoseMarkerB3040;
+
+    public static Drawable OsmoseMarkerB3050;
+
+    public static Drawable OsmoseMarkerB3060;
+
+    public static Drawable OsmoseMarkerB3070;
+
+    public static Drawable OsmoseMarkerB3080;
+
+    public static Drawable OsmoseMarkerB3090;
+
+    public static Drawable OsmoseMarkerB3091;
+
+    public static Drawable OsmoseMarkerB3100;
+
+    public static Drawable OsmoseMarkerB3110;
+
+    public static Drawable OsmoseMarkerB3120;
+
+    public static Drawable OsmoseMarkerB3150;
+
+    public static Drawable OsmoseMarkerB3160;
+
+    public static Drawable OsmoseMarkerB3161;
+
+    public static Drawable OsmoseMarkerB3170;
+
+    public static Drawable OsmoseMarkerB3180;
+
+    public static Drawable OsmoseMarkerB3190;
+
+    public static Drawable OsmoseMarkerB4010;
+
+    public static Drawable OsmoseMarkerB4020;
+
+    public static Drawable OsmoseMarkerB4030;
+
+    public static Drawable OsmoseMarkerB4040;
+
+    public static Drawable OsmoseMarkerB4060;
+
+    public static Drawable OsmoseMarkerB4070;
+
+    public static Drawable OsmoseMarkerB4080;
+
+    public static Drawable OsmoseMarkerB4090;
+
+    public static Drawable OsmoseMarkerB4100;
+
+    public static Drawable OsmoseMarkerB5010;
+
+    public static Drawable OsmoseMarkerB5020;
+
+    public static Drawable OsmoseMarkerB5030;
+
+    public static Drawable OsmoseMarkerB5040;
+
+    public static Drawable OsmoseMarkerB5050;
+
+    public static Drawable OsmoseMarkerB6010;
+
+    public static Drawable OsmoseMarkerB6020;
+
+    public static Drawable OsmoseMarkerB6030;
+
+    public static Drawable OsmoseMarkerB6040;
+
+    public static Drawable OsmoseMarkerB6060;
+
+    public static Drawable OsmoseMarkerB6070;
+
+    public static Drawable OsmoseMarkerB7010;
+
+    public static Drawable OsmoseMarkerB7011;
+
+    public static Drawable OsmoseMarkerB7012;
+
+    public static Drawable OsmoseMarkerB7040;
+
+    public static Drawable OsmoseMarkerB7050;
+
+    public static Drawable OsmoseMarkerB7060;
+
+    public static Drawable OsmoseMarkerB7070;
+
+    public static Drawable OsmoseMarkerB7080;
+
+    public static Drawable OsmoseMarkerB7090;
+
+    public static Drawable OsmoseMarkerB7100;
+
+    public static Drawable OsmoseMarkerB7110;
+
+    public static Drawable OsmoseMarkerB7120;
+
+    public static Drawable OsmoseMarkerB7130;
+
+    public static Drawable OsmoseMarkerB7140;
+
+    public static Drawable OsmoseMarkerB8010;
+
+    public static Drawable OsmoseMarkerB8011;
+
+    public static Drawable OsmoseMarkerB8020;
+
+    public static Drawable OsmoseMarkerB8021;
+
+    public static Drawable OsmoseMarkerB8030;
+
+    public static Drawable OsmoseMarkerB8031;
+
+    public static Drawable OsmoseMarkerB8040;
+
+    public static Drawable OsmoseMarkerB8041;
+
+    public static Drawable OsmoseMarkerB8050;
+
+    public static Drawable OsmoseMarkerB8051;
+
+    public static Drawable OsmoseMarkerB8060;
+
+    public static Drawable OsmoseMarkerB8070;
+
+    public static Drawable OsmoseMarkerB8080;
+
+    public static Drawable OsmoseMarkerB8101;
+
+    public static Drawable OsmoseMarkerB8110;
+
+    public static Drawable OsmoseMarkerB8120;
+
+    public static Drawable OsmoseMarkerB8121;
+
+    public static Drawable OsmoseMarkerB8130;
+
+    public static Drawable OsmoseMarkerB8131;
+
+    public static Drawable OsmoseMarkerB8140;
+
+    public static Drawable OsmoseMarkerB8150;
+
+    public static Drawable OsmoseMarkerB8160;
+
+    public static Drawable OsmoseMarkerB8161;
+
+    public static Drawable OsmoseMarkerB8170;
+
+    public static Drawable OsmoseMarkerB8180;
+
+    public static Drawable OsmoseMarkerB8190;
 
     public static Drawable MapdustClosed;
 
@@ -310,6 +522,118 @@ public class Drawings {
         KeeprightDrawable411 = context.getResources().getDrawable(R.drawable.zap411);
         KeeprightDrawable412 = context.getResources().getDrawable(R.drawable.zap412);
         KeeprightDrawable413 = context.getResources().getDrawable(R.drawable.zap413);
+
+        OsmoseMarkerB0 = context.getResources().getDrawable(R.drawable.marker_b_0);
+        OsmoseMarkerB1010 = context.getResources().getDrawable(R.drawable.marker_b_1010);
+        OsmoseMarkerB1040 = context.getResources().getDrawable(R.drawable.marker_b_1040);
+        OsmoseMarkerB1050 = context.getResources().getDrawable(R.drawable.marker_b_1050);
+        OsmoseMarkerB1060 = context.getResources().getDrawable(R.drawable.marker_b_1060);
+        OsmoseMarkerB1070 = context.getResources().getDrawable(R.drawable.marker_b_1070);
+        OsmoseMarkerB1080 = context.getResources().getDrawable(R.drawable.marker_b_1080);
+        OsmoseMarkerB1090 = context.getResources().getDrawable(R.drawable.marker_b_1090);
+        OsmoseMarkerB1100 = context.getResources().getDrawable(R.drawable.marker_b_1100);
+        OsmoseMarkerB1110 = context.getResources().getDrawable(R.drawable.marker_b_1110);
+        OsmoseMarkerB1120 = context.getResources().getDrawable(R.drawable.marker_b_1120);
+        OsmoseMarkerB1140 = context.getResources().getDrawable(R.drawable.marker_b_1140);
+        OsmoseMarkerB1150 = context.getResources().getDrawable(R.drawable.marker_b_1150);
+        OsmoseMarkerB1160 = context.getResources().getDrawable(R.drawable.marker_b_1160);
+        OsmoseMarkerB1170 = context.getResources().getDrawable(R.drawable.marker_b_1170);
+        OsmoseMarkerB1180 = context.getResources().getDrawable(R.drawable.marker_b_1180);
+        OsmoseMarkerB1190 = context.getResources().getDrawable(R.drawable.marker_b_1190);
+        OsmoseMarkerB1200 = context.getResources().getDrawable(R.drawable.marker_b_1200);
+        OsmoseMarkerB1210 = context.getResources().getDrawable(R.drawable.marker_b_1210);
+        OsmoseMarkerB1220 = context.getResources().getDrawable(R.drawable.marker_b_1220);
+        OsmoseMarkerB1230 = context.getResources().getDrawable(R.drawable.marker_b_1230);
+        OsmoseMarkerB1240 = context.getResources().getDrawable(R.drawable.marker_b_1240);
+        OsmoseMarkerB2010 = context.getResources().getDrawable(R.drawable.marker_b_2010);
+        OsmoseMarkerB2020 = context.getResources().getDrawable(R.drawable.marker_b_2020);
+        OsmoseMarkerB2030 = context.getResources().getDrawable(R.drawable.marker_b_2030);
+        OsmoseMarkerB2040 = context.getResources().getDrawable(R.drawable.marker_b_2040);
+        OsmoseMarkerB2060 = context.getResources().getDrawable(R.drawable.marker_b_2060);
+        OsmoseMarkerB2080 = context.getResources().getDrawable(R.drawable.marker_b_2080);
+        OsmoseMarkerB2090 = context.getResources().getDrawable(R.drawable.marker_b_2090);
+        OsmoseMarkerB3010 = context.getResources().getDrawable(R.drawable.marker_b_3010);
+        OsmoseMarkerB3020 = context.getResources().getDrawable(R.drawable.marker_b_3020);
+        OsmoseMarkerB3030 = context.getResources().getDrawable(R.drawable.marker_b_3030);
+        OsmoseMarkerB3031 = context.getResources().getDrawable(R.drawable.marker_b_3031);
+        OsmoseMarkerB3032 = context.getResources().getDrawable(R.drawable.marker_b_3032);
+        OsmoseMarkerB3033 = context.getResources().getDrawable(R.drawable.marker_b_3033);
+        OsmoseMarkerB3040 = context.getResources().getDrawable(R.drawable.marker_b_3040);
+        OsmoseMarkerB3050 = context.getResources().getDrawable(R.drawable.marker_b_3050);
+        OsmoseMarkerB3060 = context.getResources().getDrawable(R.drawable.marker_b_3060);
+        OsmoseMarkerB3070 = context.getResources().getDrawable(R.drawable.marker_b_3070);
+        OsmoseMarkerB3080 = context.getResources().getDrawable(R.drawable.marker_b_3080);
+        OsmoseMarkerB3090 = context.getResources().getDrawable(R.drawable.marker_b_3090);
+        OsmoseMarkerB3091 = context.getResources().getDrawable(R.drawable.marker_b_3091);
+        OsmoseMarkerB3100 = context.getResources().getDrawable(R.drawable.marker_b_3100);
+        OsmoseMarkerB3110 = context.getResources().getDrawable(R.drawable.marker_b_3110);
+        OsmoseMarkerB3120 = context.getResources().getDrawable(R.drawable.marker_b_3120);
+        OsmoseMarkerB3150 = context.getResources().getDrawable(R.drawable.marker_b_3150);
+        OsmoseMarkerB3160 = context.getResources().getDrawable(R.drawable.marker_b_3160);
+        OsmoseMarkerB3161 = context.getResources().getDrawable(R.drawable.marker_b_3161);
+        OsmoseMarkerB3170 = context.getResources().getDrawable(R.drawable.marker_b_3170);
+        OsmoseMarkerB3180 = context.getResources().getDrawable(R.drawable.marker_b_3180);
+        OsmoseMarkerB3190 = context.getResources().getDrawable(R.drawable.marker_b_3190);
+        OsmoseMarkerB4010 = context.getResources().getDrawable(R.drawable.marker_b_4010);
+        OsmoseMarkerB4020 = context.getResources().getDrawable(R.drawable.marker_b_4020);
+        OsmoseMarkerB4030 = context.getResources().getDrawable(R.drawable.marker_b_4030);
+        OsmoseMarkerB4040 = context.getResources().getDrawable(R.drawable.marker_b_4040);
+        OsmoseMarkerB4060 = context.getResources().getDrawable(R.drawable.marker_b_4060);
+        OsmoseMarkerB4070 = context.getResources().getDrawable(R.drawable.marker_b_4070);
+        OsmoseMarkerB4080 = context.getResources().getDrawable(R.drawable.marker_b_4090);
+        OsmoseMarkerB4090 = context.getResources().getDrawable(R.drawable.marker_b_4090);
+        OsmoseMarkerB4100 = context.getResources().getDrawable(R.drawable.marker_b_4100);
+        OsmoseMarkerB5010 = context.getResources().getDrawable(R.drawable.marker_b_5010);
+        OsmoseMarkerB5020 = context.getResources().getDrawable(R.drawable.marker_b_5020);
+        OsmoseMarkerB5030 = context.getResources().getDrawable(R.drawable.marker_b_5030);
+        OsmoseMarkerB5040 = context.getResources().getDrawable(R.drawable.marker_b_5040);
+        OsmoseMarkerB5050 = context.getResources().getDrawable(R.drawable.marker_b_5050);
+        OsmoseMarkerB6010 = context.getResources().getDrawable(R.drawable.marker_b_6010);
+        OsmoseMarkerB6020 = context.getResources().getDrawable(R.drawable.marker_b_6020);
+        OsmoseMarkerB6030 = context.getResources().getDrawable(R.drawable.marker_b_6030);
+        OsmoseMarkerB6040 = context.getResources().getDrawable(R.drawable.marker_b_6040);
+        OsmoseMarkerB6060 = context.getResources().getDrawable(R.drawable.marker_b_6060);
+        OsmoseMarkerB6070 = context.getResources().getDrawable(R.drawable.marker_b_6070);
+        OsmoseMarkerB7010 = context.getResources().getDrawable(R.drawable.marker_b_7010);
+        OsmoseMarkerB7011 = context.getResources().getDrawable(R.drawable.marker_b_7011);
+        OsmoseMarkerB7012 = context.getResources().getDrawable(R.drawable.marker_b_7012);
+        OsmoseMarkerB7040 = context.getResources().getDrawable(R.drawable.marker_b_7040);
+        OsmoseMarkerB7050 = context.getResources().getDrawable(R.drawable.marker_b_7050);
+        OsmoseMarkerB7060 = context.getResources().getDrawable(R.drawable.marker_b_7060);
+        OsmoseMarkerB7070 = context.getResources().getDrawable(R.drawable.marker_b_7070);
+        OsmoseMarkerB7080 = context.getResources().getDrawable(R.drawable.marker_b_7080);
+        OsmoseMarkerB7090 = context.getResources().getDrawable(R.drawable.marker_b_7090);
+        OsmoseMarkerB7100 = context.getResources().getDrawable(R.drawable.marker_b_7100);
+        OsmoseMarkerB7110 = context.getResources().getDrawable(R.drawable.marker_b_7110);
+        OsmoseMarkerB7120 = context.getResources().getDrawable(R.drawable.marker_b_7120);
+        OsmoseMarkerB7130 = context.getResources().getDrawable(R.drawable.marker_b_7130);
+        OsmoseMarkerB7140 = context.getResources().getDrawable(R.drawable.marker_b_7140);
+        OsmoseMarkerB8010 = context.getResources().getDrawable(R.drawable.marker_b_8010);
+        OsmoseMarkerB8011 = context.getResources().getDrawable(R.drawable.marker_b_8011);
+        OsmoseMarkerB8020 = context.getResources().getDrawable(R.drawable.marker_b_8020);
+        OsmoseMarkerB8021 = context.getResources().getDrawable(R.drawable.marker_b_8021);
+        OsmoseMarkerB8030 = context.getResources().getDrawable(R.drawable.marker_b_8030);
+        OsmoseMarkerB8031 = context.getResources().getDrawable(R.drawable.marker_b_8031);
+        OsmoseMarkerB8040 = context.getResources().getDrawable(R.drawable.marker_b_8040);
+        OsmoseMarkerB8041 = context.getResources().getDrawable(R.drawable.marker_b_8041);
+        OsmoseMarkerB8050 = context.getResources().getDrawable(R.drawable.marker_b_8050);
+        OsmoseMarkerB8051 = context.getResources().getDrawable(R.drawable.marker_b_8051);
+        OsmoseMarkerB8060 = context.getResources().getDrawable(R.drawable.marker_b_8060);
+        OsmoseMarkerB8070 = context.getResources().getDrawable(R.drawable.marker_b_8070);
+        OsmoseMarkerB8080 = context.getResources().getDrawable(R.drawable.marker_b_8080);
+        OsmoseMarkerB8101 = context.getResources().getDrawable(R.drawable.marker_b_8101);
+        OsmoseMarkerB8110 = context.getResources().getDrawable(R.drawable.marker_b_8110);
+        OsmoseMarkerB8120 = context.getResources().getDrawable(R.drawable.marker_b_8120);
+        OsmoseMarkerB8121 = context.getResources().getDrawable(R.drawable.marker_b_8121);
+        OsmoseMarkerB8130 = context.getResources().getDrawable(R.drawable.marker_b_8130);
+        OsmoseMarkerB8131 = context.getResources().getDrawable(R.drawable.marker_b_8131);
+        OsmoseMarkerB8140 = context.getResources().getDrawable(R.drawable.marker_b_8140);
+        OsmoseMarkerB8150 = context.getResources().getDrawable(R.drawable.marker_b_8150);
+        OsmoseMarkerB8160 = context.getResources().getDrawable(R.drawable.marker_b_8160);
+        OsmoseMarkerB8161 = context.getResources().getDrawable(R.drawable.marker_b_8161);
+        OsmoseMarkerB8170 = context.getResources().getDrawable(R.drawable.marker_b_8170);
+        OsmoseMarkerB8180 = context.getResources().getDrawable(R.drawable.marker_b_8180);
+        OsmoseMarkerB8190 = context.getResources().getDrawable(R.drawable.marker_b_8190);
 
         MapdustClosed = context.getResources().getDrawable(R.drawable.bug_green);
         MapdustIgnored = context.getResources().getDrawable(R.drawable.bug_grey);

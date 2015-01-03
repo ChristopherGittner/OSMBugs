@@ -6,9 +6,11 @@ import android.util.Log;
 import org.gittner.osmbugs.api.KeeprightApi;
 import org.gittner.osmbugs.api.MapdustApi;
 import org.gittner.osmbugs.api.OpenstreetmapNotesApi;
+import org.gittner.osmbugs.api.OsmoseApi;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.osmdroid.util.BoundingBoxE6;
 
 import java.util.ArrayList;
@@ -45,6 +47,10 @@ public class BugDatabase {
         return mKeeprightBugs;
     }
 
+    public ArrayList<OsmoseBug> getOsmoseBugs() {
+        return mOsmoseBugs;
+    }
+
     public ArrayList<MapdustBug> getMapdustBugs() {
         return mMapdustBugs;
     }
@@ -74,6 +80,7 @@ public class BugDatabase {
 
         /* Clear all Bugs */
         mKeeprightBugs.clear();
+        mOsmoseBugs.clear();
         mMapdustBugs.clear();
         mOpenstreetmapNotes.clear();
 
@@ -104,6 +111,32 @@ public class BugDatabase {
                         listener.onSuccess(Globals.KEEPRIGHT);
                     } else {
                         listener.onError(Globals.KEEPRIGHT);
+                    }
+
+                    checkProgress(listener);
+                }
+            }.execute(bBox);
+        }
+
+        if (Settings.Osmose.isEnabled()) {
+
+            ++mActiveDownloads;
+
+            new AsyncTask<BoundingBoxE6, Void, ArrayList<OsmoseBug>>() {
+                @Override
+                protected ArrayList<OsmoseBug> doInBackground(BoundingBoxE6... bBoxes) {
+                    return OsmoseApi.downloadBBox(bBoxes[0]);
+                }
+
+                @Override
+                protected void onPostExecute(ArrayList<OsmoseBug> osmoseBugs) {
+                    ++mCompletedDownloads;
+
+                    if (osmoseBugs != null) {
+                        mOsmoseBugs = osmoseBugs;
+                        listener.onSuccess(Globals.OSMOSE);
+                    } else {
+                        listener.onError(Globals.OSMOSE);
                     }
 
                     checkProgress(listener);
@@ -207,14 +240,17 @@ public class BugDatabase {
     private int mCompletedDownloads = 0;
 
     /* Holds all Keepright Bugs */
-    private ArrayList<KeeprightBug> mKeeprightBugs = new ArrayList<KeeprightBug>();
+    private ArrayList<KeeprightBug> mKeeprightBugs = new ArrayList<>();
+
+    /* Holds all Osmose Bugs */
+    private ArrayList<OsmoseBug> mOsmoseBugs = new ArrayList<>();
 
     /* Holds all Mapdust Bugs */
-    private ArrayList<MapdustBug> mMapdustBugs = new ArrayList<MapdustBug>();
+    private ArrayList<MapdustBug> mMapdustBugs = new ArrayList<>();
 
     /* Holds all Openstreetmap Notes */
-    private ArrayList<OpenstreetmapNote> mOpenstreetmapNotes = new ArrayList<OpenstreetmapNote>();
+    private ArrayList<OpenstreetmapNote> mOpenstreetmapNotes = new ArrayList<>();
 
     /* All Registered Database Watchers */
-    private ArrayList<DatabaseWatcher> mDatabaseWatchers = new ArrayList<DatabaseWatcher>();
+    private ArrayList<DatabaseWatcher> mDatabaseWatchers = new ArrayList<>();
 }

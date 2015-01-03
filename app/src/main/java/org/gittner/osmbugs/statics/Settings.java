@@ -358,6 +358,17 @@ public class Settings {
         }
     }
 
+    public static class Osmose {
+
+        public static boolean isEnabled() {
+            return mPrefs.getBoolean("pref_osmose_enabled", true);
+        }
+
+        public static int getBugLimit() {
+            return Math.max(Math.min(Integer.parseInt(mPrefs.getString("pref_osmose_bug_limit", "100")), 500), 1);
+        }
+    }
+
     public static class Mapdust {
 
         public static String getUsername() {
