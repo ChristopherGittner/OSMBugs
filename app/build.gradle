@@ -1,32 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    compileSdkVersion 21
+    buildToolsVersion "21.1.1"
 
     defaultConfig {
+        applicationId "org.gittner.osmbugs"
         minSdkVersion 14
-        targetSdkVersion 20
-        versionCode 14
-        versionName "0-7-0"
+        targetSdkVersion 21
+        versionCode 15
+        versionName "0-8-0"
     }
-
-    signingConfigs {
-        release {
-            def console = System.console()
-            if (console != null) {
-                storeFile file(System.console().readLine("\n\$ Enter keystore path: "))
-                storePassword System.console().readLine("\n\$ Enter keystore password: ")
-                keyAlias System.console().readLine("\n\$ Enter key alias: ")
-                keyPassword System.console().readLine("\n\$ Enter key password: ")
-            }
-        }
-    }
-
     buildTypes {
         release {
-            signingConfig signingConfigs.release
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
