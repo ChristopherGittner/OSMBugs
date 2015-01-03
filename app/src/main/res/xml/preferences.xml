@@ -356,6 +356,10 @@
                     android:title="@string/bug_limit"
                     android:key="pref_osmose_bug_limit"
                     android:dialogTitle="@string/enter_new_limit" />
+                <ListPreference android:title="@string/bugs_to_display"
+                    android:key="pref_osmose_bugs_to_display"
+                    android:entries="@array/osmose_status_types"
+                    android:entryValues="@array/osmose_status_values" />
             </PreferenceCategory>
             <PreferenceCategory android:title="@string/visible_bugs">
                 <PreferenceScreen android:title="@string/structure">

@@ -270,5 +270,7 @@
     <string name="administrative">Administration</string>
     <string name="to_map">Zur Karte hinzuzufügen</string>
     <string name="integration">Integration</string>
+    <string name="bugs_to_display">Anzuzeigende Fehler</string>
+    <string name="false_positive">Falschmeldung</string>
 
 </resources>

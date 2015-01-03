@@ -270,6 +270,18 @@
     <string name="administrative">Administrative</string>
     <string name="to_map">To map</string>
     <string name="integration">Integration</string>
+    <string name="bugs_to_display">Bugs to display</string>
+    <string name="false_positive">False Positive</string>
+    <string-array name="osmose_status_types">
+        <item>@string/open</item>
+        <item>@string/closed</item>
+        <item>@string/false_positive</item>
+    </string-array>
+    <string-array name="osmose_status_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 
 
 </resources>

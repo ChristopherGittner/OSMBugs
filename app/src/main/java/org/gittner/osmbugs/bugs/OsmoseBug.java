@@ -115,6 +115,8 @@ public class OsmoseBug extends Bug {
             case 2060: return Drawings.OsmoseMarkerB2060;
             case 2080: return Drawings.OsmoseMarkerB2080;
             case 2090: return Drawings.OsmoseMarkerB2090;
+            case 2100: return Drawings.OsmoseMarkerB2100;
+            case 2110: return Drawings.OsmoseMarkerB2110;
             case 3010: return Drawings.OsmoseMarkerB3010;
             case 3020: return Drawings.OsmoseMarkerB3020;
             case 3030: return Drawings.OsmoseMarkerB3030;
@@ -137,6 +139,8 @@ public class OsmoseBug extends Bug {
             case 3170: return Drawings.OsmoseMarkerB3170;
             case 3180: return Drawings.OsmoseMarkerB3180;
             case 3190: return Drawings.OsmoseMarkerB3190;
+            case 3200: return Drawings.OsmoseMarkerB3200;
+            case 3210: return Drawings.OsmoseMarkerB3210;
             case 4010: return Drawings.OsmoseMarkerB4010;
             case 4020: return Drawings.OsmoseMarkerB4020;
             case 4030: return Drawings.OsmoseMarkerB4030;
@@ -146,6 +150,7 @@ public class OsmoseBug extends Bug {
             case 4080: return Drawings.OsmoseMarkerB4090;
             case 4090: return Drawings.OsmoseMarkerB4090;
             case 4100: return Drawings.OsmoseMarkerB4100;
+            case 4110: return Drawings.OsmoseMarkerB4110;
             case 5010: return Drawings.OsmoseMarkerB5010;
             case 5020: return Drawings.OsmoseMarkerB5020;
             case 5030: return Drawings.OsmoseMarkerB5030;
@@ -171,6 +176,8 @@ public class OsmoseBug extends Bug {
             case 7120: return Drawings.OsmoseMarkerB7120;
             case 7130: return Drawings.OsmoseMarkerB7130;
             case 7140: return Drawings.OsmoseMarkerB7140;
+            case 7150: return Drawings.OsmoseMarkerB7150;
+            case 7160: return Drawings.OsmoseMarkerB7160;
             case 8010: return Drawings.OsmoseMarkerB8010;
             case 8011: return Drawings.OsmoseMarkerB8011;
             case 8020: return Drawings.OsmoseMarkerB8020;
@@ -197,6 +204,9 @@ public class OsmoseBug extends Bug {
             case 8170: return Drawings.OsmoseMarkerB8170;
             case 8180: return Drawings.OsmoseMarkerB8180;
             case 8190: return Drawings.OsmoseMarkerB8190;
+            case 8210: return Drawings.OsmoseMarkerB8210;
+            case 8211: return Drawings.OsmoseMarkerB8211;
+            case 8221: return Drawings.OsmoseMarkerB8221;
             default: return Drawings.OsmoseMarkerB0;
         }
     }

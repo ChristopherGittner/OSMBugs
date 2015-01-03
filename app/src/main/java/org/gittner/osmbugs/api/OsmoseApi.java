@@ -32,6 +32,15 @@ public class OsmoseApi {
 
         arguments.add(new BasicNameValuePair("full", "true"));
 
+        if(Settings.Osmose.getBugsToDisplay() == 1)
+        {
+            arguments.add(new BasicNameValuePair("status", "done"));
+        }
+        if(Settings.Osmose.getBugsToDisplay() == 2)
+        {
+            arguments.add(new BasicNameValuePair("status", "false"));
+        }
+
         HttpGet request = new HttpGet("http://osmose.openstreetmap.fr/en/api/0.2/errors?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {

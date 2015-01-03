@@ -367,6 +367,11 @@ public class Settings {
         public static int getBugLimit() {
             return Math.max(Math.min(Integer.parseInt(mPrefs.getString("pref_osmose_bug_limit", "100")), 500), 1);
         }
+
+        public static int getBugsToDisplay()
+        {
+            return Integer.valueOf(mPrefs.getString("pref_osmose_bugs_to_display", "0"));
+        }
     }
 
     public static class Mapdust {
