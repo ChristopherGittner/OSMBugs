@@ -1,5 +1,6 @@
 package org.gittner.osmbugs.bugs;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 
@@ -20,7 +21,13 @@ public class OsmoseBug extends Bug {
             int item,
             String title) {
 
-        super(title, "", new ArrayList<Comment>(), new GeoPoint(lat, lon));
+        super(App.getContext().getString(
+                App.getContext().getResources().getIdentifier(
+                        "osmose_item_" + item,
+                        "string",
+                        App.getContext().getPackageName())),
+                "",
+                new ArrayList<Comment>(), new GeoPoint(lat, lon));
 
         setItem(item);
         setId(id);

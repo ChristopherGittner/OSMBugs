@@ -138,6 +138,137 @@
     <string name="title_activity_add_openstreetmap_note">Openstreetmap Note hinzufügen</string>
     <string name="title_activity_bug_list">Fehler Liste</string>
     <string name="list">Liste</string>
+
     <string name="osmose">Osmose</string>
+    <string name="osmose_item_0">überlappende Gebäude</string>
+    <string name="osmose_item_1010">doppelter Knoten</string>
+    <string name="osmose_item_1040">Ungültige Polygone</string>
+    <string name="osmose_item_1050">Kreisverkehre mit falscher Richtung</string>
+    <string name="osmose_item_1060">sich schneidende Begrenzungen</string>
+    <string name="osmose_item_1070">Straßen schneiden Gebäude</string>
+    <string name="osmose_item_1080">verwaiste Knoten</string>
+    <string name="osmose_item_1090">Typ der Straßen ändert sich</string>
+    <string name="osmose_item_1100">nicht-geschlossene Flächen</string>
+    <string name="osmose_item_1110">schlechte Verbindungen *_link</string>
+    <string name="osmose_item_1120">unterbrochene Straßen</string>
+    <string name="osmose_item_1140">Tag oder Role fehlt</string>
+    <string name="osmose_item_1150">schneidende Flächen</string>
+    <string name="osmose_item_1160">Große Relationen</string>
+    <string name="osmose_item_1170">Multipolygone</string>
+    <string name="osmose_item_1180">double cycleway</string>
+    <string name="osmose_item_1190">Ungefährer Wegverlauf</string>
+    <string name="osmose_item_1200">Relationen mit nur 1 Mitglied</string>
+    <string name="osmose_item_1210">Radwege ohne Verbindung</string>
+    <string name="osmose_item_1220">Wasserläufe</string>
+    <string name="osmose_item_1230">doppelte Geometrie</string>
+    <string name="osmose_item_1240">Ein-Knoten-Weg</string>
+    <string name="osmose_item_2010">junction=roundabout</string>
+    <string name="osmose_item_2020">ele=...</string>
+    <string name="osmose_item_2030">oneway=...</string>
+    <string name="osmose_item_2040">source</string>
+    <string name="osmose_item_2060">Hausnummern</string>
+    <string name="osmose_item_2080">highway=...</string>
+    <string name="osmose_item_2090">Straßenkreuzung</string>
+    <string name="osmose_item_2100">Apotheke</string>
+    <string name="osmose_item_2110"></string>
+    <string name="osmose_item_3010">Kreisverkehr</string>
+    <string name="osmose_item_3020">ungeeigneter source-Tag</string>
+    <string name="osmose_item_3030">Tagwatch-Bereinigung</string>
+    <string name="osmose_item_3031">wikipedia</string>
+    <string name="osmose_item_3032">Verbindungen zwischen den Tags</string>
+    <string name="osmose_item_3033">Bindestrich bei Saint</string>
+    <string name="osmose_item_3040">falscher Tag</string>
+    <string name="osmose_item_3050">falscher Wert</string>
+    <string name="osmose_item_3060">ähnliche Werte</string>
+    <string name="osmose_item_3070">mehrfache Werte</string>
+    <string name="osmose_item_3080">Schwimmbad mit natural=water</string>
+    <string name="osmose_item_3090">Datum</string>
+    <string name="osmose_item_3091">Zahlenwert</string>
+    <string name="osmose_item_3100">kleiner Bauernhof</string>
+    <string name="osmose_item_3110">note</string>
+    <string name="osmose_item_3120">Baum</string>
+    <string name="osmose_item_3150">Schreibfehler im Tag</string>
+    <string name="osmose_item_3160">Fehler bei "lanes"</string>
+    <string name="osmose_item_3161">Parkspur</string>
+    <string name="osmose_item_3170">Role der Relation</string>
+    <string name="osmose_item_3180">Relation type=restriction</string>
+    <string name="osmose_item_3190">Postleitzahl</string>
+    <string name="osmose_item_3200">Gebiet</string>
+    <string name="osmose_item_3210">noexit</string>
+    <string name="osmose_item_4010">stillgelegt</string>
+    <string name="osmose_item_4020">auf junction=roundabout</string>
+    <string name="osmose_item_4030">unvereinbare Tags</string>
+    <string name="osmose_item_4040">ref und name verwechselt</string>
+    <string name="osmose_item_4060">seamark:fixme</string>
+    <string name="osmose_item_4070">im Bau</string>
+    <string name="osmose_item_4080">doppelter POI</string>
+    <string name="osmose_item_4090">unnötiger Tag am Knoten</string>
+    <string name="osmose_item_4100">falsche "designation"</string>
+    <string name="osmose_item_4110">falsche Ebene</string>
+    <string name="osmose_item_5010">Rechtschreibung</string>
+    <string name="osmose_item_5020">Art des Weges</string>
+    <string name="osmose_item_5030">Zwei Namen</string>
+    <string name="osmose_item_5040">Toponymie</string>
+    <string name="osmose_item_5050">testen soundex</string>
+    <string name="osmose_item_6010">offenes Polygon</string>
+    <string name="osmose_item_6020">doppelter Weg</string>
+    <string name="osmose_item_6030">Platz ohne Namen</string>
+    <string name="osmose_item_6040">INSEE-Code</string>
+    <string name="osmose_item_6060">Loch admin_level=8</string>
+    <string name="osmose_item_6070">außerhalb der Grenze</string>
+    <string name="osmose_item_7010">Gebäude bei Vermessungspunkt</string>
+    <string name="osmose_item_7011">Gebäudeform</string>
+    <string name="osmose_item_7012">bridge to tag</string>
+    <string name="osmose_item_7020">Verwaltungsgrenze</string>
+    <string name="osmose_item_7040">Stromleitungen</string>
+    <string name="osmose_item_7050">Postamt</string>
+    <string name="osmose_item_7060">Änderung wegen ODbL</string>
+    <string name="osmose_item_7070">nicht-eingetragene Schule</string>
+    <string name="osmose_item_7080">Denkmal</string>
+    <string name="osmose_item_7090">Höhengleicher Übergang</string>
+    <string name="osmose_item_7100">Bahnhof</string>
+    <string name="osmose_item_7110">TMC</string>
+    <string name="osmose_item_7120">Relation type=boundary</string>
+    <string name="osmose_item_7130">Tunnel/Brücke</string>
+    <string name="osmose_item_7140">transport sharing, not integrated</string>
+    <string name="osmose_item_7150">pharmacy, not integrated</string>
+    <string name="osmose_item_7160"></string>
+    <string name="osmose_item_8010">Denkmal</string>
+    <string name="osmose_item_8011">Denkmal, Eintragung möglich</string>
+    <string name="osmose_item_8020">Postamt</string>
+    <string name="osmose_item_8021">Postfiliale, Eintragung möglich</string>
+    <string name="osmose_item_8030">Schule</string>
+    <string name="osmose_item_8031">Schule, Eintragung möglich</string>
+    <string name="osmose_item_8040">Öffentliche verkehrsmittel</string>
+    <string name="osmose_item_8041">Öffentliche verkehrsmittel, Eintragung möglich</string>
+    <string name="osmose_item_8050">Bahnhof</string>
+    <string name="osmose_item_8051">Bahnhof, Eintragung möglich</string>
+    <string name="osmose_item_8060">Höhengleicher Übergang</string>
+    <string name="osmose_item_8070">fehlender geodätischer Punkt</string>
+    <string name="osmose_item_8080">Adresse, Eintragung möglich</string>
+    <string name="osmose_item_8101">Wikipedia, Eintragung möglich</string>
+    <string name="osmose_item_8110">öffentlicher Dienst</string>
+    <string name="osmose_item_8120">Recycling</string>
+    <string name="osmose_item_8121">Recycling, Eintragung möglich</string>
+    <string name="osmose_item_8130">Parken</string>
+    <string name="osmose_item_8131">Parken, Eintragung möglich</string>
+    <string name="osmose_item_8140">Unterkunft</string>
+    <string name="osmose_item_8150">Fahrradstellplatz</string>
+    <string name="osmose_item_8160">transport sharing</string>
+    <string name="osmose_item_8161">transport sharing, could be integrated</string>
+    <string name="osmose_item_8170">Sport</string>
+    <string name="osmose_item_8180">Toiletten</string>
+    <string name="osmose_item_8190">Polizei</string>
+    <string name="osmose_item_8200">Tankstelle</string>
+    <string name="osmose_item_8210">Apotheke</string>
+    <string name="osmose_item_8211">Apotheke, Eintragung möglich</string>
+    <string name="osmose_item_8221"></string>
+    <string name="structure">Struktur</string>
+    <string name="bad_tag">Ungeeignete Tags</string>
+    <string name="tags_to_remove">zu entfernende Tags</string>
+    <string name="tags_name">Namen</string>
+    <string name="administrative">Administration</string>
+    <string name="to_map">Zur Karte hinzuzufügen</string>
+    <string name="integration">Integration</string>
 
 </resources>

@@ -216,7 +216,7 @@ public class BugEditorActivity extends Activity {
                         BugEditorActivity.this.finish();
                     }
                     else {
-                        Toast.makeText(BugEditorActivity.this, App.getContext().getString(R.string.failed_to_save_bug), Toast.LENGTH_LONG).show();
+                        Toast.makeText(BugEditorActivity.this, getApplicationContext().getString(R.string.failed_to_save_bug), Toast.LENGTH_LONG).show();
                     }
                 }
 
