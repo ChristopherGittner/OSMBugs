@@ -7,7 +7,6 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,9 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.api.OsmoseApi;
 import org.gittner.osmbugs.bugs.Bug;
-import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.fragments.BugListFragment;
 import org.gittner.osmbugs.fragments.BugMapFragment;
 import org.gittner.osmbugs.statics.BugDatabase;
@@ -30,8 +27,7 @@ import org.osmdroid.util.GeoPoint;
 import java.util.ArrayList;
 
 public class OsmBugsActivity extends Activity implements
-        BugMapFragment.OnFragmentInteractionListener,
-        BugListFragment.OnFragmentInteractionListener {
+        BugMapFragment.OnFragmentInteractionListener {
 
     /* Request Codes for activities */
     public static final int REQUESTCODEBUGEDITORACTIVITY = 1;
@@ -283,22 +279,6 @@ public class OsmBugsActivity extends Activity implements
         startActivityForResult(i, REQUESTCODEBUGEDITORACTIVITY);
 
         Log.w("", "Bug " + bug.getPoint().toString());
-    }
-
-    @Override
-    public void onBugMiniMapClicked(final Bug bug) {
-        /* Display the Map centered at the clicked Bug
-         * and disable gps Following  */
-
-        BugMapFragment bugMapFragment = BugMapFragment.newInstance(17, bug.getPoint());
-
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, bugMapFragment, TAG_BUG_MAP_FRAGMENT)
-                .addToBackStack(TAG_BUG_MAP_FRAGMENT)
-                .commit();
-
-        Settings.setFollowGps(false);
-        invalidateOptionsMenu();
     }
 
     @Override

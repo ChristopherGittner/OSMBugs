@@ -29,7 +29,7 @@ public class BugDatabase {
 
     public interface DatabaseWatcher {
 
-        public void onDatabaseUpdated();
+        public void onDatabaseUpdated(int platform);
 
         public void onDatabaseCleared();
     }
@@ -215,7 +215,10 @@ public class BugDatabase {
             listener.onCompletion();
             for(DatabaseWatcher watcher : mDatabaseWatchers)
             {
-                watcher.onDatabaseUpdated();
+                watcher.onDatabaseUpdated(Globals.KEEPRIGHT);
+                watcher.onDatabaseUpdated(Globals.OSMOSE);
+                watcher.onDatabaseUpdated(Globals.MAPDUST);
+                watcher.onDatabaseUpdated(Globals.OPENSTREETMAPNOTES);
             }
         }
     }

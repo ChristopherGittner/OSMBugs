@@ -1,168 +1,305 @@
 package org.gittner.osmbugs.fragments;
 
-import android.app.Activity;
-import android.app.ListFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.bugs.Bug;
+import org.gittner.osmbugs.bugs.KeeprightBug;
+import org.gittner.osmbugs.bugs.MapdustBug;
+import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.statics.BugDatabase;
-import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.views.MapView;
 
-public class BugListFragment extends ListFragment {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-    private OnFragmentInteractionListener mListener;
+public class BugListFragment extends Fragment {
 
-    private BugListAdapter mBugListAdapter;
+    private BugExpandableListAdapter mAdapter;
 
     public static BugListFragment newInstance() {
-         return new BugListFragment();
-    }
-
-    public BugListFragment() {
+        return new BugListFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_bug_list, null);
 
-        mBugListAdapter = new BugListAdapter(getActivity());
-        setListAdapter(mBugListAdapter);
+        mAdapter = new BugExpandableListAdapter(getActivity());
 
-        /* Register a DatabaseWatcher for update notification */
-        BugDatabase.getInstance().addDatabaseWatcher(mDatabseWatcher);
+        final ExpandableListView elstvBugs = (ExpandableListView) v.findViewById(R.id.elstvBugs);
+        elstvBugs.setAdapter(mAdapter);
 
-        reloadBugs();
+        mAdapter.addAllKeeprightBugs(BugDatabase.getInstance().getKeeprightBugs());
+        mAdapter.addAllOsmoseBugs(BugDatabase.getInstance().getOsmoseBugs());
+        mAdapter.addAllMapdustBugs(BugDatabase.getInstance().getMapdustBugs());
+        mAdapter.addAllOsmNotes(BugDatabase.getInstance().getOpenstreetmapNotes());
+
+        return v;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                + " must implement OnFragmentInteractionListener");
-        }
-    }
+    private class BugExpandableListAdapter extends BaseExpandableListAdapter {
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+        private Context mContext;
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
+        private List<KeeprightBug> mKeeprightBugs = new ArrayList<>();
+        private List<OsmoseBug> mOsmoseBugs = new ArrayList<>();
+        private List<MapdustBug> mMapdustBugs = new ArrayList<>();
+        private List<OpenstreetmapNote> mOsmNotes = new ArrayList<>();
 
-        mListener.onBugClicked(mBugListAdapter.getItem(position));
-    }
+        private List<String> mPlatforms =  new ArrayList<>();
 
-    private void reloadBugs() {
-        mBugListAdapter.clear();
+        public BugExpandableListAdapter(Context context)
+        {
+            mContext = context;
 
-        /* Add all Bugs to the Map */
-        if(Settings.Keepright.isEnabled()) {
-            mBugListAdapter.addAll(BugDatabase.getInstance().getKeeprightBugs());
+            mPlatforms.add(context.getString(R.string.keepright));
+            mPlatforms.add(context.getString(R.string.osmose));
+            mPlatforms.add(context.getString(R.string.mapdust));
+            mPlatforms.add(context.getString(R.string.openstreetmap_notes));
         }
 
-        if(Settings.Osmose.isEnabled()) {
-            mBugListAdapter.addAll(BugDatabase.getInstance().getOsmoseBugs());
+        public void add(KeeprightBug bug)
+        {
+            mKeeprightBugs.add(bug);
         }
 
-        if(Settings.Mapdust.isEnabled()) {
-            mBugListAdapter.addAll(BugDatabase.getInstance().getMapdustBugs());
+        public void addAllKeeprightBugs(Collection<? extends KeeprightBug> collection)
+        {
+            mKeeprightBugs.addAll(collection);
         }
 
-        if(Settings.OpenstreetmapNotes.isEnabled()) {
-            mBugListAdapter.addAll(BugDatabase.getInstance().getOpenstreetmapNotes());
-        }
-    }
-
-    public interface OnFragmentInteractionListener {
-        public void onBugClicked(Bug bug);
-
-        public void onBugMiniMapClicked(Bug bug);
-    }
-
-    /* Listener for Database Updates */
-    private BugDatabase.DatabaseWatcher mDatabseWatcher = new BugDatabase.DatabaseWatcher() {
-        @Override
-        public void onDatabaseUpdated() {
-            reloadBugs();
-
-            mBugListAdapter.notifyDataSetChanged();
+        public void add(OsmoseBug bug)
+        {
+            mOsmoseBugs.add(bug);
         }
 
-        @Override
-        public void onDatabaseCleared() {
-            mBugListAdapter.clear();
-            mBugListAdapter.notifyDataSetChanged();
+        public void addAllOsmoseBugs(Collection<? extends OsmoseBug> collection)
+        {
+            mOsmoseBugs.addAll(collection);
         }
-    };
 
-    private class BugListAdapter extends ArrayAdapter<Bug> {
+        public void add(MapdustBug bug)
+        {
+            mMapdustBugs.add(bug);
+        }
 
-        public BugListAdapter(Context context) {
-            super(context, R.layout.row_bug);
+        public void addAllMapdustBugs(Collection<? extends MapdustBug> collection)
+        {
+            mMapdustBugs.addAll(collection);
+        }
+
+        public void add(OpenstreetmapNote bug)
+        {
+            mOsmNotes.add(bug);
+        }
+
+        public void addAllOsmNotes(Collection<? extends OpenstreetmapNote> collection)
+        {
+            mOsmNotes.addAll(collection);
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public int getGroupCount() {
+            int count = 0;
+            if(!mKeeprightBugs.isEmpty())
+            {
+                ++count;
+            }
+            if(!mOsmoseBugs.isEmpty())
+            {
+                ++count;
+            }
+            if(!mMapdustBugs.isEmpty())
+            {
+                ++count;
+            }
+            if(!mOsmNotes.isEmpty())
+            {
+                ++count;
+            }
+            return count;
+        }
+
+        @Override
+        public int getChildrenCount(int groupPosition) {
+            switch (groupPosition)
+            {
+                case 0: return mKeeprightBugs.size();
+                case 1: return mOsmoseBugs.size();
+                case 2: return mMapdustBugs.size();
+                case 3: return mOsmNotes.size();
+            }
+            return 0;
+        }
+
+        @Override
+        public Object getGroup(int groupPosition) {
+            return mPlatforms.get(groupPosition);
+        }
+
+        @Override
+        public Object getChild(int groupPosition, int childPosition) {
+            switch (groupPosition)
+            {
+                case 0: return mKeeprightBugs.get(childPosition);
+                case 1: return mOsmoseBugs.get(childPosition);
+                case 2: return mMapdustBugs.get(childPosition);
+                case 3: return mOsmNotes.get(childPosition);
+            }
+            return null;
+        }
+
+        @Override
+        public long getGroupId(int groupPosition) {
+            return groupPosition;
+        }
+
+        @Override
+        public long getChildId(int groupPosition, int childPosition) {
+            return childPosition;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
+        @Override
+        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
             View v = convertView;
 
-            if(v == null)
+            if(convertView == null)
             {
-                v = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.row_bug, null);
+                v = LayoutInflater.from(mContext).inflate(R.layout.header_bug, null);
             }
 
-            final Bug bug = getItem(position);
-
             TextView txtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
-            txtvTitle.setText(bug.getTitle());
-            txtvTitle.setText(Html.fromHtml(txtvTitle.getText().toString()));
 
-            TextView txtvDescription = (TextView) v.findViewById(R.id.txtvDescription);
-            txtvDescription.setText(bug.getSnippet());
-            txtvDescription.setText(Html.fromHtml(txtvDescription.getText().toString()));
+            switch (groupPosition)
+            {
+                case 0:
+                    txtvTitle.setText(mContext.getString(R.string.keepright));
+                    break;
 
-            ((ImageView) v.findViewById(R.id.imgvIcon)).setImageDrawable(bug.getMarker(0));
+                case 1:
+                    txtvTitle.setText(mContext.getString(R.string.osmose));
+                    break;
 
-            final MapView mapView = (MapView) v.findViewById(R.id.mapview);
-            mapView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if(motionEvent.getAction() == MotionEvent.ACTION_DOWN)
-                    {
-                        mListener.onBugMiniMapClicked(bug);
-                    }
-                    return true;
-                }
-            });
-            //TODO: Remove as soon as this is fixed in osmdroid (4.3)
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    mapView.getController().setZoom(17);
-                    mapView.getController().setCenter(bug.getPoint());
-                }
-            });
+                case 2:
+                    txtvTitle.setText(mContext.getString(R.string.mapdust));
+                    break;
+
+                case 3:
+                    txtvTitle.setText(mContext.getString(R.string.openstreetmap_notes));
+                    break;
+            }
 
             return v;
         }
-    }
+
+        @Override
+        public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+            View v = convertView;
+
+            if(convertView == null)
+            {
+                v = LayoutInflater.from(mContext).inflate(R.layout.row_bug, null);
+            }
+
+            TextView txtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
+            TextView txtvDescription = (TextView) v.findViewById(R.id.txtvDescription);
+            ImageView imgvIcon = (ImageView) v.findViewById(R.id.imgvIcon);
+            final MapView mapView = (MapView) v.findViewById(R.id.mapview);
+
+            if(groupPosition == 0)
+            {
+                final KeeprightBug bug = mKeeprightBugs.get(childPosition);
+
+                txtvTitle.setText(bug.getTitle());
+                txtvDescription.setText(bug.getSnippet());
+                imgvIcon.setImageDrawable(bug.getMarker(0));
+                //TODO: Remove as soon as this is fixed in osmdroid (4.3)
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mapView.getController().setZoom(17);
+                        mapView.getController().setCenter(bug.getPoint());
+                    }
+                });
+            }
+            else if(groupPosition == 1)
+            {
+                final OsmoseBug bug = mOsmoseBugs.get(childPosition);
+
+                txtvTitle.setText(bug.getTitle());
+                txtvDescription.setText(bug.getSnippet());
+                imgvIcon.setImageDrawable(bug.getMarker(0));
+                //TODO: Remove as soon as this is fixed in osmdroid (4.3)
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mapView.getController().setZoom(17);
+                        mapView.getController().setCenter(bug.getPoint());
+                    }
+                });
+            }
+            else if(groupPosition == 2)
+            {
+                final MapdustBug bug = mMapdustBugs.get(childPosition);
+
+                txtvTitle.setText(bug.getTitle());
+                txtvDescription.setText(bug.getSnippet());
+                imgvIcon.setImageDrawable(bug.getMarker(0));
+                //TODO: Remove as soon as this is fixed in osmdroid (4.3)
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mapView.getController().setZoom(17);
+                        mapView.getController().setCenter(bug.getPoint());
+                    }
+                });
+            }
+            else if(groupPosition == 3)
+            {
+                final OpenstreetmapNote bug = mOsmNotes.get(childPosition);
+
+                txtvTitle.setText(bug.getTitle());
+                txtvDescription.setText(bug.getSnippet());
+                imgvIcon.setImageDrawable(bug.getMarker(0));
+                //TODO: Remove as soon as this is fixed in osmdroid (4.3)
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mapView.getController().setZoom(17);
+                        mapView.getController().setCenter(bug.getPoint());
+                    }
+                });
+            }
+
+            txtvTitle.setText(Html.fromHtml(txtvTitle.getText().toString()));
+            txtvDescription.setText(Html.fromHtml(txtvDescription.getText().toString()));
+
+
+            return v;
+        }
+
+        @Override
+        public boolean isChildSelectable(int groupPosition, int childPosition) {
+            return false;
+        }
+    };
 }
