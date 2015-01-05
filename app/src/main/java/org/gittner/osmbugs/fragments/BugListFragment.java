@@ -20,6 +20,8 @@ import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OpenstreetmapNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.statics.BugDatabase;
+import org.gittner.osmbugs.statics.Globals;
+import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.views.MapView;
 
 import java.util.ArrayList;
@@ -51,6 +53,39 @@ public class BugListFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mAdapter.clear();
+
+        if (Settings.Keepright.isEnabled()) {
+            mAdapter.addAllKeeprightBugs(BugDatabase.getInstance().getKeeprightBugs());
+        }
+        if (Settings.Osmose.isEnabled()) {
+            mAdapter.addAllOsmoseBugs(BugDatabase.getInstance().getOsmoseBugs());
+        }
+        if (Settings.Mapdust.isEnabled()) {
+            mAdapter.addAllMapdustBugs(BugDatabase.getInstance().getMapdustBugs());
+        }
+        if (Settings.OpenstreetmapNotes.isEnabled()) {
+            mAdapter.addAllOsmNotes(BugDatabase.getInstance().getOpenstreetmapNotes());
+        }
+
+        mAdapter.notifyDataSetChanged();
+
+        /* Register a DatabaseWatcher for update notification */
+        BugDatabase.getInstance().addDatabaseWatcher(mDatabaseWatcher);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        /* Stop listening to update notifications */
+        BugDatabase.getInstance().removeDatabaseWatcher(mDatabaseWatcher);
+    }
+
     private class BugExpandableListAdapter extends BaseExpandableListAdapter {
 
         private Context mContext;
@@ -60,10 +95,9 @@ public class BugListFragment extends Fragment {
         private List<MapdustBug> mMapdustBugs = new ArrayList<>();
         private List<OpenstreetmapNote> mOsmNotes = new ArrayList<>();
 
-        private List<String> mPlatforms =  new ArrayList<>();
+        private List<String> mPlatforms = new ArrayList<>();
 
-        public BugExpandableListAdapter(Context context)
-        {
+        public BugExpandableListAdapter(Context context) {
             mContext = context;
 
             mPlatforms.add(context.getString(R.string.keepright));
@@ -72,76 +106,81 @@ public class BugListFragment extends Fragment {
             mPlatforms.add(context.getString(R.string.openstreetmap_notes));
         }
 
-        public void add(KeeprightBug bug)
-        {
+        public void add(KeeprightBug bug) {
             mKeeprightBugs.add(bug);
         }
 
-        public void addAllKeeprightBugs(Collection<? extends KeeprightBug> collection)
-        {
+        public void addAllKeeprightBugs(Collection<? extends KeeprightBug> collection) {
             mKeeprightBugs.addAll(collection);
         }
 
-        public void add(OsmoseBug bug)
-        {
+        public void add(OsmoseBug bug) {
             mOsmoseBugs.add(bug);
         }
 
-        public void addAllOsmoseBugs(Collection<? extends OsmoseBug> collection)
-        {
+        public void addAllOsmoseBugs(Collection<? extends OsmoseBug> collection) {
             mOsmoseBugs.addAll(collection);
         }
 
-        public void add(MapdustBug bug)
-        {
+        public void add(MapdustBug bug) {
             mMapdustBugs.add(bug);
         }
 
-        public void addAllMapdustBugs(Collection<? extends MapdustBug> collection)
-        {
+        public void addAllMapdustBugs(Collection<? extends MapdustBug> collection) {
             mMapdustBugs.addAll(collection);
         }
 
-        public void add(OpenstreetmapNote bug)
-        {
+        public void add(OpenstreetmapNote bug) {
             mOsmNotes.add(bug);
         }
 
-        public void addAllOsmNotes(Collection<? extends OpenstreetmapNote> collection)
-        {
+        public void addAllOsmNotes(Collection<? extends OpenstreetmapNote> collection) {
             mOsmNotes.addAll(collection);
+        }
+
+        public void clear() {
+            mKeeprightBugs.clear();
+            mOsmoseBugs.clear();
+            mMapdustBugs.clear();
+            mOsmNotes.clear();
+        }
+
+        public void clearKeepright()
+        {
+            mKeeprightBugs.clear();
+        }
+
+        public void clearOsmose()
+        {
+            mOsmoseBugs.clear();
+        }
+
+        public void clearMapdust()
+        {
+            mMapdustBugs.clear();
+        }
+
+        public void clearOsmNotes()
+        {
+            mOsmNotes.clear();
         }
 
         @Override
         public int getGroupCount() {
-            int count = 0;
-            if(!mKeeprightBugs.isEmpty())
-            {
-                ++count;
-            }
-            if(!mOsmoseBugs.isEmpty())
-            {
-                ++count;
-            }
-            if(!mMapdustBugs.isEmpty())
-            {
-                ++count;
-            }
-            if(!mOsmNotes.isEmpty())
-            {
-                ++count;
-            }
-            return count;
+            return 4;
         }
 
         @Override
         public int getChildrenCount(int groupPosition) {
-            switch (groupPosition)
-            {
-                case 0: return mKeeprightBugs.size();
-                case 1: return mOsmoseBugs.size();
-                case 2: return mMapdustBugs.size();
-                case 3: return mOsmNotes.size();
+            switch (groupPosition) {
+                case 0:
+                    return mKeeprightBugs.size();
+                case 1:
+                    return mOsmoseBugs.size();
+                case 2:
+                    return mMapdustBugs.size();
+                case 3:
+                    return mOsmNotes.size();
             }
             return 0;
         }
@@ -153,19 +192,22 @@ public class BugListFragment extends Fragment {
 
         @Override
         public Object getChild(int groupPosition, int childPosition) {
-            switch (groupPosition)
-            {
-                case 0: return mKeeprightBugs.get(childPosition);
-                case 1: return mOsmoseBugs.get(childPosition);
-                case 2: return mMapdustBugs.get(childPosition);
-                case 3: return mOsmNotes.get(childPosition);
+            switch (groupPosition) {
+                case 0:
+                    return mKeeprightBugs.get(childPosition);
+                case 1:
+                    return mOsmoseBugs.get(childPosition);
+                case 2:
+                    return mMapdustBugs.get(childPosition);
+                case 3:
+                    return mOsmNotes.get(childPosition);
             }
             return null;
         }
 
         @Override
         public long getGroupId(int groupPosition) {
-            return groupPosition;
+            return 0;
         }
 
         @Override
@@ -180,33 +222,17 @@ public class BugListFragment extends Fragment {
 
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+
             View v = convertView;
 
-            if(convertView == null)
-            {
+            if (v == null) {
                 v = LayoutInflater.from(mContext).inflate(R.layout.header_bug, null);
             }
 
+
             TextView txtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
 
-            switch (groupPosition)
-            {
-                case 0:
-                    txtvTitle.setText(mContext.getString(R.string.keepright));
-                    break;
-
-                case 1:
-                    txtvTitle.setText(mContext.getString(R.string.osmose));
-                    break;
-
-                case 2:
-                    txtvTitle.setText(mContext.getString(R.string.mapdust));
-                    break;
-
-                case 3:
-                    txtvTitle.setText(mContext.getString(R.string.openstreetmap_notes));
-                    break;
-            }
+            txtvTitle.setText((String) getGroup(groupPosition));
 
             return v;
         }
@@ -215,8 +241,7 @@ public class BugListFragment extends Fragment {
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
             View v = convertView;
 
-            if(convertView == null)
-            {
+            if (convertView == null) {
                 v = LayoutInflater.from(mContext).inflate(R.layout.row_bug, null);
             }
 
@@ -225,8 +250,7 @@ public class BugListFragment extends Fragment {
             ImageView imgvIcon = (ImageView) v.findViewById(R.id.imgvIcon);
             final MapView mapView = (MapView) v.findViewById(R.id.mapview);
 
-            if(groupPosition == 0)
-            {
+            if (groupPosition == 0) {
                 final KeeprightBug bug = mKeeprightBugs.get(childPosition);
 
                 txtvTitle.setText(bug.getTitle());
@@ -240,9 +264,7 @@ public class BugListFragment extends Fragment {
                         mapView.getController().setCenter(bug.getPoint());
                     }
                 });
-            }
-            else if(groupPosition == 1)
-            {
+            } else if (groupPosition == 1) {
                 final OsmoseBug bug = mOsmoseBugs.get(childPosition);
 
                 txtvTitle.setText(bug.getTitle());
@@ -256,9 +278,7 @@ public class BugListFragment extends Fragment {
                         mapView.getController().setCenter(bug.getPoint());
                     }
                 });
-            }
-            else if(groupPosition == 2)
-            {
+            } else if (groupPosition == 2) {
                 final MapdustBug bug = mMapdustBugs.get(childPosition);
 
                 txtvTitle.setText(bug.getTitle());
@@ -272,9 +292,7 @@ public class BugListFragment extends Fragment {
                         mapView.getController().setCenter(bug.getPoint());
                     }
                 });
-            }
-            else if(groupPosition == 3)
-            {
+            } else if (groupPosition == 3) {
                 final OpenstreetmapNote bug = mOsmNotes.get(childPosition);
 
                 txtvTitle.setText(bug.getTitle());
@@ -300,6 +318,42 @@ public class BugListFragment extends Fragment {
         @Override
         public boolean isChildSelectable(int groupPosition, int childPosition) {
             return false;
+        }
+    };
+
+    /* Listener for Database Updates */
+    private BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher() {
+        @Override
+        public void onDatabaseUpdated(int platform) {
+
+            switch (platform) {
+                case Globals.KEEPRIGHT:
+                    mAdapter.clearKeepright();
+                        mAdapter.addAllKeeprightBugs(BugDatabase.getInstance().getKeeprightBugs());
+                    break;
+
+                case Globals.OSMOSE:
+                    mAdapter.clearOsmose();
+                    mAdapter.addAllOsmoseBugs(BugDatabase.getInstance().getOsmoseBugs());
+                    break;
+
+                case Globals.MAPDUST:
+                    mAdapter.clearMapdust();
+                    mAdapter.addAllMapdustBugs(BugDatabase.getInstance().getMapdustBugs());
+                    break;
+
+                case Globals.OPENSTREETMAPNOTES:
+                    mAdapter.clearOsmNotes();
+                    mAdapter.addAllOsmNotes(BugDatabase.getInstance().getOpenstreetmapNotes());
+                    break;
+            }
+            mAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onDatabaseCleared() {
+            mAdapter.clear();
+            mAdapter.notifyDataSetChanged();
         }
     };
 }

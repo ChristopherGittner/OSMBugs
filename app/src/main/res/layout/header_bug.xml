@@ -5,10 +5,10 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Title"
         android:id="@+id/txtvTitle"
-        android:gravity="center_vertical"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft" />
 </LinearLayout>
