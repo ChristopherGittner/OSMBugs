@@ -32,11 +32,11 @@ import static android.view.View.VISIBLE;
 
 public class MapdustEditFragment extends BugEditFragment {
 
-    private static String EXTRA_BUG = "EXTRA_BUG";
+    private static final String EXTRA_BUG = "EXTRA_BUG";
 
     private MapdustBug mBug;
 
-    CommentAdapter mAdapter;
+    private CommentAdapter mAdapter;
 
     public static MapdustEditFragment newInstance(MapdustBug bug)
     {
@@ -124,9 +124,9 @@ public class MapdustEditFragment extends BugEditFragment {
         mLoadCommentsTask.cancel(true);
     }
 
-    AsyncTask mLoadCommentsTask;
+    private AsyncTask mLoadCommentsTask;
 
-    private View.OnClickListener mBtnResolveBugOnClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mBtnResolveBugOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -181,7 +181,7 @@ public class MapdustEditFragment extends BugEditFragment {
         }
     };
 
-    private View.OnClickListener mBtnIgnoreBugOnClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mBtnIgnoreBugOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -236,7 +236,7 @@ public class MapdustEditFragment extends BugEditFragment {
         }
     };
 
-    private View.OnClickListener mAddCommentOnClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mAddCommentOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             final EditText edtxtNewComment = new EditText(getActivity());

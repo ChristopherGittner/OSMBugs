@@ -8,7 +8,7 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
-import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.fragments.BugEditFragment;
 import org.gittner.osmbugs.fragments.KeeprightEditFragment;
@@ -27,7 +27,7 @@ public class BugEditorActivity
     public static final int RESULT_SAVED_OSM_NOTES = 4;
 
     /* Intent Extras Descriptions */
-    public static String EXTRA_BUG = "EXTRA_BUG";
+    public static final String EXTRA_BUG = "EXTRA_BUG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class BugEditorActivity
         Intent i = getIntent();
 
         Bug bug = i.getParcelableExtra(EXTRA_BUG);
-        BugEditFragment f = null;
+        BugEditFragment f;
 
         if(bug instanceof KeeprightBug)
         {
@@ -51,9 +51,9 @@ public class BugEditorActivity
         {
             f = MapdustEditFragment.newInstance((MapdustBug) bug);
         }
-        else if(bug instanceof OpenstreetmapNote)
+        else if(bug instanceof OsmNote)
         {
-            f = OsmNoteEditFragment.newInstance((OpenstreetmapNote) bug);
+            f = OsmNoteEditFragment.newInstance((OsmNote) bug);
         }
         else
         {

@@ -1,20 +1,15 @@
 package org.gittner.osmbugs.bugs;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.statics.Drawings;
 import org.osmdroid.util.GeoPoint;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class KeeprightBug extends Bug {
 
-    private static final String DRAWABLE_PREFIX = "zap";
+    private static final String ICON_PREFIX = "zap";
 
     public static enum STATE {
         OPEN,
@@ -22,19 +17,14 @@ public class KeeprightBug extends Bug {
         IGNORED_TMP
     }
 
-    public static final int[] STATE_NAMES = {
-            R.string.open,
-            R.string.ignored,
-            R.string.closed };
-
-    private int mId;
-    private int mSchema;
-    private int mType;
+    private final int mId;
+    private final int mSchema;
+    private final int mType;
     private STATE mState = STATE.OPEN;
-    private String mTitle;
-    private String mDescription;
-    private String mComment;
-    private long mWay;
+    private final String mTitle;
+    private final String mDescription;
+    private final String mComment;
+    private final long mWay;
 
     public KeeprightBug(
             double lat,
@@ -60,7 +50,7 @@ public class KeeprightBug extends Bug {
         mWay = way;
     }
 
-    public KeeprightBug(Parcel parcel) {
+    private KeeprightBug(Parcel parcel) {
         super(parcel);
 
         mId = parcel.readInt();
@@ -118,12 +108,12 @@ public class KeeprightBug extends Bug {
             return Drawings.KeeprightDrawableIgnored;
         }
 
-        return Drawings.get(DRAWABLE_PREFIX + mType, Drawings.KeeprightDrawable100);
+        return Drawings.get(ICON_PREFIX + mType, Drawings.KeeprightDrawableDefault);
     }
 
     public Drawable getOpenIcon()
     {
-        return Drawings.get(DRAWABLE_PREFIX + mType, Drawings.KeeprightDrawable100);
+        return Drawings.get(ICON_PREFIX + mType, Drawings.KeeprightDrawableDefault);
     }
 
     @Override

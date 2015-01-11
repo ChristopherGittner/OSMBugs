@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 public class KeeprightParser {
 
     public static ArrayList<KeeprightBug> parse(InputStream stream) {
-        ArrayList<KeeprightBug> bugs = new ArrayList<KeeprightBug>();
+        ArrayList<KeeprightBug> bugs = new ArrayList<>();
 
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
@@ -90,12 +90,17 @@ public class KeeprightParser {
                     KeeprightBug.STATE state;
 
                     /* Translate the bug State Note: "" or "new" both apply to open bugs */
-                    if (sState.equals("ignore_t"))
-                        state = KeeprightBug.STATE.IGNORED_TMP;
-                    else if (sState.equals("ignore"))
-                        state = KeeprightBug.STATE.IGNORED;
-                    else
-                        state = KeeprightBug.STATE.OPEN;
+                    switch (sState) {
+                        case "ignore_t":
+                            state = KeeprightBug.STATE.IGNORED_TMP;
+                            break;
+                        case "ignore":
+                            state = KeeprightBug.STATE.IGNORED;
+                            break;
+                        default:
+                            state = KeeprightBug.STATE.OPEN;
+                            break;
+                    }
 
                     /* Finally add our Bug to the results */
                     bugs.add(new KeeprightBug(lat, lon, id, schema, type, state, title, text, comment, way));

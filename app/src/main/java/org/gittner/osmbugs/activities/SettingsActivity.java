@@ -22,7 +22,7 @@ public class SettingsActivity extends PreferenceActivity
         findPreference("pref_keepright_reset").setOnPreferenceClickListener(this);
     }
 
-    /* Little Tweak to prevent a Black background in the Settins on some Devices */
+    /* Little Tweak to prevent a Black background in the Settings on some Devices */
     @SuppressWarnings("deprecation")
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {

@@ -8,7 +8,7 @@
     <item
         android:id="@+id/list"
         android:orderInCategory="30"
-        android:title="@+string/list"
+        android:title="@string/list"
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_view_as_list"/>
     <item
@@ -17,11 +17,5 @@
         android:showAsAction="ifRoom"
         android:title="@string/action_settings"
         android:icon="@drawable/ic_action_settings"/>
-    <item
-        android:id="@+id/about"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom"
-        android:title="@string/about"
-        android:icon="@drawable/ic_action_about"/>
 
 </menu>

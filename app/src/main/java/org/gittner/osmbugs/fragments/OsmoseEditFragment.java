@@ -1,29 +1,18 @@
 package org.gittner.osmbugs.fragments;
 
-import android.app.AlertDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.method.ScrollingMovementMethod;
-import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Spinner;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 
 public class OsmoseEditFragment extends BugEditFragment {
 
-    private static String EXTRA_BUG = "EXTRA_BUG";
-
-    private OsmoseBug mBug;
+    private static final String EXTRA_BUG = "EXTRA_BUG";
 
     public static OsmoseEditFragment newInstance(OsmoseBug bug)
     {
@@ -41,12 +30,15 @@ public class OsmoseEditFragment extends BugEditFragment {
 
         Bundle args = getArguments();
 
-        mBug = args.getParcelable(EXTRA_BUG);
+        OsmoseBug mBug = args.getParcelable(EXTRA_BUG);
 
         View v = inflater.inflate(R.layout.fragment_osmose_edit, null);
 
         TextView txtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
         txtvTitle.setText(mBug.getTitle());
+
+        ImageView imgvIcon = (ImageView) v.findViewById(R.id.imgvIcon);
+        imgvIcon.setImageDrawable(mBug.getIcon());
 
         return v;
     }

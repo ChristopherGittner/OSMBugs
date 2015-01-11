@@ -22,8 +22,8 @@ import org.osmdroid.util.GeoPoint;
 public class AddMapdustBugActivity extends Activity {
 
     /* The Intents Extras */
-    public static final String EXTRALATITUDE = "EXTRALATITUDE";
-    public static final String EXTRALONGITUDE = "EXTRALONGITUDE";
+    public static final String EXTRA_LATITUDE = "EXTRA_LATITUDE";
+    public static final String EXTRA_LONGITUDE = "EXTRA_LONGITUDE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +41,13 @@ public class AddMapdustBugActivity extends Activity {
 
         /* Retrieve the Intents Extras */
         Intent intent = getIntent();
-        mLatitude = intent.getDoubleExtra(EXTRALATITUDE, 0);
-        mLongitude = intent.getDoubleExtra(EXTRALONGITUDE, 0);
+        mLatitude = intent.getDoubleExtra(EXTRA_LATITUDE, 0);
+        mLongitude = intent.getDoubleExtra(EXTRA_LONGITUDE, 0);
 
         /* Setup the Type Adapter */
         mSpnType = (Spinner) findViewById(R.id.spnType);
 
-        mTypeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> mTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
         mSpnType.setAdapter(mTypeAdapter);
 
         mTypeAdapter.add(getString(R.string.wrong_turn));
@@ -95,22 +95,18 @@ public class AddMapdustBugActivity extends Activity {
 
         switch (item.getItemId()) {
             case R.id.action_cancel:
-                menuCancelClicked(item);
+                finish();
                 return true;
 
             case R.id.action_save:
-                menuSaveClicked(item);
+                menuSaveClicked();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void menuCancelClicked(MenuItem item) {
-        finish();
-    }
-
-    private void menuSaveClicked(MenuItem item) {
+    private void menuSaveClicked() {
         /* Temporary class to pass parameters to Async Task */
         class TaskParameter {
             GeoPoint geoPoint;
@@ -123,31 +119,31 @@ public class AddMapdustBugActivity extends Activity {
         int type = 7;
         switch (mSpnType.getSelectedItemPosition()) {
             case 0:
-                type = MapdustBug.WRONGTURN;
+                type = MapdustBug.WRONG_TURN;
                 break;
 
             case 1:
-                type = MapdustBug.BADROUTING;
+                type = MapdustBug.BAD_ROUTING;
                 break;
 
             case 2:
-                type = MapdustBug.ONEWAYROAD;
+                type = MapdustBug.ONEWAY_ROAD;
                 break;
 
             case 3:
-                type = MapdustBug.BLOCKEDSTREET;
+                type = MapdustBug.BLOCKED_STREET;
                 break;
 
             case 4:
-                type = MapdustBug.MISSINGSTREET;
+                type = MapdustBug.MISSING_STREET;
                 break;
 
             case 5:
-                type = MapdustBug.ROUNDABOUTISSUE;
+                type = MapdustBug.ROUNDABOUT_ISSUE;
                 break;
 
             case 6:
-                type = MapdustBug.MISSINGSPEEDINFO;
+                type = MapdustBug.MISSING_SPEED_INFO;
                 break;
 
             case 7:
@@ -188,7 +184,7 @@ public class AddMapdustBugActivity extends Activity {
     }
 
     /* TextWatcher to show or hide the Save Button */
-    private TextWatcher mTextWatcherDescription = new TextWatcher() {
+    private final TextWatcher mTextWatcherDescription = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
@@ -207,9 +203,6 @@ public class AddMapdustBugActivity extends Activity {
 
     /* The Spinner of different Types */
     private Spinner mSpnType;
-
-    /* The Adapter for the types Spinner */
-    private ArrayAdapter<String> mTypeAdapter;
 
     /* Holds the Latitude of the new Bug */
     private double mLatitude;

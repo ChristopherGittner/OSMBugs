@@ -1,6 +1,5 @@
 package org.gittner.osmbugs.parser;
 
-import org.gittner.osmbugs.App;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,8 +33,9 @@ public class OsmoseParser {
                 double lon = Double.valueOf(bug.getString(1));
                 long id = Long.valueOf(bug.getString(2));
                 int item = Integer.valueOf(bug.getString(3));
+                String title = bug.getString(9);
 
-                bugs.add(new OsmoseBug(lat, lon, id, item, App.getContext()));
+                bugs.add(new OsmoseBug(lat, lon, id, item, title));
             }
 
         } catch (IOException e) {

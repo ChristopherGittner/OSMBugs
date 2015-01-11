@@ -7,12 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -22,7 +20,7 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
-import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Globals;
@@ -113,14 +111,14 @@ public class BugListFragment extends Fragment {
 
     private class BugExpandableListAdapter extends BaseExpandableListAdapter {
 
-        private Context mContext;
+        private final Context mContext;
 
-        private List<KeeprightBug> mKeeprightBugs = new ArrayList<>();
-        private List<OsmoseBug> mOsmoseBugs = new ArrayList<>();
-        private List<MapdustBug> mMapdustBugs = new ArrayList<>();
-        private List<OpenstreetmapNote> mOsmNotes = new ArrayList<>();
+        private final List<KeeprightBug> mKeeprightBugs = new ArrayList<>();
+        private final List<OsmoseBug> mOsmoseBugs = new ArrayList<>();
+        private final List<MapdustBug> mMapdustBugs = new ArrayList<>();
+        private final List<OsmNote> mOsmNotes = new ArrayList<>();
 
-        private List<String> mPlatforms = new ArrayList<>();
+        private final List<String> mPlatforms = new ArrayList<>();
 
         public BugExpandableListAdapter(Context context) {
             mContext = context;
@@ -131,35 +129,19 @@ public class BugListFragment extends Fragment {
             mPlatforms.add(context.getString(R.string.openstreetmap_notes));
         }
 
-        public void add(KeeprightBug bug) {
-            mKeeprightBugs.add(bug);
-        }
-
         public void addAllKeeprightBugs(Collection<? extends KeeprightBug> collection) {
             mKeeprightBugs.addAll(collection);
-        }
-
-        public void add(OsmoseBug bug) {
-            mOsmoseBugs.add(bug);
         }
 
         public void addAllOsmoseBugs(Collection<? extends OsmoseBug> collection) {
             mOsmoseBugs.addAll(collection);
         }
 
-        public void add(MapdustBug bug) {
-            mMapdustBugs.add(bug);
-        }
-
         public void addAllMapdustBugs(Collection<? extends MapdustBug> collection) {
             mMapdustBugs.addAll(collection);
         }
 
-        public void add(OpenstreetmapNote bug) {
-            mOsmNotes.add(bug);
-        }
-
-        public void addAllOsmNotes(Collection<? extends OpenstreetmapNote> collection) {
+        public void addAllOsmNotes(Collection<? extends OsmNote> collection) {
             mOsmNotes.addAll(collection);
         }
 
@@ -253,7 +235,6 @@ public class BugListFragment extends Fragment {
             if (v == null) {
                 v = LayoutInflater.from(mContext).inflate(R.layout.header_bug, null);
             }
-
 
             TextView txtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
 
@@ -370,7 +351,7 @@ public class BugListFragment extends Fragment {
                     }
                 });
             } else if (groupPosition == 3) {
-                final OpenstreetmapNote bug = mOsmNotes.get(childPosition);
+                final OsmNote bug = mOsmNotes.get(childPosition);
 
                 txtvTitle.setText("");
                 txtvDescription.setText(bug.getDescription());
@@ -412,10 +393,10 @@ public class BugListFragment extends Fragment {
         public boolean isChildSelectable(int groupPosition, int childPosition) {
             return false;
         }
-    };
+    }
 
     /* Listener for Database Updates */
-    private BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher() {
+    private final BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher() {
         @Override
         public void onDatabaseUpdated(int platform) {
 

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class MapdustParser {
 
     public static ArrayList<MapdustBug> parse(InputStream stream) {
-        ArrayList<MapdustBug> bugs = new ArrayList<MapdustBug>();
+        ArrayList<MapdustBug> bugs = new ArrayList<>();
 
         BufferedReader reader;
         try {
@@ -57,7 +57,7 @@ public class MapdustParser {
                         break;
                 }
 
-                ArrayList<Comment> comments = new ArrayList<Comment>();
+                ArrayList<Comment> comments = new ArrayList<>();
 
                 JSONArray commentArray = property.getJSONArray("comments");
                 for (int n = 0; n != commentArray.length(); ++n) {
@@ -70,39 +70,49 @@ public class MapdustParser {
                 String type_const = property.getString("type");
 
                 int typeInt;
-                if (type_const.equals("wrong_turn"))
-                    typeInt = MapdustBug.WRONGTURN;
-                else if (type_const.equals("bad_routing"))
-                    typeInt = MapdustBug.BADROUTING;
-                else if (type_const.equals("oneway_road"))
-                    typeInt = MapdustBug.ONEWAYROAD;
-                else if (type_const.equals("blocked_street"))
-                    typeInt = MapdustBug.BLOCKEDSTREET;
-                else if (type_const.equals("missing_street"))
-                    typeInt = MapdustBug.MISSINGSTREET;
-                else if (type_const.equals("wrong_roundabout"))
-                    typeInt = MapdustBug.ROUNDABOUTISSUE;
-                else if (type_const.equals("missing_speedlimit"))
-                    typeInt = MapdustBug.MISSINGSPEEDINFO;
-                else
-                    typeInt = MapdustBug.OTHER;
+                switch (type_const) {
+                    case "wrong_turn":
+                        typeInt = MapdustBug.WRONG_TURN;
+                        break;
+                    case "bad_routing":
+                        typeInt = MapdustBug.BAD_ROUTING;
+                        break;
+                    case "oneway_road":
+                        typeInt = MapdustBug.ONEWAY_ROAD;
+                        break;
+                    case "blocked_street":
+                        typeInt = MapdustBug.BLOCKED_STREET;
+                        break;
+                    case "missing_street":
+                        typeInt = MapdustBug.MISSING_STREET;
+                        break;
+                    case "wrong_roundabout":
+                        typeInt = MapdustBug.ROUNDABOUT_ISSUE;
+                        break;
+                    case "missing_speedlimit":
+                        typeInt = MapdustBug.MISSING_SPEED_INFO;
+                        break;
+                    default:
+                        typeInt = MapdustBug.OTHER;
+                        break;
+                }
 
                 bugs.add(new MapdustBug(lat, lon, id, typeInt, description, comments, state));
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-            return new ArrayList<MapdustBug>();
+            return new ArrayList<>();
         } catch (JSONException e) {
             e.printStackTrace();
-            return new ArrayList<MapdustBug>();
+            return new ArrayList<>();
         }
 
         return bugs;
     }
 
     public static ArrayList<Comment> parseSingleBugForComments(InputStream stream) {
-        ArrayList<Comment> comments = new ArrayList<Comment>();
+        ArrayList<Comment> comments = new ArrayList<>();
 
         BufferedReader reader;
         try {
@@ -131,10 +141,10 @@ public class MapdustParser {
 
         } catch (IOException e) {
             e.printStackTrace();
-            return new ArrayList<Comment>();
+            return new ArrayList<>();
         } catch (JSONException e) {
             e.printStackTrace();
-            return new ArrayList<Comment>();
+            return new ArrayList<>();
         }
 
         return comments;

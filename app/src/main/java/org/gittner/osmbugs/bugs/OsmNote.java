@@ -11,22 +11,22 @@ import org.osmdroid.util.GeoPoint;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OpenstreetmapNote extends Bug {
+public class OsmNote extends Bug {
 
     public enum STATE {
         OPEN,
         CLOSED
     }
 
-    private long mId;
+    private final long mId;
 
-    private String mDescription;
+    private final String mDescription;
 
-    private List<Comment> mComments;
+    private final List<Comment> mComments;
 
     private STATE mState = STATE.OPEN;
 
-    public OpenstreetmapNote(
+    public OsmNote(
             double lat,
             double lon,
             long id,
@@ -42,7 +42,7 @@ public class OpenstreetmapNote extends Bug {
         mComments = comments;
     }
 
-    public OpenstreetmapNote(Parcel parcel) {
+    private OsmNote(Parcel parcel) {
         super(parcel);
 
         mId = parcel.readLong();
@@ -66,10 +66,6 @@ public class OpenstreetmapNote extends Bug {
                 mState = STATE.CLOSED;
                 break;
         }
-    }
-
-    public BugOverlayItem getOverlayItem() {
-        return new BugOverlayItem(this);
     }
 
     @Override
@@ -126,16 +122,16 @@ public class OpenstreetmapNote extends Bug {
         return 0;
     }
 
-    public static final Creator<OpenstreetmapNote> CREATOR = new Parcelable.Creator<OpenstreetmapNote>() {
+    public static final Creator<OsmNote> CREATOR = new Parcelable.Creator<OsmNote>() {
 
         @Override
-        public OpenstreetmapNote createFromParcel(Parcel source) {
-            return new OpenstreetmapNote(source);
+        public OsmNote createFromParcel(Parcel source) {
+            return new OsmNote(source);
         }
 
         @Override
-        public OpenstreetmapNote[] newArray(int size) {
-            return new OpenstreetmapNote[size];
+        public OsmNote[] newArray(int size) {
+            return new OsmNote[size];
         }
     };
 }

@@ -24,17 +24,15 @@ import org.gittner.osmbugs.common.IndeterminateProgressAsyncTask;
 import org.gittner.osmbugs.statics.Drawings;
 import org.gittner.osmbugs.statics.Globals;
 
-import java.lang.reflect.Array;
-
 public class KeeprightEditFragment extends BugEditFragment {
 
-    private static String EXTRA_BUG = "EXTRA_BUG";
+    private static final String EXTRA_BUG = "EXTRA_BUG";
 
     private KeeprightBug mBug;
 
-    EditText mEdtxtComment;
+    private EditText mEdtxtComment;
 
-    Spinner mSpnState;
+    private Spinner mSpnState;
 
     public static KeeprightEditFragment newInstance(KeeprightBug bug)
     {
@@ -96,7 +94,7 @@ public class KeeprightEditFragment extends BugEditFragment {
     private class KeeprightStateAdapter extends ArrayAdapter<KeeprightBug.STATE>
     {
 
-        Drawable mIcon;
+        final Drawable mIcon;
 
         public KeeprightStateAdapter(Context context, Drawable icon) {
             super(context, R.layout.row_keepright_bug_state, R.id.txtvState);
@@ -110,15 +108,15 @@ public class KeeprightEditFragment extends BugEditFragment {
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            return getCustomView(position, convertView, parent);
+            return getCustomView(position, convertView);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return getCustomView(position, convertView, parent);
+            return getCustomView(position, convertView);
         }
 
-        private View getCustomView(int position, View convertView, ViewGroup parent)
+        private View getCustomView(int position, View convertView)
         {
             View v = convertView;
 
@@ -152,7 +150,7 @@ public class KeeprightEditFragment extends BugEditFragment {
         }
     }
 
-    private View.OnClickListener mBtnSaveOnClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mBtnSaveOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 

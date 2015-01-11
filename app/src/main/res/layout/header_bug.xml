@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Title"
+        android:text="@string/title"
         android:id="@+id/txtvTitle"
         android:layout_margin="8dp"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft" />

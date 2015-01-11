@@ -1,11 +1,9 @@
 package org.gittner.osmbugs.bugs;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Drawings;
 import org.osmdroid.util.GeoPoint;
@@ -16,13 +14,13 @@ import java.util.List;
 public class MapdustBug extends Bug {
 
     /* All Mapdust Types */
-    public static final int WRONGTURN = 1;
-    public static final int BADROUTING = 2;
-    public static final int ONEWAYROAD = 3;
-    public static final int BLOCKEDSTREET = 4;
-    public static final int MISSINGSTREET = 5;
-    public static final int ROUNDABOUTISSUE = 6;
-    public static final int MISSINGSPEEDINFO = 7;
+    public static final int WRONG_TURN = 1;
+    public static final int BAD_ROUTING = 2;
+    public static final int ONEWAY_ROAD = 3;
+    public static final int BLOCKED_STREET = 4;
+    public static final int MISSING_STREET = 5;
+    public static final int ROUNDABOUT_ISSUE = 6;
+    public static final int MISSING_SPEED_INFO = 7;
     public static final int OTHER = 8;
 
     public enum STATE {
@@ -31,17 +29,11 @@ public class MapdustBug extends Bug {
         IGNORED
     }
 
-    public static final int[] STATE_NAMES = {
-            R.string.open,
-            R.string.closed,
-            R.string.ignored };
+    private final long mId;
 
+    private final int mType;
 
-    private long mId;
-
-    private int mType;
-
-    private String mDescription;
+    private final String mDescription;
 
     private List<Comment> mComments = null;
 
@@ -65,14 +57,14 @@ public class MapdustBug extends Bug {
         mState = state;
     }
 
-    protected MapdustBug(Parcel parcel) {
+    private MapdustBug(Parcel parcel) {
         super(parcel);
 
         mId = parcel.readLong();
         mType = parcel.readInt();
         mDescription = parcel.readString();
 
-        mComments = new ArrayList<Comment>();
+        mComments = new ArrayList<>();
         int size = parcel.readInt();
         for (int i = 0; i != size; ++i) {
             mComments.add(new Comment(parcel));
@@ -93,33 +85,9 @@ public class MapdustBug extends Bug {
         }
     }
 
-    public static List<String> getStateNames(Context context) {
-        ArrayList<String> names = new ArrayList<>();
-
-        for (int i = 0; i != STATE_NAMES.length; ++i) {
-            names.add(context.getString(STATE_NAMES[i]));
-        }
-
-        return names;
-    }
-
-    public static STATE getStateByName(Context context, String name) {
-        int id = context.getResources().getIdentifier(name, "string", context.getPackageName());
-
-        if(context.getString(R.string.open).equals(name)) return STATE.OPEN;
-        else if(context.getString(R.string.closed).equals(name)) return STATE.CLOSED;
-        else if(context.getString(R.string.ignored).equals(name)) return STATE.IGNORED;
-
-        return null;
-    }
-
     public String getDescription()
     {
         return mDescription;
-    }
-
-    public List<Comment> getComments() {
-        return mComments;
     }
 
     public void setComments(List<Comment> comments) {
@@ -134,7 +102,7 @@ public class MapdustBug extends Bug {
         return mId;
     }
 
-    public int getType() {
+    int getType() {
         return mType;
     }
 

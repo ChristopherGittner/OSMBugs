@@ -5,7 +5,7 @@ import android.app.Fragment;
 
 public class BugEditFragment extends Fragment{
 
-    protected FragmentInteractionListener mListener;
+    FragmentInteractionListener mListener;
 
     public interface FragmentInteractionListener {
         public void onBugSaved(int platform);

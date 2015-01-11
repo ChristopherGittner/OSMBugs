@@ -11,7 +11,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.parser.OpenstreetmapNotesParser;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.BoundingBoxE6;
@@ -20,9 +20,9 @@ import org.osmdroid.util.GeoPoint;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class OpenstreetmapNotesApi {
+public class OsmNotesApi {
 
-    public static ArrayList<OpenstreetmapNote> downloadBBox(BoundingBoxE6 bBox, int limit, boolean showClosed) {
+    public static ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox, int limit, boolean showClosed) {
         HttpClient client = new DefaultHttpClient();
 
         ArrayList<NameValuePair> arguments = new ArrayList<>();
@@ -54,8 +54,6 @@ public class OpenstreetmapNotesApi {
 
             /* If Request was Successful, parse the Stream */
             return OpenstreetmapNotesParser.parse(response.getEntity().getContent());
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

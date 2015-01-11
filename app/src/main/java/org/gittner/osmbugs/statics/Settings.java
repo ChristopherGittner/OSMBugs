@@ -21,14 +21,14 @@ public class Settings {
     }
 
     public static void setFollowGps(boolean state) {
-        mPrefs.edit().putBoolean("pref_follow_gps", state).commit();
+        mPrefs.edit().putBoolean("pref_follow_gps", state).apply();
     }
 
     public static boolean isLanguageGerman() {
         return Locale.getDefault().getISO3Language().equals("deu");
     }
 
-    /* Location will be saved as String since Prefernces can not store Double */
+    /* Location will be saved as String since Preferences can not store Double */
     public static GeoPoint getLastMapCenter() {
         return new GeoPoint(
                 Double.parseDouble(mPrefs.getString("pref_last_map_center_lat", "51")),
@@ -36,8 +36,8 @@ public class Settings {
     }
 
     public static void setLastMapCenter(IGeoPoint location) {
-        mPrefs.edit().putString("pref_last_map_center_lat", String.valueOf(location.getLatitude())).commit();
-        mPrefs.edit().putString("pref_last_map_center_lon", String.valueOf(location.getLongitude())).commit();
+        mPrefs.edit().putString("pref_last_map_center_lat", String.valueOf(location.getLatitude())).apply();
+        mPrefs.edit().putString("pref_last_map_center_lon", String.valueOf(location.getLongitude())).apply();
     }
 
     public static BoundingBoxE6 getLastBBox() {
@@ -53,7 +53,7 @@ public class Settings {
                 .putInt("pref_last_bbox_lat_north", bBox.getLatNorthE6())
                 .putInt("pref_last_bbox_lon_east", bBox.getLonEastE6())
                 .putInt("pref_last_bbox_lat_south", bBox.getLatSouthE6())
-                .putInt("pref_last_bbox_lon_west", bBox.getLonWestE6()).commit();
+                .putInt("pref_last_bbox_lon_west", bBox.getLonWestE6()).apply();
     }
 
     public static int getLastZoom(){
@@ -61,7 +61,7 @@ public class Settings {
     }
 
     public static void setLastZoom(int zoom) {
-        mPrefs.edit().putInt("pref_last_zoom", zoom).commit();
+        mPrefs.edit().putInt("pref_last_zoom", zoom).apply();
     }
 
     public static boolean isDebugEnabled() {
@@ -400,7 +400,7 @@ public class Settings {
             return mPrefs.getBoolean("pref_mapdust_enabled_wrong_turn", true);
         }
 
-        public static boolean isBadRoutingenabled() {
+        public static boolean isBadRoutingEnabled() {
             return mPrefs.getBoolean("pref_mapdust_enabled_bad_routing", false);
         }
 

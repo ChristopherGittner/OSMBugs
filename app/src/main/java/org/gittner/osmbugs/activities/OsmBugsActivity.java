@@ -17,10 +17,6 @@ import android.widget.Spinner;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
-import org.gittner.osmbugs.bugs.KeeprightBug;
-import org.gittner.osmbugs.bugs.MapdustBug;
-import org.gittner.osmbugs.bugs.OpenstreetmapNote;
-import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.fragments.BugListFragment;
 import org.gittner.osmbugs.fragments.BugMapFragment;
 import org.gittner.osmbugs.statics.BugDatabase;
@@ -36,8 +32,8 @@ public class OsmBugsActivity extends Activity implements
         BugListFragment.OnFragmentInteractionListener {
 
     /* Request Codes for activities */
-    public static final int REQUEST_CODE_BUG_EDITOR_ACTIVITY = 1;
-    public static final int REQUEST_CODE_SETTINGS_ACTIVITY = 2;
+    private static final int REQUEST_CODE_BUG_EDITOR_ACTIVITY = 1;
+    private static final int REQUEST_CODE_SETTINGS_ACTIVITY = 2;
 
     /* Dialog Ids */
     private static final int DIALOG_NEW_BUG = 1;
@@ -110,10 +106,6 @@ public class OsmBugsActivity extends Activity implements
                 menuSettingsClicked();
                 return true;
 
-            case R.id.about:
-                menuAboutClicked();
-                return true;
-
             case R.id.list:
                 menuListClicked();
                 return true;
@@ -149,70 +141,49 @@ public class OsmBugsActivity extends Activity implements
     public Dialog onCreateDialog(int id) {
 
         if (id == DIALOG_NEW_BUG) {
-            /* Ask the User to select a Bug Platform */
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
             final Spinner spnPlatform = new Spinner(this);
 
-            /* Add the availabe Error Platforms to the Spinner */
-            ArrayList<String> spinnerArray = new ArrayList<String>();
+            /* Add the available Error Platforms to the Spinner */
+            ArrayList<String> spinnerArray = new ArrayList<>();
             for (int i = 0; i != getResources().getStringArray(R.array.new_bug_platforms).length; ++i) {
                 spinnerArray.add(getResources().getStringArray(R.array.new_bug_platforms)[i]);
             }
 
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
             spnPlatform.setAdapter(spinnerArrayAdapter);
 
-            builder.setView(spnPlatform);
+            return new AlertDialog.Builder(this)
+                    .setView(spnPlatform)
+                    .setMessage(getString(R.string.platform))
+                    .setPositiveButton(getString(R.string.ok), new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (spnPlatform.getSelectedItemPosition() == 0) {
+                                Intent i = new Intent(OsmBugsActivity.this, AddOpenstreetmapNoteActivity.class);
 
-            builder.setMessage(getString(R.string.platform));
-            builder.setPositiveButton(getString(R.string.ok), new OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (spnPlatform.getSelectedItemPosition() == 0) {
-                        Intent i = new Intent(OsmBugsActivity.this, AddOpenstreetmapNoteActivity.class);
+                                i.putExtra(AddMapdustBugActivity.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
+                                i.putExtra(AddMapdustBugActivity.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
 
-                        i.putExtra(AddMapdustBugActivity.EXTRALATITUDE, mNewBugLocation.getLatitude());
-                        i.putExtra(AddMapdustBugActivity.EXTRALONGITUDE, mNewBugLocation.getLongitude());
+                                startActivity(i);
+                            } else if (spnPlatform.getSelectedItemPosition() == 1) {
+                                Intent i = new Intent(OsmBugsActivity.this, AddMapdustBugActivity.class);
 
-                        startActivity(i);
+                                i.putExtra(AddOpenstreetmapNoteActivity.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
+                                i.putExtra(AddOpenstreetmapNoteActivity.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
 
-                        dialog.dismiss();
-                    } else if (spnPlatform.getSelectedItemPosition() == 1) {
-                        Intent i = new Intent(OsmBugsActivity.this, AddMapdustBugActivity.class);
-
-                        i.putExtra(AddOpenstreetmapNoteActivity.EXTRALATITUDE, mNewBugLocation.getLatitude());
-                        i.putExtra(AddOpenstreetmapNoteActivity.EXTRALONGITUDE, mNewBugLocation.getLongitude());
-
-                        startActivity(i);
-
-                        dialog.dismiss();
-                    } else {
-                        dialog.dismiss();
-                    }
-                }
-            });
-            builder.setNegativeButton(getString(R.string.cancel), new OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-
-            return builder.create();
-        } else if (id == DIALOG_ABOUT) {
-            /* Show the About Information */
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            builder.setMessage(getString(R.string.dialog_about_text));
-            builder.setPositiveButton(getString(R.string.ok), new OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-
-            return builder.create();
+                                startActivity(i);
+                            } else {
+                            }
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.cancel), new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create();
         }
 
         return super.onCreateDialog(id);
@@ -226,11 +197,6 @@ public class OsmBugsActivity extends Activity implements
 
     private void menuRefreshClicked() {
         reloadAllBugs();
-    }
-
-    private void menuAboutClicked() {
-        //noinspection deprecation
-        showDialog(DIALOG_ABOUT);
     }
 
     private void menuListClicked()
@@ -265,7 +231,7 @@ public class OsmBugsActivity extends Activity implements
         }
     }
 
-    private BugDatabase.OnDownloadEndListener mOnDownloadEndListener = new BugDatabase.OnDownloadEndListener() {
+    private final BugDatabase.OnDownloadEndListener mOnDownloadEndListener = new BugDatabase.OnDownloadEndListener() {
         @Override
         public void onCompletion() {
             if(mActiveDownloads > 0) {

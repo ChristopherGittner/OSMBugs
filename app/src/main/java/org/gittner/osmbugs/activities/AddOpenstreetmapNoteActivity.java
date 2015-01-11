@@ -13,14 +13,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.api.OpenstreetmapNotesApi;
+import org.gittner.osmbugs.api.OsmNotesApi;
 import org.osmdroid.util.GeoPoint;
 
 public class AddOpenstreetmapNoteActivity extends Activity {
 
     /* The Intents Extras */
-    public static final String EXTRALATITUDE = "EXTRALATITUDE";
-    public static final String EXTRALONGITUDE = "EXTRALONGITUDE";
+    public static final String EXTRA_LATITUDE = "EXTRA_LATITUDE";
+    public static final String EXTRA_LONGITUDE = "EXTRA_LONGITUDE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +38,8 @@ public class AddOpenstreetmapNoteActivity extends Activity {
 
         /* Retrieve the Intents Extras */
         Intent intent = getIntent();
-        mLatitude = intent.getDoubleExtra(EXTRALATITUDE, 0);
-        mLongitude = intent.getDoubleExtra(EXTRALONGITUDE, 0);
+        mLatitude = intent.getDoubleExtra(EXTRA_LATITUDE, 0);
+        mLongitude = intent.getDoubleExtra(EXTRA_LONGITUDE, 0);
 
         /* Setup the Descriptions EditText */
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
@@ -47,7 +47,6 @@ public class AddOpenstreetmapNoteActivity extends Activity {
             edttxtDescription.addTextChangedListener(mTextWatcherDescription);
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,22 +72,18 @@ public class AddOpenstreetmapNoteActivity extends Activity {
 
         switch (item.getItemId()) {
             case R.id.action_cancel:
-                menuCancelClicked(item);
+                finish();
                 return true;
 
             case R.id.action_save:
-                menuSaveClicked(item);
+                menuSaveClicked();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void menuCancelClicked(MenuItem item) {
-        finish();
-    }
-
-    private void menuSaveClicked(MenuItem item) {
+    private void menuSaveClicked() {
         /* Temporary class to pass parameters to Async Task */
         class TaskParameter {
             GeoPoint geoPoint;
@@ -111,7 +106,7 @@ public class AddOpenstreetmapNoteActivity extends Activity {
 
             @Override
             protected Boolean doInBackground(TaskParameter... parameters) {
-                return OpenstreetmapNotesApi.addNew(parameters[0].geoPoint, parameters[0].description);
+                return OsmNotesApi.addNew(parameters[0].geoPoint, parameters[0].description);
             }
 
             @Override
@@ -129,7 +124,7 @@ public class AddOpenstreetmapNoteActivity extends Activity {
     }
 
     /* TextWatcher to show or hide the Save Button */
-    private TextWatcher mTextWatcherDescription = new TextWatcher() {
+    private final TextWatcher mTextWatcherDescription = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 

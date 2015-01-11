@@ -25,7 +25,7 @@ import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.BugOverlayItem;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
-import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Drawings;
@@ -84,7 +84,7 @@ public class BugMapFragment extends Fragment {
         /* Create Bug Overlays */
         mKeeprightOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
-                Drawings.KeeprightDrawable30,
+                Drawings.KeeprightDrawableDefault,
                 mKeeprightGestureListener,
                 new DefaultResourceProxyImpl(getActivity()));
 
@@ -139,6 +139,7 @@ public class BugMapFragment extends Fragment {
                 if (event.getAction() == MotionEvent.ACTION_DOWN && mAddNewBugOnNextClick) {
                     mListener.onAddNewBug((GeoPoint) mMapView.getProjection().fromPixels((int) event.getX(), (int) event.getY()));
                     mAddNewBugOnNextClick = false;
+                    getActivity().invalidateOptionsMenu();
                     return false;
                 }
 
@@ -148,7 +149,7 @@ public class BugMapFragment extends Fragment {
 
         final Bundle args = getArguments();
         if(args == null) {
-            // Ugly Tweak since the mapview has to be layed out before setcenter works correctly
+            // Ugly Tweak since the mapview has to be layed out before setCenter works correctly
             //TODO: Remove as soon as this is fixed in osmdroid (4.3)
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
@@ -169,7 +170,7 @@ public class BugMapFragment extends Fragment {
         else
         {
             /* Set the Center and Zoomlevel */
-            // Tweak since the mapview has to be layed out before setcenter works correctly
+            // Tweak since the mapview has to be layed out before setCenter works correctly
             //TODO: Remove as soon as this is fixed in osmdroid (4.3)
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
@@ -190,7 +191,7 @@ public class BugMapFragment extends Fragment {
         for (MapdustBug bug : BugDatabase.getInstance().getMapdustBugs()) {
             mMapdustOverlay.addItem(new BugOverlayItem(bug));
         }
-        for (OpenstreetmapNote bug : BugDatabase.getInstance().getOpenstreetmapNotes()) {
+        for (OsmNote bug : BugDatabase.getInstance().getOpenstreetmapNotes()) {
             mOsmNotesOverlay.addItem(new BugOverlayItem(bug));
         }
 
@@ -268,15 +269,20 @@ public class BugMapFragment extends Fragment {
 
         /* Set the checked state of the follow GPS Button according to the System Settings */
         menu.findItem(R.id.follow_gps).setChecked(Settings.getFollowGps());
+
+        if(mAddNewBugOnNextClick)
+        {
+            menu.findItem(R.id.add_bug).setIcon(Drawings.MenuAddBugRed);
+        }
+        else
+        {
+            menu.findItem(R.id.add_bug).setIcon(Drawings.MenuAddBug);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.refresh:
-                menuRefreshClicked();
-                return true;
-
             case R.id.follow_gps:
                 menuFollowGpsClicked();
                 return true;
@@ -291,10 +297,6 @@ public class BugMapFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void menuRefreshClicked() {
-
     }
 
     private void menuFollowGpsClicked() {
@@ -317,27 +319,12 @@ public class BugMapFragment extends Fragment {
 
     private void menuAddBugClicked() {
         /* Enable or Disable the Bug creation mode */
-        if (!mAddNewBugOnNextClick) {
-            mAddNewBugOnNextClick = true;
-            Toast.makeText(getActivity(), getString(R.string.bug_creation_mode_enabled), Toast.LENGTH_LONG).show();
-        } else {
-            mAddNewBugOnNextClick = false;
-            Toast.makeText(getActivity(), getString(R.string.bug_creation_mode_disabled), Toast.LENGTH_LONG).show();
-        }
+        mAddNewBugOnNextClick = !mAddNewBugOnNextClick;
+        getActivity().invalidateOptionsMenu();
     }
 
     public BoundingBoxE6 getBBox() {
         return mMapView.getBoundingBox();
-    }
-
-    public void centerMap(GeoPoint point) {
-        mMapView.getController().setCenter(point);
-        mMapView.invalidate();
-    }
-
-    public void setZoom(int zoomLevel) {
-        mMapView.getController().setZoom(zoomLevel);
-        mMapView.invalidate();
     }
 
     public interface OnFragmentInteractionListener {
@@ -346,7 +333,7 @@ public class BugMapFragment extends Fragment {
         public void onAddNewBug(GeoPoint point);
     }
 
-    private ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mKeeprightGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
+    private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mKeeprightGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
         @Override
         public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem) {
             mListener.onBugClicked(bugItem.getBug());
@@ -359,7 +346,7 @@ public class BugMapFragment extends Fragment {
         }
     };
 
-    private ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mOsmoseGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
+    private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mOsmoseGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
         @Override
         public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem) {
             mListener.onBugClicked(bugItem.getBug());
@@ -372,7 +359,7 @@ public class BugMapFragment extends Fragment {
         }
     };
 
-    private ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mMapdustGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
+    private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mMapdustGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
         @Override
         public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem) {
             mListener.onBugClicked(bugItem.getBug());
@@ -385,7 +372,7 @@ public class BugMapFragment extends Fragment {
         }
     };
 
-    private ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mOsmNotesGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
+    private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mOsmNotesGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
         @Override
         public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem) {
             mListener.onBugClicked(bugItem.getBug());
@@ -399,7 +386,7 @@ public class BugMapFragment extends Fragment {
     };
 
     /* Listener for Database Updates */
-    private BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher() {
+    private final BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher() {
         @Override
         public void onDatabaseUpdated(int platform) {
 
@@ -428,7 +415,7 @@ public class BugMapFragment extends Fragment {
 
                 case Globals.OSM_NOTES:
                     mOsmNotesOverlay.removeAllItems();
-                    for (OpenstreetmapNote bug : BugDatabase.getInstance().getOpenstreetmapNotes()) {
+                    for (OsmNote bug : BugDatabase.getInstance().getOpenstreetmapNotes()) {
                         mOsmNotesOverlay.addItem(new BugOverlayItem(bug));
                     }
                     break;
@@ -437,7 +424,7 @@ public class BugMapFragment extends Fragment {
         }
     };
 
-    private LocationListener mLocationListener = new LocationListener() {
+    private final LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             /* Store the location for later use */

@@ -1,6 +1,6 @@
 package org.gittner.osmbugs.parser;
 
-import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.common.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -17,8 +17,8 @@ import javax.xml.parsers.ParserConfigurationException;
 /* Parser for Openstreetmap Notes bug lists retrieved from notes */
 public class OpenstreetmapNotesParser {
 
-    public static ArrayList<OpenstreetmapNote> parse(InputStream stream) {
-        ArrayList<OpenstreetmapNote> bugs = new ArrayList<OpenstreetmapNote>();
+    public static ArrayList<OsmNote> parse(InputStream stream) {
+        ArrayList<OsmNote> bugs = new ArrayList<>();
 
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
@@ -33,14 +33,14 @@ public class OpenstreetmapNotesParser {
                 double lat = Double.parseDouble(wpt.getAttribute("lat"));
                 double lon = Double.parseDouble(wpt.getAttribute("lon"));
 
-                OpenstreetmapNote.STATE state = OpenstreetmapNote.STATE.CLOSED;
+                OsmNote.STATE state = OsmNote.STATE.CLOSED;
                 if (wpt.getElementsByTagName("status").item(0).getTextContent().equals("open"))
-                    state = OpenstreetmapNote.STATE.OPEN;
+                    state = OsmNote.STATE.OPEN;
 
                 long id = Long.parseLong(wpt.getElementsByTagName("id").item(0).getTextContent());
 
                 NodeList nListComments = wpt.getElementsByTagName("comment");
-                ArrayList<Comment> comments = new ArrayList<Comment>();
+                ArrayList<Comment> comments = new ArrayList<>();
                 for (int n = 0; n != nListComments.getLength(); ++n) {
                     Comment comment = new Comment();
 
@@ -60,14 +60,10 @@ public class OpenstreetmapNotesParser {
                     comments.remove(0);
                 }
 
-                bugs.add(new OpenstreetmapNote(lat, lon, id, text, comments, state));
+                bugs.add(new OsmNote(lat, lon, id, text, comments, state));
             }
 
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
 

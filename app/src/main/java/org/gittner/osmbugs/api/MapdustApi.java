@@ -23,12 +23,14 @@ import java.util.ArrayList;
 
 public class MapdustApi {
 
+    public static final String API_KEY = "ae58b0b4aa3f876265a4d5f29167b73c";
+
     public static ArrayList<MapdustBug> downloadBBox(BoundingBoxE6 bBox) {
         HttpClient client = new DefaultHttpClient();
 
-        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
+        ArrayList<NameValuePair> arguments = new ArrayList<>();
 
-        arguments.add(new BasicNameValuePair("key", getApiKey()));
+        arguments.add(new BasicNameValuePair("key", API_KEY));
         arguments.add(new BasicNameValuePair("bbox", String.valueOf(bBox.getLonEastE6() / 1000000.0) + ","
                 + String.valueOf(bBox.getLatSouthE6() / 1000000.0) + ","
                 + String.valueOf(bBox.getLonWestE6() / 1000000.0) + ","
@@ -54,8 +56,6 @@ public class MapdustApi {
 
             /* If Request was Successful, parse the Stream */
             return MapdustParser.parse(response.getEntity().getContent());
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,8 +68,8 @@ public class MapdustApi {
         DefaultHttpClient client = new DefaultHttpClient();
 
         /* Add all Arguments */
-        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-        arguments.add(new BasicNameValuePair("key", getApiKey()));
+        ArrayList<NameValuePair> arguments = new ArrayList<>();
+        arguments.add(new BasicNameValuePair("key", API_KEY));
         arguments.add(new BasicNameValuePair("id", String.valueOf(id)));
         arguments.add(new BasicNameValuePair("comment", comment));
         arguments.add(new BasicNameValuePair("nickname", nickname));
@@ -106,8 +106,8 @@ public class MapdustApi {
         DefaultHttpClient client = new DefaultHttpClient();
 
         /* Add all Arguments */
-        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
-        arguments.add(new BasicNameValuePair("key", getApiKey()));
+        ArrayList<NameValuePair> arguments = new ArrayList<>();
+        arguments.add(new BasicNameValuePair("key", API_KEY));
         arguments.add(new BasicNameValuePair("id", String.valueOf(id)));
 
         switch (state) {
@@ -157,37 +157,37 @@ public class MapdustApi {
         DefaultHttpClient client = new DefaultHttpClient();
 
         /* Add all Arguments */
-        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
+        ArrayList<NameValuePair> arguments = new ArrayList<>();
 
-        arguments.add(new BasicNameValuePair("key", getApiKey()));
+        arguments.add(new BasicNameValuePair("key", API_KEY));
         arguments.add(new BasicNameValuePair("coordinates", String.valueOf(position.getLongitudeE6() / 1000000.0) + "," + String.valueOf(position.getLatitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("description", description));
         switch (type) {
-            case MapdustBug.WRONGTURN:
+            case MapdustBug.WRONG_TURN:
                 arguments.add(new BasicNameValuePair("type", "wrong_turn"));
                 break;
 
-            case MapdustBug.BADROUTING:
+            case MapdustBug.BAD_ROUTING:
                 arguments.add(new BasicNameValuePair("type", "bad_routing"));
                 break;
 
-            case MapdustBug.ONEWAYROAD:
+            case MapdustBug.ONEWAY_ROAD:
                 arguments.add(new BasicNameValuePair("type", "oneway_road"));
                 break;
 
-            case MapdustBug.BLOCKEDSTREET:
+            case MapdustBug.BLOCKED_STREET:
                 arguments.add(new BasicNameValuePair("type", "blocked_street"));
                 break;
 
-            case MapdustBug.MISSINGSTREET:
+            case MapdustBug.MISSING_STREET:
                 arguments.add(new BasicNameValuePair("type", "missing_street"));
                 break;
 
-            case MapdustBug.ROUNDABOUTISSUE:
+            case MapdustBug.ROUNDABOUT_ISSUE:
                 arguments.add(new BasicNameValuePair("type", "wrong_roundabout"));
                 break;
 
-            case MapdustBug.MISSINGSPEEDINFO:
+            case MapdustBug.MISSING_SPEED_INFO:
                 arguments.add(new BasicNameValuePair("type", "missing_speedlimit"));
                 break;
 
@@ -227,13 +227,13 @@ public class MapdustApi {
 
     public static ArrayList<Comment> retrieveComments(long id)
     {
-        ArrayList<Comment> comments = new ArrayList<Comment>();
+        ArrayList<Comment> comments = new ArrayList<>();
 
         HttpClient client = new DefaultHttpClient();
 
-        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
+        ArrayList<NameValuePair> arguments = new ArrayList<>();
 
-        arguments.add(new BasicNameValuePair("key", getApiKey()));
+        arguments.add(new BasicNameValuePair("key", API_KEY));
         arguments.add(new BasicNameValuePair("id", String.valueOf(id)));
 
         HttpGet request;
@@ -254,8 +254,6 @@ public class MapdustApi {
             /* If Request was Successful, parse the Stream */
             comments.addAll(MapdustParser.parseSingleBugForComments(response.getEntity().getContent()));
 
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -268,7 +266,7 @@ public class MapdustApi {
 
         if (Settings.Mapdust.isWrongTurnEnabled())
             result += "wrong_turn,";
-        if (Settings.Mapdust.isBadRoutingenabled())
+        if (Settings.Mapdust.isBadRoutingEnabled())
             result += "bad_routing,";
         if (Settings.Mapdust.isOnewayRoadEnabled())
             result += "oneway_road,";
@@ -303,9 +301,5 @@ public class MapdustApi {
             result = result.substring(0, result.length() - 1);
 
         return result;
-    }
-
-    private static String getApiKey() {
-        return "ae58b0b4aa3f876265a4d5f29167b73c";
     }
 }

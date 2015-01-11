@@ -4,11 +4,11 @@ import android.os.AsyncTask;
 
 import org.gittner.osmbugs.api.KeeprightApi;
 import org.gittner.osmbugs.api.MapdustApi;
-import org.gittner.osmbugs.api.OpenstreetmapNotesApi;
+import org.gittner.osmbugs.api.OsmNotesApi;
 import org.gittner.osmbugs.api.OsmoseApi;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
-import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.osmdroid.util.BoundingBoxE6;
 
@@ -46,7 +46,7 @@ public class BugDatabase {
         return mMapdustBugs;
     }
 
-    public ArrayList<OpenstreetmapNote> getOpenstreetmapNotes() {
+    public ArrayList<OsmNote> getOpenstreetmapNotes() {
         return mOsmNotes;
     }
 
@@ -132,17 +132,17 @@ public class BugDatabase {
                 break;
 
             case Globals.OSM_NOTES:
-                new AsyncTask<BoundingBoxE6, Void, ArrayList<OpenstreetmapNote>>() {
+                new AsyncTask<BoundingBoxE6, Void, ArrayList<OsmNote>>() {
                     @Override
-                    protected ArrayList<OpenstreetmapNote> doInBackground(BoundingBoxE6... bBoxes) {
-                        return OpenstreetmapNotesApi.downloadBBox(
+                    protected ArrayList<OsmNote> doInBackground(BoundingBoxE6... bBoxes) {
+                        return OsmNotesApi.downloadBBox(
                                 bBoxes[0],
                                 Settings.OpenstreetmapNotes.getBugLimit(),
                                 !Settings.OpenstreetmapNotes.isShowOnlyOpenEnabled());
                     }
 
                     @Override
-                    protected void onPostExecute(ArrayList<OpenstreetmapNote> osmNotes) {
+                    protected void onPostExecute(ArrayList<OsmNote> osmNotes) {
                         listener.onCompletion();
 
                         if(osmNotes != null) {
@@ -176,20 +176,20 @@ public class BugDatabase {
     }
 
     /* The Singletons Instance */
-    private static BugDatabase mInstance = new BugDatabase();
+    private static final BugDatabase mInstance = new BugDatabase();
 
     /* Holds all Keepright Bugs */
-    private ArrayList<KeeprightBug> mKeeprightBugs = new ArrayList<>();
+    private final ArrayList<KeeprightBug> mKeeprightBugs = new ArrayList<>();
 
     /* Holds all Osmose Bugs */
-    private ArrayList<OsmoseBug> mOsmoseBugs = new ArrayList<>();
+    private final ArrayList<OsmoseBug> mOsmoseBugs = new ArrayList<>();
 
     /* Holds all Mapdust Bugs */
-    private ArrayList<MapdustBug> mMapdustBugs = new ArrayList<>();
+    private final ArrayList<MapdustBug> mMapdustBugs = new ArrayList<>();
 
     /* Holds all Openstreetmap Notes */
-    private ArrayList<OpenstreetmapNote> mOsmNotes = new ArrayList<>();
+    private final ArrayList<OsmNote> mOsmNotes = new ArrayList<>();
 
     /* All Registered Database Watchers */
-    private ArrayList<DatabaseWatcher> mDatabaseWatchers = new ArrayList<>();
+    private final ArrayList<DatabaseWatcher> mDatabaseWatchers = new ArrayList<>();
 }

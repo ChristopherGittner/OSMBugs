@@ -6,9 +6,9 @@ import org.osmdroid.views.overlay.OverlayItem;
 
 public class BugOverlayItem extends OverlayItem {
 
-    final Bug mBug;
+    private final Bug mBug;
 
-    private Drawable mDrawable;
+    private final Drawable mDrawable;
 
     public BugOverlayItem(final Bug bug) {
         super("", "", bug.getPoint());

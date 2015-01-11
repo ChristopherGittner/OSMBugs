@@ -8,13 +8,13 @@ import org.osmdroid.util.GeoPoint;
 
 public abstract class Bug implements Parcelable {
 
-    private GeoPoint mPoint;
+    private final GeoPoint mPoint;
 
-    protected Bug(GeoPoint point) {
+    Bug(GeoPoint point) {
         mPoint = point;
     }
 
-    protected Bug(Parcel parcel) {
+    Bug(Parcel parcel) {
         mPoint = new GeoPoint(parcel.readInt(), parcel.readInt());
     }
 

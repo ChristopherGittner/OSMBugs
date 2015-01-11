@@ -1,8 +1,9 @@
 package org.gittner.osmbugs.api;
 
+import android.util.Log;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -39,7 +40,15 @@ public class OsmoseApi {
             arguments.add(new BasicNameValuePair("status", "false"));
         }
 
-        HttpGet request = new HttpGet("http://osmose.openstreetmap.fr/en/api/0.2/errors?" + URLEncodedUtils.format(arguments, "utf-8"));
+        String api;
+        if(Settings.isLanguageGerman()) {
+            api = "http://osmose.openstreetmap.fr/de/api/0.2/errors?";
+        }
+        else
+        {
+            api = "http://osmose.openstreetmap.fr/en/api/0.2/errors?";
+        }
+        HttpGet request = new HttpGet(api + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute Query */
@@ -51,8 +60,6 @@ public class OsmoseApi {
 
             /* If Request was Successful, parse the Stream */
             return OsmoseParser.parse(response.getEntity().getContent());
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

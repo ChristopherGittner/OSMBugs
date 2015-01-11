@@ -21,7 +21,7 @@ public class KeeprightApi {
     public static ArrayList<KeeprightBug> downloadBBox(BoundingBoxE6 bBox, boolean showIgnored, boolean showTempIgnored, boolean langGerman) {
         HttpClient client = new DefaultHttpClient();
 
-        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
+        ArrayList<NameValuePair> arguments = new ArrayList<>();
 
         if (showIgnored)
             arguments.add(new BasicNameValuePair("show_ign", "1"));
@@ -52,8 +52,6 @@ public class KeeprightApi {
 
             /* If Request was Successful, parse the Stream */
             return KeeprightParser.parse(response.getEntity().getContent());
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,11 +59,11 @@ public class KeeprightApi {
         return null;
     }
 
-    public static boolean comment(int shema, int id, String comment, KeeprightBug.STATE state)
+    public static boolean comment(int schema, int id, String comment, KeeprightBug.STATE state)
     {
         HttpClient client = new DefaultHttpClient();
 
-        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
+        ArrayList<NameValuePair> arguments = new ArrayList<>();
         arguments.add(new BasicNameValuePair("co", comment));
 
         switch (state) {
@@ -82,7 +80,7 @@ public class KeeprightApi {
                 break;
         }
 
-        arguments.add(new BasicNameValuePair("schema", String.valueOf(shema)));
+        arguments.add(new BasicNameValuePair("schema", String.valueOf(schema)));
         arguments.add(new BasicNameValuePair("id", String.valueOf(id)));
 
         HttpGet request = new HttpGet("http://keepright.at/comment.php?" + URLEncodedUtils.format(arguments, "utf-8"));

@@ -15,8 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.api.OpenstreetmapNotesApi;
-import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.api.OsmNotesApi;
+import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.common.IndeterminateProgressAsyncTask;
 import org.gittner.osmbugs.statics.Globals;
@@ -28,11 +28,11 @@ import static android.view.View.VISIBLE;
 
 public class OsmNoteEditFragment extends BugEditFragment {
 
-    private static String EXTRA_BUG = "EXTRA_BUG";
+    private static final String EXTRA_BUG = "EXTRA_BUG";
 
-    private OpenstreetmapNote mBug;
+    private OsmNote mBug;
 
-    public static OsmNoteEditFragment newInstance(OpenstreetmapNote bug)
+    public static OsmNoteEditFragment newInstance(OsmNote bug)
     {
         OsmNoteEditFragment instance = new OsmNoteEditFragment();
 
@@ -63,7 +63,7 @@ public class OsmNoteEditFragment extends BugEditFragment {
 
 
         ImageButton imgvAddComment = (ImageButton) v.findViewById(R.id.imgbtnAddComment);
-        if (mBug.getState() == OpenstreetmapNote.STATE.CLOSED) {
+        if (mBug.getState() == OsmNote.STATE.CLOSED) {
             imgvAddComment.setVisibility(GONE);
         }
         else {
@@ -71,7 +71,7 @@ public class OsmNoteEditFragment extends BugEditFragment {
         }
 
         ImageButton mBtnResolve = (ImageButton) v.findViewById(R.id.btnResolveBug);
-        if (mBug.getState() == OpenstreetmapNote.STATE.CLOSED) {
+        if (mBug.getState() == OsmNote.STATE.CLOSED) {
             mBtnResolve.setVisibility(GONE);
         }
         else {
@@ -81,7 +81,7 @@ public class OsmNoteEditFragment extends BugEditFragment {
         return v;
     }
 
-    private OnClickListener mAddCommentOnClickListener = new OnClickListener() {
+    private final OnClickListener mAddCommentOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             final EditText edtxtNewComment = new EditText(getActivity());
@@ -103,7 +103,7 @@ public class OsmNoteEditFragment extends BugEditFragment {
                                     R.string.saving) {
                                 @Override
                                 protected Boolean doInBackground(Void... params) {
-                                    return OpenstreetmapNotesApi.addComment(
+                                    return OsmNotesApi.addComment(
                                             mBug.getId(),
                                             Settings.OpenstreetmapNotes.getUsername(),
                                             Settings.OpenstreetmapNotes.getPassword(),
@@ -133,7 +133,7 @@ public class OsmNoteEditFragment extends BugEditFragment {
         }
     };
 
-    private OnClickListener mBtnResolveOnClickListener = new OnClickListener() {
+    private final OnClickListener mBtnResolveOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -165,7 +165,7 @@ public class OsmNoteEditFragment extends BugEditFragment {
                                     R.string.saving) {
                                 @Override
                                 protected Boolean doInBackground (Void...params){
-                                    return OpenstreetmapNotesApi.closeBug(
+                                    return OsmNotesApi.closeBug(
                                             mBug.getId(),
                                             Settings.OpenstreetmapNotes.getUsername(),
                                             Settings.OpenstreetmapNotes.getPassword(),

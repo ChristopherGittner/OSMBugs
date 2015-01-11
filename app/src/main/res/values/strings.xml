@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">OSMBugs</string>
     <string name="action_settings">Settings</string>
@@ -16,8 +16,6 @@
     <string name="visible_bugs">Visible Bugs</string>
     <string name="visible_warnings">Visible Warnings</string>
     <string name="ignored_errors">Ignore Errors</string>
-    <string name="center_on_gps_enabled">Center on GPS Enabled</string>
-    <string name="center_on_gps_disabled">Center on GPS Disabled</string>
     <string name="ok">OK</string>
     <string name="saved_bug">Saved Bug</string>
     <string name="failed_to_save_bug">Failed to save Bug</string>
@@ -85,11 +83,6 @@
     <string name="bug_symbol">Bug Symbol</string>
     <string name="specific">Specific</string>
     <string name="general">General</string>
-    <string name="about">About</string>
-    <string name="dialog_about_text">OSMBugs V0.7.0 - Beta\nThis App uses Data from:\n\nThe
-        Openstreetmap
-        Project:\nhttp://www.openstreetmap.org\n\nKeepright:\nhttp://www.keepright.at\n\nMapdust:\nhttp://www.mapdust.com\n\nAsher
-        (Bug Icon):\nhttp://kyo-tux.deviantart.com</string>
     <string name="openstreetmap_notes">Openstreetmap Notes</string>
     <string name="edit">Edit</string>
     <string name="comments">Comments</string>
@@ -126,8 +119,6 @@
     <string name="reset">Reset</string>
     <string name="new_comment">New Comment</string>
     <string name="add_bug">Add Bug</string>
-    <string name="bug_creation_mode_enabled">Bug creation Mode enabled</string>
-    <string name="bug_creation_mode_disabled">Bug creation Mode disabled</string>
     <string name="software_bug">Software Bug</string>
     <string name="load_all_comments">Load all Comments</string>
     <string name="loading_bug_please_wait">Loading Bug.\nPleas Wait</string>
@@ -138,131 +129,7 @@
     <string name="title_activity_add_openstreetmap_note">Add Openstreetmap Note</string>
     <string name="title_activity_bug_list">Bug List</string>
     <string name="list">List</string>
-
     <string name="osmose">Osmose</string>
-    <string name="osmose_item_0">overlapping building</string>
-    <string name="osmose_item_1010">duplicated node</string>
-    <string name="osmose_item_1040">invalid polygon</string>
-    <string name="osmose_item_1050">reverse roundabout</string>
-    <string name="osmose_item_1060">boundary intersect</string>
-    <string name="osmose_item_1070">objects overlap</string>
-    <string name="osmose_item_1080">orphan nodes</string>
-    <string name="osmose_item_1090">sudden highway type change</string>
-    <string name="osmose_item_1100">unclosed area</string>
-    <string name="osmose_item_1110">bad *_link highway</string>
-    <string name="osmose_item_1120">broken highway continuity</string>
-    <string name="osmose_item_1140">missing tag or role</string>
-    <string name="osmose_item_1150">surface intersection</string>
-    <string name="osmose_item_1160">big relation</string>
-    <string name="osmose_item_1170">multipolygon</string>
-    <string name="osmose_item_1180">double cycleway</string>
-    <string name="osmose_item_1190">approximate way</string>
-    <string name="osmose_item_1200">1-member relation</string>
-    <string name="osmose_item_1210">not-connected highway/cycleway</string>
-    <string name="osmose_item_1220">waterway</string>
-    <string name="osmose_item_1230">duplicate geometry</string>
-    <string name="osmose_item_1240">one-node way</string>
-    <string name="osmose_item_2010">junction=roundabout</string>
-    <string name="osmose_item_2020">elevation</string>
-    <string name="osmose_item_2030">oneway</string>
-    <string name="osmose_item_2040">source</string>
-    <string name="osmose_item_2060">street numbers</string>
-    <string name="osmose_item_2080">highway</string>
-    <string name="osmose_item_2090">highway crossing</string>
-    <string name="osmose_item_2100">pharmacy</string>
-    <string name="osmose_item_2110"></string>
-    <string name="osmose_item_3010">highway roundabout</string>
-    <string name="osmose_item_3020">bad source tag</string>
-    <string name="osmose_item_3030">tagwatch cleaner</string>
-    <string name="osmose_item_3031">wikipedia</string>
-    <string name="osmose_item_3032">multiple tags</string>
-    <string name="osmose_item_3033">saint hyphen</string>
-    <string name="osmose_item_3040">incorrect tag</string>
-    <string name="osmose_item_3050">bad tag key</string>
-    <string name="osmose_item_3060">similar values</string>
-    <string name="osmose_item_3070">multiple values</string>
-    <string name="osmose_item_3080">swimming pool as natural=water</string>
-    <string name="osmose_item_3090">date</string>
-    <string name="osmose_item_3091">numeric value</string>
-    <string name="osmose_item_3100">small farm</string>
-    <string name="osmose_item_3110">note</string>
-    <string name="osmose_item_3120">tree</string>
-    <string name="osmose_item_3150">typo in tag</string>
-    <string name="osmose_item_3160">incorrect "lanes"</string>
-    <string name="osmose_item_3161">parking lane</string>
-    <string name="osmose_item_3170">relation role</string>
-    <string name="osmose_item_3180">relation type=restriction</string>
-    <string name="osmose_item_3190">postcode</string>
-    <string name="osmose_item_3200">area</string>
-    <string name="osmose_item_3210">noexit</string>
-    <string name="osmose_item_4010">disused</string>
-    <string name="osmose_item_4020">on junction=roundabout</string>
-    <string name="osmose_item_4030">incompatible tags</string>
-    <string name="osmose_item_4040">ref in name</string>
-    <string name="osmose_item_4060">seamark:fixme</string>
-    <string name="osmose_item_4070">construction</string>
-    <string name="osmose_item_4080">duplicate object</string>
-    <string name="osmose_item_4090">unwanted tag on node</string>
-    <string name="osmose_item_4100">bad usage</string>
-    <string name="osmose_item_4110">incorrect layer</string>
-    <string name="osmose_item_5010">orthograph</string>
-    <string name="osmose_item_5020">way type</string>
-    <string name="osmose_item_5030">two names</string>
-    <string name="osmose_item_5040">toponymy</string>
-    <string name="osmose_item_5050">test soundex</string>
-    <string name="osmose_item_6010">open polygon</string>
-    <string name="osmose_item_6020">duplicated way</string>
-    <string name="osmose_item_6030">place without name</string>
-    <string name="osmose_item_6040">INSEE code</string>
-    <string name="osmose_item_6060">erroneous boundary</string>
-    <string name="osmose_item_6070">out of boundary</string>
-    <string name="osmose_item_7010">geodesic building</string>
-    <string name="osmose_item_7011">building shape</string>
-    <string name="osmose_item_7012">bridge to tag</string>
-    <string name="osmose_item_7020">admin boundary</string>
-    <string name="osmose_item_7040">power lines</string>
-    <string name="osmose_item_7050">post office</string>
-    <string name="osmose_item_7060">ODbL migration change</string>
-    <string name="osmose_item_7070">school, not integrated</string>
-    <string name="osmose_item_7080">monument</string>
-    <string name="osmose_item_7090">node on ways</string>
-    <string name="osmose_item_7100">train station</string>
-    <string name="osmose_item_7110">TMC</string>
-    <string name="osmose_item_7120">relation type=boundary</string>
-    <string name="osmose_item_7130">tunnel/bridge</string>
-    <string name="osmose_item_7140">transport sharing, not integrated</string>
-    <string name="osmose_item_7150">pharmacy, not integrated</string>
-    <string name="osmose_item_7160"></string>
-    <string name="osmose_item_8010">monument, museum</string>
-    <string name="osmose_item_8011">monument, museum, could be integrated</string>
-    <string name="osmose_item_8020">post office</string>
-    <string name="osmose_item_8021">post office, could be integrated</string>
-    <string name="osmose_item_8030">school</string>
-    <string name="osmose_item_8031">school, could be integrated</string>
-    <string name="osmose_item_8040">public transport</string>
-    <string name="osmose_item_8041">public transport, could be integrated</string>
-    <string name="osmose_item_8050">train station</string>
-    <string name="osmose_item_8051">train station, could be integrated</string>
-    <string name="osmose_item_8060">level crossing</string>
-    <string name="osmose_item_8070">geodesic point</string>
-    <string name="osmose_item_8080">postal address</string>
-    <string name="osmose_item_8101">wikipedia, could be integrated</string>
-    <string name="osmose_item_8110">public service</string>
-    <string name="osmose_item_8120">recycling</string>
-    <string name="osmose_item_8121">recycling, could be integrated</string>
-    <string name="osmose_item_8130">parking</string>
-    <string name="osmose_item_8131">parking, could be integrated</string>
-    <string name="osmose_item_8140">accommodation</string>
-    <string name="osmose_item_8150">cycle parking</string>
-    <string name="osmose_item_8160">transport sharing</string>
-    <string name="osmose_item_8161">transport sharing, could be integrated</string>
-    <string name="osmose_item_8170">sport</string>
-    <string name="osmose_item_8180">toilets</string>
-    <string name="osmose_item_8190">police</string>
-    <string name="osmose_item_8200">gas station</string>
-    <string name="osmose_item_8210">pharmacy</string>
-    <string name="osmose_item_8211">pharmacy, could be integrated</string>
-    <string name="osmose_item_8221"></string>
     <string name="structure">Structure</string>
     <string name="bad_tag">Bad Tag</string>
     <string name="tags_to_remove">Tags to remove</string>
@@ -279,13 +146,13 @@
     <string name="notification_mapdust_no_username">No Username provided.\nSettings -> Mapdust Notes -> Username</string>
     <string name="saving">Saving</string>
     <string name="do_comment">Comment</string>
-    <string name="loading_comments">Loading Comments...</string>
+    <string name="loading_comments">Loading Comments…</string>
     <string-array name="osmose_status_types">
         <item>@string/open</item>
         <item>@string/closed</item>
         <item>@string/false_positive</item>
     </string-array>
-    <string-array name="osmose_status_values">
+    <string-array name="osmose_status_values" tools:ignore="MissingTranslation">
         <item>0</item>
         <item>1</item>
         <item>2</item>
