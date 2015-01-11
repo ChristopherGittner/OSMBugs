@@ -95,7 +95,7 @@
     <string name="comments">Comments</string>
     <string name="open">Open</string>
     <string name="closed">Closed</string>
-    <string name="ignored">ignored</string>
+    <string name="ignored">Ignored</string>
     <string name="password">Password</string>
     <string name="highway_highway">highway-highway</string>
     <string name="highway_waterway">highway-waterway</string>
@@ -272,6 +272,14 @@
     <string name="integration">Integration</string>
     <string name="bugs_to_display">Bugs to display</string>
     <string name="false_positive">False Positive</string>
+    <string name="enter_comment">Enter Comment</string>
+    <string name="resolve">Resolve</string>
+    <string name="notification_osm_notes_no_username">No Username provided.\nSettings -> Openstreetmap Notes -> Username</string>
+    <string name="notification_osm_notes_no_password">No Password provided.\nSettings -> Openstreetmap Notes -> Password</string>
+    <string name="notification_mapdust_no_username">No Username provided.\nSettings -> Mapdust Notes -> Username</string>
+    <string name="saving">Saving</string>
+    <string name="do_comment">Comment</string>
+    <string name="loading_comments">Loading Comments...</string>
     <string-array name="osmose_status_types">
         <item>@string/open</item>
         <item>@string/closed</item>

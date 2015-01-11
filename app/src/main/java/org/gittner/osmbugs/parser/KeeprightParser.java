@@ -1,7 +1,6 @@
 package org.gittner.osmbugs.parser;
 
 import org.gittner.osmbugs.bugs.KeeprightBug;
-import org.gittner.osmbugs.common.Comment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -73,13 +72,14 @@ public class KeeprightParser {
                     String text = token.nextToken();
                     token.nextToken();
 
-                    ArrayList<Comment> comments = new ArrayList<Comment>();
                     /* Comment or \t if no comment available */
-                    String sComment = token.nextToken();
-                    if (!sComment.equals("\t")) {
-                        /* Only skip one Token if the Comment wasn't empty */
+                    String comment = token.nextToken();
+                    if (!comment.equals("\t")) {
                         token.nextToken();
-                        comments.add(new Comment(sComment));
+                    }
+                    else
+                    {
+                        comment = "";
                     }
 
                     /*
@@ -98,7 +98,7 @@ public class KeeprightParser {
                         state = KeeprightBug.STATE.OPEN;
 
                     /* Finally add our Bug to the results */
-                    bugs.add(new KeeprightBug(lat, lon, title, text, type, comments, way, schema, id, state));
+                    bugs.add(new KeeprightBug(lat, lon, id, schema, type, state, title, text, comment, way));
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }

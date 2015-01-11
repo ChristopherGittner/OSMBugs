@@ -65,7 +65,7 @@ public class MapdustParser {
                     comments.add(new Comment(comment.getString("comment")));
                 }
 
-                String text = property.getString("description");
+                String description = property.getString("description");
 
                 String type_const = property.getString("type");
 
@@ -87,7 +87,7 @@ public class MapdustParser {
                 else
                     typeInt = MapdustBug.OTHER;
 
-                bugs.add(new MapdustBug(lat, lon, "Mapdust Bug", text, comments, typeInt, id, state));
+                bugs.add(new MapdustBug(lat, lon, id, typeInt, description, comments, state));
             }
 
         } catch (IOException e) {

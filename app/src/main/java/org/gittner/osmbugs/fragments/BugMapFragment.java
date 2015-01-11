@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
+import org.gittner.osmbugs.bugs.BugOverlayItem;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OpenstreetmapNote;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
 
 public class BugMapFragment extends Fragment {
 
-    private static final String ZOOM_LEVEL = "ZOOMLEVEL";
+    private static final String ZOOM_LEVEL = "ZOOM_LEVEL";
     private static final String CENTER_LAT = "CENTER_LAT";
     private static final String CENTER_LON = "CENTER_LON";
 
@@ -82,25 +83,25 @@ public class BugMapFragment extends Fragment {
 
         /* Create Bug Overlays */
         mKeeprightOverlay = new ItemizedIconOverlay<>(
-                new ArrayList<KeeprightBug>(),
+                new ArrayList<BugOverlayItem>(),
                 Drawings.KeeprightDrawable30,
                 mKeeprightGestureListener,
                 new DefaultResourceProxyImpl(getActivity()));
 
         mOsmoseOverlay = new ItemizedIconOverlay<>(
-                new ArrayList<OsmoseBug>(),
+                new ArrayList<BugOverlayItem>(),
                 Drawings.OsmoseMarkerB0,
                 mOsmoseGestureListener,
                 new DefaultResourceProxyImpl(getActivity()));
 
         mMapdustOverlay = new ItemizedIconOverlay<>(
-                new ArrayList<MapdustBug>(),
+                new ArrayList<BugOverlayItem>(),
                 Drawings.MapdustOther,
                 mMapdustGestureListener,
                 new DefaultResourceProxyImpl(getActivity()));
 
         mOsmNotesOverlay = new ItemizedIconOverlay<>(
-                new ArrayList<OpenstreetmapNote>(),
+                new ArrayList<BugOverlayItem>(),
                 Drawings.OpenstreetmapNotesOpen,
                 mOsmNotesGestureListener,
                 new DefaultResourceProxyImpl(getActivity()));
@@ -181,16 +182,16 @@ public class BugMapFragment extends Fragment {
 
         /* Add all Bugs to the Map */
         for (KeeprightBug bug : BugDatabase.getInstance().getKeeprightBugs()) {
-            mKeeprightOverlay.addItem(bug);
+            mKeeprightOverlay.addItem(new BugOverlayItem(bug));
         }
         for (OsmoseBug bug : BugDatabase.getInstance().getOsmoseBugs()) {
-            mOsmoseOverlay.addItem(bug);
+            mOsmoseOverlay.addItem(new BugOverlayItem(bug));
         }
         for (MapdustBug bug : BugDatabase.getInstance().getMapdustBugs()) {
-            mMapdustOverlay.addItem(bug);
+            mMapdustOverlay.addItem(new BugOverlayItem(bug));
         }
         for (OpenstreetmapNote bug : BugDatabase.getInstance().getOpenstreetmapNotes()) {
-            mOsmNotesOverlay.addItem(bug);
+            mOsmNotesOverlay.addItem(new BugOverlayItem(bug));
         }
 
         return v;
@@ -216,7 +217,7 @@ public class BugMapFragment extends Fragment {
         /* Register a DatabaseWatcher for update notification */
         BugDatabase.getInstance().addDatabaseWatcher(mDatabaseWatcher);
 
-                /* Display or hide Bug platforms */
+        /* Display or hide Bug platforms */
         mKeeprightOverlay.setEnabled(Settings.Keepright.isEnabled());
         mOsmoseOverlay.setEnabled(Settings.Osmose.isEnabled());
         mMapdustOverlay.setEnabled(Settings.Mapdust.isEnabled());
@@ -345,54 +346,54 @@ public class BugMapFragment extends Fragment {
         public void onAddNewBug(GeoPoint point);
     }
 
-    private ItemizedIconOverlay.OnItemGestureListener<KeeprightBug> mKeeprightGestureListener = new ItemizedIconOverlay.OnItemGestureListener<KeeprightBug>() {
+    private ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mKeeprightGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
         @Override
-        public boolean onItemSingleTapUp(int position, KeeprightBug bug) {
-            mListener.onBugClicked(bug);
+        public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem) {
+            mListener.onBugClicked(bugItem.getBug());
             return false;
         }
 
         @Override
-        public boolean onItemLongPress(int i, KeeprightBug bug) {
-            return false;
-        }
-    };
-
-    private ItemizedIconOverlay.OnItemGestureListener<OsmoseBug> mOsmoseGestureListener = new ItemizedIconOverlay.OnItemGestureListener<OsmoseBug>() {
-        @Override
-        public boolean onItemSingleTapUp(int position, OsmoseBug bug) {
-            mListener.onBugClicked(bug);
-            return false;
-        }
-
-        @Override
-        public boolean onItemLongPress(int i, OsmoseBug bug) {
+        public boolean onItemLongPress(int i, BugOverlayItem bugItem) {
             return false;
         }
     };
 
-    private ItemizedIconOverlay.OnItemGestureListener<MapdustBug> mMapdustGestureListener = new ItemizedIconOverlay.OnItemGestureListener<MapdustBug>() {
+    private ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mOsmoseGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
         @Override
-        public boolean onItemSingleTapUp(int position, MapdustBug bug) {
-            mListener.onBugClicked(bug);
+        public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem) {
+            mListener.onBugClicked(bugItem.getBug());
             return false;
         }
 
         @Override
-        public boolean onItemLongPress(int i, MapdustBug bug) {
+        public boolean onItemLongPress(int i, BugOverlayItem bugItem) {
             return false;
         }
     };
 
-    private ItemizedIconOverlay.OnItemGestureListener<OpenstreetmapNote> mOsmNotesGestureListener = new ItemizedIconOverlay.OnItemGestureListener<OpenstreetmapNote>() {
+    private ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mMapdustGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
         @Override
-        public boolean onItemSingleTapUp(int position, OpenstreetmapNote bug) {
-            mListener.onBugClicked(bug);
+        public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem) {
+            mListener.onBugClicked(bugItem.getBug());
             return false;
         }
 
         @Override
-        public boolean onItemLongPress(int i, OpenstreetmapNote bug) {
+        public boolean onItemLongPress(int i, BugOverlayItem bugItem) {
+            return false;
+        }
+    };
+
+    private ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mOsmNotesGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
+        @Override
+        public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem) {
+            mListener.onBugClicked(bugItem.getBug());
+            return false;
+        }
+
+        @Override
+        public boolean onItemLongPress(int i, BugOverlayItem bugItem) {
             return false;
         }
     };
@@ -407,41 +408,31 @@ public class BugMapFragment extends Fragment {
                 case Globals.KEEPRIGHT:
                     mKeeprightOverlay.removeAllItems();
                     for (KeeprightBug bug : BugDatabase.getInstance().getKeeprightBugs()) {
-                        mKeeprightOverlay.addItem(bug);
+                        mKeeprightOverlay.addItem(new BugOverlayItem(bug));
                     }
                     break;
 
                 case Globals.OSMOSE:
                     mOsmoseOverlay.removeAllItems();
                     for (OsmoseBug bug : BugDatabase.getInstance().getOsmoseBugs()) {
-                        mOsmoseOverlay.addItem(bug);
+                        mOsmoseOverlay.addItem(new BugOverlayItem(bug));
                     }
                     break;
 
                 case Globals.MAPDUST:
                     mMapdustOverlay.removeAllItems();
                     for (MapdustBug bug : BugDatabase.getInstance().getMapdustBugs()) {
-                        mMapdustOverlay.addItem(bug);
+                        mMapdustOverlay.addItem(new BugOverlayItem(bug));
                     }
                     break;
 
-                case Globals.OPENSTREETMAPNOTES:
+                case Globals.OSM_NOTES:
                     mOsmNotesOverlay.removeAllItems();
                     for (OpenstreetmapNote bug : BugDatabase.getInstance().getOpenstreetmapNotes()) {
-                        mOsmNotesOverlay.addItem(bug);
+                        mOsmNotesOverlay.addItem(new BugOverlayItem(bug));
                     }
                     break;
             }
-            mMapView.invalidate();
-        }
-
-        @Override
-        public void onDatabaseCleared() {
-            mKeeprightOverlay.removeAllItems();
-            mOsmoseOverlay.removeAllItems();
-            mMapdustOverlay.removeAllItems();
-            mOsmNotesOverlay.removeAllItems();
-
             mMapView.invalidate();
         }
     };
@@ -476,11 +467,10 @@ public class BugMapFragment extends Fragment {
     private MapView mMapView = null;
 
     /* The Overlay for Bugs displayed on the map */
-    private ItemizedIconOverlay<Bug> mBugOverlay;
-    private ItemizedIconOverlay<KeeprightBug> mKeeprightOverlay;
-    private ItemizedIconOverlay<OsmoseBug> mOsmoseOverlay;
-    private ItemizedIconOverlay<MapdustBug> mMapdustOverlay;
-    private ItemizedIconOverlay<OpenstreetmapNote> mOsmNotesOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mKeeprightOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mOsmoseOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mMapdustOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mOsmNotesOverlay;
 
     /* The Location Marker Overlay */
     private MyLocationNewOverlay mLocationOverlay;

@@ -95,7 +95,7 @@
     <string name="comments">Kommentare</string>
     <string name="open">Offen</string>
     <string name="closed">Geschlossen</string>
-    <string name="ignored">ignoriert</string>
+    <string name="ignored">Ignoriert</string>
     <string name="password">Passwort</string>
     <string name="highway_highway">highway-highway</string>
     <string name="highway_waterway">highway-waterway</string>
@@ -272,5 +272,13 @@
     <string name="integration">Integration</string>
     <string name="bugs_to_display">Anzuzeigende Fehler</string>
     <string name="false_positive">Falschmeldung</string>
+    <string name="do_comment">Kommentieren</string>
+    <string name="enter_comment">Kommentar eingeben</string>
+    <string name="notification_osm_notes_no_password">Kein Password angegeben.\nEinstellungen -> Openstreetmap Notes -> Passwort</string>
+    <string name="notification_osm_notes_no_username">Kein Benutzername angegeben.\nEinstellungen -> Openstreetmap Notes -> Benutzername</string>
+    <string name="notification_mapdust_no_username">Kein Benutzername angegeben.\nEinstellungen -> Mapdust Notes -> Benutzername</string>
+    <string name="resolve">Auflösen</string>
+    <string name="saving">Speichern</string>
+    <string name="loading_comments">Kommentare laden...</string>
 
 </resources>

@@ -15,6 +15,7 @@ import org.gittner.osmbugs.bugs.OpenstreetmapNote;
 import org.gittner.osmbugs.parser.OpenstreetmapNotesParser;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.BoundingBoxE6;
+import org.osmdroid.util.GeoPoint;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class OpenstreetmapNotesApi {
     public static ArrayList<OpenstreetmapNote> downloadBBox(BoundingBoxE6 bBox, int limit, boolean showClosed) {
         HttpClient client = new DefaultHttpClient();
 
-        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
+        ArrayList<NameValuePair> arguments = new ArrayList<>();
 
         arguments.add(new BasicNameValuePair("bbox", String.valueOf(bBox.getLonWestE6() / 1000000.0) + ","
                 + String.valueOf(bBox.getLatSouthE6() / 1000000.0) + ","
@@ -74,7 +75,7 @@ public class OpenstreetmapNotesApi {
         }
 
         /* Add all Arguments */
-        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
+        ArrayList<NameValuePair> arguments = new ArrayList<>();
         arguments.add(new BasicNameValuePair("text", comment));
 
         HttpPost request;
@@ -113,7 +114,7 @@ public class OpenstreetmapNotesApi {
         }
 
         /* Add all Arguments */
-        ArrayList<NameValuePair> arguments = new ArrayList<NameValuePair>();
+        ArrayList<NameValuePair> arguments = new ArrayList<>();
         arguments.add(new BasicNameValuePair("text", comment));
 
         HttpPost request;
@@ -121,6 +122,51 @@ public class OpenstreetmapNotesApi {
             request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
         else
             request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
+
+        try {
+            /* Execute commit */
+            HttpResponse response = client.execute(request);
+
+            /* Check result for Success */
+            if (response.getStatusLine().getStatusCode() != 200)
+                return false;
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean addNew(GeoPoint position, String text) {
+
+        DefaultHttpClient client = new DefaultHttpClient();
+
+        /* Add the Authentication Details if we have a username in the Preferences */
+        if (!Settings.OpenstreetmapNotes.getUsername().equals("")) {
+            client.getCredentialsProvider().setCredentials(AuthScope.ANY,
+                    new UsernamePasswordCredentials(Settings.OpenstreetmapNotes.getUsername(),
+                            Settings.OpenstreetmapNotes.getPassword())
+            );
+        }
+
+        /* Add all Arguments */
+        ArrayList<NameValuePair> arguments = new ArrayList<>();
+        arguments.add(new BasicNameValuePair("lat",
+                String.valueOf(position.getLatitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("lon",
+                String.valueOf(position.getLongitudeE6() / 1000000.0)));
+        arguments.add(new BasicNameValuePair("text", text));
+
+        HttpPost request;
+
+        if (!Settings.isDebugEnabled())
+            request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
+        else
+            request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute commit */

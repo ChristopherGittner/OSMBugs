@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="8dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtvDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:text="@string/description"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_margin="8dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnResolveBug"
+            android:src="@drawable/close_osm_note"
+            android:layout_gravity="right"
+            android:background="@android:color/transparent"
+            android:layout_margin="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp" >
+
+        <TextView
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:id="@+id/txtvCommentsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/comments"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgbtnAddComment"
+            android:src="@drawable/ic_action_new"
+            android:layout_gravity="right"
+            android:background="@android:color/transparent" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lstvComments"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="8dp" />
+
+</LinearLayout>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="8dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_margin="8dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSave"
+            android:src="@drawable/ic_menu_save"
+            android:layout_gravity="right"
+            android:layout_margin="8dp"
+            android:background="@android:color/transparent"
+            android:adjustViewBounds="false" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtv1"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/description"
+        android:layout_margin="8dp" />
+
+    <TextView
+        android:id="@+id/txtvText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:text="@string/description"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_margin="8dp" />
+
+    <TextView
+        android:id="@+id/txtvState"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/state"
+        android:layout_margin="8dp" />
+
+    <Spinner
+        android:id="@+id/spnState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp" />
+
+    <TextView
+        android:id="@+id/txtvCommentTitle"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/comment"
+        android:layout_margin="8dp" />
+
+    <EditText
+        android:id="@+id/edttxtComment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="100dp"
+        android:minHeight="40dp"
+        android:scrollbars="vertical"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:hint="@string/comment"
+        android:inputType="textMultiLine"
+        android:layout_margin="8dp" />
+
+</LinearLayout>

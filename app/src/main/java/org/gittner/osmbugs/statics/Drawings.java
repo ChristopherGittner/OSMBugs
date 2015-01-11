@@ -8,6 +8,8 @@ import org.gittner.osmbugs.R;
 /* Static class to hold all Drawings */
 public class Drawings {
 
+    private static Context mContext;
+
     public static Drawable LocationMarker;
 
     public static Drawable icMenuCloseClearCancel;
@@ -452,6 +454,8 @@ public class Drawings {
 
     public static void init(Context context) {
 
+        mContext = context;
+
         LocationMarker = context.getResources().getDrawable(R.drawable.location);
         icMenuCloseClearCancel =
                 context.getResources().getDrawable(R.drawable.ic_menu_close_clear_cancel);
@@ -680,5 +684,17 @@ public class Drawings {
                 context.getResources().getDrawable(R.drawable.openstreetmap_notes_open_bug);
         OpenstreetmapNotesClosed =
                 context.getResources().getDrawable(R.drawable.openstreetmap_notes_closed_bug);
+    }
+
+    public static Drawable get(String name, Drawable defaultDrawable) {
+        int id = mContext.getResources().getIdentifier(name, "drawable", mContext.getPackageName());
+
+        try {
+            return mContext.getResources().getDrawable(id);
+        }
+        catch (android.content.res.Resources.NotFoundException e)
+        {
+            return defaultDrawable;
+        }
     }
 }

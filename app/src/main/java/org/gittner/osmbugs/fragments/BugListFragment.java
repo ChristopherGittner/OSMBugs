@@ -1,20 +1,25 @@
 package org.gittner.osmbugs.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
+import android.text.Layout;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OpenstreetmapNote;
@@ -32,8 +37,16 @@ public class BugListFragment extends Fragment {
 
     private BugExpandableListAdapter mAdapter;
 
+    private OnFragmentInteractionListener mListener;
+
     public static BugListFragment newInstance() {
         return new BugListFragment();
+    }
+
+    public interface OnFragmentInteractionListener {
+        public void onBugClicked(Bug bug);
+
+        public void onBugMiniMapClicked(Bug bug);
     }
 
     @Override
@@ -51,6 +64,18 @@ public class BugListFragment extends Fragment {
         mAdapter.addAllOsmNotes(BugDatabase.getInstance().getOpenstreetmapNotes());
 
         return v;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
@@ -249,41 +274,77 @@ public class BugListFragment extends Fragment {
             TextView txtvDescription = (TextView) v.findViewById(R.id.txtvDescription);
             ImageView imgvIcon = (ImageView) v.findViewById(R.id.imgvIcon);
             final MapView mapView = (MapView) v.findViewById(R.id.mapview);
+            View layoutInfo = v.findViewById(R.id.layoutInfo);
 
             if (groupPosition == 0) {
                 final KeeprightBug bug = mKeeprightBugs.get(childPosition);
 
                 txtvTitle.setText(bug.getTitle());
-                txtvDescription.setText(bug.getSnippet());
-                imgvIcon.setImageDrawable(bug.getMarker(0));
+                txtvDescription.setText(bug.getDescription());
+                imgvIcon.setImageDrawable(bug.getIcon());
+
                 //TODO: Remove as soon as this is fixed in osmdroid (4.3)
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
                         mapView.getController().setZoom(17);
                         mapView.getController().setCenter(bug.getPoint());
+                    }
+                });
+                mapView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN)
+                        {
+                            mListener.onBugMiniMapClicked(bug);
+                        }
+                        return true;
+                    }
+                });
+                layoutInfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onBugClicked(bug);
                     }
                 });
             } else if (groupPosition == 1) {
                 final OsmoseBug bug = mOsmoseBugs.get(childPosition);
 
                 txtvTitle.setText(bug.getTitle());
-                txtvDescription.setText(bug.getSnippet());
-                imgvIcon.setImageDrawable(bug.getMarker(0));
+                txtvDescription.setText(bug.getTitle());
+                imgvIcon.setImageDrawable(bug.getIcon());
+
                 //TODO: Remove as soon as this is fixed in osmdroid (4.3)
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
                         mapView.getController().setZoom(17);
                         mapView.getController().setCenter(bug.getPoint());
+                    }
+                });
+                mapView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN)
+                        {
+                            mListener.onBugMiniMapClicked(bug);
+                        }
+                        return true;
+                    }
+                });
+                layoutInfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onBugClicked(bug);
                     }
                 });
             } else if (groupPosition == 2) {
                 final MapdustBug bug = mMapdustBugs.get(childPosition);
 
-                txtvTitle.setText(bug.getTitle());
-                txtvDescription.setText(bug.getSnippet());
-                imgvIcon.setImageDrawable(bug.getMarker(0));
+                txtvTitle.setText("");
+                txtvDescription.setText(bug.getDescription());
+                imgvIcon.setImageDrawable(bug.getIcon());
+
                 //TODO: Remove as soon as this is fixed in osmdroid (4.3)
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
@@ -292,25 +353,57 @@ public class BugListFragment extends Fragment {
                         mapView.getController().setCenter(bug.getPoint());
                     }
                 });
+                mapView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN)
+                        {
+                            mListener.onBugMiniMapClicked(bug);
+                        }
+                        return true;
+                    }
+                });
+                layoutInfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onBugClicked(bug);
+                    }
+                });
             } else if (groupPosition == 3) {
                 final OpenstreetmapNote bug = mOsmNotes.get(childPosition);
 
-                txtvTitle.setText(bug.getTitle());
-                txtvDescription.setText(bug.getSnippet());
-                imgvIcon.setImageDrawable(bug.getMarker(0));
+                txtvTitle.setText("");
+                txtvDescription.setText(bug.getDescription());
+                imgvIcon.setImageDrawable(bug.getIcon());
+
                 //TODO: Remove as soon as this is fixed in osmdroid (4.3)
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
                         mapView.getController().setZoom(17);
                         mapView.getController().setCenter(bug.getPoint());
+                    }
+                });
+                mapView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN)
+                        {
+                            mListener.onBugMiniMapClicked(bug);
+                        }
+                        return true;
+                    }
+                });
+                layoutInfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onBugClicked(bug);
                     }
                 });
             }
 
             txtvTitle.setText(Html.fromHtml(txtvTitle.getText().toString()));
             txtvDescription.setText(Html.fromHtml(txtvDescription.getText().toString()));
-
 
             return v;
         }
@@ -342,17 +435,11 @@ public class BugListFragment extends Fragment {
                     mAdapter.addAllMapdustBugs(BugDatabase.getInstance().getMapdustBugs());
                     break;
 
-                case Globals.OPENSTREETMAPNOTES:
+                case Globals.OSM_NOTES:
                     mAdapter.clearOsmNotes();
                     mAdapter.addAllOsmNotes(BugDatabase.getInstance().getOpenstreetmapNotes());
                     break;
             }
-            mAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onDatabaseCleared() {
-            mAdapter.clear();
             mAdapter.notifyDataSetChanged();
         }
     };

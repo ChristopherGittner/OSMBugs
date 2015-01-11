@@ -6,84 +6,76 @@ import android.os.Parcel;
 
 import org.gittner.osmbugs.App;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Drawings;
 import org.osmdroid.util.GeoPoint;
 
-import java.util.ArrayList;
-
 public class OsmoseBug extends Bug {
+
+    private static final String PREF_TITLE_STRING = "osmose_item_";
+
+    public enum STATE {
+        OPEN,
+        CLOSED
+    }
+
+    public static final int[] STATE_NAMES = {
+            R.string.open,
+            R.string.closed };
+
+    private int mItem;
+
+    private long mId;
+
+    private String mTitle;
 
     public OsmoseBug(
             double lat,
             double lon,
             long id,
             int item,
-            String title) {
+            Context context) {
 
-        super(App.getContext().getString(
-                App.getContext().getResources().getIdentifier(
-                        "osmose_item_" + item,
-                        "string",
-                        App.getContext().getPackageName())),
-                "",
-                new ArrayList<Comment>(), new GeoPoint(lat, lon));
+        super(new GeoPoint(lat, lon));
 
-        setItem(item);
-        setId(id);
+        mId = id;
+        mItem = item;
+
+        try {
+            int titleId = context.getResources().getIdentifier(
+                    PREF_TITLE_STRING + mItem,
+                    "string",
+                    context.getPackageName());
+
+            mTitle = context.getString(titleId);
+        }
+        catch (android.content.res.Resources.NotFoundException e)
+        {
+            mTitle = "Item " + item + " not yet available. Please report this Message on OSMBugs Website. Thank You.";
+        }
     }
 
     public OsmoseBug(Parcel parcel) {
         super(parcel);
 
+        mId = parcel.readLong();
         mItem = parcel.readInt();
-        mId = parcel.readInt();
+        mTitle = parcel.readString();
     }
 
-    @Override
-    public ArrayList<String> getSStates() {
-        ArrayList<String> states = new ArrayList<>();
-
-        return states;
-    }
-
-    @Override
-    public boolean isCommitable(String newSState, String newComment) { return false; }
-
-    @Override
-    public boolean commit(String newSState, String newComment) {
-
-        return false;
-    }
-
-    /* Osmose Bugs can not be commented */
-    @Override
-    public boolean isCommentable() {
-        return false;
-    }
-
-    /* Get the Bugs Item */
-    public int getItem() {
-        return mItem;
-    }
-
-    /* Set the Bugs Item */
-    public void setItem(int schema) {
-        mItem = schema;
-    }
-
-    /* Get the Bugs Id */
     public long getId() {
         return mId;
     }
 
-    /* Set the Bugs Id */
-    public void setId(long id) {
-        mId = id;
+    public int getItem() {
+        return mItem;
     }
-    
+
+    public String getTitle() {
+        return mTitle;
+    }
+
     @Override
-    public Drawable getMarker(int bitset) {
+    public Drawable getIcon() {
         switch (mItem)
         {
             case 0: return Drawings.OsmoseMarkerB0;
@@ -216,8 +208,9 @@ public class OsmoseBug extends Bug {
     public void writeToParcel(Parcel parcel, int flags) {
         super.writeToParcel(parcel, flags);
 
-        parcel.writeInt(mItem);
         parcel.writeLong(mId);
+        parcel.writeInt(mItem);
+        parcel.writeString(mTitle);
     }
 
     @Override
@@ -237,10 +230,4 @@ public class OsmoseBug extends Bug {
             return new OsmoseBug[size];
         }
     };
-
-    /* Holds the Keepright Schema of this Bug */
-    private int mItem;
-
-    /* Holds the Keepright ID of this Bug */
-    private long mId;
 }

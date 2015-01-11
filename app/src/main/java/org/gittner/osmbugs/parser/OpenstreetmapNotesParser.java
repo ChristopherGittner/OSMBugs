@@ -60,7 +60,7 @@ public class OpenstreetmapNotesParser {
                     comments.remove(0);
                 }
 
-                bugs.add(new OpenstreetmapNote(lat, lon, text, comments, id, state));
+                bugs.add(new OpenstreetmapNote(lat, lon, id, text, comments, state));
             }
 
         } catch (ParserConfigurationException e) {

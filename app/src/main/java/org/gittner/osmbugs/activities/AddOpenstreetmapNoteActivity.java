@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.api.OpenstreetmapNotesApi;
 import org.osmdroid.util.GeoPoint;
 
 public class AddOpenstreetmapNoteActivity extends Activity {
@@ -111,7 +111,7 @@ public class AddOpenstreetmapNoteActivity extends Activity {
 
             @Override
             protected Boolean doInBackground(TaskParameter... parameters) {
-                return OpenstreetmapNote.addNew(parameters[0].geoPoint, parameters[0].description);
+                return OpenstreetmapNotesApi.addNew(parameters[0].geoPoint, parameters[0].description);
             }
 
             @Override

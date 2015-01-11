@@ -1,5 +1,7 @@
 package org.gittner.osmbugs.api;
 
+import android.util.Log;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -61,7 +63,7 @@ public class MapdustApi {
         return null;
     }
 
-    public static boolean commentBug(long id, String comment, String username)
+    public static boolean commentBug(long id, String comment, String nickname)
     {
         DefaultHttpClient client = new DefaultHttpClient();
 
@@ -70,13 +72,15 @@ public class MapdustApi {
         arguments.add(new BasicNameValuePair("key", getApiKey()));
         arguments.add(new BasicNameValuePair("id", String.valueOf(id)));
         arguments.add(new BasicNameValuePair("comment", comment));
-        arguments.add(new BasicNameValuePair("nickname", username));
+        arguments.add(new BasicNameValuePair("nickname", nickname));
 
         HttpPost request;
         if (Settings.isDebugEnabled())
             request = new HttpPost("http://st.www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
         else
             request = new HttpPost("http://www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
+
+        Log.d("", "http://st.www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
 
         try {
             /* Execute commit */
@@ -148,7 +152,7 @@ public class MapdustApi {
         return true;
     }
 
-    public static boolean addBug(GeoPoint position, String description, int type, String username)
+    public static boolean addBug(GeoPoint position, int type, String description)
     {
         DefaultHttpClient client = new DefaultHttpClient();
 
@@ -194,7 +198,7 @@ public class MapdustApi {
             default:
                 return false;
         }
-        arguments.add(new BasicNameValuePair("nickname", username));
+        arguments.add(new BasicNameValuePair("nickname", Settings.Mapdust.getUsername()));
 
         HttpPost request;
         if (Settings.isDebugEnabled())

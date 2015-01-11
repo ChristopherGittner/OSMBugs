@@ -1,8 +1,7 @@
 package org.gittner.osmbugs.parser;
 
-import org.gittner.osmbugs.bugs.MapdustBug;
+import org.gittner.osmbugs.App;
 import org.gittner.osmbugs.bugs.OsmoseBug;
-import org.gittner.osmbugs.common.Comment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 public class OsmoseParser {
 
@@ -36,9 +34,8 @@ public class OsmoseParser {
                 double lon = Double.valueOf(bug.getString(1));
                 long id = Long.valueOf(bug.getString(2));
                 int item = Integer.valueOf(bug.getString(3));
-                String title = bug.getString(9);
 
-                bugs.add(new OsmoseBug(lat, lon, id, item, title));
+                bugs.add(new OsmoseBug(lat, lon, id, item, App.getContext()));
             }
 
         } catch (IOException e) {

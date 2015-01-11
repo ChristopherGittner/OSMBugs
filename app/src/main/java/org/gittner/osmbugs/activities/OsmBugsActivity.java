@@ -17,28 +17,38 @@ import android.widget.Spinner;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
+import org.gittner.osmbugs.bugs.KeeprightBug;
+import org.gittner.osmbugs.bugs.MapdustBug;
+import org.gittner.osmbugs.bugs.OpenstreetmapNote;
+import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.fragments.BugListFragment;
 import org.gittner.osmbugs.fragments.BugMapFragment;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Drawings;
+import org.gittner.osmbugs.statics.Globals;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
 
 public class OsmBugsActivity extends Activity implements
-        BugMapFragment.OnFragmentInteractionListener {
+        BugMapFragment.OnFragmentInteractionListener,
+        BugListFragment.OnFragmentInteractionListener {
 
     /* Request Codes for activities */
-    public static final int REQUESTCODEBUGEDITORACTIVITY = 1;
-    public static final int REQUESTCODESETTINGSACTIVITY = 2;
+    public static final int REQUEST_CODE_BUG_EDITOR_ACTIVITY = 1;
+    public static final int REQUEST_CODE_SETTINGS_ACTIVITY = 2;
 
     /* Dialog Ids */
-    private static final int DIALOGNEWBUG = 1;
-    private static final int DIALOGABOUT = 2;
+    private static final int DIALOG_NEW_BUG = 1;
+    private static final int DIALOG_ABOUT = 2;
 
-    private static final String TAG_BUG_MAP_FRAGMENT = "BUGMAPFRAGMENT";
-    private static final String TAG_BUG_LIST_FRAGMENT = "BUGLISTFRAGMENT";
+    private static final String TAG_BUG_MAP_FRAGMENT = "BUG_MAP_FRAGMENT";
+    private static final String TAG_BUG_LIST_FRAGMENT = "TAG_BUG_LIST_FRAGMENT";
+
+    private static GeoPoint mNewBugLocation;
+
+    private int mActiveDownloads = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +56,6 @@ public class OsmBugsActivity extends Activity implements
 
         /* Enable the Spinning Wheel for undetermined Progress */
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        requestWindowFeature(Window.FEATURE_PROGRESS);
 
         setContentView(R.layout.activity_osm_bugs);
         if (savedInstanceState == null) {
@@ -56,9 +65,7 @@ public class OsmBugsActivity extends Activity implements
         }
 
         /* Hide the ProgressBars at start */
-        setProgressBarIndeterminate(false);
         setProgressBarIndeterminateVisibility(false);
-        setProgressBarVisibility(false);
 
         /* Init Settings Class */
         Settings.init(this);
@@ -72,11 +79,13 @@ public class OsmBugsActivity extends Activity implements
         getMenuInflater().inflate(R.menu.osm_bugs, menu);
 
         /* Hide the Refresh Button if a Download is in Progress */
-        if(mDownloadActive) {
+        if(mActiveDownloads != 0) {
             menu.findItem(R.id.refresh).setEnabled(false);
+            setProgressBarIndeterminateVisibility(true);
         }
         else {
             menu.findItem(R.id.refresh).setEnabled(true);
+            setProgressBarIndeterminateVisibility(false);
         }
 
         if(getFragmentManager().findFragmentById(R.id.container).getTag().equals(TAG_BUG_LIST_FRAGMENT)) {
@@ -115,9 +124,22 @@ public class OsmBugsActivity extends Activity implements
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUESTCODEBUGEDITORACTIVITY) {
-            if (resultCode == Activity.RESULT_OK)
-                refreshBugs();
+        if (requestCode == REQUEST_CODE_BUG_EDITOR_ACTIVITY) {
+            switch (resultCode)
+            {
+                case BugEditorActivity.RESULT_SAVED_KEEPRIGHT:
+                    reloadBugs(Globals.KEEPRIGHT);
+                    break;
+                case BugEditorActivity.RESULT_SAVED_OSMOSE:
+                    reloadBugs(Globals.OSMOSE);
+                    break;
+                case BugEditorActivity.RESULT_SAVED_MAPDUST:
+                    reloadBugs(Globals.MAPDUST);
+                    break;
+                case BugEditorActivity.RESULT_SAVED_OSM_NOTES:
+                    reloadBugs(Globals.OSM_NOTES);
+                    break;
+            }
         } else
             super.onActivityResult(requestCode, resultCode, data);
     }
@@ -126,7 +148,7 @@ public class OsmBugsActivity extends Activity implements
     @Override
     public Dialog onCreateDialog(int id) {
 
-        if (id == DIALOGNEWBUG) {
+        if (id == DIALOG_NEW_BUG) {
             /* Ask the User to select a Bug Platform */
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -178,7 +200,7 @@ public class OsmBugsActivity extends Activity implements
             });
 
             return builder.create();
-        } else if (id == DIALOGABOUT) {
+        } else if (id == DIALOG_ABOUT) {
             /* Show the About Information */
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -199,17 +221,16 @@ public class OsmBugsActivity extends Activity implements
     private void menuSettingsClicked() {
         /* Start the Settings Activity */
         Intent i = new Intent(this, SettingsActivity.class);
-        startActivityForResult(i, REQUESTCODESETTINGSACTIVITY);
+        startActivityForResult(i, REQUEST_CODE_SETTINGS_ACTIVITY);
     }
 
     private void menuRefreshClicked() {
-        /* Update all Bugs */
-        refreshBugs();
+        reloadAllBugs();
     }
 
     private void menuAboutClicked() {
         //noinspection deprecation
-        showDialog(DIALOGABOUT);
+        showDialog(DIALOG_ABOUT);
     }
 
     private void menuListClicked()
@@ -220,53 +241,37 @@ public class OsmBugsActivity extends Activity implements
                 .commit();
     }
 
-    /* Reload all Bugs */
-    private void refreshBugs() {
-        mDownloadActive = true;
+    private void reloadAllBugs() {
+        reloadBugs(Globals.KEEPRIGHT);
+        reloadBugs(Globals.OSMOSE);
+        reloadBugs(Globals.MAPDUST);
+        reloadBugs(Globals.OSM_NOTES);
+    }
 
-        /* Start the Progress Bar */
-        setProgressBarIndeterminateVisibility(true);
-        setProgressBarVisibility(true);
-        setProgress(0);
+    private void reloadBugs(int platform)
+    {
+        mActiveDownloads += 1;
 
-        /* Request Options Menu reload */
         invalidateOptionsMenu();
 
         Fragment fragment = getFragmentManager().findFragmentById(R.id.container);
         if(fragment instanceof BugMapFragment)
         {
-            BugDatabase.getInstance().DownloadBBox(((BugMapFragment) fragment).getBBox(), mOnDownloadEndListener);
+            BugDatabase.getInstance().reload(((BugMapFragment) fragment).getBBox(), platform, mOnDownloadEndListener);
         }
         else
         {
-            BugDatabase.getInstance().Reload(mOnDownloadEndListener);
+            BugDatabase.getInstance().reload(platform, mOnDownloadEndListener);
         }
     }
 
     private BugDatabase.OnDownloadEndListener mOnDownloadEndListener = new BugDatabase.OnDownloadEndListener() {
         @Override
-        public void onSuccess(int platform) {
-        }
-
-        @Override
-        public void onError(int platform) {
-        }
-
-        @Override
         public void onCompletion() {
-
-            mDownloadActive = false;
-
-            /* Stop the Progressbar */
-            setProgressBarIndeterminateVisibility(false);
-            setProgressBarVisibility(false);
-
+            if(mActiveDownloads > 0) {
+                mActiveDownloads -= 1;
+            }
             invalidateOptionsMenu();
-        }
-
-        @Override
-        public void onProgressUpdate(double progress) {
-            setProgress((int) (progress * 10000));
         }
     };
 
@@ -274,11 +279,25 @@ public class OsmBugsActivity extends Activity implements
     public void onBugClicked(Bug bug) {
         /* Open the selected Bug in the Bug Editor */
         Intent i = new Intent(OsmBugsActivity.this, BugEditorActivity.class);
-        i.putExtra(BugEditorActivity.EXTRABUG, bug);
+        i.putExtra(BugEditorActivity.EXTRA_BUG, bug);
 
-        startActivityForResult(i, REQUESTCODEBUGEDITORACTIVITY);
+        startActivityForResult(i, REQUEST_CODE_BUG_EDITOR_ACTIVITY);
 
         Log.w("", "Bug " + bug.getPoint().toString());
+    }
+
+    @Override
+    public void onBugMiniMapClicked(Bug bug) {
+        /* Display the Map centered at the clicked Bug
+         * and disable gps Following */
+        BugMapFragment bugMapFragment = BugMapFragment.newInstance(17, bug.getPoint());
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, bugMapFragment, TAG_BUG_MAP_FRAGMENT)
+                .addToBackStack(TAG_BUG_MAP_FRAGMENT)
+                .commit();
+
+        Settings.setFollowGps(false);
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -286,12 +305,6 @@ public class OsmBugsActivity extends Activity implements
         mNewBugLocation = point;
 
         //noinspection deprecation
-        showDialog(DIALOGNEWBUG);
+        showDialog(DIALOG_NEW_BUG);
     }
-
-    /* Used to save the Point where to create the new Bug */
-    private static GeoPoint mNewBugLocation;
-
-    /* True if a Bug Download is currently active */
-    private boolean mDownloadActive = false;
 }

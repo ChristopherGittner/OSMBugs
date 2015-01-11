@@ -1,7 +1,6 @@
 package org.gittner.osmbugs.statics;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.gittner.osmbugs.api.KeeprightApi;
 import org.gittner.osmbugs.api.MapdustApi;
@@ -18,20 +17,12 @@ import java.util.ArrayList;
 public class BugDatabase {
 
     public interface OnDownloadEndListener {
-        public void onSuccess(int platform);
-
-        public void onError(int platform);
-
         public void onCompletion();
-
-        public void onProgressUpdate(double progress);
     }
 
     public interface DatabaseWatcher {
 
         public void onDatabaseUpdated(int platform);
-
-        public void onDatabaseCleared();
     }
 
     /* Retrieve an Instance to the Bug Database */
@@ -56,170 +47,121 @@ public class BugDatabase {
     }
 
     public ArrayList<OpenstreetmapNote> getOpenstreetmapNotes() {
-        return mOpenstreetmapNotes;
+        return mOsmNotes;
     }
 
     /* Download a Bounding Box to the Database */
 
 
-    public void Reload(final OnDownloadEndListener listener) {
-        DownloadBBox(Settings.getLastBBox(), listener);
+    public void reload(final int platform, final OnDownloadEndListener listener) {
+        reload(Settings.getLastBBox(), platform, listener);
     }
 
-    public void DownloadBBox(final BoundingBoxE6 bBox, final OnDownloadEndListener listener) {
-        /* Only start Downloading if all Downloads finished */
-        if (mActiveDownloads > 0)
-            return;
+    public void reload(final BoundingBoxE6 bBox, final int platform, final OnDownloadEndListener listener) {
 
         Settings.setLastBBox(bBox);
 
-        Log.w("", bBox.toString());
-
-        mActiveDownloads = 0;
-        mCompletedDownloads = 0;
-
-        /* Clear all Bugs */
-        mKeeprightBugs.clear();
-        mOsmoseBugs.clear();
-        mMapdustBugs.clear();
-        mOpenstreetmapNotes.clear();
-
-        for(DatabaseWatcher watcher : mDatabaseWatchers)
+        switch (platform)
         {
-            watcher.onDatabaseCleared();
-        }
-
-        if (Settings.Keepright.isEnabled()) {
-
-            ++mActiveDownloads;
-
-            new AsyncTask<BoundingBoxE6, Void, ArrayList<KeeprightBug>>() {
-                @Override
-                protected ArrayList<KeeprightBug> doInBackground(BoundingBoxE6... bBoxes) {
-                    return KeeprightApi.downloadBBox(bBoxes[0],
-                            Settings.Keepright.isShowIgnoredEnabled(),
-                            Settings.Keepright.isShowTempIgnoredEnabled(),
-                            Settings.isLanguageGerman());
-                }
-
-                @Override
-                protected void onPostExecute(ArrayList<KeeprightBug> keeprightBugs) {
-                    ++mCompletedDownloads;
-
-                    if (keeprightBugs != null) {
-                        mKeeprightBugs = keeprightBugs;
-                        listener.onSuccess(Globals.KEEPRIGHT);
-                    } else {
-                        listener.onError(Globals.KEEPRIGHT);
+            case Globals.KEEPRIGHT:
+                new AsyncTask<BoundingBoxE6, Void, ArrayList<KeeprightBug>>() {
+                    @Override
+                    protected ArrayList<KeeprightBug> doInBackground(BoundingBoxE6... bBoxes) {
+                        return KeeprightApi.downloadBBox(bBoxes[0],
+                                Settings.Keepright.isShowIgnoredEnabled(),
+                                Settings.Keepright.isShowTempIgnoredEnabled(),
+                                Settings.isLanguageGerman());
                     }
 
-                    checkProgress(listener);
-                }
-            }.execute(bBox);
-        }
+                    @Override
+                    protected void onPostExecute(ArrayList<KeeprightBug> keeprightBugs) {
+                        listener.onCompletion();
 
-        if (Settings.Osmose.isEnabled()) {
+                        if(keeprightBugs != null) {
+                            mKeeprightBugs.clear();
+                            mKeeprightBugs.addAll(keeprightBugs);
 
-            ++mActiveDownloads;
+                            notifyAllDatabaseUpdated(platform);
+                        }
+                    }
+                }.execute(bBox);
+                break;
 
-            new AsyncTask<BoundingBoxE6, Void, ArrayList<OsmoseBug>>() {
-                @Override
-                protected ArrayList<OsmoseBug> doInBackground(BoundingBoxE6... bBoxes) {
-                    return OsmoseApi.downloadBBox(bBoxes[0]);
-                }
-
-                @Override
-                protected void onPostExecute(ArrayList<OsmoseBug> osmoseBugs) {
-                    ++mCompletedDownloads;
-
-                    if (osmoseBugs != null) {
-                        mOsmoseBugs = osmoseBugs;
-                        listener.onSuccess(Globals.OSMOSE);
-                    } else {
-                        listener.onError(Globals.OSMOSE);
+            case Globals.OSMOSE:
+                new AsyncTask<BoundingBoxE6, Void, ArrayList<OsmoseBug>>() {
+                    @Override
+                    protected ArrayList<OsmoseBug> doInBackground(BoundingBoxE6... bBoxes) {
+                        return OsmoseApi.downloadBBox(bBoxes[0]);
                     }
 
-                    checkProgress(listener);
-                }
-            }.execute(bBox);
-        }
+                    @Override
+                    protected void onPostExecute(ArrayList<OsmoseBug> osmoseBugs) {
+                        listener.onCompletion();
 
-        if (Settings.Mapdust.isEnabled()) {
+                        if(osmoseBugs != null)
+                        {
+                            mOsmoseBugs.clear();
+                            mOsmoseBugs.addAll(osmoseBugs);
 
-            ++mActiveDownloads;
+                            notifyAllDatabaseUpdated(platform);
+                        }
+                    }
+                }.execute(bBox);
+                break;
 
-            new AsyncTask<BoundingBoxE6, Void, ArrayList<MapdustBug>>() {
-                @Override
-                protected ArrayList<MapdustBug> doInBackground(BoundingBoxE6... bBoxes) {
-                    return MapdustApi.downloadBBox(bBoxes[0]);
-                }
-
-                @Override
-                protected void onPostExecute(ArrayList<MapdustBug> mapdustBugs) {
-                    ++mCompletedDownloads;
-
-                    if (mapdustBugs != null) {
-                        mMapdustBugs = mapdustBugs;
-                        listener.onSuccess(Globals.MAPDUST);
-                    } else {
-                        listener.onError(Globals.MAPDUST);
+            case Globals.MAPDUST:
+                new AsyncTask<BoundingBoxE6, Void, ArrayList<MapdustBug>>() {
+                    @Override
+                    protected ArrayList<MapdustBug> doInBackground(BoundingBoxE6... bBoxes) {
+                        return MapdustApi.downloadBBox(bBoxes[0]);
                     }
 
-                    checkProgress(listener);
-                }
-            }.execute(bBox);
-        }
+                    @Override
+                    protected void onPostExecute(ArrayList<MapdustBug> mapdustBugs) {
+                        listener.onCompletion();
 
-        if (Settings.OpenstreetmapNotes.isEnabled()) {
+                        if(mapdustBugs != null)
+                        {
+                            mMapdustBugs.clear();
+                            mMapdustBugs.addAll(mapdustBugs);
 
-            ++mActiveDownloads;
+                            notifyAllDatabaseUpdated(platform);
+                        }
+                    }
+                }.execute(bBox);
+                break;
 
-            new AsyncTask<BoundingBoxE6, Void, ArrayList<OpenstreetmapNote>>() {
-                @Override
-                protected ArrayList<OpenstreetmapNote> doInBackground(BoundingBoxE6... bBoxes) {
-                    return OpenstreetmapNotesApi.downloadBBox(
-                            bBoxes[0],
-                            Settings.OpenstreetmapNotes.getBugLimit(),
-                            !Settings.OpenstreetmapNotes.isShowOnlyOpenEnabled());
-                }
-
-                @Override
-                protected void onPostExecute(ArrayList<OpenstreetmapNote> openstreetmapNotes) {
-                    ++mCompletedDownloads;
-
-                    if (openstreetmapNotes != null) {
-                        mOpenstreetmapNotes = openstreetmapNotes;
-                        listener.onSuccess(Globals.OPENSTREETMAPNOTES);
-                    } else {
-                        listener.onError(Globals.OPENSTREETMAPNOTES);
+            case Globals.OSM_NOTES:
+                new AsyncTask<BoundingBoxE6, Void, ArrayList<OpenstreetmapNote>>() {
+                    @Override
+                    protected ArrayList<OpenstreetmapNote> doInBackground(BoundingBoxE6... bBoxes) {
+                        return OpenstreetmapNotesApi.downloadBBox(
+                                bBoxes[0],
+                                Settings.OpenstreetmapNotes.getBugLimit(),
+                                !Settings.OpenstreetmapNotes.isShowOnlyOpenEnabled());
                     }
 
-                    checkProgress(listener);
-                }
-            }.execute(bBox);
+                    @Override
+                    protected void onPostExecute(ArrayList<OpenstreetmapNote> osmNotes) {
+                        listener.onCompletion();
+
+                        if(osmNotes != null) {
+                            mOsmNotes.clear();
+                            mOsmNotes.addAll(osmNotes);
+
+                            notifyAllDatabaseUpdated(platform);
+                        }
+                    }
+                }.execute(bBox);
+                break;
         }
-
-        if (mActiveDownloads == 0)
-            return;
-
-        listener.onProgressUpdate(0);
     }
 
-    /* Check if all Downloads completed and execute callbacks */
-    private void checkProgress(OnDownloadEndListener listener) {
-        listener.onProgressUpdate(((double) mCompletedDownloads) / ((double) mActiveDownloads));
-
-        if (mCompletedDownloads == mActiveDownloads) {
-            mActiveDownloads = 0;
-            mCompletedDownloads = 0;
-            listener.onCompletion();
-            for(DatabaseWatcher watcher : mDatabaseWatchers)
-            {
-                watcher.onDatabaseUpdated(Globals.KEEPRIGHT);
-                watcher.onDatabaseUpdated(Globals.OSMOSE);
-                watcher.onDatabaseUpdated(Globals.MAPDUST);
-                watcher.onDatabaseUpdated(Globals.OPENSTREETMAPNOTES);
-            }
+    private void notifyAllDatabaseUpdated(int platform)
+    {
+        for(DatabaseWatcher listener : mDatabaseWatchers)
+        {
+            listener.onDatabaseUpdated(platform);
         }
     }
 
@@ -236,12 +178,6 @@ public class BugDatabase {
     /* The Singletons Instance */
     private static BugDatabase mInstance = new BugDatabase();
 
-    /* Number of currently active Downloads */
-    private int mActiveDownloads = 0;
-
-    /* Number of completed Downloads */
-    private int mCompletedDownloads = 0;
-
     /* Holds all Keepright Bugs */
     private ArrayList<KeeprightBug> mKeeprightBugs = new ArrayList<>();
 
@@ -252,7 +188,7 @@ public class BugDatabase {
     private ArrayList<MapdustBug> mMapdustBugs = new ArrayList<>();
 
     /* Holds all Openstreetmap Notes */
-    private ArrayList<OpenstreetmapNote> mOpenstreetmapNotes = new ArrayList<>();
+    private ArrayList<OpenstreetmapNote> mOsmNotes = new ArrayList<>();
 
     /* All Registered Database Watchers */
     private ArrayList<DatabaseWatcher> mDatabaseWatchers = new ArrayList<>();

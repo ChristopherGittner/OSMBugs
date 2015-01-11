@@ -1,18 +1,17 @@
 package org.gittner.osmbugs.bugs;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.gittner.osmbugs.App;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.api.MapdustApi;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Drawings;
-import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapdustBug extends Bug {
 
@@ -32,21 +31,38 @@ public class MapdustBug extends Bug {
         IGNORED
     }
 
+    public static final int[] STATE_NAMES = {
+            R.string.open,
+            R.string.closed,
+            R.string.ignored };
+
+
+    private long mId;
+
+    private int mType;
+
+    private String mDescription;
+
+    private List<Comment> mComments = null;
+
+    private STATE mState = STATE.OPEN;
+
     public MapdustBug(
             double lat,
             double lon,
-            String title,
-            String text,
-            ArrayList<Comment> comments,
-            int type,
             long id,
+            int type,
+            String description,
+            ArrayList<Comment> comments,
             STATE state) {
 
-        super(title, text, comments, new GeoPoint(lat, lon));
+        super(new GeoPoint(lat, lon));
 
-        setType(type);
-        setId(id);
-        setState(state);
+        mId = id;
+        mType = type;
+        mComments = comments;
+        mDescription = description;
+        mState = state;
     }
 
     protected MapdustBug(Parcel parcel) {
@@ -54,6 +70,14 @@ public class MapdustBug extends Bug {
 
         mId = parcel.readLong();
         mType = parcel.readInt();
+        mDescription = parcel.readString();
+
+        mComments = new ArrayList<Comment>();
+        int size = parcel.readInt();
+        for (int i = 0; i != size; ++i) {
+            mComments.add(new Comment(parcel));
+        }
+
         switch (parcel.readInt()) {
             case 1:
                 mState = STATE.OPEN;
@@ -69,38 +93,53 @@ public class MapdustBug extends Bug {
         }
     }
 
-    /* Get the Bugs State */
+    public static List<String> getStateNames(Context context) {
+        ArrayList<String> names = new ArrayList<>();
+
+        for (int i = 0; i != STATE_NAMES.length; ++i) {
+            names.add(context.getString(STATE_NAMES[i]));
+        }
+
+        return names;
+    }
+
+    public static STATE getStateByName(Context context, String name) {
+        int id = context.getResources().getIdentifier(name, "string", context.getPackageName());
+
+        if(context.getString(R.string.open).equals(name)) return STATE.OPEN;
+        else if(context.getString(R.string.closed).equals(name)) return STATE.CLOSED;
+        else if(context.getString(R.string.ignored).equals(name)) return STATE.IGNORED;
+
+        return null;
+    }
+
+    public String getDescription()
+    {
+        return mDescription;
+    }
+
+    public List<Comment> getComments() {
+        return mComments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        mComments = comments;
+    }
+
     public STATE getState() {
         return mState;
     }
 
-    /* Set the Bugs State */
-    public void setState(STATE state) {
-        mState = state;
-    }
-
-    /* Get the Bugs Id */
     public long getId() {
         return mId;
     }
 
-    /* Set the Bugs Id */
-    public void setId(long id) {
-        mId = id;
-    }
-
-    /* Get the Bugs Type */
     public int getType() {
         return mType;
     }
 
-    /* Set the Bugs Type */
-    public void setType(int type) {
-        mType = type;
-    }
-
     @Override
-    public Drawable getMarker(int bitset) {
+    public Drawable getIcon() {
         if (getState() == STATE.CLOSED)
             return Drawings.MapdustClosed;
         else if (getState() == STATE.IGNORED)
@@ -135,93 +174,17 @@ public class MapdustBug extends Bug {
     }
 
     @Override
-    public ArrayList<String> getSStates() {
-        ArrayList<String> states = new ArrayList<String>();
-
-        states.add(App.getContext().getString(R.string.open));
-
-        if(mState == STATE.OPEN) {
-            states.add(App.getContext().getString(R.string.closed));
-            states.add(App.getContext().getString(R.string.software_bug));
-        }
-
-        return states;
-    }
-
-    @Override
-    public boolean isCommitable(String newSState, String newComment) {
-
-        /* Retrieve the new State */
-        STATE newState = STATE.OPEN;
-        if (newSState.equals(App.getContext().getString(R.string.closed))) {
-            newState = STATE.CLOSED;
-        } else if (newSState.equals(App.getContext().getString(R.string.software_bug))) {
-            newState = STATE.IGNORED;
-        }
-
-        if(mState == STATE.OPEN) {
-            if(!newComment.equals(""))
-                return true;
-            else
-                return false;
-        }
-        else if(mState == STATE.CLOSED) {
-            if(newState != STATE.OPEN)
-                return false;
-
-            if(!newComment.equals(""))
-                return true;
-            else
-                return false;
-        }
-        else {
-            if(newState != STATE.OPEN)
-                return false;
-
-            if(!newComment.equals(""))
-                return true;
-            else
-                return false;
-        }
-    }
-
-    @Override
-    public boolean commit(String newSState, String newComment) {
-
-        /* Retrieve the new State */
-        STATE newState = STATE.OPEN;
-        if (newSState.equals(App.getContext().getString(R.string.closed))) {
-            newState = STATE.CLOSED;
-        } else if (newSState.equals(App.getContext().getString(R.string.software_bug))) {
-            newState = STATE.IGNORED;
-        }
-
-        if (newState == mState) {
-            MapdustApi.commentBug(mId, newComment, Settings.Mapdust.getUsername());
-        } else if (newState != mState && !newComment.equals("")) {
-            MapdustApi.changeBugStatus(mId, newState, newComment, Settings.Mapdust.getUsername());
-        } else
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public boolean isCommentable() {
-        return true;
-    }
-
-    public static boolean addNew(GeoPoint position, int type, String text) {
-        return MapdustApi.addBug(position, text, type, Settings.Mapdust.getUsername());
-    }
-
-    /* Parcelable interface */
-    @Override
     public void writeToParcel(Parcel parcel, int flags) {
         super.writeToParcel(parcel, flags);
 
         parcel.writeLong(mId);
         parcel.writeInt(mType);
+        parcel.writeString(mDescription);
+
+        parcel.writeInt(mComments.size());
+        for (Comment comment : mComments)
+            comment.writeToParcel(parcel, flags);
+
         switch (mState) {
             case OPEN:
                 parcel.writeInt(1);
@@ -249,24 +212,4 @@ public class MapdustBug extends Bug {
             return new MapdustBug[size];
         }
     };
-
-    @Override
-    public boolean willRetrieveExtraData() {
-        return true;
-    }
-
-    @Override
-    public void retrieveExtraData() {
-        getComments().clear();
-        getComments().addAll(MapdustApi.retrieveComments(mId));
-    }
-
-    /* Holds the Bugs State */
-    private STATE mState = STATE.OPEN;
-
-    /* Holds the Mapdust Id of this Bug */
-    private long mId;
-
-    /* Holds the Mapdust Type of this Bug */
-    private int mType;
 }

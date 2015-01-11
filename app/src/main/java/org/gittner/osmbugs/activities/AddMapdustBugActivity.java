@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.api.MapdustApi;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.osmdroid.util.GeoPoint;
 
@@ -169,7 +170,7 @@ public class AddMapdustBugActivity extends Activity {
 
             @Override
             protected Boolean doInBackground(TaskParameter... parameters) {
-                return MapdustBug.addNew(parameters[0].geoPoint, parameters[0].type, parameters[0].description);
+                return MapdustApi.addBug(parameters[0].geoPoint, parameters[0].type, parameters[0].description);
             }
 
             @Override
