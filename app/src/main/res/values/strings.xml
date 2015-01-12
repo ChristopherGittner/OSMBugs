@@ -147,6 +147,12 @@
     <string name="saving">Saving</string>
     <string name="do_comment">Comment</string>
     <string name="loading_comments">Loading Comments…</string>
+    <string name="developer_mail">christopher@gittner.org</string>
+    <string name="feedback_to_osmbugs">Feedback to OSMBugs</string>
+    <string name="email_feedback">Email Feedback...</string>
+    <string name="sending_feedback_failed_title">Sending Feedback failed</string>
+    <string name="sending_feedback_failed_message">There seems to be no Email App on your Phone.\n\nHowever, here\'s some good News:\nYou can still send me feedback from somewhere else to:\n\nchristopher@gittner.org\n\nThank you</string>
+    <string name="feedback">Feedback</string>
     <string-array name="osmose_status_types">
         <item>@string/open</item>
         <item>@string/closed</item>

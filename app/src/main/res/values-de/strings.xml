@@ -146,5 +146,10 @@
     <string name="resolve">Auflösen</string>
     <string name="saving">Speichern</string>
     <string name="loading_comments">Kommentare laden…</string>
+    <string name="feedback_to_osmbugs">Feedback to OSMBugs</string>
+    <string name="email_feedback">Email Feedback...</string>
+    <string name="sending_feedback_failed_message">Scheinbar ist keine Email App installiert.\n\nTrotzdem gute Nachrichten:\nSie Können mir gerne von woanders aus eine Email senden z.B. an:\n\nchristopher@gittner.org\n\nVielen Dank</string>
+    <string name="sending_feedback_failed_title">Feedback senden fehlgeschlagen</string>
+    <string name="feedback">Feedback</string>
 
 </resources>

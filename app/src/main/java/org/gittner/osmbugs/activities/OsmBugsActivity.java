@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import org.gittner.osmbugs.Helpers.IntentHelper;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.fragments.BugListFragment;
@@ -30,6 +32,8 @@ import java.util.ArrayList;
 public class OsmBugsActivity extends Activity implements
         BugMapFragment.OnFragmentInteractionListener,
         BugListFragment.OnFragmentInteractionListener {
+
+    private static String TAG = "OsmBugsActivity";
 
     /* Request Codes for activities */
     private static final int REQUEST_CODE_BUG_EDITOR_ACTIVITY = 1;
@@ -108,6 +112,10 @@ public class OsmBugsActivity extends Activity implements
 
             case R.id.list:
                 menuListClicked();
+                return true;
+
+            case R.id.action_feedback:
+                onFeedbackClicked();
                 return true;
         }
 
@@ -272,5 +280,39 @@ public class OsmBugsActivity extends Activity implements
 
         //noinspection deprecation
         showDialog(DIALOG_NEW_BUG);
+    }
+
+    private void onFeedbackClicked()
+    {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.developer_mail)});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback_to_osmbugs));
+        emailIntent.setType("plain/text");
+
+        if(IntentHelper.intentHasReceivers(this, emailIntent))
+        {
+            try {
+                startActivity(Intent.createChooser(emailIntent, getString(R.string.email_feedback)));
+            }
+            catch (ActivityNotFoundException e)
+            {
+                Log.e(TAG, "No Email Activity found: " + e.getMessage());
+                e.printStackTrace();
+                showSendFeedbackErrorDialog();
+            }
+        }
+        else
+        {
+            showSendFeedbackErrorDialog();
+        }
+    }
+
+    private void showSendFeedbackErrorDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.sending_feedback_failed_title);
+        builder.setMessage(R.string.sending_feedback_failed_message);
+        builder.setCancelable(true);
+        builder.create().show();
     }
 }
