@@ -10,6 +10,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.gittner.osmbugs.bugs.OsmoseBug;
+import org.gittner.osmbugs.common.OsmoseElement;
 import org.gittner.osmbugs.parser.OsmoseParser;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.BoundingBoxE6;
@@ -59,7 +60,31 @@ public class OsmoseApi {
                 return null;
 
             /* If Request was Successful, parse the Stream */
-            return OsmoseParser.parse(response.getEntity().getContent());
+            return OsmoseParser.parseBugList(response.getEntity().getContent());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static ArrayList<OsmoseElement> loadElements(long id) {
+        HttpClient client = new DefaultHttpClient();
+
+        String url = "http://osmose.openstreetmap.fr/en/api/0.2/error/" + id;
+
+        HttpGet request = new HttpGet(url);
+
+        try {
+            /* Execute Query */
+            HttpResponse response = client.execute(request);
+
+            /* Check for Success */
+            if (response.getStatusLine().getStatusCode() != 200)
+                return null;
+
+            /* If Request was Successful, parse the Stream */
+            return OsmoseParser.parseBugElements(response.getEntity().getContent());
         } catch (IOException e) {
             e.printStackTrace();
         }

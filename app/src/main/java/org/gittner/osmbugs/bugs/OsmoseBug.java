@@ -10,14 +10,21 @@ public class OsmoseBug extends Bug {
 
     private static final String ICON_PREFIX = "marker_b_";
 
-    public enum STATE {
-    }
+    public static final int ELEM_TYPE_NODE = 1;
+    public static final int ELEM_TYPE_Way = 2;
+    public static final int ELEM_TYPE_Relation = 3;
 
     private final int mItem;
 
     private final long mId;
 
     private final String mTitle;
+
+    private String mFix = null;
+
+    private long mOsmElement = 0;
+
+    private int mOsmElementType = 0;
 
     public OsmoseBug(
             double lat,
@@ -39,6 +46,9 @@ public class OsmoseBug extends Bug {
         mId = parcel.readLong();
         mItem = parcel.readInt();
         mTitle = parcel.readString();
+        mFix = parcel.readString();
+        mOsmElement = parcel.readLong();
+        mOsmElementType = parcel.readInt();
     }
 
     public String getTitle() {
@@ -58,6 +68,9 @@ public class OsmoseBug extends Bug {
         parcel.writeLong(mId);
         parcel.writeInt(mItem);
         parcel.writeString(mTitle);
+        parcel.writeString(mFix);
+        parcel.writeLong(mOsmElement);
+        parcel.writeInt(mOsmElementType);
     }
 
     @Override
@@ -77,4 +90,8 @@ public class OsmoseBug extends Bug {
             return new OsmoseBug[size];
         }
     };
+
+    public long getId() {
+        return mId;
+    }
 }

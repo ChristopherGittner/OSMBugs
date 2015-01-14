@@ -1,6 +1,9 @@
 package org.gittner.osmbugs.parser;
 
 import org.gittner.osmbugs.bugs.OsmoseBug;
+import org.gittner.osmbugs.common.OsmKeyValuePair;
+import org.gittner.osmbugs.common.OsmoseElement;
+import org.gittner.osmbugs.common.OsmoseFix;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +16,7 @@ import java.util.ArrayList;
 
 public class OsmoseParser {
 
-    public static ArrayList<OsmoseBug> parse(InputStream stream) {
+    public static ArrayList<OsmoseBug> parseBugList(InputStream stream) {
         ArrayList<OsmoseBug> bugs = new ArrayList<>();
 
         BufferedReader reader;
@@ -47,5 +50,97 @@ public class OsmoseParser {
         }
 
         return bugs;
+    }
+
+    public static ArrayList<OsmoseElement> parseBugElements(InputStream stream) {
+        ArrayList<OsmoseElement> elements = new ArrayList<>();
+
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new InputStreamReader(stream, "iso-8859-1"));
+
+            String line = reader.readLine();
+
+            JSONObject json = new JSONObject(line);
+
+            JSONArray elems = json.getJSONArray("elems");
+            for(int iElems = 0; iElems != elems.length(); ++iElems)
+            {
+                JSONObject elem = elems.getJSONObject(iElems);
+
+                OsmoseElement element = new OsmoseElement();
+
+                String type = elem.getString("type");
+                if(type.equals("node")) element.setType(OsmoseElement.TYPE_NODE);
+                else if(type.equals("way")) element.setType(OsmoseElement.TYPE_WAY);
+                else element.setType(OsmoseElement.TYPE_RELATION);
+
+                element.setId(elem.getLong("id"));
+
+                JSONArray tags = elem.getJSONArray("tags");
+                for(int iTags = 0; iTags != tags.length(); ++iTags)
+                {
+                    OsmKeyValuePair tag = new OsmKeyValuePair();
+
+                    tag.setKey(tags.getJSONObject(iTags).getString("k"));
+                    tag.setValue(tags.getJSONObject(iTags).getString("v"));
+
+                    element.getTags().add(tag);
+                }
+
+                JSONArray fixes = elem.getJSONArray("fixes");
+                for(int iFixes = 0; iFixes != fixes.length(); ++iFixes)
+                {
+                    OsmoseFix fix = new OsmoseFix();
+
+                    JSONArray adds = fixes.getJSONObject(iFixes).getJSONArray("add");
+                    for(int iAdds = 0; iAdds != adds.length(); ++iAdds)
+                    {
+                        OsmKeyValuePair tag = new OsmKeyValuePair();
+
+                        tag.setKey(adds.getJSONObject(iAdds).getString("k"));
+                        tag.setValue(adds.getJSONObject(iAdds).getString("v"));
+
+                        fix.getAdd().add(tag);
+                    }
+
+                    JSONArray dels = fixes.getJSONObject(iFixes).getJSONArray("del");
+                    for(int iDels = 0; iDels != dels.length(); ++iDels)
+                    {
+                        OsmKeyValuePair tag = new OsmKeyValuePair();
+
+                        tag.setKey(dels.getJSONObject(iDels).getString("k"));
+                        tag.setValue(dels.getJSONObject(iDels).getString("v"));
+
+                        fix.getDelete().add(tag);
+                    }
+
+                    JSONArray modifies = fixes.getJSONObject(iFixes).getJSONArray("mod");
+                    for(int iModifies = 0; iModifies != modifies.length(); ++iModifies)
+                    {
+                        OsmKeyValuePair tag = new OsmKeyValuePair();
+
+                        tag.setKey(modifies.getJSONObject(iModifies).getString("k"));
+                        tag.setValue(modifies.getJSONObject(iModifies).getString("v"));
+
+                        fix.getModify().add(tag);
+                    }
+
+                    element.getFixes().add(fix);
+                }
+
+                elements.add(element);
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+
+        return elements;
     }
 }

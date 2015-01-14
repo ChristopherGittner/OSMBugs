@@ -151,5 +151,8 @@
     <string name="sending_feedback_failed_message">Scheinbar ist keine Email App installiert.\n\nTrotzdem gute Nachrichten:\nSie Können mir gerne von woanders aus eine Email senden z.B. an:\n\nchristopher@gittner.org\n\nVielen Dank</string>
     <string name="sending_feedback_failed_title">Feedback senden fehlgeschlagen</string>
     <string name="feedback">Feedback</string>
+    <string name="fix">Fix</string>
+    <string name="laoding_details">Lade Details</string>
+    <string name="details">Details</string>
 
 </resources>
