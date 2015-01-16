@@ -68,31 +68,6 @@ public class OsmoseElement implements Parcelable {
                 break;
         }
 
-        s += " " + mId + "\n";
-
-        if(!mFixes.isEmpty()) {
-            s += "Fixes:\n";
-
-            for(OsmoseFix fix : mFixes)
-            {
-                s += fix.toString() + "\n";
-            }
-
-            s += "\n";
-        }
-
-        if(!mTags.isEmpty())
-        {
-            s += "Tags:\n";
-
-            for(OsmKeyValuePair tag : mTags)
-            {
-                s += tag.toString() + "\n";
-            }
-
-            s += "\n";
-        }
-
         return s;
     }
 

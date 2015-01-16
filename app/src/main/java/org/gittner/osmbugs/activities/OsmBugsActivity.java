@@ -8,7 +8,6 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,9 +18,7 @@ import android.widget.Spinner;
 
 import org.gittner.osmbugs.Helpers.IntentHelper;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.api.OsmoseApi;
 import org.gittner.osmbugs.bugs.Bug;
-import org.gittner.osmbugs.common.OsmoseElement;
 import org.gittner.osmbugs.fragments.BugListFragment;
 import org.gittner.osmbugs.fragments.BugMapFragment;
 import org.gittner.osmbugs.statics.BugDatabase;

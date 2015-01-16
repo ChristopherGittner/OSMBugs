@@ -2,19 +2,18 @@ package org.gittner.osmbugs.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.OsmoseApi;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.OsmoseElement;
+import org.gittner.osmbugs.common.OsmoseElementView;
 
 import java.util.List;
 
@@ -69,17 +68,18 @@ public class OsmoseEditFragment extends BugEditFragment {
                 v.findViewById(R.id.pbarLoadingDetails).setVisibility(View.GONE);
 
                 TextView txtvDetailsTitle = (TextView) v.findViewById(R.id.txtvDetailsTitle);
-                txtvDetailsTitle.setText(R.string.details);
-
-                String details = "";
-                for(OsmoseElement osmoseElement : osmoseElements)
-                {
-                    details += osmoseElement.toString();
+                if (osmoseElements.isEmpty()) {
+                    txtvDetailsTitle.setVisibility(View.GONE);
+                    return;
                 }
 
-                TextView txtvDetails = (TextView) v.findViewById(R.id.txtvDetails);
-                txtvDetails.setVisibility(View.VISIBLE);
-                txtvDetails.setText(details);
+                txtvDetailsTitle.setText(R.string.details);
+
+                OsmoseElementView elementView = new OsmoseElementView(getActivity());
+                elementView.set(osmoseElements);
+
+                ScrollView scrlvDetails = (ScrollView) v.findViewById(R.id.scrlvDetails);
+                scrlvDetails.addView(elementView);
 
                 mLoadDetailsTask = null;
             }

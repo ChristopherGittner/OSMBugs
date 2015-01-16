@@ -99,20 +99,10 @@ public class OsmoseParser {
                         OsmKeyValuePair tag = new OsmKeyValuePair();
 
                         tag.setKey(adds.getJSONObject(iAdds).getString("k"));
-                        tag.setValue(adds.getJSONObject(iAdds).getString("v"));
-
+                        if(adds.getJSONObject(iAdds).has("v")) {
+                            tag.setValue(adds.getJSONObject(iAdds).getString("v"));
+                        }
                         fix.getAdd().add(tag);
-                    }
-
-                    JSONArray dels = fixes.getJSONObject(iFixes).getJSONArray("del");
-                    for(int iDels = 0; iDels != dels.length(); ++iDels)
-                    {
-                        OsmKeyValuePair tag = new OsmKeyValuePair();
-
-                        tag.setKey(dels.getJSONObject(iDels).getString("k"));
-                        tag.setValue(dels.getJSONObject(iDels).getString("v"));
-
-                        fix.getDelete().add(tag);
                     }
 
                     JSONArray modifies = fixes.getJSONObject(iFixes).getJSONArray("mod");
@@ -121,9 +111,24 @@ public class OsmoseParser {
                         OsmKeyValuePair tag = new OsmKeyValuePair();
 
                         tag.setKey(modifies.getJSONObject(iModifies).getString("k"));
-                        tag.setValue(modifies.getJSONObject(iModifies).getString("v"));
+                        if(modifies.getJSONObject(iModifies).has("v")) {
+                            tag.setValue(modifies.getJSONObject(iModifies).getString("v"));
+                        }
 
                         fix.getModify().add(tag);
+                    }
+
+                    JSONArray dels = fixes.getJSONObject(iFixes).getJSONArray("del");
+                    for(int iDels = 0; iDels != dels.length(); ++iDels)
+                    {
+                        OsmKeyValuePair tag = new OsmKeyValuePair();
+
+                        tag.setKey(dels.getJSONObject(iDels).getString("k"));
+                        if(dels.getJSONObject(iDels).has("v")) {
+                            tag.setValue(dels.getJSONObject(iDels).getString("v"));
+                        }
+
+                        fix.getDelete().add(tag);
                     }
 
                     element.getFixes().add(fix);

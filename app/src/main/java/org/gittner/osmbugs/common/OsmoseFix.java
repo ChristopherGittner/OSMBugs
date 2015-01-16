@@ -2,7 +2,6 @@ package org.gittner.osmbugs.common;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.widget.ListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
