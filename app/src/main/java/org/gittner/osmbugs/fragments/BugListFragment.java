@@ -291,7 +291,7 @@ public class BugListFragment extends Fragment {
             } else if (groupPosition == 1) {
                 final OsmoseBug bug = mOsmoseBugs.get(childPosition);
 
-                txtvTitle.setText(bug.getTitle());
+                txtvTitle.setVisibility(View.GONE);
                 txtvDescription.setText(bug.getTitle());
                 imgvIcon.setImageDrawable(bug.getIcon());
 
@@ -322,7 +322,7 @@ public class BugListFragment extends Fragment {
             } else if (groupPosition == 2) {
                 final MapdustBug bug = mMapdustBugs.get(childPosition);
 
-                txtvTitle.setText("");
+                txtvTitle.setVisibility(View.GONE);
                 txtvDescription.setText(bug.getDescription());
                 imgvIcon.setImageDrawable(bug.getIcon());
 
