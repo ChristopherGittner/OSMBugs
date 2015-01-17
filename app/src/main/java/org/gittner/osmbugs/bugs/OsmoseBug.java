@@ -9,7 +9,7 @@ import org.osmdroid.util.GeoPoint;
 
 public class OsmoseBug extends Bug {
 
-    private static final String ICON_PREFIX = "marker_b_";
+    private static final String ICON_PREFIX = "osmose_marker_b_";
 
     private final int mItem;
 
@@ -54,7 +54,7 @@ public class OsmoseBug extends Bug {
 
     @Override
     public Drawable getIcon() {
-        return Images.getByName(ICON_PREFIX + mItem, R.drawable.marker_b_0);
+        return Images.getByName(ICON_PREFIX + mItem, R.drawable.osmose_marker_b_0);
     }
 
     /* Parcelable interface */

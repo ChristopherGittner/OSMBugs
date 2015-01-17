@@ -107,13 +107,13 @@ public class BugMapFragment extends Fragment {
         /* Create Bug Overlays */
         mKeeprightOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
-                Images.get(R.drawable.zap),
+                Images.get(R.drawable.keepright_zap),
                 mKeeprightGestureListener,
                 new DefaultResourceProxyImpl(getActivity()));
 
         mOsmoseOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
-                Images.get(R.drawable.marker_b_0),
+                Images.get(R.drawable.osmose_marker_b_0),
                 mOsmoseGestureListener,
                 new DefaultResourceProxyImpl(getActivity()));
 

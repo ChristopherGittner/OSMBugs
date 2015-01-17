@@ -136,12 +136,12 @@ public class KeeprightEditFragment extends BugEditFragment {
                     break;
 
                 case 1:
-                    imgvIcon.setImageDrawable(Images.get(R.drawable.keepright_closed));
+                    imgvIcon.setImageDrawable(Images.get(R.drawable.keepright_zap_closed));
                     txtvState.setText(R.string.closed);
                     break;
 
                 default:
-                    imgvIcon.setImageDrawable(Images.get(R.drawable.keepright_ignored));
+                    imgvIcon.setImageDrawable(Images.get(R.drawable.keepright_zap_ignored));
                     txtvState.setText(R.string.ignored);
                     break;
             }

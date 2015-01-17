@@ -10,7 +10,7 @@ import org.osmdroid.util.GeoPoint;
 
 public class KeeprightBug extends Bug {
 
-    private static final String ICON_PREFIX = "zap";
+    private static final String ICON_PREFIX = "keepright_zap_";
 
     public static enum STATE {
         OPEN,
@@ -103,18 +103,18 @@ public class KeeprightBug extends Bug {
     public Drawable getIcon() {
 
         if (mState == STATE.IGNORED_TMP) {
-            return Images.get(R.drawable.keepright_closed);
+            return Images.get(R.drawable.keepright_zap_closed);
         }
         else if (mState == STATE.IGNORED) {
-            return Images.get(R.drawable.keepright_ignored);
+            return Images.get(R.drawable.keepright_zap_ignored);
         }
 
-        return Images.getByName(ICON_PREFIX + mType, R.drawable.zap);
+        return Images.getByName(ICON_PREFIX + mType, R.drawable.keepright_zap);
     }
 
     public Drawable getOpenIcon()
     {
-        return Images.getByName(ICON_PREFIX + mType, R.drawable.zap);
+        return Images.getByName(ICON_PREFIX + mType, R.drawable.keepright_zap);
     }
 
     @Override
