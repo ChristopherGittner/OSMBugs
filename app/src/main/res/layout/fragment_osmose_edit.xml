@@ -34,7 +34,7 @@
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/laoding_details"
+        android:text="@string/loading_details"
         android:layout_margin="8dp" />
 
     <ProgressBar
@@ -47,6 +47,14 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/scrlvDetails" />
+        android:id="@+id/scrlvDetails">
+
+
+        <LinearLayout
+            android:id="@+id/layoutDetails"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
 
 </LinearLayout>

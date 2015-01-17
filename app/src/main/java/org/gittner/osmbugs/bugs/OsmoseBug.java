@@ -3,16 +3,13 @@ package org.gittner.osmbugs.bugs;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 
-import org.gittner.osmbugs.statics.Drawings;
+import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
 public class OsmoseBug extends Bug {
 
     private static final String ICON_PREFIX = "marker_b_";
-
-    public static final int ELEM_TYPE_NODE = 1;
-    public static final int ELEM_TYPE_Way = 2;
-    public static final int ELEM_TYPE_Relation = 3;
 
     private final int mItem;
 
@@ -57,7 +54,7 @@ public class OsmoseBug extends Bug {
 
     @Override
     public Drawable getIcon() {
-        return Drawings.get(ICON_PREFIX + mItem, Drawings.OsmoseMarkerB0);
+        return Images.getByName(ICON_PREFIX + mItem, R.drawable.marker_b_0);
     }
 
     /* Parcelable interface */

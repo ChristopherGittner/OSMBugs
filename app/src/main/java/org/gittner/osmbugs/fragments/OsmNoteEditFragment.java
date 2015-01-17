@@ -105,8 +105,8 @@ public class OsmNoteEditFragment extends BugEditFragment {
                                 protected Boolean doInBackground(Void... params) {
                                     return OsmNotesApi.addComment(
                                             mBug.getId(),
-                                            Settings.OpenstreetmapNotes.getUsername(),
-                                            Settings.OpenstreetmapNotes.getPassword(),
+                                            Settings.OsmNotes.getUsername(),
+                                            Settings.OsmNotes.getPassword(),
                                             message);
                                 }
 
@@ -137,12 +137,12 @@ public class OsmNoteEditFragment extends BugEditFragment {
         @Override
         public void onClick(View v) {
 
-            if (Settings.OpenstreetmapNotes.getUsername().equals("")) {
+            if (Settings.OsmNotes.getUsername().equals("")) {
                 Toast.makeText(getActivity(), R.string.notification_osm_notes_no_username, Toast.LENGTH_LONG).show();
                 return;
             }
 
-            if (Settings.OpenstreetmapNotes.getPassword().equals("")) {
+            if (Settings.OsmNotes.getPassword().equals("")) {
                 Toast.makeText(getActivity(), R.string.notification_osm_notes_no_password, Toast.LENGTH_LONG).show();
                 return;
             }
@@ -167,8 +167,8 @@ public class OsmNoteEditFragment extends BugEditFragment {
                                 protected Boolean doInBackground (Void...params){
                                     return OsmNotesApi.closeBug(
                                             mBug.getId(),
-                                            Settings.OpenstreetmapNotes.getUsername(),
-                                            Settings.OpenstreetmapNotes.getPassword(),
+                                            Settings.OsmNotes.getUsername(),
+                                            Settings.OsmNotes.getPassword(),
                                             message);
                                 }
 

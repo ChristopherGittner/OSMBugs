@@ -24,15 +24,12 @@ public class OsmoseElement implements Parcelable {
 
     }
 
-    public OsmoseElement(Parcel parcel)
+    private OsmoseElement(Parcel parcel)
     {
         mType = parcel.readInt();
         mId = parcel.readLong();
 
-        mTags = null;
         parcel.readList(mTags, OsmKeyValuePair.class.getClassLoader());
-
-        mFixes = null;
         parcel.readList(mFixes, OsmKeyValuePair.class.getClassLoader());
     }
 

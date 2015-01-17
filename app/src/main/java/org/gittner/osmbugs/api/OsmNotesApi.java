@@ -144,10 +144,10 @@ public class OsmNotesApi {
         DefaultHttpClient client = new DefaultHttpClient();
 
         /* Add the Authentication Details if we have a username in the Preferences */
-        if (!Settings.OpenstreetmapNotes.getUsername().equals("")) {
+        if (!Settings.OsmNotes.getUsername().equals("")) {
             client.getCredentialsProvider().setCredentials(AuthScope.ANY,
-                    new UsernamePasswordCredentials(Settings.OpenstreetmapNotes.getUsername(),
-                            Settings.OpenstreetmapNotes.getPassword())
+                    new UsernamePasswordCredentials(Settings.OsmNotes.getUsername(),
+                            Settings.OsmNotes.getPassword())
             );
         }
 

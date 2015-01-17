@@ -4,8 +4,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.common.Comment;
-import org.gittner.osmbugs.statics.Drawings;
+import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
@@ -109,31 +110,31 @@ public class MapdustBug extends Bug {
     @Override
     public Drawable getIcon() {
         if (getState() == STATE.CLOSED)
-            return Drawings.MapdustClosed;
+            return Images.get(R.drawable.mapdust_bug_green);
         else if (getState() == STATE.IGNORED)
-            return Drawings.MapdustIgnored;
+            return Images.get(R.drawable.mapdust_bug_gray);
         else {
             switch (getType()) {
                 case 1:
-                    return Drawings.MapdustWrongTurn;
+                    return Images.get(R.drawable.mapdust_wrong_turn);
                 case 2:
-                    return Drawings.MapdustBadRouting;
+                    return Images.get(R.drawable.mapdust_bad_routing);
                 case 3:
-                    return Drawings.MapdustOnewayRoad;
+                    return Images.get(R.drawable.mapdust_oneway_road);
                 case 4:
-                    return Drawings.MapdustBlockedStreet;
+                    return Images.get(R.drawable.mapdust_blocked_street);
                 case 5:
-                    return Drawings.MapdustMissingStreet;
+                    return Images.get(R.drawable.mapdust_missing_street);
                 case 6:
-                    return Drawings.MapdustRoundaboutIssue;
+                    return Images.get(R.drawable.mapdust_roundabout_issue);
                 case 7:
-                    return Drawings.MapdustMissingSpeedInfo;
+                    return Images.get(R.drawable.mapdust_missing_speed_info);
                 case 8:
-                    return Drawings.MapdustOther;
+                    return Images.get(R.drawable.mapdust_other);
             }
         }
 
-        return Drawings.MapdustOther;
+        return Images.get(R.drawable.mapdust_other);
     }
 
     @Override

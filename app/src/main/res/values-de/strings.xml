@@ -17,7 +17,6 @@
     <string name="visible_warnings">Angezeigte Warnungen</string>
     <string name="ignored_errors">Ignorierte Fehler</string>
     <string name="ok">OK</string>
-    <string name="saved_bug">Fehler gesichert</string>
     <string name="failed_to_save_bug">Fehler beim sichern des Fehlers</string>
     <string name="non_closed_areas">Offene Ränder</string>
     <string name="dead_ended_oneways">Einbahn Sackgassen</string>
@@ -58,15 +57,12 @@
     <string name="show_only_open_bugs">Zeige nur offene Fehler</string>
     <string name="bug_limit">Fehler Limit</string>
     <string name="enter_new_limit">Enter new Limit</string>
-    <string name="provider">Povider</string>
-    <string name="enter_username">Benutzernamen eingeben</string>
     <string name="username">Benutzername</string>
     <string name="platform">Platform</string>
     <string-array name="new_bug_platforms">
         <item>Openstreetmap Notes</item>
         <item>Mapdust</item>
     </string-array>
-    <string name="new_bugs_text">Beschreibung des neuen Fehlers</string>
     <string name="mapdust">Mapdust</string>
     <string name="wrong_turn">Falsches Abbiegen</string>
     <string name="bad_routing">Schlechte Routenführung</string>
@@ -79,11 +75,9 @@
     <string name="show_open_bugs">Zeige Offene Fehler</string>
     <string name="show_fixed_bugs">Zeige Behobene Fehler</string>
     <string name="show_invalid_bugs">Zeige Ungültige Fehler</string>
-    <string name="bug_symbol">Fehler Symbol</string>
     <string name="specific">Spezifisch</string>
     <string name="general">Allgemein</string>
     <string name="openstreetmap_notes">Openstreetmap Notes</string>
-    <string name="edit">Edit</string>
     <string name="comments">Kommentare</string>
     <string name="open">Offen</string>
     <string name="closed">Geschlossen</string>
@@ -116,26 +110,14 @@
     <string name="domain_hijacking">Domain Hijacking</string>
     <string name="non_match">Passt nicht</string>
     <string name="reset">Zurücksetzen</string>
-    <string name="new_comment">Neuer Kommentar</string>
     <string name="add_bug">Fehler hinzufügen</string>
-    <string name="software_bug">Software Fehler</string>
-    <string name="load_all_comments">Alle Kommentare Laden</string>
-    <string name="loading_bug_please_wait">Bitte Warten\nFehler wird geladen</string>
     <string name="debug">Debug</string>
     <string name="use_debug_server">Debug Server nutzen</string>
     <string name="title_activity_add_mapdust_bug">Mapdust Fehler hinzufügen</string>
     <string name="type">Typ</string>
     <string name="title_activity_add_openstreetmap_note">Openstreetmap Note hinzufügen</string>
-    <string name="title_activity_bug_list">Fehler Liste</string>
     <string name="list">Liste</string>
     <string name="osmose">Osmose</string>
-    <string name="structure">Struktur</string>
-    <string name="bad_tag">Ungeeignete Tags</string>
-    <string name="tags_to_remove">zu entfernende Tags</string>
-    <string name="tags_name">Namen</string>
-    <string name="administrative">Administration</string>
-    <string name="to_map">Zur Karte hinzuzufügen</string>
-    <string name="integration">Integration</string>
     <string name="bugs_to_display">Anzuzeigende Fehler</string>
     <string name="false_positive">Falschmeldung</string>
     <string name="do_comment">Kommentieren</string>
@@ -147,12 +129,15 @@
     <string name="saving">Speichern</string>
     <string name="loading_comments">Kommentare laden…</string>
     <string name="feedback_to_osmbugs">Feedback to OSMBugs</string>
-    <string name="email_feedback">Email Feedback...</string>
+    <string name="email_feedback">Email Feedback…</string>
     <string name="sending_feedback_failed_message">Scheinbar ist keine Email App installiert.\n\nTrotzdem gute Nachrichten:\nSie Können mir gerne von woanders aus eine Email senden z.B. an:\n\nchristopher@gittner.org\n\nVielen Dank</string>
     <string name="sending_feedback_failed_title">Feedback senden fehlgeschlagen</string>
     <string name="feedback">Feedback</string>
-    <string name="fix">Fix</string>
-    <string name="laoding_details">Lade Details</string>
+    <string name="loading_details">Lade Details</string>
     <string name="details">Details</string>
+    <string name="add">Hinzufügen</string>
+    <string name="delete">Löschen</string>
+    <string name="tags">Tags</string>
+    <string name="modify">Ändern</string>
 
 </resources>

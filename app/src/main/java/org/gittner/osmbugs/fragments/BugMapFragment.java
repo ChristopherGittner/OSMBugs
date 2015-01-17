@@ -27,7 +27,7 @@ import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.statics.BugDatabase;
-import org.gittner.osmbugs.statics.Drawings;
+import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Globals;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.DefaultResourceProxyImpl;
@@ -46,7 +46,31 @@ public class BugMapFragment extends Fragment {
     private static final String CENTER_LAT = "CENTER_LAT";
     private static final String CENTER_LON = "CENTER_LON";
 
+    public interface OnFragmentInteractionListener {
+        public void onBugClicked(Bug bug);
+
+        public void onAddNewBug(GeoPoint point);
+    }
+
     private OnFragmentInteractionListener mListener;
+
+    /* The next touch event on the map opens the add Bug Prompt */
+    private boolean mAddNewBugOnNextClick = false;
+
+    /* The main map */
+    private MapView mMapView = null;
+
+    /* The Overlay for Bugs displayed on the map */
+    private ItemizedIconOverlay<BugOverlayItem> mKeeprightOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mOsmoseOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mMapdustOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mOsmNotesOverlay;
+
+    /* The Location Marker Overlay */
+    private MyLocationNewOverlay mLocationOverlay;
+
+    /* The last location retrieved from the LocationListener */
+    private Location mLastGpsLocation;
 
     public static BugMapFragment newInstance() {
         return new BugMapFragment();
@@ -83,25 +107,25 @@ public class BugMapFragment extends Fragment {
         /* Create Bug Overlays */
         mKeeprightOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
-                Drawings.KeeprightDrawableDefault,
+                Images.get(R.drawable.zap),
                 mKeeprightGestureListener,
                 new DefaultResourceProxyImpl(getActivity()));
 
         mOsmoseOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
-                Drawings.OsmoseMarkerB0,
+                Images.get(R.drawable.marker_b_0),
                 mOsmoseGestureListener,
                 new DefaultResourceProxyImpl(getActivity()));
 
         mMapdustOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
-                Drawings.MapdustOther,
+                Images.get(R.drawable.mapdust_other),
                 mMapdustGestureListener,
                 new DefaultResourceProxyImpl(getActivity()));
 
         mOsmNotesOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
-                Drawings.OpenstreetmapNotesOpen,
+                Images.get(R.drawable.osm_notes_open_bug),
                 mOsmNotesGestureListener,
                 new DefaultResourceProxyImpl(getActivity()));
 
@@ -109,10 +133,6 @@ public class BugMapFragment extends Fragment {
         mMapView = (MapView) v.findViewById(R.id.mapview);
         mMapView.setMultiTouchControls(true);
         mMapView.setBuiltInZoomControls(true);
-        mMapView.getOverlays().add(mKeeprightOverlay);
-        mMapView.getOverlays().add(mOsmoseOverlay);
-        mMapView.getOverlays().add(mMapdustOverlay);
-        mMapView.getOverlays().add(mOsmNotesOverlay);
 
         mLocationOverlay = new MyLocationNewOverlay(getActivity(), mMapView);
         mMapView.getOverlays().add(mLocationOverlay);
@@ -217,11 +237,26 @@ public class BugMapFragment extends Fragment {
         /* Register a DatabaseWatcher for update notification */
         BugDatabase.getInstance().addDatabaseWatcher(mDatabaseWatcher);
 
-        /* Display or hide Bug platforms */
-        mKeeprightOverlay.setEnabled(Settings.Keepright.isEnabled());
-        mOsmoseOverlay.setEnabled(Settings.Osmose.isEnabled());
-        mMapdustOverlay.setEnabled(Settings.Mapdust.isEnabled());
-        mOsmNotesOverlay.setEnabled(Settings.OpenstreetmapNotes.isEnabled());
+        /* Display enabled Bug platforms */
+        if(Settings.Keepright.isEnabled())
+        {
+            mMapView.getOverlays().add(mKeeprightOverlay);
+        }
+
+        if(Settings.Osmose.isEnabled())
+        {
+            mMapView.getOverlays().add(mOsmoseOverlay);
+        }
+
+        if(Settings.Mapdust.isEnabled())
+        {
+            mMapView.getOverlays().add(mMapdustOverlay);
+        }
+
+        if(Settings.OsmNotes.isEnabled())
+        {
+            mMapView.getOverlays().add(mOsmNotesOverlay);
+        }
 
         mMapView.invalidate();
     }
@@ -241,6 +276,11 @@ public class BugMapFragment extends Fragment {
 
         /* Stop listening to update notifications */
         BugDatabase.getInstance().removeDatabaseWatcher(mDatabaseWatcher);
+
+        mMapView.getOverlays().remove(mKeeprightOverlay);
+        mMapView.getOverlays().remove(mOsmoseOverlay);
+        mMapView.getOverlays().remove(mMapdustOverlay);
+        mMapView.getOverlays().remove(mOsmNotesOverlay);
     }
 
     @Override
@@ -271,11 +311,11 @@ public class BugMapFragment extends Fragment {
 
         if(mAddNewBugOnNextClick)
         {
-            menu.findItem(R.id.add_bug).setIcon(Drawings.MenuAddBugRed);
+            menu.findItem(R.id.add_bug).setIcon(Images.get(R.drawable.ic_menu_add_bug_red));
         }
         else
         {
-            menu.findItem(R.id.add_bug).setIcon(Drawings.MenuAddBug);
+            menu.findItem(R.id.add_bug).setIcon(Images.get(R.drawable.ic_menu_add_bug));
         }
     }
 
@@ -324,12 +364,6 @@ public class BugMapFragment extends Fragment {
 
     public BoundingBoxE6 getBBox() {
         return mMapView.getBoundingBox();
-    }
-
-    public interface OnFragmentInteractionListener {
-        public void onBugClicked(Bug bug);
-
-        public void onAddNewBug(GeoPoint point);
     }
 
     private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mKeeprightGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
@@ -445,22 +479,4 @@ public class BugMapFragment extends Fragment {
 
         }
     };
-
-    /* The next touch event on the map opens the add Bug Prompt */
-    private boolean mAddNewBugOnNextClick = false;
-
-    /* The main map */
-    private MapView mMapView = null;
-
-    /* The Overlay for Bugs displayed on the map */
-    private ItemizedIconOverlay<BugOverlayItem> mKeeprightOverlay;
-    private ItemizedIconOverlay<BugOverlayItem> mOsmoseOverlay;
-    private ItemizedIconOverlay<BugOverlayItem> mMapdustOverlay;
-    private ItemizedIconOverlay<BugOverlayItem> mOsmNotesOverlay;
-
-    /* The Location Marker Overlay */
-    private MyLocationNewOverlay mLocationOverlay;
-
-    /* The last location retrieved from the LocationListener */
-    private Location mLastGpsLocation;
 }

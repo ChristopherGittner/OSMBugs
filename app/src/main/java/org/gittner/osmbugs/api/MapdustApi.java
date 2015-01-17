@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class MapdustApi {
 
-    public static final String API_KEY = "ae58b0b4aa3f876265a4d5f29167b73c";
+    private static final String API_KEY = "ae58b0b4aa3f876265a4d5f29167b73c";
 
     public static ArrayList<MapdustBug> downloadBBox(BoundingBoxE6 bBox) {
         HttpClient client = new DefaultHttpClient();

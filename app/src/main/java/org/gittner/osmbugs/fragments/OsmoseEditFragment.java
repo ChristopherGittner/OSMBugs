@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.gittner.osmbugs.R;
@@ -75,11 +75,14 @@ public class OsmoseEditFragment extends BugEditFragment {
 
                 txtvDetailsTitle.setText(R.string.details);
 
-                OsmoseElementView elementView = new OsmoseElementView(getActivity());
-                elementView.set(osmoseElements);
+                for(OsmoseElement element : osmoseElements)
+                {
+                    OsmoseElementView elementView = new OsmoseElementView(getActivity());
+                    elementView.set(element);
 
-                ScrollView scrlvDetails = (ScrollView) v.findViewById(R.id.scrlvDetails);
-                scrlvDetails.addView(elementView);
+                    LinearLayout layoutDetails = (LinearLayout) v.findViewById(R.id.layoutDetails);
+                    layoutDetails.addView(elementView);
+                }
 
                 mLoadDetailsTask = null;
             }
@@ -89,5 +92,5 @@ public class OsmoseEditFragment extends BugEditFragment {
         return v;
     }
 
-    AsyncTask<Void, Void, List<OsmoseElement>> mLoadDetailsTask = null;
+    private AsyncTask<Void, Void, List<OsmoseElement>> mLoadDetailsTask = null;
 }

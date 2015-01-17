@@ -38,7 +38,7 @@ public class OsmKeyValuePair implements Parcelable {
 
     @Override
     public String toString() {
-        return mKey + " : " + mValue;
+        return "\"" + mKey + "\" : \"" + mValue + "\"";
     }
 
     public static final Creator<OsmKeyValuePair> CREATOR = new Creator<OsmKeyValuePair>() {

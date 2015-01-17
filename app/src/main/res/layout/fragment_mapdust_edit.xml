@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imgvIcon"
-                android:background="@drawable/other"
+                android:background="@drawable/mapdust_other"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="4dp" />
 
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/btnResolveBug"
-                android:src="@drawable/bug_green"
+                android:src="@drawable/mapdust_bug_green"
                 android:background="@android:color/transparent"
                 android:layout_marginRight="8dp"
                 android:layout_gravity="center_vertical"
@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/btnIgnoreBug"
-                android:src="@drawable/bug_grey"
+                android:src="@drawable/mapdust_bug_gray"
                 android:background="@android:color/transparent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp" />

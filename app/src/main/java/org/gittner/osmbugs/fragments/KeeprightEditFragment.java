@@ -21,7 +21,7 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.KeeprightApi;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.common.IndeterminateProgressAsyncTask;
-import org.gittner.osmbugs.statics.Drawings;
+import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Globals;
 
 public class KeeprightEditFragment extends BugEditFragment {
@@ -136,12 +136,12 @@ public class KeeprightEditFragment extends BugEditFragment {
                     break;
 
                 case 1:
-                    imgvIcon.setImageDrawable(Drawings.KeeprightDrawableClosed);
+                    imgvIcon.setImageDrawable(Images.get(R.drawable.keepright_closed));
                     txtvState.setText(R.string.closed);
                     break;
 
                 default:
-                    imgvIcon.setImageDrawable(Drawings.KeeprightDrawableIgnored);
+                    imgvIcon.setImageDrawable(Images.get(R.drawable.keepright_ignored));
                     txtvState.setText(R.string.ignored);
                     break;
             }

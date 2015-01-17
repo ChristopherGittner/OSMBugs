@@ -4,7 +4,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.gittner.osmbugs.statics.Drawings;
+import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
 public class KeeprightBug extends Bug {
@@ -102,18 +103,18 @@ public class KeeprightBug extends Bug {
     public Drawable getIcon() {
 
         if (mState == STATE.IGNORED_TMP) {
-            return Drawings.KeeprightDrawableClosed;
+            return Images.get(R.drawable.keepright_closed);
         }
         else if (mState == STATE.IGNORED) {
-            return Drawings.KeeprightDrawableIgnored;
+            return Images.get(R.drawable.keepright_ignored);
         }
 
-        return Drawings.get(ICON_PREFIX + mType, Drawings.KeeprightDrawableDefault);
+        return Images.getByName(ICON_PREFIX + mType, R.drawable.zap);
     }
 
     public Drawable getOpenIcon()
     {
-        return Drawings.get(ICON_PREFIX + mType, Drawings.KeeprightDrawableDefault);
+        return Images.getByName(ICON_PREFIX + mType, R.drawable.zap);
     }
 
     @Override

@@ -8,16 +8,16 @@ import java.util.List;
 
 public class OsmoseFix implements Parcelable {
 
-    private List<OsmKeyValuePair> mAdd = new ArrayList<>();
-    private List<OsmKeyValuePair> mDelete = new ArrayList<>();
-    private List<OsmKeyValuePair> mModify = new ArrayList<>();
+    private final List<OsmKeyValuePair> mAdd = new ArrayList<>();
+    private final List<OsmKeyValuePair> mDelete = new ArrayList<>();
+    private final List<OsmKeyValuePair> mModify = new ArrayList<>();
 
     public OsmoseFix()
     {
 
     }
 
-    public OsmoseFix(Parcel parcel) {
+    private OsmoseFix(Parcel parcel) {
         parcel.readList(mAdd, OsmKeyValuePair.class.getClassLoader());
         parcel.readList(mDelete, OsmKeyValuePair.class.getClassLoader());
         parcel.readList(mModify, OsmKeyValuePair.class.getClassLoader());

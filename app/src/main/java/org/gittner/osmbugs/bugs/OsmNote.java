@@ -4,8 +4,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.common.Comment;
-import org.gittner.osmbugs.statics.Drawings;
+import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
@@ -71,9 +72,9 @@ public class OsmNote extends Bug {
     @Override
     public Drawable getIcon() {
         if (mState == STATE.CLOSED)
-            return Drawings.OpenstreetmapNotesClosed;
+            return Images.get(R.drawable.osm_notes_closed_bug);
 
-        return Drawings.OpenstreetmapNotesOpen;
+        return Images.get(R.drawable.osm_notes_open_bug);
     }
 
     public long getId() {

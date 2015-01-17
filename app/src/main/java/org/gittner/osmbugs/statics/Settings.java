@@ -429,7 +429,7 @@ public class Settings {
         }
     }
 
-    public static class OpenstreetmapNotes {
+    public static class OsmNotes {
 
         public static boolean isEnabled() {
             return mPrefs.getBoolean("pref_openstreetmap_notes_enabled", true);

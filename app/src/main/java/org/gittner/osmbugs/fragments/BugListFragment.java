@@ -91,7 +91,7 @@ public class BugListFragment extends Fragment {
         if (Settings.Mapdust.isEnabled()) {
             mAdapter.addAllMapdustBugs(BugDatabase.getInstance().getMapdustBugs());
         }
-        if (Settings.OpenstreetmapNotes.isEnabled()) {
+        if (Settings.OsmNotes.isEnabled()) {
             mAdapter.addAllOsmNotes(BugDatabase.getInstance().getOpenstreetmapNotes());
         }
 

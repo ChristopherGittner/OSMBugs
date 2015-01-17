@@ -22,7 +22,7 @@ import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.fragments.BugListFragment;
 import org.gittner.osmbugs.fragments.BugMapFragment;
 import org.gittner.osmbugs.statics.BugDatabase;
-import org.gittner.osmbugs.statics.Drawings;
+import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Globals;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.GeoPoint;
@@ -33,7 +33,7 @@ public class OsmBugsActivity extends Activity implements
         BugMapFragment.OnFragmentInteractionListener,
         BugListFragment.OnFragmentInteractionListener {
 
-    private static String TAG = "OsmBugsActivity";
+    private static final String TAG = "OsmBugsActivity";
 
     /* Request Codes for activities */
     private static final int REQUEST_CODE_BUG_EDITOR_ACTIVITY = 1;
@@ -41,7 +41,6 @@ public class OsmBugsActivity extends Activity implements
 
     /* Dialog Ids */
     private static final int DIALOG_NEW_BUG = 1;
-    private static final int DIALOG_ABOUT = 2;
 
     private static final String TAG_BUG_MAP_FRAGMENT = "BUG_MAP_FRAGMENT";
     private static final String TAG_BUG_LIST_FRAGMENT = "TAG_BUG_LIST_FRAGMENT";
@@ -71,7 +70,7 @@ public class OsmBugsActivity extends Activity implements
         Settings.init(this);
 
         /* Init the Drawings Class to load all Resources */
-        Drawings.init(this);
+        Images.init(this);
     }
 
     @Override
@@ -180,7 +179,6 @@ public class OsmBugsActivity extends Activity implements
                                 i.putExtra(AddOpenstreetmapNoteActivity.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
 
                                 startActivity(i);
-                            } else {
                             }
                             dialog.dismiss();
                         }
@@ -216,10 +214,10 @@ public class OsmBugsActivity extends Activity implements
     }
 
     private void reloadAllBugs() {
-        reloadBugs(Globals.KEEPRIGHT);
-        reloadBugs(Globals.OSMOSE);
-        reloadBugs(Globals.MAPDUST);
-        reloadBugs(Globals.OSM_NOTES);
+        if(Settings.Keepright.isEnabled()) reloadBugs(Globals.KEEPRIGHT);
+        if(Settings.Osmose.isEnabled()) reloadBugs(Globals.OSMOSE);
+        if(Settings.Mapdust.isEnabled()) reloadBugs(Globals.MAPDUST);
+        if(Settings.OsmNotes.isEnabled()) reloadBugs(Globals.OSM_NOTES);
     }
 
     private void reloadBugs(int platform)
@@ -231,7 +229,7 @@ public class OsmBugsActivity extends Activity implements
         Fragment fragment = getFragmentManager().findFragmentById(R.id.container);
         if(fragment instanceof BugMapFragment)
         {
-            BugDatabase.getInstance().reload(((BugMapFragment) fragment).getBBox(), platform, mOnDownloadEndListener);
+            BugDatabase.getInstance().load(((BugMapFragment) fragment).getBBox(), platform, mOnDownloadEndListener);
         }
         else
         {

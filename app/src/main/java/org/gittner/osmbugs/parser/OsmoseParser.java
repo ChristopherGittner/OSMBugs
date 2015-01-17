@@ -71,9 +71,17 @@ public class OsmoseParser {
                 OsmoseElement element = new OsmoseElement();
 
                 String type = elem.getString("type");
-                if(type.equals("node")) element.setType(OsmoseElement.TYPE_NODE);
-                else if(type.equals("way")) element.setType(OsmoseElement.TYPE_WAY);
-                else element.setType(OsmoseElement.TYPE_RELATION);
+                switch (type) {
+                    case "node":
+                        element.setType(OsmoseElement.TYPE_NODE);
+                        break;
+                    case "way":
+                        element.setType(OsmoseElement.TYPE_WAY);
+                        break;
+                    default:
+                        element.setType(OsmoseElement.TYPE_RELATION);
+                        break;
+                }
 
                 element.setId(elem.getLong("id"));
 
