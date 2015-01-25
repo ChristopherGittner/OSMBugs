@@ -151,6 +151,10 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+	<string name="crash_dialog_title">Osmbugs crashed</string>
+	<string name="crash_dialog_text">Ooooops!\n\nI crashed,\nbut a report has been created and is ready to be delivered to my developer to help fix the issue!\nAll you have to do is click OK.</string>
+	<string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
+	<string name="crash_dialog_ok_toast">Thank you !</string>
 
 
 </resources>
