@@ -57,10 +57,10 @@ public class OsmoseEditFragment extends BugEditFragment {
         ImageView imgvIcon = (ImageView) v.findViewById(R.id.imgvIcon);
         imgvIcon.setImageDrawable(mBug.getIcon());
 
-        mLoadDetailsTask = new AsyncTask<Void, Void, List<OsmoseElement>>() {
+        mLoadDetailsTask = new AsyncTask<Long, Void, List<OsmoseElement>>() {
             @Override
-            protected List<OsmoseElement> doInBackground(Void... params) {
-                return OsmoseApi.loadElements(mBug.getId());
+            protected List<OsmoseElement> doInBackground(Long... id) {
+                return OsmoseApi.loadElements(id[0]);
             }
 
             @Override
@@ -68,7 +68,7 @@ public class OsmoseEditFragment extends BugEditFragment {
                 v.findViewById(R.id.pbarLoadingDetails).setVisibility(View.GONE);
 
                 TextView txtvDetailsTitle = (TextView) v.findViewById(R.id.txtvDetailsTitle);
-                if (osmoseElements.isEmpty()) {
+                if (osmoseElements == null || osmoseElements.isEmpty()) {
                     txtvDetailsTitle.setVisibility(View.GONE);
                     return;
                 }
@@ -87,10 +87,10 @@ public class OsmoseEditFragment extends BugEditFragment {
                 mLoadDetailsTask = null;
             }
         };
-        mLoadDetailsTask.execute();
+        mLoadDetailsTask.execute(mBug.getId());
 
         return v;
     }
 
-    private AsyncTask<Void, Void, List<OsmoseElement>> mLoadDetailsTask = null;
+    private AsyncTask<Long, Void, List<OsmoseElement>> mLoadDetailsTask = null;
 }
