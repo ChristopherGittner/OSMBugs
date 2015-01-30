@@ -9,8 +9,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -168,36 +166,16 @@ public class BugMapFragment extends Fragment {
 
         final Bundle args = getArguments();
         if(args == null) {
-            // Ugly Tweak since the mapview has to be layed out before setCenter works correctly
-            //TODO: Remove as soon as this is fixed in osmdroid (4.3)
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            /* Set the Initial Map Zoom */
-                            mMapView.getController().setZoom(Settings.getLastZoom());
-
-                            /* Set the Initial Center of the map */
-                            mMapView.getController().setCenter(Settings.getLastMapCenter());
-                        }
-                    });
-                }
-            });
+			mMapView.getController().setZoom(Settings.getLastZoom());
+			mMapView.getController().setCenter(Settings.getLastMapCenter());
         }
         else
         {
-            /* Set the Center and Zoomlevel */
-            // Tweak since the mapview has to be layed out before setCenter works correctly
-            //TODO: Remove as soon as this is fixed in osmdroid (4.3)
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    mMapView.getController().setZoom(args.getInt(ZOOM_LEVEL));
-                    mMapView.getController().setCenter(new GeoPoint(args.getDouble(CENTER_LAT), args.getDouble(CENTER_LON)));
-                }
-            });
+			mMapView.getController().setZoom(args.getInt(ZOOM_LEVEL));
+			mMapView.getController().setCenter(
+					new GeoPoint(
+							args.getDouble(CENTER_LAT),
+							args.getDouble(CENTER_LON)));
         }
 
         /* Add all Bugs to the Map */

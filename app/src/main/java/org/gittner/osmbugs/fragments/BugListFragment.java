@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -264,14 +262,8 @@ public class BugListFragment extends Fragment {
                 txtvDescription.setText(bug.getDescription());
                 imgvIcon.setImageDrawable(bug.getIcon());
 
-                //TODO: Remove as soon as this is fixed in osmdroid (4.3)
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mapView.getController().setZoom(17);
-                        mapView.getController().setCenter(bug.getPoint());
-                    }
-                });
+				mapView.getController().setZoom(17);
+				mapView.getController().setCenter(bug.getPoint());
                 mapView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -295,15 +287,9 @@ public class BugListFragment extends Fragment {
                 txtvDescription.setText(bug.getTitle());
                 imgvIcon.setImageDrawable(bug.getIcon());
 
-                //TODO: Remove as soon as this is fixed in osmdroid (4.3)
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mapView.getController().setZoom(17);
-                        mapView.getController().setCenter(bug.getPoint());
-                    }
-                });
-                mapView.setOnTouchListener(new View.OnTouchListener() {
+				mapView.getController().setZoom(17);
+				mapView.getController().setCenter(bug.getPoint());
+				mapView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         if (event.getAction() == MotionEvent.ACTION_DOWN)
@@ -326,14 +312,8 @@ public class BugListFragment extends Fragment {
                 txtvDescription.setText(bug.getDescription());
                 imgvIcon.setImageDrawable(bug.getIcon());
 
-                //TODO: Remove as soon as this is fixed in osmdroid (4.3)
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mapView.getController().setZoom(17);
-                        mapView.getController().setCenter(bug.getPoint());
-                    }
-                });
+				mapView.getController().setZoom(17);
+				mapView.getController().setCenter(bug.getPoint());
                 mapView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -357,14 +337,8 @@ public class BugListFragment extends Fragment {
                 txtvDescription.setText(bug.getDescription());
                 imgvIcon.setImageDrawable(bug.getIcon());
 
-                //TODO: Remove as soon as this is fixed in osmdroid (4.3)
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mapView.getController().setZoom(17);
-                        mapView.getController().setCenter(bug.getPoint());
-                    }
-                });
+				mapView.getController().setZoom(17);
+				mapView.getController().setCenter(bug.getPoint());
                 mapView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
