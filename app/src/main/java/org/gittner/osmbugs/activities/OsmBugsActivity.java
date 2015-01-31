@@ -47,9 +47,7 @@ public class OsmBugsActivity extends Activity implements
 
     private static GeoPoint mNewBugLocation;
 
-    private int mActiveDownloads = 0;
-
-    @Override
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -73,17 +71,30 @@ public class OsmBugsActivity extends Activity implements
         Images.init(this);
     }
 
-    @Override
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+
+		BugDatabase.getInstance().addDatabaseWatcher(mDatabaseWatcher);
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+
+		BugDatabase.getInstance().removeDatabaseWatcher(mDatabaseWatcher);
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.osm_bugs, menu);
 
-        /* Hide the Refresh Button if a Download is in Progress */
-        if(mActiveDownloads != 0) {
-            menu.findItem(R.id.refresh).setEnabled(false);
+        if(BugDatabase.getInstance().isDownloadRunning()) {
             setProgressBarIndeterminateVisibility(true);
         }
         else {
-            menu.findItem(R.id.refresh).setEnabled(true);
             setProgressBarIndeterminateVisibility(false);
         }
 
@@ -222,30 +233,18 @@ public class OsmBugsActivity extends Activity implements
 
     private void reloadBugs(int platform)
     {
-        mActiveDownloads += 1;
-
         invalidateOptionsMenu();
 
         Fragment fragment = getFragmentManager().findFragmentById(R.id.container);
         if(fragment instanceof BugMapFragment)
         {
-            BugDatabase.getInstance().load(((BugMapFragment) fragment).getBBox(), platform, mOnDownloadEndListener);
+            BugDatabase.getInstance().load(((BugMapFragment) fragment).getBBox(), platform);
         }
         else
         {
-            BugDatabase.getInstance().reload(platform, mOnDownloadEndListener);
+            BugDatabase.getInstance().reload(platform);
         }
     }
-
-    private final BugDatabase.OnDownloadEndListener mOnDownloadEndListener = new BugDatabase.OnDownloadEndListener() {
-        @Override
-        public void onCompletion() {
-            if(mActiveDownloads > 0) {
-                mActiveDownloads -= 1;
-            }
-            invalidateOptionsMenu();
-        }
-    };
 
     @Override
     public void onBugClicked(Bug bug) {
@@ -280,7 +279,16 @@ public class OsmBugsActivity extends Activity implements
         showDialog(DIALOG_NEW_BUG);
     }
 
-    private void onFeedbackClicked()
+	private BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher()
+	{
+		@Override
+		public void onDatabaseUpdated(int platform)
+		{
+			invalidateOptionsMenu();
+		}
+	};
+
+	private void onFeedbackClicked()
     {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.developer_mail)});

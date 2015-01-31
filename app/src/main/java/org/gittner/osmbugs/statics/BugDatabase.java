@@ -16,10 +16,6 @@ import java.util.ArrayList;
 
 public class BugDatabase {
 
-    public interface OnDownloadEndListener {
-        public void onCompletion();
-    }
-
     public interface DatabaseWatcher {
 
         public void onDatabaseUpdated(int platform);
@@ -33,6 +29,11 @@ public class BugDatabase {
     private final ArrayList<OsmNote> mOsmNotes = new ArrayList<>();
 
     private final ArrayList<DatabaseWatcher> mDatabaseWatchers = new ArrayList<>();
+
+	private AsyncTask mKeeprightDownloadTask = null;
+	private AsyncTask mOsmoseDownloadTask = null;
+	private AsyncTask mMapdustDownloadTask = null;
+	private AsyncTask mOsmNotesDownloadTask = null;
 
     public static BugDatabase getInstance() {
         return mInstance;
@@ -57,37 +58,46 @@ public class BugDatabase {
         return mOsmNotes;
     }
 
-    public void reload(final int platform, final OnDownloadEndListener listener) {
-        load(Settings.getLastBBox(), platform, listener);
+    public void reload(final int platform) {
+        load(Settings.getLastBBox(), platform);
     }
 
-    public void load(final BoundingBoxE6 bBox, final int platform, final OnDownloadEndListener listener) {
+    public void load(final BoundingBoxE6 bBox, final int platform) {
 
         Settings.setLastBBox(bBox);
 
         switch (platform)
         {
             case Globals.KEEPRIGHT:
-                loadKeepright(bBox, listener);
+                loadKeepright(bBox);
                 break;
 
             case Globals.OSMOSE:
-                loadOsmose(bBox, listener);
+                loadOsmose(bBox);
                 break;
 
             case Globals.MAPDUST:
-                loadMapdust(bBox, listener);
+                loadMapdust(bBox);
                 break;
 
             case Globals.OSM_NOTES:
-                loadOsmNotes(bBox, listener);
+                loadOsmNotes(bBox);
                 break;
         }
     }
 
-    private void loadKeepright(final BoundingBoxE6 bBox, final OnDownloadEndListener listener)
+    private void loadKeepright(final BoundingBoxE6 bBox)
     {
-        new AsyncTask<BoundingBoxE6, Void, ArrayList<KeeprightBug>>() {
+		mKeeprightBugs.clear();
+		notifyAllDatabaseUpdated(Globals.KEEPRIGHT);
+
+		if(mKeeprightDownloadTask != null)
+		{
+			mKeeprightDownloadTask.cancel(true);
+			mKeeprightDownloadTask = null;
+		}
+
+		mKeeprightDownloadTask = new AsyncTask<BoundingBoxE6, Void, ArrayList<KeeprightBug>>() {
             @Override
             protected ArrayList<KeeprightBug> doInBackground(BoundingBoxE6... bBoxes) {
                 return KeeprightApi.downloadBBox(bBoxes[0],
@@ -98,7 +108,6 @@ public class BugDatabase {
 
             @Override
             protected void onPostExecute(ArrayList<KeeprightBug> keeprightBugs) {
-                listener.onCompletion();
 
                 if(keeprightBugs != null) {
                     mKeeprightBugs.clear();
@@ -106,13 +115,24 @@ public class BugDatabase {
 
                     notifyAllDatabaseUpdated(Globals.KEEPRIGHT);
                 }
+
+				mKeeprightDownloadTask = null;
             }
         }.execute(bBox);
     }
 
-    private void loadOsmose(final BoundingBoxE6 bBox, final OnDownloadEndListener listener)
+    private void loadOsmose(final BoundingBoxE6 bBox)
     {
-        new AsyncTask<BoundingBoxE6, Void, ArrayList<OsmoseBug>>() {
+		mOsmoseBugs.clear();
+		notifyAllDatabaseUpdated(Globals.OSMOSE);
+
+		if(mOsmoseDownloadTask != null)
+		{
+			mOsmoseDownloadTask.cancel(true);
+			mOsmoseDownloadTask = null;
+		}
+
+		mOsmoseDownloadTask = new AsyncTask<BoundingBoxE6, Void, ArrayList<OsmoseBug>>() {
             @Override
             protected ArrayList<OsmoseBug> doInBackground(BoundingBoxE6... bBoxes) {
                 return OsmoseApi.downloadBBox(bBoxes[0]);
@@ -120,7 +140,6 @@ public class BugDatabase {
 
             @Override
             protected void onPostExecute(ArrayList<OsmoseBug> osmoseBugs) {
-                listener.onCompletion();
 
                 if(osmoseBugs != null)
                 {
@@ -129,13 +148,24 @@ public class BugDatabase {
 
                     notifyAllDatabaseUpdated(Globals.OSMOSE);
                 }
+
+				mOsmoseDownloadTask = null;
             }
         }.execute(bBox);
     }
 
-    private void loadMapdust(final BoundingBoxE6 bBox, final OnDownloadEndListener listener)
+    private void loadMapdust(final BoundingBoxE6 bBox)
     {
-        new AsyncTask<BoundingBoxE6, Void, ArrayList<MapdustBug>>() {
+		mMapdustBugs.clear();
+		notifyAllDatabaseUpdated(Globals.MAPDUST);
+
+		if(mMapdustDownloadTask != null)
+		{
+			mMapdustDownloadTask.cancel(true);
+			mMapdustDownloadTask = null;
+		}
+
+		mMapdustDownloadTask = new AsyncTask<BoundingBoxE6, Void, ArrayList<MapdustBug>>() {
             @Override
             protected ArrayList<MapdustBug> doInBackground(BoundingBoxE6... bBoxes) {
                 return MapdustApi.downloadBBox(bBoxes[0]);
@@ -143,7 +173,6 @@ public class BugDatabase {
 
             @Override
             protected void onPostExecute(ArrayList<MapdustBug> mapdustBugs) {
-                listener.onCompletion();
 
                 if(mapdustBugs != null)
                 {
@@ -152,13 +181,24 @@ public class BugDatabase {
 
                     notifyAllDatabaseUpdated(Globals.MAPDUST);
                 }
+
+				mMapdustDownloadTask = null;
             }
         }.execute(bBox);
     }
 
-    private void loadOsmNotes(final BoundingBoxE6 bBox, final OnDownloadEndListener listener)
+    private void loadOsmNotes(final BoundingBoxE6 bBox)
     {
-        new AsyncTask<BoundingBoxE6, Void, ArrayList<OsmNote>>() {
+		mOsmNotes.clear();
+		notifyAllDatabaseUpdated(Globals.OSM_NOTES);
+
+		if(mOsmNotesDownloadTask != null)
+		{
+			mOsmNotesDownloadTask.cancel(true);
+			mOsmNotesDownloadTask = null;
+		}
+
+		mOsmNotesDownloadTask = new AsyncTask<BoundingBoxE6, Void, ArrayList<OsmNote>>() {
             @Override
             protected ArrayList<OsmNote> doInBackground(BoundingBoxE6... bBoxes) {
                 return OsmNotesApi.downloadBBox(
@@ -169,7 +209,6 @@ public class BugDatabase {
 
             @Override
             protected void onPostExecute(ArrayList<OsmNote> osmNotes) {
-                listener.onCompletion();
 
                 if(osmNotes != null) {
                     mOsmNotes.clear();
@@ -177,6 +216,8 @@ public class BugDatabase {
 
                     notifyAllDatabaseUpdated(Globals.OSM_NOTES);
                 }
+
+				mOsmNotesDownloadTask = null;
             }
         }.execute(bBox);
     }
@@ -198,4 +239,13 @@ public class BugDatabase {
     {
         mDatabaseWatchers.remove(watcher);
     }
+
+	public boolean isDownloadRunning()
+	{
+		return
+				mKeeprightDownloadTask != null
+				|| mOsmoseDownloadTask != null
+				|| mMapdustDownloadTask != null
+				|| mOsmNotesDownloadTask != null;
+	}
 }
