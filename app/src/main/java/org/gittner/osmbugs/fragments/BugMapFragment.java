@@ -2,12 +2,7 @@ package org.gittner.osmbugs.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.graphics.Canvas;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +19,7 @@ import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
+import org.gittner.osmbugs.common.MyLocationOverlay;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Globals;
@@ -34,7 +30,6 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 
@@ -65,10 +60,7 @@ public class BugMapFragment extends Fragment {
     private ItemizedIconOverlay<BugOverlayItem> mOsmNotesOverlay;
 
     /* The Location Marker Overlay */
-    private MyLocationNewOverlay mLocationOverlay;
-
-    /* The last location retrieved from the LocationListener */
-    private Location mLastGpsLocation;
+    private MyLocationOverlay mLocationOverlay = null;
 
     public static BugMapFragment newInstance() {
         return new BugMapFragment();
@@ -132,14 +124,6 @@ public class BugMapFragment extends Fragment {
         mMapView.setMultiTouchControls(true);
         mMapView.setBuiltInZoomControls(true);
 
-        mLocationOverlay = new MyLocationNewOverlay(getActivity(), mMapView);
-        mMapView.getOverlays().add(mLocationOverlay);
-        mLocationOverlay.enableMyLocation();
-        if(Settings.getFollowGps())
-            mLocationOverlay.enableFollowLocation();
-        else
-            mLocationOverlay.disableFollowLocation();
-
         /*
          * This adds an empty Overlay to retrieve the Touch Events. This is some sort of Hack, since
          * the OnTouchListener will fire only once if the Built in Zoom Controls are enabled
@@ -195,22 +179,9 @@ public class BugMapFragment extends Fragment {
         return v;
     }
 
-    @Override
+	@Override
     public void onResume() {
         super.onResume();
-
-        /* Start Listening to Location updates if we have a gps provider */
-        LocationManager locMgr = ((LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE));
-
-        Criteria locationCriteria = new Criteria();
-        locationCriteria.setAccuracy(Criteria.ACCURACY_FINE);
-
-        String bestProvider = locMgr.getBestProvider(locationCriteria, true);
-
-        if (bestProvider == null)
-            return;
-
-        locMgr.requestLocationUpdates(bestProvider, 0, 0, mLocationListener);
 
         /* Register a DatabaseWatcher for update notification */
         BugDatabase.getInstance().addDatabaseWatcher(mDatabaseWatcher);
@@ -236,10 +207,12 @@ public class BugMapFragment extends Fragment {
             mMapView.getOverlays().add(mOsmNotesOverlay);
         }
 
+		setupLocationOverlay();
+
         mMapView.invalidate();
     }
 
-    @Override
+	@Override
     public void onPause() {
         super.onPause();
 
@@ -249,9 +222,6 @@ public class BugMapFragment extends Fragment {
         /* Save the last Map Zoom */
         Settings.setLastZoom(mMapView.getZoomLevel());
 
-        /* Stop Listening to Location updates */
-        ((LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE)).removeUpdates(mLocationListener);
-
         /* Stop listening to update notifications */
         BugDatabase.getInstance().removeDatabaseWatcher(mDatabaseWatcher);
 
@@ -259,6 +229,9 @@ public class BugMapFragment extends Fragment {
         mMapView.getOverlays().remove(mOsmoseOverlay);
         mMapView.getOverlays().remove(mMapdustOverlay);
         mMapView.getOverlays().remove(mOsmNotesOverlay);
+
+		mLocationOverlay.disableFollowLocation();
+		mLocationOverlay.disableMyLocation();
     }
 
     @Override
@@ -284,8 +257,9 @@ public class BugMapFragment extends Fragment {
 
         inflater.inflate(R.menu.bug_map, menu);
 
-        /* Set the checked state of the follow GPS Button according to the System Settings */
-        menu.findItem(R.id.follow_gps).setChecked(Settings.getFollowGps());
+		menu.findItem(R.id.enable_gps).setChecked(Settings.getEnableGps());
+		menu.findItem(R.id.follow_gps).setChecked(Settings.getFollowGps());
+		menu.findItem(R.id.follow_gps).setEnabled(Settings.getEnableGps());
 
         if(mAddNewBugOnNextClick)
         {
@@ -304,8 +278,8 @@ public class BugMapFragment extends Fragment {
                 menuFollowGpsClicked();
                 return true;
 
-            case R.id.go_to_gps:
-                menuGoToGPSClicked();
+            case R.id.enable_gps:
+                menuEnableGPSClicked();
                 return true;
 
             case R.id.add_bug:
@@ -317,21 +291,19 @@ public class BugMapFragment extends Fragment {
     }
 
     private void menuFollowGpsClicked() {
-        /* Toggle GPS Map Following */
         Settings.setFollowGps(!Settings.getFollowGps());
 
-        if(Settings.getFollowGps())
-            mLocationOverlay.enableFollowLocation();
-        else
-            mLocationOverlay.disableFollowLocation();
+		getActivity().invalidateOptionsMenu();
 
-        getActivity().invalidateOptionsMenu();
+		setupLocationOverlay();
     }
 
-    private void menuGoToGPSClicked() {
-        /* Center the GPS on the last known Location */
-        if (mLastGpsLocation != null)
-            mMapView.getController().setCenter(new GeoPoint(mLastGpsLocation));
+    private void menuEnableGPSClicked() {
+        Settings.setEnableGps(!Settings.getEnableGps());
+
+		getActivity().invalidateOptionsMenu();
+
+		setupLocationOverlay();
     }
 
     private void menuAddBugClicked() {
@@ -340,7 +312,48 @@ public class BugMapFragment extends Fragment {
         getActivity().invalidateOptionsMenu();
     }
 
-    public BoundingBoxE6 getBBox() {
+	private void setupLocationOverlay()
+	{
+		if(mLocationOverlay == null)
+		{
+			mLocationOverlay = new MyLocationOverlay(getActivity(), mMapView, mFollowModeListener);
+		}
+
+		if(Settings.getEnableGps())
+		{
+			mLocationOverlay.enableMyLocation();
+			if(!mMapView.getOverlays().contains(mLocationOverlay))
+			{
+				mMapView.getOverlays().add(mLocationOverlay);
+			}
+		}
+		else
+		{
+			mLocationOverlay.disableMyLocation();
+			mMapView.getOverlays().remove(mLocationOverlay);
+		}
+
+		if(Settings.getFollowGps())
+		{
+			mLocationOverlay.enableFollowLocation();
+		}
+		else
+		{
+			mLocationOverlay.disableFollowLocation();
+		}
+	}
+
+	private MyLocationOverlay.FollowModeListener mFollowModeListener = new MyLocationOverlay.FollowModeListener()
+	{
+		@Override
+		public void onFollowingStopped()
+		{
+			Settings.setFollowGps(false);
+			getActivity().invalidateOptionsMenu();
+		}
+	};
+
+	public BoundingBoxE6 getBBox() {
         return mMapView.getBoundingBox();
     }
 
@@ -432,29 +445,6 @@ public class BugMapFragment extends Fragment {
                     break;
             }
             mMapView.invalidate();
-        }
-    };
-
-    private final LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            /* Store the location for later use */
-            mLastGpsLocation = location;
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-
         }
     };
 }

@@ -16,15 +16,23 @@ public class Settings {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static boolean getFollowGps() {
-        return mPrefs.getBoolean("pref_follow_gps", true);
-    }
+	public static boolean getEnableGps() {
+		return mPrefs.getBoolean("pref_enable_gps", true);
+	}
 
-    public static void setFollowGps(boolean state) {
-        mPrefs.edit().putBoolean("pref_follow_gps", state).apply();
-    }
+	public static void setEnableGps(boolean state) {
+		mPrefs.edit().putBoolean("pref_enable_gps", state).apply();
+	}
 
-    public static boolean isLanguageGerman() {
+	public static boolean getFollowGps() {
+		return mPrefs.getBoolean("pref_follow_gps", true);
+	}
+
+	public static void setFollowGps(boolean state) {
+		mPrefs.edit().putBoolean("pref_follow_gps", state).apply();
+	}
+
+	public static boolean isLanguageGerman() {
         return Locale.getDefault().getISO3Language().equals("deu");
     }
 
