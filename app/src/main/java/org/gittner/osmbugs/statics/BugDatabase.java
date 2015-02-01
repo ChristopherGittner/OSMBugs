@@ -3,10 +3,12 @@ package org.gittner.osmbugs.statics;
 import android.os.AsyncTask;
 
 import org.gittner.osmbugs.BugDownloadTask;
+import org.gittner.osmbugs.api.BugApi;
 import org.gittner.osmbugs.api.KeeprightApi;
 import org.gittner.osmbugs.api.MapdustApi;
 import org.gittner.osmbugs.api.OsmNotesApi;
 import org.gittner.osmbugs.api.OsmoseApi;
+import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OsmNote;
@@ -69,94 +71,73 @@ public class BugDatabase {
 
         Settings.setLastBBox(bBox);
 
+		DownloadStatusListener listener = new DownloadStatusListener(platform);
+
         switch (platform)
         {
             case Globals.KEEPRIGHT:
-                loadKeepright(bBox);
+				mKeeprightDownloadTask = loadBugs(
+						platform,
+						bBox,
+						mKeeprightDownloadTask,
+						new KeeprightApi(),
+						mKeeprightBugs,
+						listener);
                 break;
 
             case Globals.OSMOSE:
-                loadOsmose(bBox);
+				mOsmoseDownloadTask = loadBugs(
+						platform,
+						bBox,
+						mOsmoseDownloadTask,
+						new OsmoseApi(),
+						mOsmoseBugs,
+						listener);
                 break;
 
             case Globals.MAPDUST:
-                loadMapdust(bBox);
+				mMapdustDownloadTask = loadBugs(
+						platform,
+						bBox,
+						mMapdustDownloadTask,
+						new MapdustApi(),
+						mMapdustBugs,
+						listener);
                 break;
 
             case Globals.OSM_NOTES:
-                loadOsmNotes(bBox);
+				mOsmNotesDownloadTask = loadBugs(
+						platform,
+						bBox,
+						mOsmNotesDownloadTask,
+						new OsmNotesApi(),
+						mOsmNotes,
+						listener);
                 break;
         }
-    }
-
-    private void loadKeepright(final BoundingBoxE6 bBox)
-    {
-		mKeeprightBugs.clear();
-		notifyAllDatabaseUpdated(Globals.KEEPRIGHT);
-
-		if(mKeeprightDownloadTask != null)
-		{
-			mKeeprightDownloadTask.cancel(true);
-		}
-
-		mKeeprightDownloadTask = new BugDownloadTask<>(
-				new KeeprightApi(),
-				mKeeprightBugs,
-				new DownloadStatusListener(Globals.KEEPRIGHT));
-		mKeeprightDownloadTask.execute(bBox);
-    }
-
-	private void loadOsmose(final BoundingBoxE6 bBox)
-    {
-		mOsmoseBugs.clear();
-		notifyAllDatabaseUpdated(Globals.OSMOSE);
-
-		if(mOsmoseDownloadTask != null)
-		{
-			mOsmoseDownloadTask.cancel(true);
-		}
-
-		mOsmoseDownloadTask = new BugDownloadTask<>(
-				new OsmoseApi(),
-				mOsmoseBugs,
-				new DownloadStatusListener(Globals.OSMOSE));
-		mOsmoseDownloadTask.execute(bBox);
-    }
-
-    private void loadMapdust(final BoundingBoxE6 bBox)
-    {
-		mMapdustBugs.clear();
-		notifyAllDatabaseUpdated(Globals.MAPDUST);
-
-		if(mMapdustDownloadTask != null)
-		{
-			mMapdustDownloadTask.cancel(true);
-		}
-
-		mMapdustDownloadTask = new BugDownloadTask<>(
-				new MapdustApi(),
-				mMapdustBugs,
-				new DownloadStatusListener(Globals.MAPDUST));
-		mMapdustDownloadTask.execute(bBox);
 	}
 
-    private void loadOsmNotes(final BoundingBoxE6 bBox)
-    {
-		mOsmNotes.clear();
-		notifyAllDatabaseUpdated(Globals.OSM_NOTES);
+	private <T extends Bug> BugDownloadTask<T> loadBugs(
+			final int platform,
+			final BoundingBoxE6 bBox,
+			BugDownloadTask<T> task,
+			final BugApi<T> api,
+			final ArrayList<T> destination,
+			final BugDownloadTask.StatusListener listener)
+	{
+		destination.clear();
+		notifyAllDatabaseUpdated(platform);
 
-		if(mOsmNotesDownloadTask != null)
+		if(task != null)
 		{
-			mOsmNotesDownloadTask.cancel(true);
-			mOsmNotesDownloadTask = null;
+			task.cancel(true);
 		}
 
-		mOsmNotesDownloadTask = new BugDownloadTask<>(
-				new OsmNotesApi(),
-				mOsmNotes,
-				new DownloadStatusListener(Globals.OSM_NOTES));
-		mOsmNotesDownloadTask.execute(bBox);
-    }
+		task = new BugDownloadTask<>(api, destination, listener);
+		task.execute(bBox);
+
+		return task;
+	}
 
     private void notifyAllDatabaseUpdated(int platform)
     {

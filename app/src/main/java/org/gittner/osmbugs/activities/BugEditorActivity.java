@@ -1,5 +1,6 @@
 package org.gittner.osmbugs.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -66,7 +67,11 @@ public class BugEditorActivity
                 .add(R.id.container, f, f.getTag())
                 .commit();
 
-		getActionBar().setIcon(bug.getIcon());
+		ActionBar actionBar = getActionBar();
+		if(actionBar != null)
+		{
+			actionBar.setIcon(bug.getIcon());
+		}
 	}
 
     @Override
