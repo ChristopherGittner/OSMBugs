@@ -36,6 +36,11 @@ public class OsmbugsApplication extends Application
 	public void onCreate()
 	{
 		super.onCreate();
-		//ACRA.init(this);
+
+		/* Enable Acra Crash reports only on Release */
+		if(!BuildConfig.DEBUG)
+		{
+			ACRA.init(this);
+		}
 	}
 }
