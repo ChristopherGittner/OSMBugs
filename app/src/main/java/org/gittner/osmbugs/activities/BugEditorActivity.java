@@ -65,7 +65,9 @@ public class BugEditorActivity
         getFragmentManager().beginTransaction()
                 .add(R.id.container, f, f.getTag())
                 .commit();
-    }
+
+		getActionBar().setIcon(bug.getIcon());
+	}
 
     @Override
     public void onBugSaved(int platform) {
