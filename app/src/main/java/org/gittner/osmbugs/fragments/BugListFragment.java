@@ -397,5 +397,17 @@ public class BugListFragment extends Fragment {
             }
             mAdapter.notifyDataSetChanged();
         }
-    };
+
+		@Override
+		public void onDownloadCancelled(int platform)
+		{
+
+		}
+
+		@Override
+		public void onDownloadError(int platform)
+		{
+
+		}
+	};
 }

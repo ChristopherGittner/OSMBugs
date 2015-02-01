@@ -21,11 +21,11 @@ import org.osmdroid.util.GeoPoint;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MapdustApi {
-
+public class MapdustApi implements BugApi<MapdustBug>
+{
     private static final String API_KEY = "ae58b0b4aa3f876265a4d5f29167b73c";
 
-    public static ArrayList<MapdustBug> downloadBBox(BoundingBoxE6 bBox) {
+    public ArrayList<MapdustBug> downloadBBox(BoundingBoxE6 bBox) {
         HttpClient client = new DefaultHttpClient();
 
         ArrayList<NameValuePair> arguments = new ArrayList<>();
@@ -63,7 +63,7 @@ public class MapdustApi {
         return null;
     }
 
-    public static boolean commentBug(long id, String comment, String nickname)
+    public boolean commentBug(long id, String comment, String nickname)
     {
         DefaultHttpClient client = new DefaultHttpClient();
 
@@ -101,7 +101,7 @@ public class MapdustApi {
         return true;
     }
 
-    public static boolean changeBugStatus(long id, MapdustBug.STATE state, String comment, String username)
+    public boolean changeBugStatus(long id, MapdustBug.STATE state, String comment, String username)
     {
         DefaultHttpClient client = new DefaultHttpClient();
 
@@ -152,7 +152,7 @@ public class MapdustApi {
         return true;
     }
 
-    public static boolean addBug(GeoPoint position, int type, String description)
+    public boolean addBug(GeoPoint position, int type, String description)
     {
         DefaultHttpClient client = new DefaultHttpClient();
 
@@ -225,7 +225,7 @@ public class MapdustApi {
         return true;
     }
 
-    public static ArrayList<Comment> retrieveComments(long id)
+    public ArrayList<Comment> retrieveComments(long id)
     {
         ArrayList<Comment> comments = new ArrayList<>();
 
@@ -261,7 +261,7 @@ public class MapdustApi {
         return comments;
     }
 
-    private static String getMapdustSelectionString() {
+    private String getMapdustSelectionString() {
         String result = "";
 
         if (Settings.Mapdust.isWrongTurnEnabled())
@@ -287,7 +287,7 @@ public class MapdustApi {
         return result;
     }
 
-    private static String getMapdustEnabledTypesString() {
+    private String getMapdustEnabledTypesString() {
         String result = "";
 
         if (Settings.Mapdust.isShowOpenEnabled())

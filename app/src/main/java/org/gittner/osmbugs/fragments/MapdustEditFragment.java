@@ -96,7 +96,7 @@ public class MapdustEditFragment extends BugEditFragment {
 
             @Override
             protected List<Comment> doInBackground(Void... params) {
-                return MapdustApi.retrieveComments(mBug.getId());
+                return new MapdustApi().retrieveComments(mBug.getId());
             }
 
             @Override
@@ -153,7 +153,7 @@ public class MapdustEditFragment extends BugEditFragment {
                                             R.string.saving) {
                                         @Override
                                         protected Boolean doInBackground (Void...params){
-                                            return MapdustApi.changeBugStatus(
+                                            return new MapdustApi().changeBugStatus(
                                                     mBug.getId(),
                                                     MapdustBug.STATE.CLOSED,
                                                     Settings.Mapdust.getUsername(),
@@ -208,7 +208,7 @@ public class MapdustEditFragment extends BugEditFragment {
                                             R.string.saving) {
                                         @Override
                                         protected Boolean doInBackground (Void...params){
-                                            return MapdustApi.changeBugStatus(
+                                            return new MapdustApi().changeBugStatus(
                                                     mBug.getId(),
                                                     MapdustBug.STATE.IGNORED,
                                                     Settings.Mapdust.getUsername(),
@@ -258,7 +258,7 @@ public class MapdustEditFragment extends BugEditFragment {
                                             R.string.saving) {
                                         @Override
                                         protected Boolean doInBackground(Void... params) {
-                                            return MapdustApi.commentBug(
+                                            return new MapdustApi().commentBug(
                                                     mBug.getId(),
                                                     message,
                                                     Settings.Mapdust.getUsername());

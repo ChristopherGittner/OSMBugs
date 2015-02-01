@@ -2,6 +2,7 @@ package org.gittner.osmbugs.statics;
 
 import android.os.AsyncTask;
 
+import org.gittner.osmbugs.BugDownloadTask;
 import org.gittner.osmbugs.api.KeeprightApi;
 import org.gittner.osmbugs.api.MapdustApi;
 import org.gittner.osmbugs.api.OsmNotesApi;
@@ -16,10 +17,12 @@ import java.util.ArrayList;
 
 public class BugDatabase {
 
-    public interface DatabaseWatcher {
-
-        public void onDatabaseUpdated(int platform);
-    }
+	public interface DatabaseWatcher
+	{
+        void onDatabaseUpdated(int platform);
+		void onDownloadCancelled(int platform);
+		void onDownloadError(int platform);
+	}
 
     private static final BugDatabase mInstance = new BugDatabase();
 
@@ -30,10 +33,10 @@ public class BugDatabase {
 
     private final ArrayList<DatabaseWatcher> mDatabaseWatchers = new ArrayList<>();
 
-	private AsyncTask mKeeprightDownloadTask = null;
-	private AsyncTask mOsmoseDownloadTask = null;
-	private AsyncTask mMapdustDownloadTask = null;
-	private AsyncTask mOsmNotesDownloadTask = null;
+	private BugDownloadTask<KeeprightBug> mKeeprightDownloadTask = null;
+	private BugDownloadTask<OsmoseBug> mOsmoseDownloadTask = null;
+	private BugDownloadTask<MapdustBug> mMapdustDownloadTask = null;
+	private BugDownloadTask<OsmNote> mOsmNotesDownloadTask = null;
 
     public static BugDatabase getInstance() {
         return mInstance;
@@ -94,34 +97,16 @@ public class BugDatabase {
 		if(mKeeprightDownloadTask != null)
 		{
 			mKeeprightDownloadTask.cancel(true);
-			mKeeprightDownloadTask = null;
 		}
 
-		mKeeprightDownloadTask = new AsyncTask<BoundingBoxE6, Void, ArrayList<KeeprightBug>>() {
-            @Override
-            protected ArrayList<KeeprightBug> doInBackground(BoundingBoxE6... bBoxes) {
-                return KeeprightApi.downloadBBox(bBoxes[0],
-                        Settings.Keepright.isShowIgnoredEnabled(),
-                        Settings.Keepright.isShowTempIgnoredEnabled(),
-                        Settings.isLanguageGerman());
-            }
-
-            @Override
-            protected void onPostExecute(ArrayList<KeeprightBug> keeprightBugs) {
-
-                if(keeprightBugs != null) {
-                    mKeeprightBugs.clear();
-                    mKeeprightBugs.addAll(keeprightBugs);
-
-                    notifyAllDatabaseUpdated(Globals.KEEPRIGHT);
-                }
-
-				mKeeprightDownloadTask = null;
-            }
-        }.execute(bBox);
+		mKeeprightDownloadTask = new BugDownloadTask<>(
+				new KeeprightApi(),
+				mKeeprightBugs,
+				new DownloadStatusListener(Globals.KEEPRIGHT));
+		mKeeprightDownloadTask.execute(bBox);
     }
 
-    private void loadOsmose(final BoundingBoxE6 bBox)
+	private void loadOsmose(final BoundingBoxE6 bBox)
     {
 		mOsmoseBugs.clear();
 		notifyAllDatabaseUpdated(Globals.OSMOSE);
@@ -129,29 +114,13 @@ public class BugDatabase {
 		if(mOsmoseDownloadTask != null)
 		{
 			mOsmoseDownloadTask.cancel(true);
-			mOsmoseDownloadTask = null;
 		}
 
-		mOsmoseDownloadTask = new AsyncTask<BoundingBoxE6, Void, ArrayList<OsmoseBug>>() {
-            @Override
-            protected ArrayList<OsmoseBug> doInBackground(BoundingBoxE6... bBoxes) {
-                return OsmoseApi.downloadBBox(bBoxes[0]);
-            }
-
-            @Override
-            protected void onPostExecute(ArrayList<OsmoseBug> osmoseBugs) {
-
-                if(osmoseBugs != null)
-                {
-                    mOsmoseBugs.clear();
-                    mOsmoseBugs.addAll(osmoseBugs);
-
-                    notifyAllDatabaseUpdated(Globals.OSMOSE);
-                }
-
-				mOsmoseDownloadTask = null;
-            }
-        }.execute(bBox);
+		mOsmoseDownloadTask = new BugDownloadTask<>(
+				new OsmoseApi(),
+				mOsmoseBugs,
+				new DownloadStatusListener(Globals.OSMOSE));
+		mOsmoseDownloadTask.execute(bBox);
     }
 
     private void loadMapdust(final BoundingBoxE6 bBox)
@@ -162,30 +131,14 @@ public class BugDatabase {
 		if(mMapdustDownloadTask != null)
 		{
 			mMapdustDownloadTask.cancel(true);
-			mMapdustDownloadTask = null;
 		}
 
-		mMapdustDownloadTask = new AsyncTask<BoundingBoxE6, Void, ArrayList<MapdustBug>>() {
-            @Override
-            protected ArrayList<MapdustBug> doInBackground(BoundingBoxE6... bBoxes) {
-                return MapdustApi.downloadBBox(bBoxes[0]);
-            }
-
-            @Override
-            protected void onPostExecute(ArrayList<MapdustBug> mapdustBugs) {
-
-                if(mapdustBugs != null)
-                {
-                    mMapdustBugs.clear();
-                    mMapdustBugs.addAll(mapdustBugs);
-
-                    notifyAllDatabaseUpdated(Globals.MAPDUST);
-                }
-
-				mMapdustDownloadTask = null;
-            }
-        }.execute(bBox);
-    }
+		mMapdustDownloadTask = new BugDownloadTask<>(
+				new MapdustApi(),
+				mMapdustBugs,
+				new DownloadStatusListener(Globals.MAPDUST));
+		mMapdustDownloadTask.execute(bBox);
+	}
 
     private void loadOsmNotes(final BoundingBoxE6 bBox)
     {
@@ -198,28 +151,11 @@ public class BugDatabase {
 			mOsmNotesDownloadTask = null;
 		}
 
-		mOsmNotesDownloadTask = new AsyncTask<BoundingBoxE6, Void, ArrayList<OsmNote>>() {
-            @Override
-            protected ArrayList<OsmNote> doInBackground(BoundingBoxE6... bBoxes) {
-                return OsmNotesApi.downloadBBox(
-                        bBoxes[0],
-                        Settings.OsmNotes.getBugLimit(),
-                        !Settings.OsmNotes.isShowOnlyOpenEnabled());
-            }
-
-            @Override
-            protected void onPostExecute(ArrayList<OsmNote> osmNotes) {
-
-                if(osmNotes != null) {
-                    mOsmNotes.clear();
-                    mOsmNotes.addAll(osmNotes);
-
-                    notifyAllDatabaseUpdated(Globals.OSM_NOTES);
-                }
-
-				mOsmNotesDownloadTask = null;
-            }
-        }.execute(bBox);
+		mOsmNotesDownloadTask = new BugDownloadTask<>(
+				new OsmNotesApi(),
+				mOsmNotes,
+				new DownloadStatusListener(Globals.OSM_NOTES));
+		mOsmNotesDownloadTask.execute(bBox);
     }
 
     private void notifyAllDatabaseUpdated(int platform)
@@ -229,6 +165,22 @@ public class BugDatabase {
             listener.onDatabaseUpdated(platform);
         }
     }
+
+	private void notifyAllDownloadCancelled(int platform)
+	{
+		for(DatabaseWatcher listener : mDatabaseWatchers)
+		{
+			listener.onDownloadCancelled(platform);
+		}
+	}
+
+	private void notifyAllDownloadError(int platform)
+	{
+		for(DatabaseWatcher listener : mDatabaseWatchers)
+		{
+			listener.onDownloadError(platform);
+		}
+	}
 
     public void addDatabaseWatcher(DatabaseWatcher watcher)
     {
@@ -242,10 +194,37 @@ public class BugDatabase {
 
 	public boolean isDownloadRunning()
 	{
-		return
-				mKeeprightDownloadTask != null
-				|| mOsmoseDownloadTask != null
-				|| mMapdustDownloadTask != null
-				|| mOsmNotesDownloadTask != null;
+		return mKeeprightDownloadTask != null && !mKeeprightDownloadTask.isCancelled() && mKeeprightDownloadTask.getStatus() != AsyncTask.Status.FINISHED
+				|| mOsmoseDownloadTask != null && !mOsmoseDownloadTask.isCancelled() && mOsmoseDownloadTask.getStatus() != AsyncTask.Status.FINISHED
+				|| mMapdustDownloadTask != null && !mMapdustDownloadTask.isCancelled() && mMapdustDownloadTask.getStatus() != AsyncTask.Status.FINISHED
+				|| mOsmNotesDownloadTask != null && !mOsmNotesDownloadTask.isCancelled() && mOsmNotesDownloadTask.getStatus() != AsyncTask.Status.FINISHED;
+	}
+
+	private class DownloadStatusListener implements BugDownloadTask.StatusListener
+	{
+		private final int mPlatform;
+
+		DownloadStatusListener(int platform)
+		{
+			mPlatform = platform;
+		}
+
+		@Override
+		public void onCompletion()
+		{
+			notifyAllDatabaseUpdated(mPlatform);
+		}
+
+		@Override
+		public void onCancelled()
+		{
+			notifyAllDownloadCancelled(mPlatform);
+		}
+
+		@Override
+		public void onError()
+		{
+			notifyAllDownloadError(mPlatform);
+		}
 	}
 }

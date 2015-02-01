@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.gittner.osmbugs.Helpers.IntentHelper;
 import org.gittner.osmbugs.R;
@@ -279,11 +280,43 @@ public class OsmBugsActivity extends Activity implements
         showDialog(DIALOG_NEW_BUG);
     }
 
-	private BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher()
+	private final BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher()
 	{
 		@Override
 		public void onDatabaseUpdated(int platform)
 		{
+			invalidateOptionsMenu();
+		}
+
+		@Override
+		public void onDownloadCancelled(int platform)
+		{
+			invalidateOptionsMenu();
+		}
+
+		@Override
+		public void onDownloadError(int platform)
+		{
+			String text = "";
+
+			switch (platform) {
+				case Globals.KEEPRIGHT:
+					text = getString(R.string.toast_failed_download_keepright_bugs);
+					break;
+
+				case Globals.OSMOSE:
+					text = getString(R.string.toast_failed_download_osmose_bugs);
+					break;
+
+				case Globals.MAPDUST:
+					text = getString(R.string.toast_failed_download_mapdust_bugs);
+					break;
+
+				case Globals.OSM_NOTES:
+					text = getString(R.string.toast_failed_download_osm_notes_bugs);
+					break;
+			}
+			Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
 			invalidateOptionsMenu();
 		}
 	};

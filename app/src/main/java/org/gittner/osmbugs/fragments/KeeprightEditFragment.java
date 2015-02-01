@@ -173,7 +173,7 @@ public class KeeprightEditFragment extends BugEditFragment {
                             state = KeeprightBug.STATE.IGNORED;
                             break;
                     }
-                    return KeeprightApi.comment(
+                    return new KeeprightApi().comment(
                             mBug.getSchema(),
                             mBug.getId(),
                             mEdtxtComment.getText().toString(),

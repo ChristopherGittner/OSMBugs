@@ -155,6 +155,10 @@
 	<string name="crash_dialog_text">Ooooops!\n\nI crashed,\nbut a report has been created and is ready to be delivered to my developer to help fix the issue!\nAll you have to do is click OK.</string>
 	<string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
 	<string name="crash_dialog_ok_toast">Thank you !</string>
+	<string name="toast_failed_download_keepright_bugs">Failed to download Keepright Bugs</string>
+	<string name="toast_failed_download_osmose_bugs">Failed to download Osmose Bugs</string>
+	<string name="toast_failed_download_mapdust_bugs">Failed to download Mapdust Bugs</string>
+	<string name="toast_failed_download_osm_notes_bugs">Failed to download Openstreetmap Note</string>
 
 
 </resources>

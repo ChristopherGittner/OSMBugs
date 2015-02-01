@@ -343,7 +343,7 @@ public class BugMapFragment extends Fragment {
 		}
 	}
 
-	private MyLocationOverlay.FollowModeListener mFollowModeListener = new MyLocationOverlay.FollowModeListener()
+	private final MyLocationOverlay.FollowModeListener mFollowModeListener = new MyLocationOverlay.FollowModeListener()
 	{
 		@Override
 		public void onFollowingStopped()
@@ -446,5 +446,17 @@ public class BugMapFragment extends Fragment {
             }
             mMapView.invalidate();
         }
-    };
+
+		@Override
+		public void onDownloadCancelled(int platform)
+		{
+
+		}
+
+		@Override
+		public void onDownloadError(int platform)
+		{
+
+		}
+	};
 }

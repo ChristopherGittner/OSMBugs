@@ -16,9 +16,9 @@ import org.osmdroid.util.BoundingBoxE6;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class OsmoseApi {
-
-    public static ArrayList<OsmoseBug> downloadBBox(BoundingBoxE6 bBox) {
+public class OsmoseApi implements BugApi<OsmoseBug>
+{
+    public ArrayList<OsmoseBug> downloadBBox(BoundingBoxE6 bBox) {
         HttpClient client = new DefaultHttpClient();
 
         ArrayList<NameValuePair> arguments = new ArrayList<>();
@@ -66,7 +66,7 @@ public class OsmoseApi {
         return null;
     }
 
-    public static ArrayList<OsmoseElement> loadElements(long id) {
+    public ArrayList<OsmoseElement> loadElements(long id) {
         HttpClient client = new DefaultHttpClient();
 
         String url = "http://osmose.openstreetmap.fr/en/api/0.2/error/" + id;

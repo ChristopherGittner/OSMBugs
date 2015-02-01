@@ -166,7 +166,7 @@ public class AddMapdustBugActivity extends Activity {
 
             @Override
             protected Boolean doInBackground(TaskParameter... parameters) {
-                return MapdustApi.addBug(parameters[0].geoPoint, parameters[0].type, parameters[0].description);
+                return new MapdustApi().addBug(parameters[0].geoPoint, parameters[0].type, parameters[0].description);
             }
 
             @Override

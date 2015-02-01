@@ -106,7 +106,7 @@ public class AddOpenstreetmapNoteActivity extends Activity {
 
             @Override
             protected Boolean doInBackground(TaskParameter... parameters) {
-                return OsmNotesApi.addNew(parameters[0].geoPoint, parameters[0].description);
+                return new OsmNotesApi().addNew(parameters[0].geoPoint, parameters[0].description);
             }
 
             @Override

@@ -16,9 +16,20 @@ import org.osmdroid.util.BoundingBoxE6;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class KeeprightApi {
+public class KeeprightApi implements BugApi<KeeprightBug>
+{
+	@Override
+	public ArrayList<KeeprightBug> downloadBBox(BoundingBoxE6 bBox)
+	{
+		return downloadBBox(
+				bBox,
+				Settings.Keepright.isShowIgnoredEnabled(),
+				Settings.Keepright.isShowTempIgnoredEnabled(),
+				Settings.isLanguageGerman()
+		);
+	}
 
-    public static ArrayList<KeeprightBug> downloadBBox(BoundingBoxE6 bBox, boolean showIgnored, boolean showTempIgnored, boolean langGerman) {
+    public ArrayList<KeeprightBug> downloadBBox(BoundingBoxE6 bBox, boolean showIgnored, boolean showTempIgnored, boolean langGerman) {
         HttpClient client = new DefaultHttpClient();
 
         ArrayList<NameValuePair> arguments = new ArrayList<>();
@@ -59,7 +70,7 @@ public class KeeprightApi {
         return null;
     }
 
-    public static boolean comment(int schema, int id, String comment, KeeprightBug.STATE state)
+    public boolean comment(int schema, int id, String comment, KeeprightBug.STATE state)
     {
         HttpClient client = new DefaultHttpClient();
 
@@ -103,7 +114,7 @@ public class KeeprightApi {
         return true;
     }
 
-    private static String getKeeprightSelectionString() {
+    private String getKeeprightSelectionString() {
         /* Unknown what 0 stands for but its for compatibility Reasons */
         String result = "0,";
 

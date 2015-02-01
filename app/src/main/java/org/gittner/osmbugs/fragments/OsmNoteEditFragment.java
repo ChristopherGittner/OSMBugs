@@ -103,7 +103,7 @@ public class OsmNoteEditFragment extends BugEditFragment {
                                     R.string.saving) {
                                 @Override
                                 protected Boolean doInBackground(Void... params) {
-                                    return OsmNotesApi.addComment(
+                                    return new OsmNotesApi().addComment(
                                             mBug.getId(),
                                             Settings.OsmNotes.getUsername(),
                                             Settings.OsmNotes.getPassword(),
@@ -165,7 +165,7 @@ public class OsmNoteEditFragment extends BugEditFragment {
                                     R.string.saving) {
                                 @Override
                                 protected Boolean doInBackground (Void...params){
-                                    return OsmNotesApi.closeBug(
+                                    return new OsmNotesApi().closeBug(
                                             mBug.getId(),
                                             Settings.OsmNotes.getUsername(),
                                             Settings.OsmNotes.getPassword(),

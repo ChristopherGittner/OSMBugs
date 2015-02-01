@@ -60,7 +60,7 @@ public class OsmoseEditFragment extends BugEditFragment {
         mLoadDetailsTask = new AsyncTask<Long, Void, List<OsmoseElement>>() {
             @Override
             protected List<OsmoseElement> doInBackground(Long... id) {
-                return OsmoseApi.loadElements(id[0]);
+                return new OsmoseApi().loadElements(id[0]);
             }
 
             @Override

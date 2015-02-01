@@ -20,9 +20,19 @@ import org.osmdroid.util.GeoPoint;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class OsmNotesApi {
+public class OsmNotesApi implements BugApi<OsmNote>
+{
+	@Override
+	public ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox)
+	{
+		return downloadBBox(
+				bBox,
+				Settings.OsmNotes.getBugLimit(),
+				!Settings.OsmNotes.isShowOnlyOpenEnabled()
+		);
+	}
 
-    public static ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox, int limit, boolean showClosed) {
+    public ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox, int limit, boolean showClosed) {
         HttpClient client = new DefaultHttpClient();
 
         ArrayList<NameValuePair> arguments = new ArrayList<>();
@@ -61,7 +71,7 @@ public class OsmNotesApi {
         return null;
     }
 
-    public static boolean addComment(long id, String username, String password, String comment)
+    public boolean addComment(long id, String username, String password, String comment)
     {
         DefaultHttpClient client = new DefaultHttpClient();
 
@@ -100,7 +110,7 @@ public class OsmNotesApi {
         return true;
     }
 
-    public static boolean closeBug(long id, String username, String password, String comment)
+    public boolean closeBug(long id, String username, String password, String comment)
     {
         DefaultHttpClient client = new DefaultHttpClient();
 
@@ -139,7 +149,7 @@ public class OsmNotesApi {
         return true;
     }
 
-    public static boolean addNew(GeoPoint position, String text) {
+    public boolean addNew(GeoPoint position, String text) {
 
         DefaultHttpClient client = new DefaultHttpClient();
 

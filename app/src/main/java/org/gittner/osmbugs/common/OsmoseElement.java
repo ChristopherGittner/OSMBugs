@@ -16,9 +16,9 @@ public class OsmoseElement implements Parcelable {
 
     private long mId = 0;
 
-    private List<OsmKeyValuePair> mTags = new ArrayList<>();
+    private final List<OsmKeyValuePair> mTags = new ArrayList<>();
 
-    private List<OsmoseFix> mFixes = new ArrayList<>();
+    private final List<OsmoseFix> mFixes = new ArrayList<>();
 
     public OsmoseElement() {
 

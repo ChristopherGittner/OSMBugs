@@ -143,5 +143,9 @@
 	<string name="crash_dialog_text">Uuuuups!\n\nDa ist wohl ein Fehler aufgetreten aber ein Fehlerbericht ist erstellt und kann an meinen Entwickler geschickt werden, um ihn zu beheben!\nAlles was du zu tun hast ist OK drücken.</string>
 	<string name="crash_dialog_comment_prompt">Hier unten kannst Du noch einen Kommentar zu diesem Fehler abgeben:</string>
 	<string name="crash_dialog_ok_toast">Vielen Dank!</string>
+	<string name="toast_failed_download_keepright_bugs">Fehler beim Herunterladen von Keepright</string>
+	<string name="toast_failed_download_osmose_bugs">Fehler beim Herunterladen von Osmose</string>
+	<string name="toast_failed_download_mapdust_bugs">Fehler beim Herunterladen von Mapdust</string>
+	<string name="toast_failed_download_osm_notes_bugs">Fehler beim Herunterladen von Openstreetmap Notes</string>
 
 </resources>
