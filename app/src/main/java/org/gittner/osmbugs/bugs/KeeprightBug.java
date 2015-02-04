@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.gittner.osmbugs.Helpers.Openstreetmap;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
@@ -21,6 +22,7 @@ public class KeeprightBug extends Bug {
     private final int mId;
     private final int mSchema;
     private final int mType;
+	private final int mObject_type;
     private STATE mState = STATE.OPEN;
     private final String mTitle;
     private final String mDescription;
@@ -28,28 +30,50 @@ public class KeeprightBug extends Bug {
     private final long mWay;
 
     public KeeprightBug(
-            double lat,
-            double lon,
-            int id,
-            int schema,
-            int type,
-            STATE state,
-            String title,
-            String description,
-            String comment,
-            long way) {
+			double lat,
+			double lon,
+			int id,
+			int object_type,
+			int schema,
+			int type,
+			STATE state,
+			String title,
+			String description,
+			String comment,
+			long way) {
 
         super(new GeoPoint(lat, lon));
 
         mId = id;
         mSchema = schema;
         mType = type;
+		mObject_type = object_type;
         mState = state;
-        mTitle = title + " <a href=http://www.openstreetmap.org/browse/way/" + way + ">" + way + "</a>";
+
+		String sObjectType;
+		switch (object_type)
+		{
+			case Openstreetmap.TYPE_NODE:
+				sObjectType = "node";
+				break;
+
+			case Openstreetmap.TYPE_WAY:
+				sObjectType = "way";
+				break;
+
+			case Openstreetmap.TYPE_RELATION:
+				sObjectType = "relation";
+				break;
+
+			default:
+				throw new IllegalArgumentException("Invalid object type: " + object_type);
+		}
+
+        mTitle = title + " <a href=http://www.openstreetmap.org/browse/" + sObjectType + "/" + way + ">" + way + "</a>";
         mDescription = description;
         mComment = comment;
         mWay = way;
-    }
+	}
 
     private KeeprightBug(Parcel parcel) {
         super(parcel);
@@ -57,6 +81,7 @@ public class KeeprightBug extends Bug {
         mId = parcel.readInt();
         mSchema = parcel.readInt();
         mType = parcel.readInt();
+		mObject_type = parcel.readInt();
         mTitle = parcel.readString();
         mDescription = parcel.readString();
         mComment = parcel.readString();
@@ -124,6 +149,7 @@ public class KeeprightBug extends Bug {
         parcel.writeInt(mId);
         parcel.writeInt(mSchema);
         parcel.writeInt(mType);
+		parcel.writeInt(mObject_type);
         parcel.writeString(mTitle);
         parcel.writeString(mDescription);
         parcel.writeString(mComment);
@@ -161,6 +187,4 @@ public class KeeprightBug extends Bug {
             return new KeeprightBug[size];
         }
     };
-
-
 }

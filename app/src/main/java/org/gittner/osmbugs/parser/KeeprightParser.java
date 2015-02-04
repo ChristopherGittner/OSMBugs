@@ -1,5 +1,6 @@
 package org.gittner.osmbugs.parser;
 
+import org.gittner.osmbugs.Helpers.Openstreetmap;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 
 import java.io.BufferedReader;
@@ -48,9 +49,27 @@ public class KeeprightParser {
                     int type = Integer.parseInt(token.nextToken());
                     token.nextToken();
 
-                    /* 2 Unused token */
-                    for (int i = 0; i != 4; ++i)
-                        token.nextToken();
+                    /* Object Type */
+					int object_type;
+					switch (token.nextToken())
+					{
+						case "Node":
+							object_type = Openstreetmap.TYPE_NODE;
+							break;
+
+						case "Way":
+							object_type = Openstreetmap.TYPE_WAY;
+							break;
+
+						default:
+							object_type = Openstreetmap.TYPE_RELATION;
+							break;
+					}
+					token.nextToken();
+
+					/* Object Type EN */
+					token.nextToken();
+					token.nextToken();
 
                     /* Way */
                     long way = Long.parseLong(token.nextToken());
@@ -103,7 +122,7 @@ public class KeeprightParser {
                     }
 
                     /* Finally add our Bug to the results */
-                    bugs.add(new KeeprightBug(lat, lon, id, schema, type, state, title, text, comment, way));
+                    bugs.add(new KeeprightBug(lat, lon, id, object_type, schema, type, state, title, text, comment, way));
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }

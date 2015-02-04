@@ -1,5 +1,6 @@
 package org.gittner.osmbugs.parser;
 
+import org.gittner.osmbugs.Helpers.Openstreetmap;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.OsmKeyValuePair;
 import org.gittner.osmbugs.common.OsmoseElement;
@@ -73,13 +74,13 @@ public class OsmoseParser {
                 String type = elem.getString("type");
                 switch (type) {
                     case "node":
-                        element.setType(OsmoseElement.TYPE_NODE);
+                        element.setType(Openstreetmap.TYPE_NODE);
                         break;
                     case "way":
-                        element.setType(OsmoseElement.TYPE_WAY);
+                        element.setType(Openstreetmap.TYPE_WAY);
                         break;
                     default:
-                        element.setType(OsmoseElement.TYPE_RELATION);
+                        element.setType(Openstreetmap.TYPE_RELATION);
                         break;
                 }
 

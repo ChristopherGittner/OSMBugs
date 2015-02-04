@@ -3,14 +3,12 @@ package org.gittner.osmbugs.common;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.gittner.osmbugs.Helpers.Openstreetmap;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class OsmoseElement implements Parcelable {
-
-    public static final int TYPE_NODE = 1;
-    public static final int TYPE_WAY = 2;
-    public static final int TYPE_RELATION = 3;
 
     private int mType = 0;
 
@@ -52,15 +50,15 @@ public class OsmoseElement implements Parcelable {
 
         switch (mType)
         {
-            case TYPE_NODE:
+            case Openstreetmap.TYPE_NODE:
                 s += "Node <a href=http://www.openstreetmap.org/browse/node/" + mId + ">" + mId + "</a>";
                 break;
 
-            case TYPE_WAY:
+            case Openstreetmap.TYPE_WAY:
                 s += "Way <a href=http://www.openstreetmap.org/browse/way/" + mId + ">" + mId + "</a>";
                 break;
 
-            case TYPE_RELATION:
+            case Openstreetmap.TYPE_RELATION:
                 s += "Relation <a href=http://www.openstreetmap.org/browse/relation/" + mId + ">" + mId + "</a>";
                 break;
         }
