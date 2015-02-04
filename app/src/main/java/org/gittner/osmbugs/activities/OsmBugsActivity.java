@@ -64,12 +64,6 @@ public class OsmBugsActivity extends Activity implements
 
         /* Hide the ProgressBars at start */
         setProgressBarIndeterminateVisibility(false);
-
-        /* Init Settings Class */
-        Settings.init(this);
-
-        /* Init the Drawings Class to load all Resources */
-        Images.init(this);
     }
 
 	@Override

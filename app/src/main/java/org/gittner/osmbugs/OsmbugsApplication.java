@@ -7,6 +7,8 @@ import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
+import org.gittner.osmbugs.statics.Images;
+import org.gittner.osmbugs.statics.Settings;
 
 @ReportsCrashes(
 		formKey = "",
@@ -36,6 +38,12 @@ public class OsmbugsApplication extends Application
 	public void onCreate()
 	{
 		super.onCreate();
+
+		/* Init Settings Class */
+		Settings.init(this);
+
+        /* Init the Drawings Class to load all Resources */
+		Images.init(this);
 
 		/* Enable Acra Crash reports only on Release */
 		if(!BuildConfig.DEBUG)
