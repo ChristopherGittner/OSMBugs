@@ -52,7 +52,6 @@ public class KeeprightApi implements BugApi<KeeprightBug>
             arguments.add(new BasicNameValuePair("lang", "de"));
 
         HttpGet request = new HttpGet("http://keepright.ipax.at/points.php?" + URLEncodedUtils.format(arguments, "utf-8"));
-		String l = "http://keepright.ipax.at/points.php?" + URLEncodedUtils.format(arguments, "utf-8");
 
         try {
             /* Execute Query */

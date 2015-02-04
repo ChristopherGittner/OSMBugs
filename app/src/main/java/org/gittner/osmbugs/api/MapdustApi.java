@@ -50,8 +50,13 @@ public class MapdustApi implements BugApi<MapdustBug>
             /* Execute Query */
             HttpResponse response = client.execute(request);
 
+			int statusCode = response.getStatusLine().getStatusCode();
+			/* No Content */
+			if (statusCode == 204)
+				return new ArrayList<>();
+
             /* Check for Success */
-            if (response.getStatusLine().getStatusCode() != 200)
+            if (statusCode != 200)
                 return null;
 
             /* If Request was Successful, parse the Stream */
