@@ -159,6 +159,7 @@
 	<string name="toast_failed_download_osmose_bugs">Failed to download Osmose Bugs</string>
 	<string name="toast_failed_download_mapdust_bugs">Failed to download Mapdust Bugs</string>
 	<string name="toast_failed_download_osm_notes_bugs">Failed to download Openstreetmap Note</string>
+	<string name="done">Done</string>
 
 
 </resources>

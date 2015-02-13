@@ -29,7 +29,11 @@ public class KeeprightApi implements BugApi<KeeprightBug>
 		);
 	}
 
-    public ArrayList<KeeprightBug> downloadBBox(BoundingBoxE6 bBox, boolean showIgnored, boolean showTempIgnored, boolean langGerman) {
+    private ArrayList<KeeprightBug> downloadBBox(
+			BoundingBoxE6 bBox,
+			boolean showIgnored,
+			boolean showTempIgnored,
+			boolean langGerman) {
         HttpClient client = new DefaultHttpClient();
 
         ArrayList<NameValuePair> arguments = new ArrayList<>();

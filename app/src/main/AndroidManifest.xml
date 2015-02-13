@@ -23,9 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.BugEditorActivity"
-            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activities.SettingsActivity" />
         <activity
             android:name=".activities.AddMapdustBugActivity"
@@ -33,6 +30,10 @@
         <activity
             android:name=".activities.AddOpenstreetmapNoteActivity"
             android:label="@string/title_activity_add_openstreetmap_note" />
+	    <activity android:name=".activities.KeeprightEditActivity"/>
+	    <activity android:name=".activities.OsmoseEditActivity"/>
+	    <activity android:name=".activities.MapdustEditActivity"/>
+	    <activity android:name=".activities.OsmNoteEditActivity"/>
 	    <activity android:name="org.acra.CrashReportDialog"
 	              android:theme="@style/Theme.Dialog"
 	              android:launchMode="singleInstance"

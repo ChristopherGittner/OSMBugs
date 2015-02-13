@@ -15,6 +15,7 @@ public class BugDownloadTask<T extends Bug> extends AsyncTask<BoundingBoxE6, Voi
 	private ArrayList<T> mDestination = null;
 
 	private final StatusListener mListener;
+	private boolean mDownloadFinished = false;
 
 	public interface StatusListener
 	{
@@ -39,6 +40,7 @@ public class BugDownloadTask<T extends Bug> extends AsyncTask<BoundingBoxE6, Voi
 	@Override
 	protected void onPostExecute(ArrayList<T> bugs)
 	{
+		mDownloadFinished = true;
 		if(bugs != null)
 		{
 			mDestination.addAll(bugs);
@@ -54,5 +56,10 @@ public class BugDownloadTask<T extends Bug> extends AsyncTask<BoundingBoxE6, Voi
 	protected void onCancelled()
 	{
 		mListener.onCancelled();
+	}
+
+	public boolean isDownloadFinished()
+	{
+		return mDownloadFinished;
 	}
 }

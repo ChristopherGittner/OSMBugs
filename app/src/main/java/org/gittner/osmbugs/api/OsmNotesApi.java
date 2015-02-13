@@ -32,7 +32,7 @@ public class OsmNotesApi implements BugApi<OsmNote>
 		);
 	}
 
-    public ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox, int limit, boolean showClosed) {
+    private ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox, int limit, boolean showClosed) {
         HttpClient client = new DefaultHttpClient();
 
         ArrayList<NameValuePair> arguments = new ArrayList<>();

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
@@ -20,9 +21,10 @@ import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.MyLocationOverlay;
+import org.gittner.osmbugs.common.RotatingIconButtonFloat;
 import org.gittner.osmbugs.statics.BugDatabase;
-import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Globals;
+import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.util.BoundingBoxE6;
@@ -52,6 +54,8 @@ public class BugMapFragment extends Fragment {
 
     /* The main map */
     private MapView mMapView = null;
+
+	private RotatingIconButtonFloat mRefreshButton = null;
 
     /* The Overlay for Bugs displayed on the map */
     private ItemizedIconOverlay<BugOverlayItem> mKeeprightOverlay;
@@ -176,8 +180,48 @@ public class BugMapFragment extends Fragment {
             mOsmNotesOverlay.addItem(new BugOverlayItem(bug));
         }
 
+		mRefreshButton = (RotatingIconButtonFloat) v.findViewById(R.id.btnRefresh);
+		mRefreshButton.setOnClickListener(
+				new View.OnClickListener()
+				{
+					@Override
+					public void onClick(final View v)
+					{
+						reloadAllBugs();
+					}
+				});
+		updateRefreshButton();
+
         return v;
     }
+
+	private void reloadAllBugs()
+	{
+		BoundingBoxE6 bbox = mMapView.getBoundingBox();
+
+		if (Settings.Keepright.isEnabled())
+			BugDatabase.getInstance().load(bbox, Globals.KEEPRIGHT);
+		if (Settings.Osmose.isEnabled())
+			BugDatabase.getInstance().load(bbox, Globals.OSMOSE);
+		if (Settings.Mapdust.isEnabled())
+			BugDatabase.getInstance().load(bbox, Globals.MAPDUST);
+		if (Settings.OsmNotes.isEnabled())
+			BugDatabase.getInstance().load(bbox, Globals.OSM_NOTES);
+
+		updateRefreshButton();
+	}
+
+	private void updateRefreshButton()
+	{
+		if(BugDatabase.getInstance().isDownloadRunning())
+		{
+			mRefreshButton.startRotate();
+		}
+		else
+		{
+			mRefreshButton.stopRotate();
+		}
+	}
 
 	@Override
     public void onResume() {
@@ -445,18 +489,41 @@ public class BugMapFragment extends Fragment {
                     break;
             }
             mMapView.invalidate();
+
+			updateRefreshButton();
         }
 
 		@Override
 		public void onDownloadCancelled(int platform)
 		{
-
+			updateRefreshButton();
 		}
 
 		@Override
 		public void onDownloadError(int platform)
 		{
+			String text = "";
 
+			switch (platform) {
+				case Globals.KEEPRIGHT:
+					text = getString(R.string.toast_failed_download_keepright_bugs);
+					break;
+
+				case Globals.OSMOSE:
+					text = getString(R.string.toast_failed_download_osmose_bugs);
+					break;
+
+				case Globals.MAPDUST:
+					text = getString(R.string.toast_failed_download_mapdust_bugs);
+					break;
+
+				case Globals.OSM_NOTES:
+					text = getString(R.string.toast_failed_download_osm_notes_bugs);
+					break;
+			}
+			Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
+
+			updateRefreshButton();
 		}
 	};
 }

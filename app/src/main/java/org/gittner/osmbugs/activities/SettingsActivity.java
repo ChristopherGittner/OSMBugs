@@ -9,7 +9,8 @@ import android.preference.PreferenceScreen;
 
 import org.gittner.osmbugs.R;
 
-public class SettingsActivity extends PreferenceActivity
+public class SettingsActivity
+		extends PreferenceActivity
         implements
         OnPreferenceClickListener {
 

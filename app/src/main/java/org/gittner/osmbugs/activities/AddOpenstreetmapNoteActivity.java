@@ -1,9 +1,9 @@
 package org.gittner.osmbugs.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -16,7 +16,8 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.OsmNotesApi;
 import org.osmdroid.util.GeoPoint;
 
-public class AddOpenstreetmapNoteActivity extends Activity {
+public class AddOpenstreetmapNoteActivity extends ActionBarActivity
+{
 
     /* The Intents Extras */
     public static final String EXTRA_LATITUDE = "EXTRA_LATITUDE";
@@ -53,14 +54,14 @@ public class AddOpenstreetmapNoteActivity extends Activity {
         getMenuInflater().inflate(R.menu.add_openstreetmap_note, menu);
 
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
-        MenuItem menuItemSave = menu.findItem(R.id.action_save);
+        MenuItem menuItemDone = menu.findItem(R.id.action_done);
 
         /* Enable or Disable the Save Entry */
-        if (edttxtDescription != null && menuItemSave != null) {
+        if (edttxtDescription != null && menuItemDone != null) {
             if (!edttxtDescription.getText().toString().equals("")) {
-                menuItemSave.setVisible(true);
+                menuItemDone.setVisible(true);
             } else {
-                menuItemSave.setVisible(false);
+                menuItemDone.setVisible(false);
             }
         }
 
@@ -71,20 +72,15 @@ public class AddOpenstreetmapNoteActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_cancel:
-                finish();
-                return true;
-
-            case R.id.action_save:
-                menuSaveClicked();
+            case R.id.action_done:
+                menuDoneClicked();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void menuSaveClicked() {
-        /* Temporary class to pass parameters to Async Task */
+    private void menuDoneClicked() {
         class TaskParameter {
             GeoPoint geoPoint;
             String description;
