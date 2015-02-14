@@ -147,8 +147,9 @@ public class MapdustEditActivity extends BugEditActivity
 											return new MapdustApi().changeBugStatus(
 													mBug.getId(),
 													MapdustBug.STATE.CLOSED,
-													Settings.Mapdust.getUsername(),
-													message);
+													message,
+													Settings.Mapdust.getUsername()
+													);
 										}
 
 										@Override
@@ -203,8 +204,8 @@ public class MapdustEditActivity extends BugEditActivity
 											return new MapdustApi().changeBugStatus(
 													mBug.getId(),
 													MapdustBug.STATE.IGNORED,
-													Settings.Mapdust.getUsername(),
-													message);
+													message,
+													Settings.Mapdust.getUsername());
 										}
 
 										@Override

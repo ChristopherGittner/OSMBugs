@@ -31,21 +31,15 @@ public class RotatingIconButtonFloat extends ButtonFloat
 				Animation.RELATIVE_TO_SELF, 0.5f);
 	}
 
-	public void startRotate()
+	public void setRotate(final boolean rotate)
 	{
-		mStartRequest = true;
-		mStopRequest = false;
+		mStartRequest = rotate;
+		mStopRequest = !rotate;
 
-		if(!mStarted)
+		if(mStartRequest && !mStarted)
 		{
 			restart();
 		}
-	}
-
-	public void stopRotate()
-	{
-		mStartRequest = false;
-		mStopRequest = true;
 	}
 
 	private void restart()

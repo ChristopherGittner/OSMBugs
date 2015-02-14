@@ -59,7 +59,7 @@ public class BugDatabase {
         return mMapdustBugs;
     }
 
-    public ArrayList<OsmNote> getOpenstreetmapNotes() {
+    public ArrayList<OsmNote> getOsmNotes() {
         return mOsmNotes;
     }
 

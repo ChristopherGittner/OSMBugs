@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <menu
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<item
 		android:id="@+id/add_bug"
@@ -10,6 +8,12 @@
 		android:title="@string/add_bug"
 		app:showAsAction="ifRoom"
 		android:icon="@drawable/ic_menu_add_bug"/>
+    <item
+        android:id="@+id/list"
+        android:orderInCategory="90"
+        android:title="@string/list"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_view_list_white"/>
 	<item
 		android:id="@+id/enable_gps"
 		android:orderInCategory="50"
@@ -23,5 +27,16 @@
 		android:title="@string/follow_gps"
 		android:checked="true"
 		android:checkable="true"/>
+    <item
+        android:id="@+id/settings"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_settings_white"/>
+    <item
+        android:id="@+id/feedback"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/feedback"/>
 
 </menu>

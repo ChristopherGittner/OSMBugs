@@ -85,8 +85,6 @@ public class MapdustApi implements BugApi<MapdustBug>
         else
             request = new HttpPost("http://www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
 
-        Log.d("", "http://st.www.mapdust.com/api/commentBug?" + URLEncodedUtils.format(arguments, "utf-8"));
-
         try {
             /* Execute commit */
             HttpResponse response = client.execute(request);
