@@ -46,7 +46,7 @@ public class RotatingIconButtonFloat extends ButtonFloat
 	{
 		getIcon().setAnimation(mAnimation);
 		mAnimation.setAnimationListener(mAnimationListener);
-		mAnimation.setDuration(1500);
+		mAnimation.setDuration(750);
 		mAnimation.start();
 		mStarted = true;
 	}
@@ -88,13 +88,13 @@ public class RotatingIconButtonFloat extends ButtonFloat
 		public void onAnimationRepeat(final Animation animation)
 		{
 			animation.setInterpolator(mRepeatInterpolator);
-			animation.setDuration(750);
+			animation.setDuration(500);
 
 			if(mStopRequest)
 			{
 				animation.setInterpolator(mEndInterpolator);
 				animation.setRepeatCount(0);
-				animation.setDuration(1500);
+				animation.setDuration(750);
 			}
 		}
 	};
