@@ -5,6 +5,7 @@ import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -173,15 +174,14 @@ public class BugPlatformListFragment extends ListFragment
 			mapView.getController().setZoom(17);
 			mapView.getController().setCenter(bug.getPoint());
 			mapView.setOnTouchListener(new View.OnTouchListener() {
-										   @Override
-										   public boolean onTouch(View v, MotionEvent event) {
-											   if (event.getAction() == MotionEvent.ACTION_DOWN)
-											   {
-												   mListener.onBugMiniMapClicked(bug);
-											   }
-											   return true;
-										   }
-									   });
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        mListener.onBugMiniMapClicked(bug);
+                    }
+                    return true;
+                }
+            });
 			layoutInfo.setOnClickListener(new View.OnClickListener() {
 											  @Override
 											  public void onClick(View v) {
