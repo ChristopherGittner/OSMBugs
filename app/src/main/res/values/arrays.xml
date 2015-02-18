@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="map_styles">
+        <item>@string/mapnik</item>
+        <item>@string/cyclemap</item>
+        <item>@string/public_transport</item>
+        <item>@string/mapquest_osm</item>
+        <item>@string/mapquest_aerial</item>
+        <item>@string/open_railway_map_infrastructure</item>
+        <item>@string/open_railway_map_maxpseed</item>
+        <item>@string/open_railway_map_signals</item>
+    </string-array>
+    <string-array name="map_styles_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+</resources>

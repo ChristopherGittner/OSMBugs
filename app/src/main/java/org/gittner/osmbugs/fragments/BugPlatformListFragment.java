@@ -20,6 +20,7 @@ import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
+import org.gittner.osmbugs.common.TileSources;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Globals;
 import org.osmdroid.views.MapView;
@@ -182,6 +183,7 @@ public class BugPlatformListFragment extends ListFragment
                     return true;
                 }
             });
+            mapView.setTileSource(TileSources.getInstance().getPreferredTileSource());
 			layoutInfo.setOnClickListener(new View.OnClickListener() {
 											  @Override
 											  public void onClick(View v) {

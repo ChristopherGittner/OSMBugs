@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import org.gittner.osmbugs.common.TileSources;
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
@@ -74,6 +75,16 @@ public class Settings {
 
     public static boolean isDebugEnabled() {
         return mPrefs.getBoolean("pref_debug", false);
+    }
+
+    public static Integer getMapStyle()
+    {
+        return Integer.valueOf(mPrefs.getString("pref_map_style", "1"));
+    }
+
+    public static void setMapStyle(int style)
+    {
+        mPrefs.edit().putInt("pref_map_style", style);
     }
 
     public static class Keepright {

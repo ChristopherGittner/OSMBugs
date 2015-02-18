@@ -28,11 +28,15 @@ import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.MyLocationOverlay;
 import org.gittner.osmbugs.common.RotatingIconButtonFloat;
+import org.gittner.osmbugs.common.TileSources;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Globals;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.DefaultResourceProxyImpl;
+import org.osmdroid.tileprovider.MapTile;
+import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -194,6 +198,8 @@ public class BugMapActivity extends ActionBarActivity
 		{
 			mMapView.getOverlays().add(mOsmNotesOverlay);
 		}
+
+        mMapView.setTileSource(TileSources.getInstance().getPreferredTileSource());
 
 		setupLocationOverlay();
 
