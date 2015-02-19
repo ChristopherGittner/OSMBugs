@@ -159,21 +159,21 @@ public class KeeprightEditActivity extends BugEditActivity
 
 		@Override
 		public View getDropDownView(int position, View convertView, ViewGroup parent) {
-			return getCustomView(position, convertView);
+			return getCustomView(position, convertView, parent);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			return getCustomView(position, convertView);
+			return getCustomView(position, convertView, parent);
 		}
 
-		private View getCustomView(int position, View convertView)
+		private View getCustomView(int position, View convertView, ViewGroup parent)
 		{
 			View v = convertView;
 
 			if(v == null)
 			{
-				v = LayoutInflater.from(getContext()).inflate(R.layout.row_keepright_bug_state, null);
+				v = LayoutInflater.from(getContext()).inflate(R.layout.row_keepright_bug_state, parent, false);
 			}
 
 			ImageView imgvIcon = (ImageView) v.findViewById(R.id.imgvIcon);

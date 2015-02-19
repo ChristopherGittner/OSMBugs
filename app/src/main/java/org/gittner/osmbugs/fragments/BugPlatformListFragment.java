@@ -5,7 +5,6 @@ import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -149,8 +148,8 @@ public class BugPlatformListFragment extends ListFragment
 
 	private abstract class BugAdapter<T extends Bug> extends ArrayAdapter<T>
 	{
-		protected TextView mTxtvTitle = null;
-		protected TextView mTxtvDescription = null;
+		TextView mTxtvTitle = null;
+		TextView mTxtvDescription = null;
 
 		public BugAdapter(final Context context)
 		{
@@ -160,7 +159,7 @@ public class BugPlatformListFragment extends ListFragment
 		@Override
 		public View getView(final int position, final View convertView, final ViewGroup parent)
 		{
-			View v = convertView != null ? convertView : LayoutInflater.from(getContext()).inflate(R.layout.row_bug, null);
+			View v = convertView != null ? convertView : LayoutInflater.from(getContext()).inflate(R.layout.row_bug, parent, false);
 
 			mTxtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
 			mTxtvDescription = (TextView) v.findViewById(R.id.txtvDescription);
@@ -195,7 +194,7 @@ public class BugPlatformListFragment extends ListFragment
 		}
 	}
 
-	private BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher()
+	private final BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher()
 	{
 		@Override
 		public void onDatabaseUpdated(final int platform)

@@ -36,9 +36,7 @@ public class BugListActivity
 
 	private ViewPager mPager = null;
 
-	private PlatformPagerAdapter mPagerAdapter = null;
-
-	@Override
+    @Override
 	protected void onCreate(final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -48,29 +46,29 @@ public class BugListActivity
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		mPagerAdapter = new PlatformPagerAdapter(getFragmentManager());
+        PlatformPagerAdapter pagerAdapter = new PlatformPagerAdapter(getFragmentManager());
 
 		if(Settings.Keepright.isEnabled())
 		{
-			mPagerAdapter.add(Globals.KEEPRIGHT);
+			pagerAdapter.add(Globals.KEEPRIGHT);
 		}
 		if(Settings.Osmose.isEnabled())
 		{
-			mPagerAdapter.add(Globals.OSMOSE);
+			pagerAdapter.add(Globals.OSMOSE);
 		}
 		if(Settings.Mapdust.isEnabled())
 		{
-			mPagerAdapter.add(Globals.MAPDUST);
+			pagerAdapter.add(Globals.MAPDUST);
 		}
 		if(Settings.OsmNotes.isEnabled())
 		{
-			mPagerAdapter.add(Globals.OSM_NOTES);
+			pagerAdapter.add(Globals.OSM_NOTES);
 		}
 
-		mPagerAdapter.notifyDataSetChanged();
+		pagerAdapter.notifyDataSetChanged();
 
 		mPager = (ViewPager) findViewById(R.id.pager);
-		mPager.setAdapter(mPagerAdapter);
+		mPager.setAdapter(pagerAdapter);
 		mPager.setOnPageChangeListener(
 				new ViewPager.SimpleOnPageChangeListener()
 				{
@@ -178,7 +176,7 @@ public class BugListActivity
 
 	private class PlatformPagerAdapter extends FragmentPagerAdapter
 	{
-		private ArrayList<Integer> mPlatforms = new ArrayList<>();
+		private final ArrayList<Integer> mPlatforms = new ArrayList<>();
 
 		public PlatformPagerAdapter(final FragmentManager fm)
 		{

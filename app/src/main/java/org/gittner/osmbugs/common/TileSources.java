@@ -10,16 +10,16 @@ import java.util.HashMap;
 
 public class TileSources extends HashMap<Integer, ITileSource>
 {
-    public static int MAPNIK = 1;
-    public static int CYCLEMAP = 2;
-    public static int PUBLIC_TRANSPORT = 3;
-    public static int MAPQUEST_OSM = 4;
-    public static int MAPQUEST_AERIAL = 5;
-    public static int OPEN_RAILWAY_MAP_INFRASTRUCTURE = 6;
-    public static int OPEN_RAILWAY_MAP_MAXSPEED = 7;
-    public static int OPEN_RAILWAY_MAP_SIGNALS = 8;
+    public static final int MAPNIK = 1;
+    public static final int CYCLEMAP = 2;
+    public static final int PUBLIC_TRANSPORT = 3;
+    public static final int MAPQUEST_OSM = 4;
+    public static final int MAPQUEST_AERIAL = 5;
+    public static final int OPEN_RAILWAY_MAP_INFRASTRUCTURE = 6;
+    public static final int OPEN_RAILWAY_MAP_MAXSPEED = 7;
+    public static final int OPEN_RAILWAY_MAP_SIGNALS = 8;
 
-    private static TileSources instance = new TileSources();
+    private static final TileSources instance = new TileSources();
 
     public static TileSources getInstance() {
         return instance;

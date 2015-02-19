@@ -17,9 +17,7 @@ import java.util.List;
 
 public class OsmoseEditActivity extends BugEditActivity
 {
-	private OsmoseBug mBug = null;
-
-	@Override
+    @Override
 	public void onPause() {
 		super.onPause();
 

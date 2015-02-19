@@ -34,9 +34,6 @@ import org.gittner.osmbugs.statics.Globals;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.DefaultResourceProxyImpl;
-import org.osmdroid.tileprovider.MapTile;
-import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -310,17 +307,14 @@ public class BugMapActivity extends ActionBarActivity
 		else if(requestCode == REQUEST_CODE_BUG_LIST_ACTIVITY)
 		{
 			if(resultCode == BugListActivity.RESULT_BUG_MINI_MAP_CLICKED)
-			{
-				Bug bug = data.getParcelableExtra(BugListActivity.RESULT_EXTRA_BUG);
+            {
+                Bug bug = data.getParcelableExtra(BugListActivity.RESULT_EXTRA_BUG);
 
-				if (resultCode == BugListActivity.RESULT_BUG_MINI_MAP_CLICKED)
-				{
-					mMapView.getController().setCenter(bug.getPoint());
-					mMapView.getController().setZoom(17);
-					Settings.setFollowGps(false);
-					invalidateOptionsMenu();
-				}
-			}
+                mMapView.getController().setCenter(bug.getPoint());
+                mMapView.getController().setZoom(17);
+                Settings.setFollowGps(false);
+                invalidateOptionsMenu();
+            }
 		}
 		else
 		{
@@ -527,11 +521,7 @@ public class BugMapActivity extends ActionBarActivity
 		}
 	};
 
-	public BoundingBoxE6 getBBox() {
-		return mMapView.getBoundingBox();
-	}
-
-	private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mKeeprightGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
+    private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mKeeprightGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
 		@Override
 		public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem) {
 			Intent bugEditorIntent = new Intent(BugMapActivity.this, KeeprightEditActivity.class);

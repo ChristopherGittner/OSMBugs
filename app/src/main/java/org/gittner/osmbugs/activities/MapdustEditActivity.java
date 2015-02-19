@@ -294,7 +294,7 @@ public class MapdustEditActivity extends BugEditActivity
 			View v;
 
 			if (convertView == null) {
-				v = LayoutInflater.from(getContext()).inflate(R.layout.row_comment, null);
+				v = LayoutInflater.from(getContext()).inflate(R.layout.row_comment, parent, false);
 			} else {
 				v = convertView;
 			}
