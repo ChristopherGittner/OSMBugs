@@ -28,7 +28,7 @@ import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.MyLocationOverlay;
 import org.gittner.osmbugs.common.RotatingIconButtonFloat;
-import org.gittner.osmbugs.common.TileSources;
+import org.gittner.osmbugs.statics.TileSources;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Globals;
 import org.gittner.osmbugs.statics.Images;

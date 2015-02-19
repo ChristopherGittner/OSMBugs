@@ -1,6 +1,5 @@
-package org.gittner.osmbugs.common;
+package org.gittner.osmbugs.statics;
 
-import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.ResourceProxy;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
