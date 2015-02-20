@@ -63,18 +63,19 @@ public class OsmNote extends Bug
         mDescription = parcel.readString();
         mComments = new ArrayList<>();
         int size = parcel.readInt();
-        for (int i = 0;
-             i != size;
-             ++i)
+
+        for (int i = 0; i != size; ++i)
         {
             Comment comment = new Comment(parcel);
             mComments.add(comment);
         }
+
         switch (parcel.readInt())
         {
             case 1:
                 mState = STATE.OPEN;
                 break;
+
             case 2:
                 mState = STATE.CLOSED;
                 break;
@@ -113,17 +114,18 @@ public class OsmNote extends Bug
         parcel.writeLong(mId);
         parcel.writeString(mDescription);
         parcel.writeInt(mComments.size());
-        for (int i = 0;
-             i != mComments.size();
-             ++i)
+
+        for (int i = 0; i != mComments.size(); ++i)
         {
             mComments.get(i).writeToParcel(parcel, flags);
         }
+
         switch (mState)
         {
             case OPEN:
                 parcel.writeInt(1);
                 break;
+
             case CLOSED:
                 parcel.writeInt(2);
                 break;
@@ -138,6 +140,7 @@ public class OsmNote extends Bug
         {
             return Images.get(R.drawable.osm_notes_closed_bug);
         }
+
         return Images.get(R.drawable.osm_notes_open_bug);
     }
 

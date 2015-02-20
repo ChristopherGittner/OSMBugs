@@ -45,8 +45,34 @@ import java.util.ArrayList;
 public class BugMapActivity extends ActionBarActivity
 {
     private static final String TAG = "OsmBugsActivity";
+
     /* Request Codes for activities */
     private static final int REQUEST_CODE_BUG_EDITOR_ACTIVITY = 1;
+    private static final int REQUEST_CODE_SETTINGS_ACTIVITY = 2;
+    private static final int REQUEST_CODE_BUG_LIST_ACTIVITY = 3;
+
+    /* Dialog Ids */
+    private static final int DIALOG_NEW_BUG = 1;
+
+    private static GeoPoint mNewBugLocation;
+
+    /* The next touch event on the map opens the add Bug Prompt */
+    private boolean mAddNewBugOnNextClick = false;
+
+    /* The main map */
+    private MapView mMapView = null;
+
+    private RotatingIconButtonFloat mRefreshButton = null;
+
+    /* The Overlay for Bugs displayed on the map */
+    private ItemizedIconOverlay<BugOverlayItem> mKeeprightOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mOsmoseOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mMapdustOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mOsmNotesOverlay;
+
+    /* The Location Marker Overlay */
+    private MyLocationOverlay mLocationOverlay = null;
+
     private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mBugGestureListener
             = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>()
     {
@@ -66,11 +92,7 @@ public class BugMapActivity extends ActionBarActivity
             return false;
         }
     };
-    private static final int REQUEST_CODE_SETTINGS_ACTIVITY = 2;
-    private static final int REQUEST_CODE_BUG_LIST_ACTIVITY = 3;
-    /* Dialog Ids */
-    private static final int DIALOG_NEW_BUG = 1;
-    private static GeoPoint mNewBugLocation;
+
     private final MyLocationOverlay.FollowModeListener mFollowModeListener = new MyLocationOverlay.FollowModeListener()
     {
         @Override
@@ -80,6 +102,7 @@ public class BugMapActivity extends ActionBarActivity
             invalidateOptionsMenu();
         }
     };
+
     /* Listener for Database Updates */
     private final BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher()
     {
@@ -95,6 +118,7 @@ public class BugMapActivity extends ActionBarActivity
                         mKeeprightOverlay.addItem(new BugOverlayItem(bug));
                     }
                     break;
+
                 case Globals.OSMOSE:
                     mOsmoseOverlay.removeAllItems();
                     for (OsmoseBug bug : BugDatabase.getInstance().getOsmoseBugs())
@@ -102,6 +126,7 @@ public class BugMapActivity extends ActionBarActivity
                         mOsmoseOverlay.addItem(new BugOverlayItem(bug));
                     }
                     break;
+
                 case Globals.MAPDUST:
                     mMapdustOverlay.removeAllItems();
                     for (MapdustBug bug : BugDatabase.getInstance().getMapdustBugs())
@@ -109,6 +134,7 @@ public class BugMapActivity extends ActionBarActivity
                         mMapdustOverlay.addItem(new BugOverlayItem(bug));
                     }
                     break;
+
                 case Globals.OSM_NOTES:
                     mOsmNotesOverlay.removeAllItems();
                     for (OsmNote bug : BugDatabase.getInstance().getOsmNotes())
@@ -117,7 +143,9 @@ public class BugMapActivity extends ActionBarActivity
                     }
                     break;
             }
+
             mMapView.invalidate();
+
             updateRefreshButton();
         }
 
@@ -138,32 +166,25 @@ public class BugMapActivity extends ActionBarActivity
                 case Globals.KEEPRIGHT:
                     text = getString(R.string.toast_failed_download_keepright_bugs);
                     break;
+
                 case Globals.OSMOSE:
                     text = getString(R.string.toast_failed_download_osmose_bugs);
                     break;
+
                 case Globals.MAPDUST:
                     text = getString(R.string.toast_failed_download_mapdust_bugs);
                     break;
+
                 case Globals.OSM_NOTES:
                     text = getString(R.string.toast_failed_download_osm_notes_bugs);
                     break;
             }
+
             Toast.makeText(BugMapActivity.this, text, Toast.LENGTH_LONG).show();
+
             updateRefreshButton();
         }
     };
-    /* The next touch event on the map opens the add Bug Prompt */
-    private boolean mAddNewBugOnNextClick = false;
-    /* The main map */
-    private MapView mMapView = null;
-    private RotatingIconButtonFloat mRefreshButton = null;
-    /* The Overlay for Bugs displayed on the map */
-    private ItemizedIconOverlay<BugOverlayItem> mKeeprightOverlay;
-    private ItemizedIconOverlay<BugOverlayItem> mOsmoseOverlay;
-    private ItemizedIconOverlay<BugOverlayItem> mMapdustOverlay;
-    private ItemizedIconOverlay<BugOverlayItem> mOsmNotesOverlay;
-    /* The Location Marker Overlay */
-    private MyLocationOverlay mLocationOverlay = null;
 
 
     @Override
@@ -178,16 +199,19 @@ public class BugMapActivity extends ActionBarActivity
                 Images.get(R.drawable.keepright_zap),
                 mBugGestureListener,
                 new DefaultResourceProxyImpl(this));
+
         mOsmoseOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.osmose_marker_b_0),
                 mBugGestureListener,
                 new DefaultResourceProxyImpl(this));
+
         mMapdustOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.mapdust_other),
                 mBugGestureListener,
                 new DefaultResourceProxyImpl(this));
+
         mOsmNotesOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.osm_notes_open_bug),
@@ -245,6 +269,7 @@ public class BugMapActivity extends ActionBarActivity
     private void reloadAllBugs()
     {
         BoundingBoxE6 bbox = mMapView.getBoundingBox();
+
         if (Settings.Keepright.isEnabled())
         {
             BugDatabase.getInstance().load(bbox, Globals.KEEPRIGHT);
@@ -261,6 +286,7 @@ public class BugMapActivity extends ActionBarActivity
         {
             BugDatabase.getInstance().load(bbox, Globals.OSM_NOTES);
         }
+
         updateRefreshButton();
     }
 
@@ -286,9 +312,11 @@ public class BugMapActivity extends ActionBarActivity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getMenuInflater().inflate(R.menu.bug_map, menu);
+
         menu.findItem(R.id.enable_gps).setChecked(Settings.getEnableGps());
         menu.findItem(R.id.follow_gps).setChecked(Settings.getFollowGps());
         menu.findItem(R.id.follow_gps).setEnabled(Settings.getEnableGps());
+
         if (mAddNewBugOnNextClick)
         {
             menu.findItem(R.id.add_bug).setIcon(Images.get(R.drawable.ic_menu_add_bug_red));
@@ -297,6 +325,7 @@ public class BugMapActivity extends ActionBarActivity
         {
             menu.findItem(R.id.add_bug).setIcon(Images.get(R.drawable.ic_menu_add_bug));
         }
+
         menu.findItem(R.id.list).setVisible(
                 Settings.Keepright.isEnabled()
                         || Settings.Osmose.isEnabled()
@@ -314,22 +343,28 @@ public class BugMapActivity extends ActionBarActivity
             case R.id.settings:
                 menuSettingsClicked();
                 return true;
+
             case R.id.list:
                 menuListClicked();
                 return true;
+
             case R.id.feedback:
                 onFeedbackClicked();
                 return true;
+
             case R.id.follow_gps:
                 menuFollowGpsClicked();
                 return true;
+
             case R.id.enable_gps:
                 menuEnableGPSClicked();
                 return true;
+
             case R.id.add_bug:
                 menuAddBugClicked();
                 return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -350,8 +385,10 @@ public class BugMapActivity extends ActionBarActivity
             {
                 spinnerArray.add(getResources().getStringArray(R.array.new_bug_platforms)[i]);
             }
+
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
             spnPlatform.setAdapter(spinnerArrayAdapter);
+
             return new AlertDialog.Builder(this)
                     .setView(spnPlatform)
                     .setMessage(getString(R.string.platform))
@@ -412,6 +449,7 @@ public class BugMapActivity extends ActionBarActivity
         emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.developer_mail)});
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback_to_osmbugs));
         emailIntent.setType("plain/text");
+
         if (IntentHelper.intentHasReceivers(this, emailIntent))
         {
             try
@@ -452,17 +490,18 @@ public class BugMapActivity extends ActionBarActivity
     {
         /* Enable or Disable the Bug creation mode */
         mAddNewBugOnNextClick = !mAddNewBugOnNextClick;
+
         invalidateOptionsMenu();
     }
 
 
     private void showSendFeedbackErrorDialog()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.sending_feedback_failed_title);
-        builder.setMessage(R.string.sending_feedback_failed_message);
-        builder.setCancelable(true);
-        builder.create().show();
+        new AlertDialog.Builder(this)
+        .setTitle(R.string.sending_feedback_failed_title)
+        .setMessage(R.string.sending_feedback_failed_message)
+        .setCancelable(true)
+        .create().show();
     }
 
 
@@ -472,6 +511,7 @@ public class BugMapActivity extends ActionBarActivity
         {
             mLocationOverlay = new MyLocationOverlay(this, mMapView, mFollowModeListener);
         }
+
         if (Settings.getEnableGps())
         {
             mLocationOverlay.enableMyLocation();
@@ -485,6 +525,7 @@ public class BugMapActivity extends ActionBarActivity
             mLocationOverlay.disableMyLocation();
             mMapView.getOverlays().remove(mLocationOverlay);
         }
+
         if (Settings.getFollowGps())
         {
             mLocationOverlay.enableFollowLocation();
@@ -506,12 +547,15 @@ public class BugMapActivity extends ActionBarActivity
                 case BugEditActivity.RESULT_SAVED_KEEPRIGHT:
                     reloadBugs(Globals.KEEPRIGHT);
                     break;
+
                 case BugEditActivity.RESULT_SAVED_OSMOSE:
                     reloadBugs(Globals.OSMOSE);
                     break;
+
                 case BugEditActivity.RESULT_SAVED_MAPDUST:
                     reloadBugs(Globals.MAPDUST);
                     break;
+
                 case BugEditActivity.RESULT_SAVED_OSM_NOTES:
                     reloadBugs(Globals.OSM_NOTES);
                     break;
@@ -522,9 +566,12 @@ public class BugMapActivity extends ActionBarActivity
             if (resultCode == BugListActivity.RESULT_BUG_MINI_MAP_CLICKED)
             {
                 Bug bug = data.getParcelableExtra(BugListActivity.RESULT_EXTRA_BUG);
+
                 mMapView.getController().setCenter(bug.getPoint());
                 mMapView.getController().setZoom(17);
+
                 Settings.setFollowGps(false);
+
                 invalidateOptionsMenu();
             }
         }
@@ -548,10 +595,12 @@ public class BugMapActivity extends ActionBarActivity
 
         /* Stop listening to update notifications */
         BugDatabase.getInstance().removeDatabaseWatcher(mDatabaseWatcher);
+
         mMapView.getOverlays().remove(mKeeprightOverlay);
         mMapView.getOverlays().remove(mOsmoseOverlay);
         mMapView.getOverlays().remove(mMapdustOverlay);
         mMapView.getOverlays().remove(mOsmNotesOverlay);
+
         mLocationOverlay.disableFollowLocation();
         mLocationOverlay.disableMyLocation();
     }
@@ -570,6 +619,7 @@ public class BugMapActivity extends ActionBarActivity
         mOsmoseOverlay.removeAllItems();
         mMapdustOverlay.removeAllItems();
         mOsmNotesOverlay.removeAllItems();
+
         for (KeeprightBug bug : BugDatabase.getInstance().getKeeprightBugs())
         {
             mKeeprightOverlay.addItem(new BugOverlayItem(bug));
@@ -604,9 +654,13 @@ public class BugMapActivity extends ActionBarActivity
         {
             mMapView.getOverlays().add(mOsmNotesOverlay);
         }
+
         mMapView.setTileSource(TileSources.getInstance().getPreferredTileSource());
+
         setupLocationOverlay();
+
         updateRefreshButton();
+
         mMapView.invalidate();
     }
 

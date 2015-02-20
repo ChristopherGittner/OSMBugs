@@ -90,6 +90,7 @@ public class BugDatabase
                         mKeeprightBugs,
                         listener);
                 break;
+
             case Globals.OSMOSE:
                 mOsmoseDownloadTask = loadBugs(
                         platform,
@@ -99,6 +100,7 @@ public class BugDatabase
                         mOsmoseBugs,
                         listener);
                 break;
+
             case Globals.MAPDUST:
                 mMapdustDownloadTask = loadBugs(
                         platform,
@@ -108,6 +110,7 @@ public class BugDatabase
                         mMapdustBugs,
                         listener);
                 break;
+
             case Globals.OSM_NOTES:
                 mOsmNotesDownloadTask = loadBugs(
                         platform,
@@ -130,13 +133,16 @@ public class BugDatabase
             final BugDownloadTask.StatusListener listener)
     {
         destination.clear();
+
         notifyAllDatabaseUpdated(platform);
+
         if (task != null)
         {
             task.cancel(true);
         }
         task = new BugDownloadTask<>(api, destination, listener);
         task.execute(bBox);
+
         return task;
     }
 

@@ -32,6 +32,11 @@ import static android.view.View.VISIBLE;
 public class MapdustEditActivity extends BugEditActivity
 {
     private static final String EXTRA_BUG = "EXTRA_BUG";
+
+    private MapdustBug mBug;
+    private CommentAdapter mAdapter;
+    private AsyncTask mLoadCommentsTask;
+
     private final View.OnClickListener mBtnResolveBugOnClickListener = new View.OnClickListener()
     {
         @Override
@@ -45,6 +50,7 @@ public class MapdustEditActivity extends BugEditActivity
                         Toast.LENGTH_LONG).show();
                 return;
             }
+
             final EditText edtxtResolveComment = new EditText(MapdustEditActivity.this);
             new AlertDialog.Builder(MapdustEditActivity.this)
                     .setView(edtxtResolveComment)
@@ -108,6 +114,7 @@ public class MapdustEditActivity extends BugEditActivity
                 Toast.makeText(MapdustEditActivity.this, R.string.notification_mapdust_no_username, Toast.LENGTH_LONG).show();
                 return;
             }
+
             final EditText edtxtResolveComment = new EditText(MapdustEditActivity.this);
             new AlertDialog.Builder(MapdustEditActivity.this)
                     .setView(edtxtResolveComment)
@@ -216,23 +223,26 @@ public class MapdustEditActivity extends BugEditActivity
                     .create().show();
         }
     };
-    private MapdustBug mBug;
-    private CommentAdapter mAdapter;
-    private AsyncTask mLoadCommentsTask;
 
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_mapdust_edit);
+
         Bundle args = getIntent().getExtras();
         mBug = args.getParcelable(EXTRA_BUG);
+
         TextView txtvDescription = (TextView) findViewById(R.id.txtvDescription);
         txtvDescription.setText(mBug.getDescription());
+
         ListView lstvComments = (ListView) findViewById(R.id.lstvComments);
+
         mAdapter = new CommentAdapter(this);
         lstvComments.setAdapter(mAdapter);
+
         final ImageButton imgvAddComment = (ImageButton) findViewById(R.id.imgbtnAddComment);
         if (mBug.getState() == MapdustBug.STATE.CLOSED)
         {
@@ -242,8 +252,10 @@ public class MapdustEditActivity extends BugEditActivity
         {
             imgvAddComment.setOnClickListener(mAddCommentOnClickListener);
         }
+
         ImageView imgvIcon = (ImageView) findViewById(R.id.imgvIcon);
         ImageView imgvArrowRight = (ImageView) findViewById(R.id.imgvArrowRight);
+
         ImageButton btnResolveBug = (ImageButton) findViewById(R.id.btnResolveBug);
         ImageButton btnIgnoreBug = (ImageButton) findViewById(R.id.btnIgnoreBug);
         if (mBug.getState() == MapdustBug.STATE.OPEN)
@@ -259,6 +271,7 @@ public class MapdustEditActivity extends BugEditActivity
             btnResolveBug.setVisibility(View.GONE);
             btnIgnoreBug.setVisibility(View.GONE);
         }
+
         mLoadCommentsTask = new AsyncTask<Void, Void, List<Comment>>()
         {
             @Override
@@ -272,10 +285,13 @@ public class MapdustEditActivity extends BugEditActivity
             protected void onPostExecute(List<Comment> comments)
             {
                 mBug.setComments(comments);
+
                 mAdapter.addAll(comments);
                 mAdapter.notifyDataSetChanged();
+
                 TextView txtvLoadingComments = (TextView) findViewById(R.id.txtvCommentsTitle);
                 txtvLoadingComments.setText(R.string.comments);
+
                 ProgressBar pbarLoadingComments = (ProgressBar) findViewById(R.id.pbarLoadingComments);
                 pbarLoadingComments.setVisibility(View.GONE);
             }
@@ -287,6 +303,7 @@ public class MapdustEditActivity extends BugEditActivity
     public void onPause()
     {
         super.onPause();
+
         mLoadCommentsTask.cancel(true);
     }
 
@@ -302,16 +319,10 @@ public class MapdustEditActivity extends BugEditActivity
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
-            View v;
-            if (convertView == null)
-            {
-                v = LayoutInflater.from(getContext()).inflate(R.layout.row_comment, parent, false);
-            }
-            else
-            {
-                v = convertView;
-            }
+            View v = convertView != null ? convertView : LayoutInflater.from(getContext()).inflate(R.layout.row_comment, parent, false);
+
             Comment c = getItem(position);
+
             TextView txtvUsername = (TextView) v.findViewById(R.id.comment_username);
             if (!c.getUsername().equals(""))
             {
@@ -322,8 +333,10 @@ public class MapdustEditActivity extends BugEditActivity
             {
                 txtvUsername.setVisibility(GONE);
             }
+
             TextView txtvText = (TextView) v.findViewById(R.id.comment_text);
             txtvText.setText(c.getText());
+
             return v;
         }
     }

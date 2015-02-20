@@ -26,6 +26,7 @@ public class OsmoseElementView extends LinearLayout
     private void init()
     {
         inflate(getContext(), R.layout.osmose_element, this);
+
         mTitle = (TextView) findViewById(R.id.txtvTitle);
         mTags = (TextView) findViewById(R.id.txtvTags);
         mTitle.setVisibility(View.GONE);
@@ -53,6 +54,7 @@ public class OsmoseElementView extends LinearLayout
         Linkify.addLinks(mTitle, Linkify.WEB_URLS);
         mTitle.setText(Html.fromHtml(mTitle.getText().toString()));
         mTitle.setVisibility(View.VISIBLE);
+
         for (OsmoseFix fix : element.getFixes())
         {
             OsmoseFixView fixView = new OsmoseFixView(getContext());
@@ -60,7 +62,9 @@ public class OsmoseElementView extends LinearLayout
             LinearLayout layoutFixes = (LinearLayout) findViewById(R.id.layoutFixes);
             layoutFixes.addView(fixView);
         }
+
         mTags = (TextView) findViewById(R.id.txtvTags);
+
         if (!element.getTags().isEmpty())
         {
             String textTags = "";

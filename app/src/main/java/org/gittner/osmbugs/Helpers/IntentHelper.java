@@ -22,7 +22,9 @@ public class IntentHelper
     public static boolean intentHasReceivers(Context context, Intent intent)
     {
         PackageManager mgr = context.getPackageManager();
+
         List<ResolveInfo> list = mgr.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+
         return list.size() > 0;
     }
 }

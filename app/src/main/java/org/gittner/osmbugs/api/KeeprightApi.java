@@ -37,7 +37,9 @@ public class KeeprightApi implements BugApi<KeeprightBug>
             boolean langGerman)
     {
         HttpClient client = new DefaultHttpClient();
+
         ArrayList<NameValuePair> arguments = new ArrayList<>();
+
         if (showIgnored)
         {
             arguments.add(new BasicNameValuePair("show_ign", "1"));
@@ -46,6 +48,7 @@ public class KeeprightApi implements BugApi<KeeprightBug>
         {
             arguments.add(new BasicNameValuePair("show_ign", "0"));
         }
+
         if (showTempIgnored)
         {
             arguments.add(new BasicNameValuePair("show_tmpign", "1"));
@@ -54,13 +57,16 @@ public class KeeprightApi implements BugApi<KeeprightBug>
         {
             arguments.add(new BasicNameValuePair("show_tmpign", "0"));
         }
+
         arguments.add(new BasicNameValuePair("ch", getKeeprightSelectionString()));
         arguments.add(new BasicNameValuePair("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0)));
+
         if (langGerman)
         {
             arguments.add(new BasicNameValuePair("lang", "de"));
         }
+
         HttpGet request = new HttpGet("http://keepright.ipax.at/points.php?" + URLEncodedUtils.format(arguments, "utf-8"));
         try
         {
@@ -363,22 +369,29 @@ public class KeeprightApi implements BugApi<KeeprightBug>
     public boolean comment(int schema, int id, String comment, KeeprightBug.STATE state)
     {
         HttpClient client = new DefaultHttpClient();
+
         ArrayList<NameValuePair> arguments = new ArrayList<>();
+
         arguments.add(new BasicNameValuePair("co", comment));
+
         switch (state)
         {
             case OPEN:
                 arguments.add(new BasicNameValuePair("st", "open"));
                 break;
+
             case IGNORED:
                 arguments.add(new BasicNameValuePair("st", "ignore"));
                 break;
+
             case IGNORED_TMP:
                 arguments.add(new BasicNameValuePair("st", "ignore_t"));
                 break;
         }
+
         arguments.add(new BasicNameValuePair("schema", String.valueOf(schema)));
         arguments.add(new BasicNameValuePair("id", String.valueOf(id)));
+
         HttpGet request = new HttpGet("http://keepright.at/comment.php?" + URLEncodedUtils.format(arguments, "utf-8"));
         try
         {

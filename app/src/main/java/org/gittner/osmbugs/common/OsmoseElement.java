@@ -10,6 +10,14 @@ import java.util.List;
 
 public class OsmoseElement implements Parcelable
 {
+    private final List<OsmKeyValuePair> mTags = new ArrayList<>();
+
+    private final List<OsmoseFix> mFixes = new ArrayList<>();
+
+    private int mType = 0;
+
+    private long mId = 0;
+
     public static final Creator<OsmoseElement> CREATOR = new Creator<OsmoseElement>()
     {
         @Override
@@ -25,14 +33,6 @@ public class OsmoseElement implements Parcelable
             return new OsmoseElement[size];
         }
     };
-
-    private final List<OsmKeyValuePair> mTags = new ArrayList<>();
-
-    private final List<OsmoseFix> mFixes = new ArrayList<>();
-
-    private int mType = 0;
-
-    private long mId = 0;
 
 
     public OsmoseElement()
@@ -75,9 +75,11 @@ public class OsmoseElement implements Parcelable
             case Openstreetmap.TYPE_NODE:
                 s += "Node <a href=http://www.openstreetmap.org/browse/node/" + mId + ">" + mId + "</a>";
                 break;
+
             case Openstreetmap.TYPE_WAY:
                 s += "Way <a href=http://www.openstreetmap.org/browse/way/" + mId + ">" + mId + "</a>";
                 break;
+
             case Openstreetmap.TYPE_RELATION:
                 s += "Relation <a href=http://www.openstreetmap.org/browse/relation/" + mId + ">" + mId + "</a>";
                 break;

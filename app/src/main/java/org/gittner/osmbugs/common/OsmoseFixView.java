@@ -25,6 +25,7 @@ public class OsmoseFixView extends LinearLayout
     private void init()
     {
         inflate(getContext(), R.layout.osmose_fix, this);
+
         mAdd = (TextView) findViewById(R.id.txtvFixAdd);
         mModify = (TextView) findViewById(R.id.txtvFixModify);
         mDelete = (TextView) findViewById(R.id.txtvFixDelete);

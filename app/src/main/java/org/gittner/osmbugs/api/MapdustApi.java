@@ -27,7 +27,9 @@ public class MapdustApi implements BugApi<MapdustBug>
     public ArrayList<MapdustBug> downloadBBox(BoundingBoxE6 bBox)
     {
         HttpClient client = new DefaultHttpClient();
+
         ArrayList<NameValuePair> arguments = new ArrayList<>();
+
         arguments.add(new BasicNameValuePair("key", API_KEY));
         arguments.add(new BasicNameValuePair("bbox", String.valueOf(bBox.getLonEastE6() / 1000000.0) + ","
                 + String.valueOf(bBox.getLatSouthE6() / 1000000.0) + ","
@@ -36,6 +38,7 @@ public class MapdustApi implements BugApi<MapdustBug>
         arguments.add(new BasicNameValuePair("comments", "1"));
         arguments.add(new BasicNameValuePair("ft", getMapdustSelectionString()));
         arguments.add(new BasicNameValuePair("fs", getMapdustEnabledTypesString()));
+
         HttpGet request;
         if (Settings.isDebugEnabled())
         {
@@ -149,6 +152,7 @@ public class MapdustApi implements BugApi<MapdustBug>
         arguments.add(new BasicNameValuePair("id", String.valueOf(id)));
         arguments.add(new BasicNameValuePair("comment", comment));
         arguments.add(new BasicNameValuePair("nickname", nickname));
+
         HttpPost request;
         if (Settings.isDebugEnabled())
         {
@@ -190,22 +194,28 @@ public class MapdustApi implements BugApi<MapdustBug>
 
         /* Add all Arguments */
         ArrayList<NameValuePair> arguments = new ArrayList<>();
+
         arguments.add(new BasicNameValuePair("key", API_KEY));
         arguments.add(new BasicNameValuePair("id", String.valueOf(id)));
+
         switch (state)
         {
             case OPEN:
                 arguments.add(new BasicNameValuePair("status", "1"));
                 break;
+
             case CLOSED:
                 arguments.add(new BasicNameValuePair("status", "2"));
                 break;
+
             default:
                 arguments.add(new BasicNameValuePair("status", "3"));
                 break;
         }
+
         arguments.add(new BasicNameValuePair("comment", comment));
         arguments.add(new BasicNameValuePair("nickname", username));
+
         HttpPost request;
         if (Settings.isDebugEnabled())
         {
@@ -247,39 +257,51 @@ public class MapdustApi implements BugApi<MapdustBug>
 
         /* Add all Arguments */
         ArrayList<NameValuePair> arguments = new ArrayList<>();
+
         arguments.add(new BasicNameValuePair("key", API_KEY));
         arguments.add(new BasicNameValuePair("coordinates", String.valueOf(position.getLongitudeE6() / 1000000.0) + "," + String.valueOf(position.getLatitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("description", description));
+
         switch (type)
         {
             case MapdustBug.WRONG_TURN:
                 arguments.add(new BasicNameValuePair("type", "wrong_turn"));
                 break;
+
             case MapdustBug.BAD_ROUTING:
                 arguments.add(new BasicNameValuePair("type", "bad_routing"));
                 break;
+
             case MapdustBug.ONEWAY_ROAD:
                 arguments.add(new BasicNameValuePair("type", "oneway_road"));
                 break;
+
             case MapdustBug.BLOCKED_STREET:
                 arguments.add(new BasicNameValuePair("type", "blocked_street"));
                 break;
+
             case MapdustBug.MISSING_STREET:
                 arguments.add(new BasicNameValuePair("type", "missing_street"));
                 break;
+
             case MapdustBug.ROUNDABOUT_ISSUE:
                 arguments.add(new BasicNameValuePair("type", "wrong_roundabout"));
                 break;
+
             case MapdustBug.MISSING_SPEED_INFO:
                 arguments.add(new BasicNameValuePair("type", "missing_speedlimit"));
                 break;
+
             case MapdustBug.OTHER:
                 arguments.add(new BasicNameValuePair("type", "other"));
                 break;
+
             default:
                 return false;
         }
+
         arguments.add(new BasicNameValuePair("nickname", Settings.Mapdust.getUsername()));
+
         HttpPost request;
         if (Settings.isDebugEnabled())
         {
@@ -318,10 +340,14 @@ public class MapdustApi implements BugApi<MapdustBug>
     public ArrayList<Comment> retrieveComments(long id)
     {
         ArrayList<Comment> comments = new ArrayList<>();
+
         HttpClient client = new DefaultHttpClient();
+
         ArrayList<NameValuePair> arguments = new ArrayList<>();
+
         arguments.add(new BasicNameValuePair("key", API_KEY));
         arguments.add(new BasicNameValuePair("id", String.valueOf(id)));
+
         HttpGet request;
         if (Settings.isDebugEnabled())
         {

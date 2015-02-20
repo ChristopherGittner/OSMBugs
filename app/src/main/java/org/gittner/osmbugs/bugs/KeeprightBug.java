@@ -63,21 +63,26 @@ public class KeeprightBug extends Bug
         mType = type;
         mObject_type = object_type;
         mState = state;
+
         String sObjectType;
         switch (object_type)
         {
             case Openstreetmap.TYPE_NODE:
                 sObjectType = "node";
                 break;
+
             case Openstreetmap.TYPE_WAY:
                 sObjectType = "way";
                 break;
+
             case Openstreetmap.TYPE_RELATION:
                 sObjectType = "relation";
                 break;
+
             default:
                 throw new IllegalArgumentException("Invalid object type: " + object_type);
         }
+
         mTitle = title + " <a href=http://www.openstreetmap.org/browse/" + sObjectType + "/" + way + ">" + way + "</a>";
         mDescription = description;
         mComment = comment;
@@ -96,14 +101,17 @@ public class KeeprightBug extends Bug
         mDescription = parcel.readString();
         mComment = parcel.readString();
         mWay = parcel.readLong();
+
         switch (parcel.readInt())
         {
             case 1:
                 mState = STATE.OPEN;
                 break;
+
             case 2:
                 mState = STATE.IGNORED;
                 break;
+
             case 3:
                 mState = STATE.IGNORED_TMP;
                 break;
@@ -165,14 +173,17 @@ public class KeeprightBug extends Bug
         parcel.writeString(mDescription);
         parcel.writeString(mComment);
         parcel.writeLong(mWay);
+
         switch (mState)
         {
             case OPEN:
                 parcel.writeInt(1);
                 break;
+
             case IGNORED:
                 parcel.writeInt(2);
                 break;
+
             case IGNORED_TMP:
                 parcel.writeInt(3);
                 break;
@@ -191,6 +202,7 @@ public class KeeprightBug extends Bug
         {
             return Images.get(R.drawable.keepright_zap_ignored);
         }
+
         return Images.getByName(ICON_PREFIX + mType, R.drawable.keepright_zap);
     }
 

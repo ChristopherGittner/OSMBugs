@@ -21,11 +21,14 @@ public class OsmoseApi implements BugApi<OsmoseBug>
     public ArrayList<OsmoseBug> downloadBBox(BoundingBoxE6 bBox)
     {
         HttpClient client = new DefaultHttpClient();
+
         ArrayList<NameValuePair> arguments = new ArrayList<>();
+
         arguments.add(new BasicNameValuePair("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("limit", String.valueOf(Settings.Osmose.getBugLimit())));
         arguments.add(new BasicNameValuePair("full", "true"));
+
         if (Settings.Osmose.getBugsToDisplay() == 1)
         {
             arguments.add(new BasicNameValuePair("status", "done"));
@@ -34,6 +37,7 @@ public class OsmoseApi implements BugApi<OsmoseBug>
         {
             arguments.add(new BasicNameValuePair("status", "false"));
         }
+
         String api;
         if (Settings.isLanguageGerman())
         {
@@ -43,6 +47,7 @@ public class OsmoseApi implements BugApi<OsmoseBug>
         {
             api = "http://osmose.openstreetmap.fr/en/api/0.2/errors?";
         }
+
         HttpGet request = new HttpGet(api + URLEncodedUtils.format(arguments, "utf-8"));
         try
         {
@@ -69,7 +74,9 @@ public class OsmoseApi implements BugApi<OsmoseBug>
     public ArrayList<OsmoseElement> loadElements(long id)
     {
         HttpClient client = new DefaultHttpClient();
+
         String url = "http://osmose.openstreetmap.fr/en/api/0.2/error/" + id;
+
         HttpGet request = new HttpGet(url);
         try
         {

@@ -132,6 +132,7 @@ public class AddMapdustBugActivity extends ActionBarActivity
                 menuDoneClicked();
                 return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -144,8 +145,10 @@ public class AddMapdustBugActivity extends ActionBarActivity
             String description;
             int type;
         }
+
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
-        int type = 7;
+
+        int type = MapdustBug.OTHER;
         switch (mSpnType.getSelectedItemPosition())
         {
             case 0:

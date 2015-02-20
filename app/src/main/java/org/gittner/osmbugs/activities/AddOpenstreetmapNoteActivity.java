@@ -57,7 +57,9 @@ public class AddOpenstreetmapNoteActivity extends ActionBarActivity
         /* Enable the Spinning Wheel for undetermined Progress */
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_PROGRESS);
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_add_openstreetmap_note);
 
         /* Hide the ProgressBars at start */
@@ -83,7 +85,9 @@ public class AddOpenstreetmapNoteActivity extends ActionBarActivity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getMenuInflater().inflate(R.menu.add_openstreetmap_note, menu);
+
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
+
         MenuItem menuItemDone = menu.findItem(R.id.action_done);
 
         /* Enable or Disable the Save Entry */
@@ -122,6 +126,7 @@ public class AddOpenstreetmapNoteActivity extends ActionBarActivity
             GeoPoint geoPoint;
             String description;
         }
+
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
 
         /* Prepare Parameters */

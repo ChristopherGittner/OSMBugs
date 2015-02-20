@@ -40,6 +40,7 @@ public class RotatingIconButtonFloat extends ButtonFloat
         {
             mStarted = false;
             mAnimation.cancel();
+
             if (mStartRequest)
             {
                 restart();
@@ -48,6 +49,7 @@ public class RotatingIconButtonFloat extends ButtonFloat
             {
                 mStarted = false;
             }
+
             mStopRequest = false;
         }
 
@@ -57,6 +59,7 @@ public class RotatingIconButtonFloat extends ButtonFloat
         {
             animation.setInterpolator(mRepeatInterpolator);
             animation.setDuration(500);
+
             if (mStopRequest)
             {
                 animation.setInterpolator(mEndInterpolator);
@@ -70,6 +73,7 @@ public class RotatingIconButtonFloat extends ButtonFloat
     public RotatingIconButtonFloat(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
+
         mAnimation = new RotateAnimation(
                 0f,
                 360f,
@@ -83,6 +87,7 @@ public class RotatingIconButtonFloat extends ButtonFloat
     {
         mStartRequest = rotate;
         mStopRequest = !rotate;
+
         if (mStartRequest && !mStarted)
         {
             restart();
@@ -96,6 +101,7 @@ public class RotatingIconButtonFloat extends ButtonFloat
         mAnimation.setAnimationListener(mAnimationListener);
         mAnimation.setDuration(750);
         mAnimation.start();
+
         mStarted = true;
     }
 }

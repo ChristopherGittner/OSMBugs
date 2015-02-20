@@ -21,6 +21,7 @@ public class MyLocationOverlay extends MyLocationNewOverlay
     public void disableFollowLocation()
     {
         super.disableFollowLocation();
+
         mListener.onFollowingStopped();
     }
 

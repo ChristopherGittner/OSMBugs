@@ -45,7 +45,7 @@
           <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
           <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false" />
           <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1" />
-          <option name="KEEP_BLANK_LINES_IN_CODE" value="0" />
+          <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
           <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
           <option name="BLANK_LINES_AROUND_METHOD" value="2" />
           <option name="BRACE_STYLE" value="2" />
@@ -55,7 +55,6 @@
           <option name="CATCH_ON_NEW_LINE" value="true" />
           <option name="FINALLY_ON_NEW_LINE" value="true" />
           <option name="RESOURCE_LIST_WRAP" value="2" />
-          <option name="FOR_STATEMENT_WRAP" value="2" />
           <option name="IF_BRACE_FORCE" value="3" />
           <option name="DOWHILE_BRACE_FORCE" value="3" />
           <option name="WHILE_BRACE_FORCE" value="3" />

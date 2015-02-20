@@ -36,16 +36,21 @@ public class OsmNotesApi implements BugApi<OsmNote>
     private ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox, int limit, boolean showClosed)
     {
         HttpClient client = new DefaultHttpClient();
+
         ArrayList<NameValuePair> arguments = new ArrayList<>();
+
         arguments.add(new BasicNameValuePair("bbox", String.valueOf(bBox.getLonWestE6() / 1000000.0) + ","
                 + String.valueOf(bBox.getLatSouthE6() / 1000000.0) + ","
                 + String.valueOf(bBox.getLonEastE6() / 1000000.0) + ","
                 + String.valueOf(bBox.getLatNorthE6() / 1000000.0)));
+
         if (!showClosed)
         {
             arguments.add(new BasicNameValuePair("closed", "0"));
         }
+
         arguments.add(new BasicNameValuePair("limit", String.valueOf(limit)));
+
         HttpGet request;
         if (!Settings.isDebugEnabled())
         {
@@ -91,7 +96,9 @@ public class OsmNotesApi implements BugApi<OsmNote>
 
         /* Add all Arguments */
         ArrayList<NameValuePair> arguments = new ArrayList<>();
+
         arguments.add(new BasicNameValuePair("text", comment));
+
         HttpPost request;
         if (!Settings.isDebugEnabled())
         {
@@ -140,7 +147,9 @@ public class OsmNotesApi implements BugApi<OsmNote>
 
         /* Add all Arguments */
         ArrayList<NameValuePair> arguments = new ArrayList<>();
+
         arguments.add(new BasicNameValuePair("text", comment));
+
         HttpPost request;
         if (!Settings.isDebugEnabled())
         {
@@ -190,11 +199,13 @@ public class OsmNotesApi implements BugApi<OsmNote>
 
         /* Add all Arguments */
         ArrayList<NameValuePair> arguments = new ArrayList<>();
+
         arguments.add(new BasicNameValuePair("lat",
                 String.valueOf(position.getLatitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("lon",
                 String.valueOf(position.getLongitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("text", text));
+
         HttpPost request;
         if (!Settings.isDebugEnabled())
         {

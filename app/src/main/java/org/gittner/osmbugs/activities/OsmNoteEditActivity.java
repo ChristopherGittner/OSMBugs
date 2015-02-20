@@ -27,6 +27,9 @@ import static android.view.View.VISIBLE;
 public class OsmNoteEditActivity extends BugEditActivity
 {
     private static final String EXTRA_BUG = "EXTRA_BUG";
+
+    private OsmNote mBug;
+
     private final View.OnClickListener mAddCommentOnClickListener = new View.OnClickListener()
     {
         @Override
@@ -84,6 +87,7 @@ public class OsmNoteEditActivity extends BugEditActivity
                     .create().show();
         }
     };
+
     private final View.OnClickListener mBtnResolveOnClickListener = new View.OnClickListener()
     {
         @Override
@@ -102,6 +106,7 @@ public class OsmNoteEditActivity extends BugEditActivity
                 Toast.makeText(OsmNoteEditActivity.this, R.string.notification_osm_notes_no_password, Toast.LENGTH_LONG).show();
                 return;
             }
+
             final EditText edtxtResolveComment = new EditText(OsmNoteEditActivity.this);
             new AlertDialog.Builder(OsmNoteEditActivity.this)
                     .setView(edtxtResolveComment)
@@ -154,23 +159,28 @@ public class OsmNoteEditActivity extends BugEditActivity
                     .create().show();
         }
     };
-    private OsmNote mBug;
 
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_osm_note_edit);
+
         Bundle args = getIntent().getExtras();
         mBug = args.getParcelable(EXTRA_BUG);
+
         TextView txtvDescription = (TextView) findViewById(R.id.txtvDescription);
         txtvDescription.setText(mBug.getDescription());
+
         CommentAdapter adapter = new CommentAdapter(this);
+
         ListView lstvComments = (ListView) findViewById(R.id.lstvComments);
         lstvComments.setAdapter(adapter);
         adapter.addAll(mBug.getComments());
         adapter.notifyDataSetChanged();
+
         ImageButton imgvAddComment = (ImageButton) findViewById(R.id.imgbtnAddComment);
         if (mBug.getState() == OsmNote.STATE.CLOSED)
         {
@@ -180,6 +190,7 @@ public class OsmNoteEditActivity extends BugEditActivity
         {
             imgvAddComment.setOnClickListener(mAddCommentOnClickListener);
         }
+
         ImageButton mBtnResolve = (ImageButton) findViewById(R.id.btnResolveBug);
         if (mBug.getState() == OsmNote.STATE.CLOSED)
         {
@@ -203,16 +214,10 @@ public class OsmNoteEditActivity extends BugEditActivity
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
-            View v;
-            if (convertView == null)
-            {
-                v = LayoutInflater.from(getContext()).inflate(R.layout.row_comment, parent, false);
-            }
-            else
-            {
-                v = convertView;
-            }
+            View v = convertView != null ? convertView :  LayoutInflater.from(getContext()).inflate(R.layout.row_comment, parent, false);
+
             Comment c = getItem(position);
+
             TextView txtvUsername = (TextView) v.findViewById(R.id.comment_username);
             if (!c.getUsername().equals(""))
             {
@@ -223,8 +228,10 @@ public class OsmNoteEditActivity extends BugEditActivity
             {
                 txtvUsername.setVisibility(GONE);
             }
+
             TextView txtvText = (TextView) v.findViewById(R.id.comment_text);
             txtvText.setText(c.getText());
+
             return v;
         }
     }

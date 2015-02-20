@@ -24,6 +24,7 @@ public class OpenstreetmapNotesParser
         {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
             doc.getDocumentElement().normalize();
+
             NodeList nList = doc.getElementsByTagName("note");
             for (int i = 0;
                  i != nList.getLength();
@@ -32,33 +33,38 @@ public class OpenstreetmapNotesParser
                 Element wpt = (Element) nList.item(i);
                 double lat = Double.parseDouble(wpt.getAttribute("lat"));
                 double lon = Double.parseDouble(wpt.getAttribute("lon"));
+
                 OsmNote.STATE state = OsmNote.STATE.CLOSED;
                 if (wpt.getElementsByTagName("status").item(0).getTextContent().equals("open"))
                 {
                     state = OsmNote.STATE.OPEN;
                 }
+
                 long id = Long.parseLong(wpt.getElementsByTagName("id").item(0).getTextContent());
+
                 NodeList nListComments = wpt.getElementsByTagName("comment");
                 ArrayList<Comment> comments = new ArrayList<>();
-                for (int n = 0;
-                     n != nListComments.getLength();
-                     ++n)
+                for (int n = 0; n != nListComments.getLength(); ++n)
                 {
                     Comment comment = new Comment();
                     comment.setText(((Element) nListComments.item(n)).getElementsByTagName("text").item(0).getTextContent());
+
                     NodeList element = ((Element) nListComments.item(n)).getElementsByTagName("user");
                     if (element.getLength() != 0)
                     {
                         comment.setUsername(element.item(0).getTextContent());
                     }
+
                     comments.add(comment);
                 }
+
                 String text = "";
                 if (comments.size() > 0)
                 {
                     text = comments.get(0).getText();
                     comments.remove(0);
                 }
+
                 bugs.add(new OsmNote(lat, lon, id, text, comments, state));
             }
         }

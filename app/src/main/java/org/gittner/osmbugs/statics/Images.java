@@ -20,6 +20,7 @@ public class Images
     public static Drawable getByName(String name, int defaultDrawableId)
     {
         int id = mResources.getIdentifier(name, "drawable", mPackageName);
+
         try
         {
             return mResources.getDrawable(id);

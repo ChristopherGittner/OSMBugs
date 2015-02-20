@@ -36,9 +36,11 @@ public class MapdustParser
             {
                 JSONObject bug = bugArray.getJSONObject(i);
                 long id = bug.getLong("id");
+
                 JSONObject geometry = bug.getJSONObject("geometry");
                 double lon = geometry.getJSONArray("coordinates").getDouble(0);
                 double lat = geometry.getJSONArray("coordinates").getDouble(1);
+
                 JSONObject property = bug.getJSONObject("properties");
                 MapdustBug.STATE state;
                 switch (property.getInt("status"))
@@ -53,17 +55,18 @@ public class MapdustParser
                         state = MapdustBug.STATE.OPEN;
                         break;
                 }
+
                 ArrayList<Comment> comments = new ArrayList<>();
                 JSONArray commentArray = property.getJSONArray("comments");
-                for (int n = 0;
-                     n != commentArray.length();
-                     ++n)
+                for (int n = 0; n != commentArray.length(); ++n)
                 {
                     JSONObject comment = commentArray.getJSONObject(n);
                     comments.add(new Comment(comment.getString("comment")));
                 }
+
                 String description = property.getString("description");
                 String type_const = property.getString("type");
+
                 int typeInt;
                 switch (type_const)
                 {
@@ -92,6 +95,7 @@ public class MapdustParser
                         typeInt = MapdustBug.OTHER;
                         break;
                 }
+
                 bugs.add(new MapdustBug(lat, lon, id, typeInt, description, comments, state));
             }
         }
@@ -126,12 +130,13 @@ public class MapdustParser
             {
                 line += "\"}}";
             }
+
             JSONObject json = new JSONObject(line);
+
             JSONObject properties = json.getJSONObject("properties");
+
             JSONArray commentsArray = properties.getJSONArray("comments");
-            for (int i = 0;
-                 i != commentsArray.length();
-                 ++i)
+            for (int i = 0; i != commentsArray.length(); ++i)
             {
                 comments.add(new Comment(
                         commentsArray.getJSONObject(i).getString("comment"),
@@ -148,6 +153,7 @@ public class MapdustParser
             e.printStackTrace();
             return new ArrayList<>();
         }
+
         return comments;
     }
 }

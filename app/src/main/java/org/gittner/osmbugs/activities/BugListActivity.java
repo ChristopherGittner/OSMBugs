@@ -25,8 +25,11 @@ public class BugListActivity
         BugPlatformListFragment.OnFragmentInteractionListener
 {
     public static final int RESULT_BUG_MINI_MAP_CLICKED = 1;
+
     public static final String RESULT_EXTRA_BUG = "RESULT_EXTRA_BUG";
+
     private static final int REQUEST_CODE_BUG_EDITOR_ACTIVITY = 1;
+
     private ViewPager mPager = null;
 
 
@@ -34,10 +37,14 @@ public class BugListActivity
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_bug_list);
+
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
         PlatformPagerAdapter pagerAdapter = new PlatformPagerAdapter(getFragmentManager());
+
         if (Settings.Keepright.isEnabled())
         {
             pagerAdapter.add(Globals.KEEPRIGHT);
@@ -54,7 +61,9 @@ public class BugListActivity
         {
             pagerAdapter.add(Globals.OSM_NOTES);
         }
+
         pagerAdapter.notifyDataSetChanged();
+
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(pagerAdapter);
         mPager.setOnPageChangeListener(
@@ -66,9 +75,8 @@ public class BugListActivity
                         actionBar.setSelectedNavigationItem(position);
                     }
                 });
-        for (int i = 0;
-             i < mPager.getAdapter().getCount();
-             i++)
+
+        for (int i = 0; i < mPager.getAdapter().getCount(); i++)
         {
             actionBar.addTab(
                     actionBar.newTab().setText(mPager.getAdapter().getPageTitle(i)).setTabListener(this));
@@ -86,12 +94,15 @@ public class BugListActivity
                 case BugEditActivity.RESULT_SAVED_KEEPRIGHT:
                     BugDatabase.getInstance().reload(Globals.KEEPRIGHT);
                     break;
+
                 case BugEditActivity.RESULT_SAVED_OSMOSE:
                     BugDatabase.getInstance().reload(Globals.OSMOSE);
                     break;
+
                 case BugEditActivity.RESULT_SAVED_MAPDUST:
                     BugDatabase.getInstance().reload(Globals.MAPDUST);
                     break;
+
                 case BugEditActivity.RESULT_SAVED_OSM_NOTES:
                     BugDatabase.getInstance().reload(Globals.OSM_NOTES);
                     break;
@@ -170,10 +181,13 @@ public class BugListActivity
             {
                 case Globals.KEEPRIGHT:
                     return getString(R.string.keepright);
+
                 case Globals.OSMOSE:
                     return getString(R.string.osmose);
+
                 case Globals.MAPDUST:
                     return getString(R.string.mapdust);
+
                 case Globals.OSM_NOTES:
                     return getString(R.string.openstreetmap_notes);
             }

@@ -78,20 +78,21 @@ public class MapdustBug extends Bug
         mDescription = parcel.readString();
         mComments = new ArrayList<>();
         int size = parcel.readInt();
-        for (int i = 0;
-             i != size;
-             ++i)
+        for (int i = 0; i != size; ++i)
         {
             mComments.add(new Comment(parcel));
         }
+
         switch (parcel.readInt())
         {
             case 1:
                 mState = STATE.OPEN;
                 break;
+
             case 2:
                 mState = STATE.CLOSED;
                 break;
+
             case 3:
                 mState = STATE.IGNORED;
                 break;

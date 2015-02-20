@@ -19,7 +19,9 @@ public class SettingsActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         addPreferencesFromResource(R.xml.preferences);
+
         findPreference("pref_keepright_reset").setOnPreferenceClickListener(this);
     }
 

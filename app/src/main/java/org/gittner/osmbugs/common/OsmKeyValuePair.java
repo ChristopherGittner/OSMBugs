@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 public class OsmKeyValuePair implements Parcelable
 {
+    private String mKey = "";
+    private String mValue = "";
+
     public static final Creator<OsmKeyValuePair> CREATOR = new Creator<OsmKeyValuePair>()
     {
         @Override
@@ -20,8 +23,6 @@ public class OsmKeyValuePair implements Parcelable
             return new OsmKeyValuePair[size];
         }
     };
-    private String mKey = "";
-    private String mValue = "";
 
 
     public OsmKeyValuePair()

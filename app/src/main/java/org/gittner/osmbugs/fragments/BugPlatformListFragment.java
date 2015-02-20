@@ -67,9 +67,11 @@ public class BugPlatformListFragment extends ListFragment
     public static BugPlatformListFragment newInstance(int platform)
     {
         BugPlatformListFragment fragment = new BugPlatformListFragment();
+
         Bundle args = new Bundle();
         args.putInt(ARG_PLATFORM, platform);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -124,12 +126,15 @@ public class BugPlatformListFragment extends ListFragment
             case Globals.KEEPRIGHT:
                 mAdapter = new KeeprightBugAdapter(getActivity());
                 break;
+
             case Globals.OSMOSE:
                 mAdapter = new OsmoseBugAdapter(getActivity());
                 break;
+
             case Globals.MAPDUST:
                 mAdapter = new MapdustBugAdapter(getActivity());
                 break;
+
             case Globals.OSM_NOTES:
                 mAdapter = new OsmNoteAdapter(getActivity());
                 break;
@@ -147,12 +152,15 @@ public class BugPlatformListFragment extends ListFragment
             case Globals.KEEPRIGHT:
                 mAdapter.addAll(BugDatabase.getInstance().getKeeprightBugs());
                 break;
+
             case Globals.OSMOSE:
                 mAdapter.addAll(BugDatabase.getInstance().getOsmoseBugs());
                 break;
+
             case Globals.MAPDUST:
                 mAdapter.addAll(BugDatabase.getInstance().getMapdustBugs());
                 break;
+
             case Globals.OSM_NOTES:
                 mAdapter.addAll(BugDatabase.getInstance().getOsmNotes());
                 break;
@@ -184,13 +192,18 @@ public class BugPlatformListFragment extends ListFragment
         public View getView(final int position, final View convertView, final ViewGroup parent)
         {
             View v = convertView != null ? convertView : LayoutInflater.from(getContext()).inflate(R.layout.row_bug, parent, false);
+
+            final Bug bug = getItem(position);
+
             mTxtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
             mTxtvDescription = (TextView) v.findViewById(R.id.txtvDescription);
+
             ImageView imgvIcon = (ImageView) v.findViewById(R.id.imgvIcon);
-            final MapView mapView = (MapView) v.findViewById(R.id.mapview);
-            View layoutInfo = v.findViewById(R.id.layoutInfo);
-            final Bug bug = getItem(position);
             imgvIcon.setImageDrawable(bug.getIcon());
+
+            View layoutInfo = v.findViewById(R.id.layoutInfo);
+
+            final MapView mapView = (MapView) v.findViewById(R.id.mapview);
             mapView.getController().setZoom(17);
             mapView.getController().setCenter(bug.getPoint());
             mapView.setOnTouchListener(new View.OnTouchListener()
@@ -214,6 +227,7 @@ public class BugPlatformListFragment extends ListFragment
                     mListener.onBugClicked(bug);
                 }
             });
+
             return v;
         }
     }
@@ -230,11 +244,14 @@ public class BugPlatformListFragment extends ListFragment
         public View getView(final int position, final View convertView, final ViewGroup parent)
         {
             View v = super.getView(position, convertView, parent);
+
             final KeeprightBug bug = getItem(position);
+
             mTxtvTitle.setText(bug.getTitle());
             mTxtvDescription.setText(bug.getDescription());
             mTxtvTitle.setText(Html.fromHtml(mTxtvTitle.getText().toString()));
             mTxtvDescription.setText(Html.fromHtml(mTxtvDescription.getText().toString()));
+
             return v;
         }
     }
@@ -251,11 +268,14 @@ public class BugPlatformListFragment extends ListFragment
         public View getView(final int position, final View convertView, final ViewGroup parent)
         {
             View v = super.getView(position, convertView, parent);
+
             final OsmoseBug bug = getItem(position);
+
             mTxtvTitle.setVisibility(View.GONE);
             mTxtvDescription.setText(bug.getTitle());
             mTxtvTitle.setText(Html.fromHtml(mTxtvTitle.getText().toString()));
             mTxtvDescription.setText(Html.fromHtml(mTxtvDescription.getText().toString()));
+
             return v;
         }
     }
@@ -272,9 +292,12 @@ public class BugPlatformListFragment extends ListFragment
         public View getView(final int position, final View convertView, final ViewGroup parent)
         {
             View v = super.getView(position, convertView, parent);
+
             final MapdustBug bug = getItem(position);
+
             mTxtvTitle.setVisibility(View.GONE);
             mTxtvDescription.setText(bug.getDescription());
+
             return v;
         }
     }
@@ -291,9 +314,12 @@ public class BugPlatformListFragment extends ListFragment
         public View getView(final int position, final View convertView, final ViewGroup parent)
         {
             View v = super.getView(position, convertView, parent);
+
             final OsmNote bug = getItem(position);
+
             mTxtvTitle.setVisibility(View.GONE);
             mTxtvDescription.setText(bug.getDescription());
+
             return v;
         }
     }

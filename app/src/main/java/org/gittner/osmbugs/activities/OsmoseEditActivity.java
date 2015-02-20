@@ -35,13 +35,18 @@ public class OsmoseEditActivity extends BugEditActivity
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_osmose_edit);
+
         Bundle args = getIntent().getExtras();
         final OsmoseBug mBug = args.getParcelable(EXTRA_BUG);
+
         TextView txtvTitle = (TextView) findViewById(R.id.txtvTitle);
         txtvTitle.setText(mBug.getTitle());
+
         ImageView imgvIcon = (ImageView) findViewById(R.id.imgvIcon);
         imgvIcon.setImageDrawable(mBug.getIcon());
+
         mLoadDetailsTask = new AsyncTask<Long, Void, List<OsmoseElement>>()
         {
             @Override
@@ -55,6 +60,7 @@ public class OsmoseEditActivity extends BugEditActivity
             protected void onPostExecute(List<OsmoseElement> osmoseElements)
             {
                 findViewById(R.id.pbarLoadingDetails).setVisibility(View.GONE);
+
                 TextView txtvDetailsTitle = (TextView) findViewById(R.id.txtvDetailsTitle);
                 if (osmoseElements == null || osmoseElements.isEmpty())
                 {
@@ -62,6 +68,7 @@ public class OsmoseEditActivity extends BugEditActivity
                     return;
                 }
                 txtvDetailsTitle.setText(R.string.details);
+
                 for (OsmoseElement element : osmoseElements)
                 {
                     OsmoseElementView elementView = new OsmoseElementView(OsmoseEditActivity.this);
@@ -69,6 +76,7 @@ public class OsmoseEditActivity extends BugEditActivity
                     LinearLayout layoutDetails = (LinearLayout) findViewById(R.id.layoutDetails);
                     layoutDetails.addView(elementView);
                 }
+
                 mLoadDetailsTask = null;
             }
         };

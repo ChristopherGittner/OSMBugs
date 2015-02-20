@@ -35,20 +35,26 @@ public class KeeprightEditActivity extends BugEditActivity
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_keepright_edit);
+
         Bundle args = getIntent().getExtras();
         mBug = args.getParcelable(EXTRA_BUG);
+
         TextView txtvTitle = (TextView) findViewById(R.id.txtvTitle);
         txtvTitle.setText(mBug.getTitle());
         Linkify.addLinks(txtvTitle, Linkify.WEB_URLS);
         txtvTitle.setText(Html.fromHtml(txtvTitle.getText().toString()));
+
         TextView txtvText = (TextView) findViewById(R.id.txtvText);
         txtvText.setText(mBug.getDescription());
         Linkify.addLinks(txtvText, Linkify.WEB_URLS);
         txtvText.setText(Html.fromHtml(txtvText.getText().toString()));
         txtvText.setMovementMethod(LinkMovementMethod.getInstance());
+
         mEdtxtComment = (EditText) findViewById(R.id.edttxtComment);
         mEdtxtComment.setText(mBug.getComment());
+
         mSpnState = (Spinner) findViewById(R.id.spnState);
         mSpnState.setAdapter(new KeeprightStateAdapter(this, mBug.getOpenIcon()));
         switch (mBug.getState())
@@ -56,9 +62,11 @@ public class KeeprightEditActivity extends BugEditActivity
             case OPEN:
                 mSpnState.setSelection(0);
                 break;
+
             case IGNORED_TMP:
                 mSpnState.setSelection(1);
                 break;
+
             case IGNORED:
                 mSpnState.setSelection(2);
                 break;
@@ -70,6 +78,7 @@ public class KeeprightEditActivity extends BugEditActivity
     public boolean onCreateOptionsMenu(final Menu menu)
     {
         getMenuInflater().inflate(R.menu.keepright_edit, menu);
+
         return true;
     }
 
@@ -83,6 +92,7 @@ public class KeeprightEditActivity extends BugEditActivity
                 menuDoneClicked();
                 return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -100,13 +110,16 @@ public class KeeprightEditActivity extends BugEditActivity
                     case 0:
                         state = KeeprightBug.STATE.OPEN;
                         break;
+
                     case 1:
                         state = KeeprightBug.STATE.IGNORED_TMP;
                         break;
+
                     default:
                         state = KeeprightBug.STATE.IGNORED;
                         break;
                 }
+
                 return new KeeprightApi().comment(
                         mBug.getSchema(),
                         mBug.getId(),
@@ -144,9 +157,11 @@ public class KeeprightEditActivity extends BugEditActivity
         public KeeprightStateAdapter(Context context, Drawable icon)
         {
             super(context, R.layout.row_keepright_bug_state, R.id.txtvState);
+
             add(KeeprightBug.STATE.OPEN);
             add(KeeprightBug.STATE.IGNORED_TMP);
             add(KeeprightBug.STATE.IGNORED);
+
             mIcon = icon;
         }
 
@@ -167,28 +182,29 @@ public class KeeprightEditActivity extends BugEditActivity
 
         private View getCustomView(int position, View convertView, ViewGroup parent)
         {
-            View v = convertView;
-            if (v == null)
-            {
-                v = LayoutInflater.from(getContext()).inflate(R.layout.row_keepright_bug_state, parent, false);
-            }
+            View v = convertView != null ? convertView : LayoutInflater.from(getContext()).inflate(R.layout.row_keepright_bug_state, parent, false);
+
             ImageView imgvIcon = (ImageView) v.findViewById(R.id.imgvIcon);
             TextView txtvState = (TextView) v.findViewById(R.id.txtvState);
+
             switch (position)
             {
                 case 0:
                     imgvIcon.setImageDrawable(mIcon);
                     txtvState.setText(R.string.open);
                     break;
+
                 case 1:
                     imgvIcon.setImageDrawable(Images.get(R.drawable.keepright_zap_closed));
                     txtvState.setText(R.string.closed);
                     break;
+
                 default:
                     imgvIcon.setImageDrawable(Images.get(R.drawable.keepright_zap_ignored));
                     txtvState.setText(R.string.ignored);
                     break;
             }
+
             return v;
         }
     }
