@@ -86,12 +86,13 @@
             android:src="@drawable/ic_note_add_grey" />
     </LinearLayout>
 
-    <ProgressBar
+    <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
         android:id="@+id/pbarLoadingComments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="8dp" />
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_margin="8dp"
+        android:background="@color/primary" />
 
     <ListView
         android:id="@+id/lstvComments"

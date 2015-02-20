@@ -13,9 +13,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.MapdustApi;
@@ -292,7 +293,7 @@ public class MapdustEditActivity extends BugEditActivity
                 TextView txtvLoadingComments = (TextView) findViewById(R.id.txtvCommentsTitle);
                 txtvLoadingComments.setText(R.string.comments);
 
-                ProgressBar pbarLoadingComments = (ProgressBar) findViewById(R.id.pbarLoadingComments);
+                ProgressBarCircularIndeterminate pbarLoadingComments = (ProgressBarCircularIndeterminate) findViewById(R.id.pbarLoadingComments);
                 pbarLoadingComments.setVisibility(View.GONE);
             }
         }.execute();
