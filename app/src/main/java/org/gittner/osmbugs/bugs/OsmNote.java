@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.activities.OsmNoteEditActivity;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
@@ -75,6 +76,12 @@ public class OsmNote extends Bug {
             return Images.get(R.drawable.osm_notes_closed_bug);
 
         return Images.get(R.drawable.osm_notes_open_bug);
+    }
+
+    @Override
+    public Class<?> getEditorClass()
+    {
+        return OsmNoteEditActivity.class;
     }
 
     public long getId() {

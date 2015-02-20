@@ -12,10 +12,6 @@ import android.support.v7.app.ActionBarActivity;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
-import org.gittner.osmbugs.bugs.KeeprightBug;
-import org.gittner.osmbugs.bugs.MapdustBug;
-import org.gittner.osmbugs.bugs.OsmNote;
-import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.fragments.BugPlatformListFragment;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Globals;
@@ -136,30 +132,8 @@ public class BugListActivity
 	public void onBugClicked(final Bug bug)
 	{
         /* Open the selected Bug in the Bug Editor */
-		Intent i;
-		if(bug instanceof KeeprightBug)
-		{
-			i = new Intent(BugListActivity.this, KeeprightEditActivity.class);
-		}
-		else if(bug instanceof OsmoseBug)
-		{
-			i = new Intent(BugListActivity.this, OsmoseEditActivity.class);
-		}
-		else if(bug instanceof MapdustBug)
-		{
-			i = new Intent(BugListActivity.this, MapdustEditActivity.class);
-		}
-		else if(bug instanceof OsmNote)
-		{
-			i = new Intent(BugListActivity.this, OsmNoteEditActivity.class);
-		}
-		else
-		{
-			throw new IllegalArgumentException("Bug type invalid: " + bug.toString());
-		}
-
+		Intent i = new Intent(BugListActivity.this, bug.getEditorClass());
 		i.putExtra(BugEditActivity.EXTRA_BUG, bug);
-
 		startActivityForResult(i, REQUEST_CODE_BUG_EDITOR_ACTIVITY);
 	}
 

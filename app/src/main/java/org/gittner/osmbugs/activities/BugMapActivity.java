@@ -82,26 +82,26 @@ public class BugMapActivity extends ActionBarActivity
 		/* Create Bug Overlays */
 		mKeeprightOverlay = new ItemizedIconOverlay<>(
 				new ArrayList<BugOverlayItem>(),
-				Images.get(R.drawable.keepright_zap),
-				mKeeprightGestureListener,
+                Images.get(R.drawable.keepright_zap),
+                mBugGestureListener,
 				new DefaultResourceProxyImpl(this));
 
 		mOsmoseOverlay = new ItemizedIconOverlay<>(
 				new ArrayList<BugOverlayItem>(),
-				Images.get(R.drawable.osmose_marker_b_0),
-				mOsmoseGestureListener,
+                Images.get(R.drawable.osmose_marker_b_0),
+                mBugGestureListener,
 				new DefaultResourceProxyImpl(this));
 
 		mMapdustOverlay = new ItemizedIconOverlay<>(
 				new ArrayList<BugOverlayItem>(),
-				Images.get(R.drawable.mapdust_other),
-				mMapdustGestureListener,
+                Images.get(R.drawable.mapdust_other),
+                mBugGestureListener,
 				new DefaultResourceProxyImpl(this));
 
 		mOsmNotesOverlay = new ItemizedIconOverlay<>(
 				new ArrayList<BugOverlayItem>(),
-				Images.get(R.drawable.osm_notes_open_bug),
-				mOsmNotesGestureListener,
+                Images.get(R.drawable.osm_notes_open_bug),
+                mBugGestureListener,
 				new DefaultResourceProxyImpl(this));
 
         /* Setup Main MapView */
@@ -521,55 +521,12 @@ public class BugMapActivity extends ActionBarActivity
 		}
 	};
 
-    private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mKeeprightGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
+	private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mBugGestureListener
+            = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
 		@Override
-		public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem) {
-			Intent bugEditorIntent = new Intent(BugMapActivity.this, KeeprightEditActivity.class);
-			bugEditorIntent.putExtra(BugEditActivity.EXTRA_BUG, bugItem.getBug());
-			startActivityForResult(bugEditorIntent, REQUEST_CODE_BUG_EDITOR_ACTIVITY);
-			return false;
-		}
-
-		@Override
-		public boolean onItemLongPress(int i, BugOverlayItem bugItem) {
-			return false;
-		}
-	};
-
-	private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mOsmoseGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
-		@Override
-		public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem) {
-			Intent bugEditorIntent = new Intent(BugMapActivity.this, OsmoseEditActivity.class);
-			bugEditorIntent.putExtra(BugEditActivity.EXTRA_BUG, bugItem.getBug());
-			startActivityForResult(bugEditorIntent, REQUEST_CODE_BUG_EDITOR_ACTIVITY);
-			return false;
-		}
-
-		@Override
-		public boolean onItemLongPress(int i, BugOverlayItem bugItem) {
-			return false;
-		}
-	};
-
-	private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mMapdustGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
-		@Override
-		public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem) {
-			Intent bugEditorIntent = new Intent(BugMapActivity.this, MapdustEditActivity.class);
-			bugEditorIntent.putExtra(BugEditActivity.EXTRA_BUG, bugItem.getBug());
-			startActivityForResult(bugEditorIntent, REQUEST_CODE_BUG_EDITOR_ACTIVITY);
-			return false;
-		}
-
-		@Override
-		public boolean onItemLongPress(int i, BugOverlayItem bugItem) {
-			return false;
-		}
-	};
-
-	private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mOsmNotesGestureListener = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>() {
-		@Override
-		public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem) {
-			Intent bugEditorIntent = new Intent(BugMapActivity.this, OsmNoteEditActivity.class);
+		public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem)
+        {
+			Intent bugEditorIntent = new Intent(BugMapActivity.this, bugItem.getBug().getEditorClass());
 			bugEditorIntent.putExtra(BugEditActivity.EXTRA_BUG, bugItem.getBug());
 			startActivityForResult(bugEditorIntent, REQUEST_CODE_BUG_EDITOR_ACTIVITY);
 			return false;

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import org.gittner.osmbugs.Helpers.Openstreetmap;
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.activities.KeeprightEditActivity;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
@@ -135,6 +136,12 @@ public class KeeprightBug extends Bug {
         }
 
         return Images.getByName(ICON_PREFIX + mType, R.drawable.keepright_zap);
+    }
+
+    @Override
+    public Class<?> getEditorClass()
+    {
+        return KeeprightEditActivity.class;
     }
 
     public Drawable getOpenIcon()
