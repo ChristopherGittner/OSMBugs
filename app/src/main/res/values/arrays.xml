@@ -7,12 +7,10 @@
         <item>@string/mapquest_osm</item>
         <item>@string/mapquest_aerial</item>
         <item>@string/open_railway_map_infrastructure</item>
-        <item>@string/open_railway_map_maxpseed</item>
+        <item>@string/open_railway_map_maxspeed</item>
         <item>@string/open_railway_map_signals</item>
     </string-array>
-    <string-array
-        name="map_styles_values"
-        tools:ignore="MissingTranslation">
+    <string-array name="map_styles_values" tools:ignore="MissingTranslation">
         <item>1</item>
         <item>2</item>
         <item>3</item>

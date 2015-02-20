@@ -18,17 +18,45 @@ import org.osmdroid.util.GeoPoint;
 
 public class AddOpenstreetmapNoteActivity extends ActionBarActivity
 {
-
     /* The Intents Extras */
     public static final String EXTRA_LATITUDE = "EXTRA_LATITUDE";
     public static final String EXTRA_LONGITUDE = "EXTRA_LONGITUDE";
 
+    /* TextWatcher to show or hide the Save Button */
+    private final TextWatcher mTextWatcherDescription = new TextWatcher()
+    {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3)
+        {
+        }
+
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3)
+        {
+            invalidateOptionsMenu();
+        }
+
+
+        @Override
+        public void afterTextChanged(Editable editable)
+        {
+        }
+    };
+
+    /* Holds the Latitude of the new Bug */
+    private double mLatitude;
+
+    /* Holds the Longitude of the new Bug */
+    private double mLongitude;
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         /* Enable the Spinning Wheel for undetermined Progress */
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_PROGRESS);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_openstreetmap_note);
 
@@ -44,48 +72,56 @@ public class AddOpenstreetmapNoteActivity extends ActionBarActivity
 
         /* Setup the Descriptions EditText */
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
-        if (edttxtDescription != null) {
+        if (edttxtDescription != null)
+        {
             edttxtDescription.addTextChangedListener(mTextWatcherDescription);
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.add_openstreetmap_note, menu);
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.add_openstreetmap_note, menu);
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
         MenuItem menuItemDone = menu.findItem(R.id.action_done);
 
         /* Enable or Disable the Save Entry */
-        if (edttxtDescription != null && menuItemDone != null) {
-            if (!edttxtDescription.getText().toString().equals("")) {
+        if (edttxtDescription != null && menuItemDone != null)
+        {
+            if (!edttxtDescription.getText().toString().equals(""))
+            {
                 menuItemDone.setVisible(true);
-            } else {
+            }
+            else
+            {
                 menuItemDone.setVisible(false);
             }
         }
-
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
             case R.id.action_done:
                 menuDoneClicked();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    private void menuDoneClicked() {
-        class TaskParameter {
+
+    private void menuDoneClicked()
+    {
+        class TaskParameter
+        {
             GeoPoint geoPoint;
             String description;
         }
-
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
 
         /* Prepare Parameters */
@@ -94,53 +130,35 @@ public class AddOpenstreetmapNoteActivity extends ActionBarActivity
         parameter.description = edttxtDescription.getText().toString();
 
         /* Create and execute AsyncTask */
-        new AsyncTask<TaskParameter, Void, Boolean>() {
+        new AsyncTask<TaskParameter, Void, Boolean>()
+        {
             @Override
-            protected void onPreExecute() {
+            protected void onPreExecute()
+            {
                 AddOpenstreetmapNoteActivity.this.setProgressBarIndeterminateVisibility(true);
             }
 
+
             @Override
-            protected Boolean doInBackground(TaskParameter... parameters) {
+            protected Boolean doInBackground(TaskParameter... parameters)
+            {
                 return new OsmNotesApi().addNew(parameters[0].geoPoint, parameters[0].description);
             }
 
-            @Override
-            protected void onPostExecute(Boolean success) {
-                AddOpenstreetmapNoteActivity.this.setProgressBarIndeterminateVisibility(false);
 
-                if (!success) {
+            @Override
+            protected void onPostExecute(Boolean success)
+            {
+                AddOpenstreetmapNoteActivity.this.setProgressBarIndeterminateVisibility(false);
+                if (!success)
+                {
                     Toast.makeText(AddOpenstreetmapNoteActivity.this, "Error", Toast.LENGTH_LONG).show();
-                } else {
+                }
+                else
+                {
                     finish();
                 }
             }
         }.execute(parameter);
-
     }
-
-    /* TextWatcher to show or hide the Save Button */
-    private final TextWatcher mTextWatcherDescription = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            invalidateOptionsMenu();
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
-
-    /* Holds the Latitude of the new Bug */
-    private double mLatitude;
-
-    /* Holds the Longitude of the new Bug */
-    private double mLongitude;
-
 }

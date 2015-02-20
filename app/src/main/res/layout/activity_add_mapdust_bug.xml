@@ -30,11 +30,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:hint="@string/description"
+        android:inputType="textMultiLine"
         android:maxHeight="100dp"
         android:minHeight="40dp"
         android:scrollbars="vertical"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:hint="@string/description"
-        android:inputType="textMultiLine" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </LinearLayout>

@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /* Parser for Keepright bug lists retrieved from points.php */
-public class KeeprightParser {
-
-    public static ArrayList<KeeprightBug> parse(InputStream stream) {
+public class KeeprightParser
+{
+    public static ArrayList<KeeprightBug> parse(InputStream stream)
+    {
         ArrayList<KeeprightBug> bugs = new ArrayList<>();
-
-        try {
+        try
+        {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-
             String line;
 
             /* Skip the first line which is just the column names eg. Latitude, Longitude etc... */
@@ -29,8 +29,10 @@ public class KeeprightParser {
              * that Entries are empty eg. "" the token itself must be detokenized which leads to one
              * extra call of nextToken() per token
              */
-            while ((line = reader.readLine()) != null) {
-                try {
+            while ((line = reader.readLine()) != null)
+            {
+                try
+                {
                     StringTokenizer token = new StringTokenizer(line, "\t", true);
 
                     /* Latitude */
@@ -50,34 +52,36 @@ public class KeeprightParser {
                     token.nextToken();
 
                     /* Object Type */
-					int object_type;
-					switch (token.nextToken())
-					{
-						case "Node":
-							object_type = Openstreetmap.TYPE_NODE;
-							break;
-
-						case "Way":
-							object_type = Openstreetmap.TYPE_WAY;
-							break;
-
-						default:
-							object_type = Openstreetmap.TYPE_RELATION;
-							break;
-					}
-					token.nextToken();
+                    int object_type;
+                    switch (token.nextToken())
+                    {
+                        case "Node":
+                            object_type = Openstreetmap.TYPE_NODE;
+                            break;
+                        case "Way":
+                            object_type = Openstreetmap.TYPE_WAY;
+                            break;
+                        default:
+                            object_type = Openstreetmap.TYPE_RELATION;
+                            break;
+                    }
+                    token.nextToken();
 
 					/* Object Type EN */
-					token.nextToken();
-					token.nextToken();
+                    token.nextToken();
+                    token.nextToken();
 
                     /* Way */
                     long way = Long.parseLong(token.nextToken());
                     token.nextToken();
 
                     /* 2 Unused token */
-                    for (int i = 0; i != 4; ++i)
+                    for (int i = 0;
+                         i != 4;
+                         ++i)
+                    {
                         token.nextToken();
+                    }
 
                     /* Schema */
                     int schema = Integer.parseInt(token.nextToken());
@@ -93,7 +97,8 @@ public class KeeprightParser {
 
                     /* Comment or \t if no comment available */
                     String comment = token.nextToken();
-                    if (!comment.equals("\t")) {
+                    if (!comment.equals("\t"))
+                    {
                         token.nextToken();
                     }
                     else
@@ -109,7 +114,8 @@ public class KeeprightParser {
                     KeeprightBug.STATE state;
 
                     /* Translate the bug State Note: "" or "new" both apply to open bugs */
-                    switch (sState) {
+                    switch (sState)
+                    {
                         case "ignore_t":
                             state = KeeprightBug.STATE.IGNORED_TMP;
                             break;
@@ -123,14 +129,17 @@ public class KeeprightParser {
 
                     /* Finally add our Bug to the results */
                     bugs.add(new KeeprightBug(lat, lon, id, object_type, schema, type, state, title, text, comment, way));
-                } catch (NumberFormatException e) {
+                }
+                catch (NumberFormatException e)
+                {
                     e.printStackTrace();
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
-
         return bugs;
     }
 }

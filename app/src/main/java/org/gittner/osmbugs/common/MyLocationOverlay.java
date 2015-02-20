@@ -7,25 +7,26 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 public class MyLocationOverlay extends MyLocationNewOverlay
 {
-	private final FollowModeListener mListener;
+    private final FollowModeListener mListener;
 
-	public interface FollowModeListener
-	{
-		void onFollowingStopped();
-	}
 
-	public MyLocationOverlay(Context context, MapView mapView, FollowModeListener listener)
-	{
-		super(context, mapView);
+    public MyLocationOverlay(Context context, MapView mapView, FollowModeListener listener)
+    {
+        super(context, mapView);
+        mListener = listener;
+    }
 
-		mListener = listener;
-	}
 
-	@Override
-	public void disableFollowLocation()
-	{
-		super.disableFollowLocation();
+    @Override
+    public void disableFollowLocation()
+    {
+        super.disableFollowLocation();
+        mListener.onFollowingStopped();
+    }
 
-		mListener.onFollowingStopped();
-	}
+
+    public interface FollowModeListener
+    {
+        void onFollowingStopped();
+    }
 }

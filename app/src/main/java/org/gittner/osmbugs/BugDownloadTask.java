@@ -10,56 +10,65 @@ import java.util.ArrayList;
 
 public class BugDownloadTask<T extends Bug> extends AsyncTask<BoundingBoxE6, Void, ArrayList<T>>
 {
-	private BugApi<T> mApi = null;
+    private final StatusListener mListener;
 
-	private ArrayList<T> mDestination = null;
+    private BugApi<T> mApi = null;
 
-	private final StatusListener mListener;
-	private boolean mDownloadFinished = false;
+    private ArrayList<T> mDestination = null;
 
-	public interface StatusListener
-	{
-		void onCompletion();
-		void onCancelled();
-		void onError();
-	}
+    private boolean mDownloadFinished = false;
 
-	public BugDownloadTask(BugApi<T> api, ArrayList<T> destination, StatusListener listener)
-	{
-		mDestination = destination;
-		mApi = api;
-		mListener = listener;
-	}
 
-	@Override
-	protected ArrayList<T> doInBackground(BoundingBoxE6... bBox)
-	{
-		return mApi.downloadBBox(bBox[0]);
-	}
+    public BugDownloadTask(BugApi<T> api, ArrayList<T> destination, StatusListener listener)
+    {
+        mDestination = destination;
+        mApi = api;
+        mListener = listener;
+    }
 
-	@Override
-	protected void onPostExecute(ArrayList<T> bugs)
-	{
-		mDownloadFinished = true;
-		if(bugs != null)
-		{
-			mDestination.addAll(bugs);
-			mListener.onCompletion();
-		}
-		else
-		{
-			mListener.onError();
-		}
-	}
 
-	@Override
-	protected void onCancelled()
-	{
-		mListener.onCancelled();
-	}
+    @Override
+    protected ArrayList<T> doInBackground(BoundingBoxE6... bBox)
+    {
+        return mApi.downloadBBox(bBox[0]);
+    }
 
-	public boolean isDownloadFinished()
-	{
-		return mDownloadFinished;
-	}
+
+    @Override
+    protected void onPostExecute(ArrayList<T> bugs)
+    {
+        mDownloadFinished = true;
+        if (bugs != null)
+        {
+            mDestination.addAll(bugs);
+            mListener.onCompletion();
+        }
+        else
+        {
+            mListener.onError();
+        }
+    }
+
+
+    @Override
+    protected void onCancelled()
+    {
+        mListener.onCancelled();
+    }
+
+
+    public boolean isDownloadFinished()
+    {
+        return mDownloadFinished;
+    }
+
+
+    public interface StatusListener
+    {
+        void onCompletion();
+
+        void onCancelled();
+
+        void onError();
+    }
 }

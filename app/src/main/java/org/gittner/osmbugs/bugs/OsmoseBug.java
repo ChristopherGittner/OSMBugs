@@ -8,7 +8,23 @@ import org.gittner.osmbugs.activities.OsmoseEditActivity;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
-public class OsmoseBug extends Bug {
+public class OsmoseBug extends Bug
+{
+    public static final Creator<OsmoseBug> CREATOR = new Creator<OsmoseBug>()
+    {
+        @Override
+        public OsmoseBug createFromParcel(Parcel source)
+        {
+            return new OsmoseBug(source);
+        }
+
+
+        @Override
+        public OsmoseBug[] newArray(int size)
+        {
+            return new OsmoseBug[size];
+        }
+    };
 
     private static final String ICON_PREFIX = "osmose_marker_b_";
 
@@ -24,23 +40,24 @@ public class OsmoseBug extends Bug {
 
     private int mOsmElementType = 0;
 
+
     public OsmoseBug(
             double lat,
             double lon,
             long id,
             int item,
-            String title) {
-
+            String title)
+    {
         super(new GeoPoint(lat, lon));
-
         mId = id;
         mItem = item;
         mTitle = title;
     }
 
-    private OsmoseBug(Parcel parcel) {
-        super(parcel);
 
+    private OsmoseBug(Parcel parcel)
+    {
+        super(parcel);
         mId = parcel.readLong();
         mItem = parcel.readInt();
         mTitle = parcel.readString();
@@ -49,26 +66,18 @@ public class OsmoseBug extends Bug {
         mOsmElementType = parcel.readInt();
     }
 
-    public String getTitle() {
+
+    public String getTitle()
+    {
         return mTitle;
     }
 
-    @Override
-    public Drawable getIcon() {
-        return Images.getByName(ICON_PREFIX + mItem, R.drawable.osmose_marker_b_0);
-    }
-
-    @Override
-    public Class<?> getEditorClass()
-    {
-        return OsmoseEditActivity.class;
-    }
 
     /* Parcelable interface */
     @Override
-    public void writeToParcel(Parcel parcel, int flags) {
+    public void writeToParcel(Parcel parcel, int flags)
+    {
         super.writeToParcel(parcel, flags);
-
         parcel.writeLong(mId);
         parcel.writeInt(mItem);
         parcel.writeString(mTitle);
@@ -77,25 +86,30 @@ public class OsmoseBug extends Bug {
         parcel.writeInt(mOsmElementType);
     }
 
+
     @Override
-    public int describeContents() {
+    public Drawable getIcon()
+    {
+        return Images.getByName(ICON_PREFIX + mItem, R.drawable.osmose_marker_b_0);
+    }
+
+
+    @Override
+    public Class<?> getEditorClass()
+    {
+        return OsmoseEditActivity.class;
+    }
+
+
+    @Override
+    public int describeContents()
+    {
         return 0;
     }
 
-    public static final Creator<OsmoseBug> CREATOR = new Creator<OsmoseBug>() {
 
-        @Override
-        public OsmoseBug createFromParcel(Parcel source) {
-            return new OsmoseBug(source);
-        }
-
-        @Override
-        public OsmoseBug[] newArray(int size) {
-            return new OsmoseBug[size];
-        }
-    };
-
-    public long getId() {
+    public long getId()
+    {
         return mId;
     }
 }

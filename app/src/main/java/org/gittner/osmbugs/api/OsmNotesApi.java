@@ -22,61 +22,68 @@ import java.util.ArrayList;
 
 public class OsmNotesApi implements BugApi<OsmNote>
 {
-	@Override
-	public ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox)
-	{
-		return downloadBBox(
-				bBox,
-				Settings.OsmNotes.getBugLimit(),
-				!Settings.OsmNotes.isShowOnlyOpenEnabled()
-		);
-	}
+    @Override
+    public ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox)
+    {
+        return downloadBBox(
+                bBox,
+                Settings.OsmNotes.getBugLimit(),
+                !Settings.OsmNotes.isShowOnlyOpenEnabled()
+        );
+    }
 
-    private ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox, int limit, boolean showClosed) {
+
+    private ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox, int limit, boolean showClosed)
+    {
         HttpClient client = new DefaultHttpClient();
-
         ArrayList<NameValuePair> arguments = new ArrayList<>();
-
         arguments.add(new BasicNameValuePair("bbox", String.valueOf(bBox.getLonWestE6() / 1000000.0) + ","
                 + String.valueOf(bBox.getLatSouthE6() / 1000000.0) + ","
                 + String.valueOf(bBox.getLonEastE6() / 1000000.0) + ","
                 + String.valueOf(bBox.getLatNorthE6() / 1000000.0)));
-
         if (!showClosed)
+        {
             arguments.add(new BasicNameValuePair("closed", "0"));
-
+        }
         arguments.add(new BasicNameValuePair("limit", String.valueOf(limit)));
-
         HttpGet request;
-
         if (!Settings.isDebugEnabled())
+        {
             request = new HttpGet("http://api.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
+        }
         else
+        {
             request = new HttpGet("http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
-
-        try {
+        }
+        try
+        {
             /* Execute Query */
             HttpResponse response = client.execute(request);
 
             /* Check for Success */
             if (response.getStatusLine().getStatusCode() != 200)
+            {
                 return null;
+            }
 
             /* If Request was Successful, parse the Stream */
             return OpenstreetmapNotesParser.parse(response.getEntity().getContent());
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
-
         return null;
     }
+
 
     public boolean addComment(long id, String username, String password, String comment)
     {
         DefaultHttpClient client = new DefaultHttpClient();
 
         /* Add the Authentication Details if we have a username */
-        if (!username.equals("")) {
+        if (!username.equals(""))
+        {
             client.getCredentialsProvider().setCredentials(AuthScope.ANY,
                     new UsernamePasswordCredentials(username, password)
             );
@@ -85,37 +92,47 @@ public class OsmNotesApi implements BugApi<OsmNote>
         /* Add all Arguments */
         ArrayList<NameValuePair> arguments = new ArrayList<>();
         arguments.add(new BasicNameValuePair("text", comment));
-
         HttpPost request;
         if (!Settings.isDebugEnabled())
+        {
             request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
+        }
         else
+        {
             request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
-
-        try {
+        }
+        try
+        {
             /* Execute commit */
             HttpResponse response = client.execute(request);
 
             /* Check result for Success */
             if (response.getStatusLine().getStatusCode() != 200)
+            {
                 return false;
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-            return false;
-        } catch (IOException e) {
+            }
+        }
+        catch (ClientProtocolException e)
+        {
             e.printStackTrace();
             return false;
         }
-
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
+
 
     public boolean closeBug(long id, String username, String password, String comment)
     {
         DefaultHttpClient client = new DefaultHttpClient();
 
         /* Add the Authentication Details if we have a username */
-        if (!username.equals("")) {
+        if (!username.equals(""))
+        {
             client.getCredentialsProvider().setCredentials(AuthScope.ANY,
                     new UsernamePasswordCredentials(username, password)
             );
@@ -124,37 +141,47 @@ public class OsmNotesApi implements BugApi<OsmNote>
         /* Add all Arguments */
         ArrayList<NameValuePair> arguments = new ArrayList<>();
         arguments.add(new BasicNameValuePair("text", comment));
-
         HttpPost request;
         if (!Settings.isDebugEnabled())
+        {
             request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
+        }
         else
+        {
             request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
-
-        try {
+        }
+        try
+        {
             /* Execute commit */
             HttpResponse response = client.execute(request);
 
             /* Check result for Success */
             if (response.getStatusLine().getStatusCode() != 200)
+            {
                 return false;
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-            return false;
-        } catch (IOException e) {
+            }
+        }
+        catch (ClientProtocolException e)
+        {
             e.printStackTrace();
             return false;
         }
-
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 
-    public boolean addNew(GeoPoint position, String text) {
 
+    public boolean addNew(GeoPoint position, String text)
+    {
         DefaultHttpClient client = new DefaultHttpClient();
 
         /* Add the Authentication Details if we have a username in the Preferences */
-        if (!Settings.OsmNotes.getUsername().equals("")) {
+        if (!Settings.OsmNotes.getUsername().equals(""))
+        {
             client.getCredentialsProvider().setCredentials(AuthScope.ANY,
                     new UsernamePasswordCredentials(Settings.OsmNotes.getUsername(),
                             Settings.OsmNotes.getPassword())
@@ -168,29 +195,36 @@ public class OsmNotesApi implements BugApi<OsmNote>
         arguments.add(new BasicNameValuePair("lon",
                 String.valueOf(position.getLongitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("text", text));
-
         HttpPost request;
-
         if (!Settings.isDebugEnabled())
+        {
             request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
+        }
         else
+        {
             request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
-
-        try {
+        }
+        try
+        {
             /* Execute commit */
             HttpResponse response = client.execute(request);
 
             /* Check result for Success */
             if (response.getStatusLine().getStatusCode() != 200)
+            {
                 return false;
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-            return false;
-        } catch (IOException e) {
+            }
+        }
+        catch (ClientProtocolException e)
+        {
             e.printStackTrace();
             return false;
         }
-
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 }

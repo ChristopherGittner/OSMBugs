@@ -21,17 +21,48 @@ import org.osmdroid.util.GeoPoint;
 
 public class AddMapdustBugActivity extends ActionBarActivity
 {
-
     /* The Intents Extras */
     public static final String EXTRA_LATITUDE = "EXTRA_LATITUDE";
     public static final String EXTRA_LONGITUDE = "EXTRA_LONGITUDE";
 
+    /* TextWatcher to show or hide the Save Button */
+    private final TextWatcher mTextWatcherDescription = new TextWatcher()
+    {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3)
+        {
+        }
+
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3)
+        {
+            invalidateOptionsMenu();
+        }
+
+
+        @Override
+        public void afterTextChanged(Editable editable)
+        {
+        }
+    };
+
+    /* The Spinner of different Types */
+    private Spinner mSpnType;
+
+    /* Holds the Latitude of the new Bug */
+    private double mLatitude;
+
+    /* Holds the Longitude of the new Bug */
+    private double mLongitude;
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         /* Enable the Spinning Wheel for undetermined Progress */
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_PROGRESS);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mapdust_bug);
 
@@ -47,10 +78,8 @@ public class AddMapdustBugActivity extends ActionBarActivity
 
         /* Setup the Type Adapter */
         mSpnType = (Spinner) findViewById(R.id.spnType);
-
         ArrayAdapter<String> mTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
         mSpnType.setAdapter(mTypeAdapter);
-
         mTypeAdapter.add(getString(R.string.wrong_turn));
         mTypeAdapter.add(getString(R.string.bad_routing));
         mTypeAdapter.add(getString(R.string.oneway_road));
@@ -59,89 +88,87 @@ public class AddMapdustBugActivity extends ActionBarActivity
         mTypeAdapter.add(getString(R.string.roundabout));
         mTypeAdapter.add(getString(R.string.missing_speed_info));
         mTypeAdapter.add(getString(R.string.other));
-
         mSpnType.setSelection(7);
-
         mTypeAdapter.notifyDataSetChanged();
 
         /* Setup the Descriptions EditText */
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
-        if (edttxtDescription != null) {
+        if (edttxtDescription != null)
+        {
             edttxtDescription.addTextChangedListener(mTextWatcherDescription);
         }
     }
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.add_mapdust_bug, menu);
-
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
         MenuItem menuItemDone = menu.findItem(R.id.action_done);
 
         /* Enable or Disable the Save Entry */
-        if (edttxtDescription != null && menuItemDone != null) {
-            if (!edttxtDescription.getText().toString().equals("")) {
+        if (edttxtDescription != null && menuItemDone != null)
+        {
+            if (!edttxtDescription.getText().toString().equals(""))
+            {
                 menuItemDone.setVisible(true);
-            } else {
+            }
+            else
+            {
                 menuItemDone.setVisible(false);
             }
         }
-
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
             case R.id.action_done:
                 menuDoneClicked();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    private void menuDoneClicked() {
-        class TaskParameter {
+
+    private void menuDoneClicked()
+    {
+        class TaskParameter
+        {
             GeoPoint geoPoint;
             String description;
             int type;
         }
-
         EditText edttxtDescription = (EditText) findViewById(R.id.edttxtDescription);
-
         int type = 7;
-        switch (mSpnType.getSelectedItemPosition()) {
+        switch (mSpnType.getSelectedItemPosition())
+        {
             case 0:
                 type = MapdustBug.WRONG_TURN;
                 break;
-
             case 1:
                 type = MapdustBug.BAD_ROUTING;
                 break;
-
             case 2:
                 type = MapdustBug.ONEWAY_ROAD;
                 break;
-
             case 3:
                 type = MapdustBug.BLOCKED_STREET;
                 break;
-
             case 4:
                 type = MapdustBug.MISSING_STREET;
                 break;
-
             case 5:
                 type = MapdustBug.ROUNDABOUT_ISSUE;
                 break;
-
             case 6:
                 type = MapdustBug.MISSING_SPEED_INFO;
                 break;
-
             case 7:
                 type = MapdustBug.OTHER;
                 break;
@@ -154,55 +181,35 @@ public class AddMapdustBugActivity extends ActionBarActivity
         parameter.type = type;
 
         /* Create and execute AsyncTask */
-        new AsyncTask<TaskParameter, Void, Boolean>() {
+        new AsyncTask<TaskParameter, Void, Boolean>()
+        {
             @Override
-            protected void onPreExecute() {
+            protected void onPreExecute()
+            {
                 AddMapdustBugActivity.this.setProgressBarIndeterminateVisibility(true);
             }
 
+
             @Override
-            protected Boolean doInBackground(TaskParameter... parameters) {
+            protected Boolean doInBackground(TaskParameter... parameters)
+            {
                 return new MapdustApi().addBug(parameters[0].geoPoint, parameters[0].type, parameters[0].description);
             }
 
-            @Override
-            protected void onPostExecute(Boolean success) {
-                AddMapdustBugActivity.this.setProgressBarIndeterminateVisibility(false);
 
-                if (!success) {
+            @Override
+            protected void onPostExecute(Boolean success)
+            {
+                AddMapdustBugActivity.this.setProgressBarIndeterminateVisibility(false);
+                if (!success)
+                {
                     Toast.makeText(AddMapdustBugActivity.this, "Error", Toast.LENGTH_LONG).show();
-                } else {
+                }
+                else
+                {
                     finish();
                 }
             }
         }.execute(parameter);
-
     }
-
-    /* TextWatcher to show or hide the Save Button */
-    private final TextWatcher mTextWatcherDescription = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            invalidateOptionsMenu();
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
-
-    /* The Spinner of different Types */
-    private Spinner mSpnType;
-
-    /* Holds the Latitude of the new Bug */
-    private double mLatitude;
-
-    /* Holds the Longitude of the new Bug */
-    private double mLongitude;
 }

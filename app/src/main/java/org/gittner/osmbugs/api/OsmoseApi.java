@@ -18,29 +18,25 @@ import java.util.ArrayList;
 
 public class OsmoseApi implements BugApi<OsmoseBug>
 {
-    public ArrayList<OsmoseBug> downloadBBox(BoundingBoxE6 bBox) {
+    public ArrayList<OsmoseBug> downloadBBox(BoundingBoxE6 bBox)
+    {
         HttpClient client = new DefaultHttpClient();
-
         ArrayList<NameValuePair> arguments = new ArrayList<>();
-
         arguments.add(new BasicNameValuePair("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0)));
         arguments.add(new BasicNameValuePair("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0)));
-
         arguments.add(new BasicNameValuePair("limit", String.valueOf(Settings.Osmose.getBugLimit())));
-
         arguments.add(new BasicNameValuePair("full", "true"));
-
-        if(Settings.Osmose.getBugsToDisplay() == 1)
+        if (Settings.Osmose.getBugsToDisplay() == 1)
         {
             arguments.add(new BasicNameValuePair("status", "done"));
         }
-        if(Settings.Osmose.getBugsToDisplay() == 2)
+        if (Settings.Osmose.getBugsToDisplay() == 2)
         {
             arguments.add(new BasicNameValuePair("status", "false"));
         }
-
         String api;
-        if(Settings.isLanguageGerman()) {
+        if (Settings.isLanguageGerman())
+        {
             api = "http://osmose.openstreetmap.fr/de/api/0.2/errors?";
         }
         else
@@ -48,45 +44,51 @@ public class OsmoseApi implements BugApi<OsmoseBug>
             api = "http://osmose.openstreetmap.fr/en/api/0.2/errors?";
         }
         HttpGet request = new HttpGet(api + URLEncodedUtils.format(arguments, "utf-8"));
-
-        try {
+        try
+        {
             /* Execute Query */
             HttpResponse response = client.execute(request);
 
             /* Check for Success */
             if (response.getStatusLine().getStatusCode() != 200)
+            {
                 return null;
+            }
 
             /* If Request was Successful, parse the Stream */
             return OsmoseParser.parseBugList(response.getEntity().getContent());
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
-
         return null;
     }
 
-    public ArrayList<OsmoseElement> loadElements(long id) {
+
+    public ArrayList<OsmoseElement> loadElements(long id)
+    {
         HttpClient client = new DefaultHttpClient();
-
         String url = "http://osmose.openstreetmap.fr/en/api/0.2/error/" + id;
-
         HttpGet request = new HttpGet(url);
-
-        try {
+        try
+        {
             /* Execute Query */
             HttpResponse response = client.execute(request);
 
             /* Check for Success */
             if (response.getStatusLine().getStatusCode() != 200)
+            {
                 return null;
+            }
 
             /* If Request was Successful, parse the Stream */
             return OsmoseParser.parseBugElements(response.getEntity().getContent());
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
-
         return null;
     }
 }

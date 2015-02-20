@@ -10,28 +10,32 @@ import android.preference.PreferenceScreen;
 import org.gittner.osmbugs.R;
 
 public class SettingsActivity
-		extends PreferenceActivity
+        extends PreferenceActivity
         implements
-        OnPreferenceClickListener {
-
+        OnPreferenceClickListener
+{
     @SuppressWarnings("deprecation")
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-
         findPreference("pref_keepright_reset").setOnPreferenceClickListener(this);
     }
+
 
     /* Little Tweak to prevent a Black background in the Settings on some Devices */
     @SuppressWarnings("deprecation")
     @Override
-    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference)
+    {
         super.onPreferenceTreeClick(preferenceScreen, preference);
-
-        if (preference != null) {
-            if (preference instanceof PreferenceScreen) {
-                if (((PreferenceScreen) preference).getDialog() != null) {
+        if (preference != null)
+        {
+            if (preference instanceof PreferenceScreen)
+            {
+                if (((PreferenceScreen) preference).getDialog() != null)
+                {
                     ((PreferenceScreen) preference).getDialog()
                             .getWindow()
                             .getDecorView()
@@ -43,14 +47,16 @@ public class SettingsActivity
                 }
             }
         }
-
         return false;
     }
 
+
     @SuppressWarnings("deprecation")
     @Override
-    public boolean onPreferenceClick(Preference preference) {
-        if (preference.getKey().equals("pref_keepright_reset")) {
+    public boolean onPreferenceClick(Preference preference)
+    {
+        if (preference.getKey().equals("pref_keepright_reset"))
+        {
             /* Reset all Keepright Preferences to their Original State */
             ((CheckBoxPreference) findPreference("pref_keepright_enabled_20")).setChecked(false);
             ((CheckBoxPreference) findPreference("pref_keepright_enabled_30")).setChecked(true);
@@ -116,8 +122,6 @@ public class SettingsActivity
             ((CheckBoxPreference) findPreference("pref_keepright_enabled_show_ign")).setChecked(true);
             return true;
         }
-
         return false;
     }
-
 }

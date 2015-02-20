@@ -20,9 +20,6 @@ public class TileSources extends HashMap<Integer, ITileSource>
 
     private static final TileSources instance = new TileSources();
 
-    public static TileSources getInstance() {
-        return instance;
-    }
 
     private TileSources()
     {
@@ -38,10 +35,10 @@ public class TileSources extends HashMap<Integer, ITileSource>
                 19,
                 256,
                 ".png",
-                new String[] {
+                new String[]{
                         "http://a.tiles.openrailwaymap.org/standard/",
                         "http://a.tiles.openrailwaymap.org/standard/",
-                        "http://a.tiles.openrailwaymap.org/standard/" }));
+                        "http://a.tiles.openrailwaymap.org/standard/"}));
         put(OPEN_RAILWAY_MAP_MAXSPEED, new XYTileSource(
                 "Open Railway Map Maxspeed",
                 ResourceProxy.string.mapnik,
@@ -49,10 +46,10 @@ public class TileSources extends HashMap<Integer, ITileSource>
                 19,
                 256,
                 ".png",
-                new String[] {
+                new String[]{
                         "http://a.tiles.openrailwaymap.org/maxspeed/",
                         "http://a.tiles.openrailwaymap.org/maxspeed/",
-                        "http://a.tiles.openrailwaymap.org/maxspeed/" }));
+                        "http://a.tiles.openrailwaymap.org/maxspeed/"}));
         put(OPEN_RAILWAY_MAP_SIGNALS, new XYTileSource(
                 "Open Railway Map Signals",
                 ResourceProxy.string.mapnik,
@@ -60,11 +57,18 @@ public class TileSources extends HashMap<Integer, ITileSource>
                 19,
                 256,
                 ".png",
-                new String[] {
+                new String[]{
                         "http://a.tiles.openrailwaymap.org/signals/",
                         "http://a.tiles.openrailwaymap.org/signals/",
-                        "http://a.tiles.openrailwaymap.org/signals/" }));
+                        "http://a.tiles.openrailwaymap.org/signals/"}));
     }
+
+
+    public static TileSources getInstance()
+    {
+        return instance;
+    }
+
 
     public ITileSource getPreferredTileSource()
     {

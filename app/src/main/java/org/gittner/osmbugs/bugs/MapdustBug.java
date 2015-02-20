@@ -13,8 +13,8 @@ import org.osmdroid.util.GeoPoint;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapdustBug extends Bug {
-
+public class MapdustBug extends Bug
+{
     /* All Mapdust Types */
     public static final int WRONG_TURN = 1;
     public static final int BAD_ROUTING = 2;
@@ -25,11 +25,21 @@ public class MapdustBug extends Bug {
     public static final int MISSING_SPEED_INFO = 7;
     public static final int OTHER = 8;
 
-    public enum STATE {
-        OPEN,
-        CLOSED,
-        IGNORED
-    }
+    public static final Creator<MapdustBug> CREATOR = new Parcelable.Creator<MapdustBug>()
+    {
+        @Override
+        public MapdustBug createFromParcel(Parcel source)
+        {
+            return new MapdustBug(source);
+        }
+
+
+        @Override
+        public MapdustBug[] newArray(int size)
+        {
+            return new MapdustBug[size];
+        }
+    };
 
     private final long mId;
 
@@ -41,6 +51,7 @@ public class MapdustBug extends Bug {
 
     private STATE mState = STATE.OPEN;
 
+
     public MapdustBug(
             double lat,
             double lon,
@@ -48,10 +59,9 @@ public class MapdustBug extends Bug {
             int type,
             String description,
             ArrayList<Comment> comments,
-            STATE state) {
-
+            STATE state)
+    {
         super(new GeoPoint(lat, lon));
-
         mId = id;
         mType = type;
         mComments = comments;
@@ -59,63 +69,103 @@ public class MapdustBug extends Bug {
         mState = state;
     }
 
-    private MapdustBug(Parcel parcel) {
-        super(parcel);
 
+    private MapdustBug(Parcel parcel)
+    {
+        super(parcel);
         mId = parcel.readLong();
         mType = parcel.readInt();
         mDescription = parcel.readString();
-
         mComments = new ArrayList<>();
         int size = parcel.readInt();
-        for (int i = 0; i != size; ++i) {
+        for (int i = 0;
+             i != size;
+             ++i)
+        {
             mComments.add(new Comment(parcel));
         }
-
-        switch (parcel.readInt()) {
+        switch (parcel.readInt())
+        {
             case 1:
                 mState = STATE.OPEN;
                 break;
-
             case 2:
                 mState = STATE.CLOSED;
                 break;
-
             case 3:
                 mState = STATE.IGNORED;
                 break;
         }
     }
 
+
     public String getDescription()
     {
         return mDescription;
     }
 
-    public void setComments(List<Comment> comments) {
+
+    public void setComments(List<Comment> comments)
+    {
         mComments = comments;
     }
 
-    public STATE getState() {
-        return mState;
-    }
 
-    public long getId() {
+    public long getId()
+    {
         return mId;
     }
 
-    int getType() {
-        return mType;
-    }
 
     @Override
-    public Drawable getIcon() {
+    public int describeContents()
+    {
+        return 0;
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags)
+    {
+        super.writeToParcel(parcel, flags);
+        parcel.writeLong(mId);
+        parcel.writeInt(mType);
+        parcel.writeString(mDescription);
+        parcel.writeInt(mComments.size());
+        for (Comment comment : mComments)
+        {
+            comment.writeToParcel(parcel, flags);
+        }
+        switch (mState)
+        {
+            case OPEN:
+                parcel.writeInt(1);
+                break;
+            case CLOSED:
+                parcel.writeInt(2);
+                break;
+            case IGNORED:
+                parcel.writeInt(3);
+                break;
+        }
+    }
+
+
+    @Override
+    public Drawable getIcon()
+    {
         if (getState() == STATE.CLOSED)
+        {
             return Images.get(R.drawable.mapdust_bug_green);
+        }
         else if (getState() == STATE.IGNORED)
+        {
             return Images.get(R.drawable.mapdust_bug_gray);
-        else {
-            switch (getType()) {
+        }
+        else
+        {
+            switch (getType())
+            {
                 case 1:
                     return Images.get(R.drawable.mapdust_wrong_turn);
                 case 2:
@@ -134,9 +184,21 @@ public class MapdustBug extends Bug {
                     return Images.get(R.drawable.mapdust_other);
             }
         }
-
         return Images.get(R.drawable.mapdust_other);
     }
+
+
+    public STATE getState()
+    {
+        return mState;
+    }
+
+
+    int getType()
+    {
+        return mType;
+    }
+
 
     @Override
     public Class<?> getEditorClass()
@@ -144,48 +206,11 @@ public class MapdustBug extends Bug {
         return MapdustEditActivity.class;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+
+    public enum STATE
+    {
+        OPEN,
+        CLOSED,
+        IGNORED
     }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int flags) {
-        super.writeToParcel(parcel, flags);
-
-        parcel.writeLong(mId);
-        parcel.writeInt(mType);
-        parcel.writeString(mDescription);
-
-        parcel.writeInt(mComments.size());
-        for (Comment comment : mComments)
-            comment.writeToParcel(parcel, flags);
-
-        switch (mState) {
-            case OPEN:
-                parcel.writeInt(1);
-                break;
-
-            case CLOSED:
-                parcel.writeInt(2);
-                break;
-
-            case IGNORED:
-                parcel.writeInt(3);
-                break;
-        }
-    }
-
-    public static final Creator<MapdustBug> CREATOR = new Parcelable.Creator<MapdustBug>() {
-
-        @Override
-        public MapdustBug createFromParcel(Parcel source) {
-            return new MapdustBug(source);
-        }
-
-        @Override
-        public MapdustBug[] newArray(int size) {
-            return new MapdustBug[size];
-        }
-    };
 }

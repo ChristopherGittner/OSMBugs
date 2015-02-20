@@ -151,15 +151,15 @@
         <item>1</item>
         <item>2</item>
     </string-array>
-	<string name="crash_dialog_title">Osmbugs crashed</string>
-	<string name="crash_dialog_text">Ooooops!\n\nI crashed,\nbut a report has been created and is ready to be delivered to my developer to help fix the issue!\nAll you have to do is click OK.</string>
-	<string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
-	<string name="crash_dialog_ok_toast">Thank you !</string>
-	<string name="toast_failed_download_keepright_bugs">Failed to download Keepright Bugs</string>
-	<string name="toast_failed_download_osmose_bugs">Failed to download Osmose Bugs</string>
-	<string name="toast_failed_download_mapdust_bugs">Failed to download Mapdust Bugs</string>
-	<string name="toast_failed_download_osm_notes_bugs">Failed to download Openstreetmap Note</string>
-	<string name="done">Done</string>
+    <string name="crash_dialog_title">Osmbugs crashed</string>
+    <string name="crash_dialog_text">Ooooops!\n\nI crashed,\nbut a report has been created and is ready to be delivered to my developer to help fix the issue!\nAll you have to do is click OK.</string>
+    <string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
+    <string name="crash_dialog_ok_toast">Thank you !</string>
+    <string name="toast_failed_download_keepright_bugs">Failed to download Keepright Bugs</string>
+    <string name="toast_failed_download_osmose_bugs">Failed to download Osmose Bugs</string>
+    <string name="toast_failed_download_mapdust_bugs">Failed to download Mapdust Bugs</string>
+    <string name="toast_failed_download_osm_notes_bugs">Failed to download Openstreetmap Note</string>
+    <string name="done">Done</string>
     <string name="map_style">Map Style</string>
     <string name="display">Display</string>
     <string name="mapnik">Mapnik</string>
@@ -168,7 +168,7 @@
     <string name="mapquest_osm">Mapquest OSM</string>
     <string name="mapquest_aerial">Mapquest Satellit</string>
     <string name="open_railway_map_infrastructure">Open Railway Map Infrastruktur</string>
-    <string name="open_railway_map_maxpseed">Open Railway Map Geschwindigkeiten</string>
+    <string name="open_railway_map_maxspeed">Open Railway Map Geschwindigkeiten</string>
     <string name="open_railway_map_signals">Open Railway Map Signale</string>
 
 </resources>

@@ -13,12 +13,23 @@ import org.osmdroid.util.GeoPoint;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OsmNote extends Bug {
+public class OsmNote extends Bug
+{
+    public static final Creator<OsmNote> CREATOR = new Parcelable.Creator<OsmNote>()
+    {
+        @Override
+        public OsmNote createFromParcel(Parcel source)
+        {
+            return new OsmNote(source);
+        }
 
-    public enum STATE {
-        OPEN,
-        CLOSED
-    }
+
+        @Override
+        public OsmNote[] newArray(int size)
+        {
+            return new OsmNote[size];
+        }
+    };
 
     private final long mId;
 
@@ -28,55 +39,108 @@ public class OsmNote extends Bug {
 
     private STATE mState = STATE.OPEN;
 
+
     public OsmNote(
             double lat,
             double lon,
             long id,
             String description,
             List<Comment> comments,
-            STATE state) {
-
+            STATE state)
+    {
         super(new GeoPoint(lat, lon));
-
         mId = id;
         mState = state;
         mDescription = description;
         mComments = comments;
     }
 
-    private OsmNote(Parcel parcel) {
+
+    private OsmNote(Parcel parcel)
+    {
         super(parcel);
-
         mId = parcel.readLong();
-
         mDescription = parcel.readString();
-
         mComments = new ArrayList<>();
         int size = parcel.readInt();
-        for(int i = 0; i != size; ++i)
+        for (int i = 0;
+             i != size;
+             ++i)
         {
             Comment comment = new Comment(parcel);
             mComments.add(comment);
         }
-
-        switch (parcel.readInt()) {
+        switch (parcel.readInt())
+        {
             case 1:
                 mState = STATE.OPEN;
                 break;
-
             case 2:
                 mState = STATE.CLOSED;
                 break;
         }
     }
 
-    @Override
-    public Drawable getIcon() {
-        if (mState == STATE.CLOSED)
-            return Images.get(R.drawable.osm_notes_closed_bug);
 
+    public long getId()
+    {
+        return mId;
+    }
+
+
+    public String getDescription()
+    {
+        return mDescription;
+    }
+
+
+    public List<Comment> getComments()
+    {
+        return mComments;
+    }
+
+
+    public STATE getState()
+    {
+        return mState;
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags)
+    {
+        super.writeToParcel(parcel, flags);
+        parcel.writeLong(mId);
+        parcel.writeString(mDescription);
+        parcel.writeInt(mComments.size());
+        for (int i = 0;
+             i != mComments.size();
+             ++i)
+        {
+            mComments.get(i).writeToParcel(parcel, flags);
+        }
+        switch (mState)
+        {
+            case OPEN:
+                parcel.writeInt(1);
+                break;
+            case CLOSED:
+                parcel.writeInt(2);
+                break;
+        }
+    }
+
+
+    @Override
+    public Drawable getIcon()
+    {
+        if (mState == STATE.CLOSED)
+        {
+            return Images.get(R.drawable.osm_notes_closed_bug);
+        }
         return Images.get(R.drawable.osm_notes_open_bug);
     }
+
 
     @Override
     public Class<?> getEditorClass()
@@ -84,62 +148,17 @@ public class OsmNote extends Bug {
         return OsmNoteEditActivity.class;
     }
 
-    public long getId() {
-        return mId;
-    }
 
-    public String getDescription()
+    @Override
+    public int describeContents()
     {
-        return mDescription;
-    }
-
-    public List<Comment> getComments() {
-        return mComments;
-    }
-
-    public STATE getState() {
-        return mState;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int flags) {
-        super.writeToParcel(parcel, flags);
-
-        parcel.writeLong(mId);
-        parcel.writeString(mDescription);
-
-        parcel.writeInt(mComments.size());
-        for(int i = 0; i != mComments.size(); ++i)
-        {
-            mComments.get(i).writeToParcel(parcel, flags);
-        }
-
-        switch (mState) {
-            case OPEN:
-                parcel.writeInt(1);
-                break;
-
-            case CLOSED:
-                parcel.writeInt(2);
-                break;
-        }
-    }
-
-    @Override
-    public int describeContents() {
         return 0;
     }
 
-    public static final Creator<OsmNote> CREATOR = new Parcelable.Creator<OsmNote>() {
 
-        @Override
-        public OsmNote createFromParcel(Parcel source) {
-            return new OsmNote(source);
-        }
-
-        @Override
-        public OsmNote[] newArray(int size) {
-            return new OsmNote[size];
-        }
-    };
+    public enum STATE
+    {
+        OPEN,
+        CLOSED
+    }
 }
