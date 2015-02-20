@@ -6,8 +6,11 @@ the Openstreetmap project.
 Currently supported Platforms are:
 
 -Openstreetmap Notes
+
 -Keepright
+
 -Mapdust
+
 -Osmose ( Read-Only )
 
 License
