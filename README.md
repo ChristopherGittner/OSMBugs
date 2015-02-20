@@ -3,6 +3,7 @@ OSMBugs
 An Android App to view and edit the various Bug report platforms of 
 the Openstreetmap project.
 
+
 Currently supported Platforms are:
 
 -Openstreetmap Notes
