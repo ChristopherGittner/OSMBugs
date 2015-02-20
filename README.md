@@ -27,3 +27,11 @@ Acra ( https://github.com/ACRA/acra )
 Osmdroid ( https://github.com/osmdroid/osmdroid )
 
 MaterialDesignLibrary ( https://github.com/navasmdc/MaterialDesignLibrary )
+
+Openstreetmap ( https://www.openstreetmap.org )
+
+Mapdust ( http://www.mapdust.com )
+
+Keepright ( http://keepright.at )
+
+Osmose ( http://osmose.openstreetmap.fr )
