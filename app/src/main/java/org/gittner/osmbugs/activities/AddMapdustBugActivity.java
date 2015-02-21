@@ -1,11 +1,18 @@
 package org.gittner.osmbugs.activities;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -22,7 +29,9 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.MapdustApi;
+import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
+import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
 @EActivity(R.layout.activity_add_mapdust_bug)
@@ -52,22 +61,9 @@ public class AddMapdustBugActivity extends ActionBarActivity
     void init()
     {
         /* Setup the Type Adapter */
-        mSpnType = (Spinner) findViewById(R.id.spnType);
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
-        typeAdapter.addAll(
-                getString(R.string.wrong_turn),
-                getString(R.string.bad_routing),
-                getString(R.string.oneway_road),
-                getString(R.string.blocked_street),
-                getString(R.string.missing_street),
-                getString(R.string.roundabout),
-                getString(R.string.missing_speed_info),
-                getString(R.string.other));
+        MapdustBugTypeAdapter typeAdapter = new MapdustBugTypeAdapter(this);
 
         mSpnType.setAdapter(typeAdapter);
-        mSpnType.setSelection(7);
-
-        typeAdapter.notifyDataSetChanged();
 
         mSaveDialog = new MaterialDialog.Builder(this)
                 .title(R.string.saving)
@@ -159,5 +155,95 @@ public class AddMapdustBugActivity extends ActionBarActivity
     void descriptionChanged()
     {
         invalidateOptionsMenu();
+    }
+
+
+    private class MapdustBugTypeAdapter extends ArrayAdapter<Integer>
+    {
+        public MapdustBugTypeAdapter(Context context)
+        {
+            super(context, R.layout.row_keepright_bug_state, R.id.txtvState);
+
+            addAll(
+                    MapdustBug.WRONG_TURN,
+                    MapdustBug.BAD_ROUTING,
+                    MapdustBug.ONEWAY_ROAD,
+                    MapdustBug.BLOCKED_STREET,
+                    MapdustBug.MISSING_STREET,
+                    MapdustBug.ROUNDABOUT_ISSUE,
+                    MapdustBug.MISSING_SPEED_INFO,
+                    MapdustBug.OTHER);
+
+            notifyDataSetChanged();
+        }
+
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
+            return getCustomView(position, convertView, parent);
+        }
+
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent)
+        {
+            return getCustomView(position, convertView, parent);
+        }
+
+
+        private View getCustomView(int position, View convertView, ViewGroup parent)
+        {
+            View v = convertView != null ? convertView : LayoutInflater.from(getContext()).inflate(R.layout.row_mapdust_bug_type, parent, false);
+
+            ImageView icon = (ImageView) v.findViewById(R.id.imgvIcon);
+            TextView type = (TextView) v.findViewById(R.id.txtvType);
+
+            switch (position)
+            {
+                case 0:
+                    icon.setImageDrawable(Images.get(R.drawable.mapdust_wrong_turn));
+                    type.setText(R.string.wrong_turn);
+                    break;
+
+                case 1:
+                    icon.setImageDrawable(Images.get(R.drawable.mapdust_bad_routing));
+                    type.setText(R.string.bad_routing);
+                    break;
+
+
+                case 2:
+                    icon.setImageDrawable(Images.get(R.drawable.mapdust_oneway_road));
+                    type.setText(R.string.oneway_road);
+                    break;
+
+                case 3:
+                    icon.setImageDrawable(Images.get(R.drawable.mapdust_blocked_street));
+                    type.setText(R.string.blocked_street);
+                    break;
+
+                case 4:
+                    icon.setImageDrawable(Images.get(R.drawable.mapdust_missing_street));
+                    type.setText(R.string.missing_street);
+                    break;
+
+                case 5:
+                    icon.setImageDrawable(Images.get(R.drawable.mapdust_roundabout_issue));
+                    type.setText(R.string.roundabout_issue);
+                    break;
+
+                case 6:
+                    icon.setImageDrawable(Images.get(R.drawable.mapdust_missing_speed_info));
+                    type.setText(R.string.missing_speed_info);
+                    break;
+
+                default:
+                    icon.setImageDrawable(Images.get(R.drawable.mapdust_other));
+                    type.setText(R.string.other);
+                    break;
+            }
+
+            return v;
+        }
     }
 }

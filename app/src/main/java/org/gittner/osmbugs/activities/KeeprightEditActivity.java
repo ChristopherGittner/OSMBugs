@@ -185,24 +185,24 @@ public class KeeprightEditActivity
         {
             View v = convertView != null ? convertView : LayoutInflater.from(getContext()).inflate(R.layout.row_keepright_bug_state, parent, false);
 
-            ImageView imgvIcon = (ImageView) v.findViewById(R.id.imgvIcon);
-            TextView txtvState = (TextView) v.findViewById(R.id.txtvState);
+            ImageView icon = (ImageView) v.findViewById(R.id.imgvIcon);
+            TextView state = (TextView) v.findViewById(R.id.txtvState);
 
             switch (position)
             {
                 case 0:
-                    imgvIcon.setImageDrawable(mIcon);
-                    txtvState.setText(R.string.open);
+                    icon.setImageDrawable(mIcon);
+                    state.setText(R.string.open);
                     break;
 
                 case 1:
-                    imgvIcon.setImageDrawable(Images.get(R.drawable.keepright_zap_closed));
-                    txtvState.setText(R.string.closed);
+                    icon.setImageDrawable(Images.get(R.drawable.keepright_zap_closed));
+                    state.setText(R.string.closed);
                     break;
 
                 default:
-                    imgvIcon.setImageDrawable(Images.get(R.drawable.keepright_zap_ignored));
-                    txtvState.setText(R.string.ignored);
+                    icon.setImageDrawable(Images.get(R.drawable.keepright_zap_ignored));
+                    state.setText(R.string.ignored);
                     break;
             }
 

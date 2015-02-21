@@ -262,47 +262,37 @@ public class BugMapActivity extends ActionBarActivity
 
     private void showNewBugDialogDialog()
     {
-        final Spinner spnPlatform = new Spinner(this);
-
-            /* Add the available Error Platforms to the Spinner */
-        ArrayList<String> spinnerArray = new ArrayList<>();
-        for (int i = 0;
-             i != getResources().getStringArray(R.array.new_bug_platforms).length;
-             ++i)
-        {
-            spinnerArray.add(getResources().getStringArray(R.array.new_bug_platforms)[i]);
-        }
-
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
-        spnPlatform.setAdapter(spinnerArrayAdapter);
-
         new MaterialDialog.Builder(this)
                 .title(getString(R.string.platform))
                 .cancelable(true)
-                .customView(spnPlatform, false)
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback()
+                .items(R.array.new_bug_platforms)
+                .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallback()
                 {
                     @Override
-                    public void onPositive(MaterialDialog dialog)
+                    public void onSelection(
+                            MaterialDialog materialDialog,
+                            View view,
+                            int i,
+                            CharSequence charSequence)
                     {
-                        if (spnPlatform.getSelectedItemPosition() == 0)
+                        if (i == 0)
                         {
-                            Intent i = new Intent(BugMapActivity.this, AddOsmNoteActivity_.class);
-                            i.putExtra(AddOsmNoteActivity.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
-                            i.putExtra(AddOsmNoteActivity.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
-                            startActivityForResult(i, REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY);
+                            Intent addBugIntent = new Intent(BugMapActivity.this, AddOsmNoteActivity_.class);
+                            addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
+                            addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
+                            startActivityForResult(addBugIntent, REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY);
                         }
-                        else if (spnPlatform.getSelectedItemPosition() == 1)
+                        else if (i == 1)
                         {
-                            Intent i = new Intent(BugMapActivity.this, AddMapdustBugActivity_.class);
-                            i.putExtra(AddMapdustBugActivity_.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
-                            i.putExtra(AddMapdustBugActivity_.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
-                            startActivityForResult(i, REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY);
+                            Intent addBugIntent = new Intent(BugMapActivity.this, AddMapdustBugActivity_.class);
+                            addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
+                            addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
+                            startActivityForResult(addBugIntent, REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY);
                         }
                     }
                 })
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
                 .show();
     }
 
@@ -477,14 +467,20 @@ public class BugMapActivity extends ActionBarActivity
     @OnActivityResult(REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY)
     void onAddMapdustBugActivityResult(int resultCode)
     {
-        BugDatabase.getInstance().load(mMap.getBoundingBox(), Globals.MAPDUST);
+        if(resultCode == RESULT_OK)
+        {
+            BugDatabase.getInstance().load(mMap.getBoundingBox(), Globals.MAPDUST);
+        }
     }
 
 
     @OnActivityResult(REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY)
     void onAddOsmNoteActivityResult(int resultCode)
     {
-        BugDatabase.getInstance().load(mMap.getBoundingBox(), Globals.OSM_NOTES);
+        if(resultCode == RESULT_OK)
+        {
+            BugDatabase.getInstance().load(mMap.getBoundingBox(), Globals.OSM_NOTES);
+        }
     }
 
 
