@@ -1,14 +1,8 @@
 package org.gittner.osmbugs.activities;
 
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -28,12 +22,13 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.MapdustApi;
+import org.gittner.osmbugs.api.OsmNotesApi;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.osmdroid.util.GeoPoint;
 
-@EActivity(R.layout.activity_add_mapdust_bug)
-@OptionsMenu(R.menu.add_mapdust_bug)
-public class AddMapdustBugActivity extends ActionBarActivity
+@EActivity(R.layout.activity_add_osm_note)
+@OptionsMenu(R.menu.add_osm_note)
+public class AddOsmNoteActivity extends ActionBarActivity
 {
     public static final String EXTRA_LATITUDE = "EXTRA_LATITUDE";
     public static final String EXTRA_LONGITUDE = "EXTRA_LONGITUDE";
@@ -43,8 +38,6 @@ public class AddMapdustBugActivity extends ActionBarActivity
     @Extra(EXTRA_LONGITUDE)
     double mLongitude;
 
-    @ViewById(R.id.spnType)
-    Spinner mSpnType;
     @ViewById(R.id.edttxtDescription)
     EditText mDescription;
 
@@ -57,25 +50,6 @@ public class AddMapdustBugActivity extends ActionBarActivity
     @AfterViews
     void init()
     {
-        /* Setup the Type Adapter */
-        mSpnType = (Spinner) findViewById(R.id.spnType);
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
-        typeAdapter.addAll(
-                getString(R.string.wrong_turn),
-                getString(R.string.bad_routing),
-                getString(R.string.oneway_road),
-                getString(R.string.blocked_street),
-                getString(R.string.missing_street),
-                getString(R.string.roundabout),
-                getString(R.string.missing_speed_info),
-                getString(R.string.other));
-
-
-        mSpnType.setAdapter(typeAdapter);
-        mSpnType.setSelection(7);
-
-        typeAdapter.notifyDataSetChanged();
-
         mSaveDialog = new MaterialDialog.Builder(this)
                 .title(R.string.saving)
                 .content(R.string.please_wait)
@@ -99,47 +73,17 @@ public class AddMapdustBugActivity extends ActionBarActivity
     {
         mSaveDialog.show();
 
-        int type = MapdustBug.OTHER;
-        switch (mSpnType.getSelectedItemPosition())
-        {
-            case 0:
-                type = MapdustBug.WRONG_TURN;
-                break;
-            case 1:
-                type = MapdustBug.BAD_ROUTING;
-                break;
-            case 2:
-                type = MapdustBug.ONEWAY_ROAD;
-                break;
-            case 3:
-                type = MapdustBug.BLOCKED_STREET;
-                break;
-            case 4:
-                type = MapdustBug.MISSING_STREET;
-                break;
-            case 5:
-                type = MapdustBug.ROUNDABOUT_ISSUE;
-                break;
-            case 6:
-                type = MapdustBug.MISSING_SPEED_INFO;
-                break;
-            case 7:
-                type = MapdustBug.OTHER;
-                break;
-        }
-
         addBug(
                 new GeoPoint(mLatitude, mLongitude),
-                mDescription.getText().toString(),
-                type
+                mDescription.getText().toString()
         );
     }
 
 
     @Background
-    void addBug(GeoPoint geoPoint, String description, int type)
+    void addBug(GeoPoint geoPoint, String description)
     {
-        boolean result = new MapdustApi().addBug(geoPoint, type, description);
+        boolean result = new OsmNotesApi().addNew(geoPoint, description);
 
         addBugDone(result);
     }

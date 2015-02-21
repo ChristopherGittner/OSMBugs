@@ -43,8 +43,6 @@ public class MapdustEditActivity
 
     @ViewById(R.id.txtvDescription)
     TextView mDescription;
-    @ViewById(R.id.txtvCommentsTitle)
-    TextView mCommentsTitle;
     @ViewById(R.id.pbarLoadingComments)
     ProgressBarCircularIndeterminate mProgressBarComments;
     @ViewById(R.id.lstvComments)
@@ -117,8 +115,6 @@ public class MapdustEditActivity
 
         mAdapter.addAll(comments);
         mAdapter.notifyDataSetChanged();
-
-        mCommentsTitle.setText(R.string.comments);
 
         mProgressBarComments.setVisibility(View.GONE);
     }

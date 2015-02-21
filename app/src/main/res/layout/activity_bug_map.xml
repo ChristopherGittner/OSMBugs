@@ -10,7 +10,7 @@
         android:clickable="true" />
 
     <org.gittner.osmbugs.common.RotatingIconButtonFloat
-        android:id="@+id/btnRefresh"
+        android:id="@+id/btnRefreshBugs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

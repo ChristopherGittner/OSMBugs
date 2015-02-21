@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.BugMapActivity"
+            android:name=".activities.BugMapActivity_"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,10 +26,10 @@
         <activity android:name=".activities.BugListActivity" />
         <activity android:name=".activities.SettingsActivity" />
         <activity
-            android:name=".activities.AddMapdustBugActivity"
+            android:name=".activities.AddMapdustBugActivity_"
             android:label="@string/title_activity_add_mapdust_bug" />
         <activity
-            android:name=".activities.AddOpenstreetmapNoteActivity"
+            android:name=".activities.AddOsmNoteActivity_"
             android:label="@string/title_activity_add_openstreetmap_note" />
         <activity android:name=".activities.KeeprightEditActivity_" />
         <activity android:name=".activities.OsmoseEditActivity_" />
