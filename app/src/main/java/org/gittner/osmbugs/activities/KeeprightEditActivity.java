@@ -1,15 +1,12 @@
 package org.gittner.osmbugs.activities;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -18,134 +15,137 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.KeeprightApi;
 import org.gittner.osmbugs.bugs.KeeprightBug;
-import org.gittner.osmbugs.common.IndeterminateProgressAsyncTask;
 import org.gittner.osmbugs.statics.Images;
 
-public class KeeprightEditActivity extends BugEditActivity
+@EActivity(R.layout.activity_keepright_edit)
+@OptionsMenu(R.menu.keepright_edit)
+public class KeeprightEditActivity
+        extends ActionBarActivity
+        implements BugEditActivityConstants
 {
-    private KeeprightBug mBug = null;
-    private EditText mEdtxtComment = null;
-    private Spinner mSpnState = null;
+    @ViewById(R.id.txtvTitle)
+    TextView mTitle;
+    @ViewById(R.id.txtvText)
+    TextView mText;
+    @ViewById(R.id.edttxtComment)
+    EditText mComment;
+    @ViewById(R.id.spnState)
+    Spinner mState;
+
+    @Extra(EXTRA_BUG)
+    KeeprightBug mBug;
+
+    private MaterialDialog mSaveDialog = null;
 
 
-    @Override
-    protected void onCreate(final Bundle savedInstanceState)
+    @AfterViews
+    void init()
     {
-        super.onCreate(savedInstanceState);
+        mTitle.setText(mBug.getTitle());
+        Linkify.addLinks(mTitle, Linkify.WEB_URLS);
+        mTitle.setText(Html.fromHtml(mTitle.getText().toString()));
 
-        setContentView(R.layout.activity_keepright_edit);
+        mText.setText(mBug.getDescription());
+        Linkify.addLinks(mText, Linkify.WEB_URLS);
+        mText.setText(Html.fromHtml(mText.getText().toString()));
+        mText.setMovementMethod(LinkMovementMethod.getInstance());
 
-        Bundle args = getIntent().getExtras();
-        mBug = args.getParcelable(EXTRA_BUG);
+        mComment.setText(mBug.getComment());
 
-        TextView txtvTitle = (TextView) findViewById(R.id.txtvTitle);
-        txtvTitle.setText(mBug.getTitle());
-        Linkify.addLinks(txtvTitle, Linkify.WEB_URLS);
-        txtvTitle.setText(Html.fromHtml(txtvTitle.getText().toString()));
-
-        TextView txtvText = (TextView) findViewById(R.id.txtvText);
-        txtvText.setText(mBug.getDescription());
-        Linkify.addLinks(txtvText, Linkify.WEB_URLS);
-        txtvText.setText(Html.fromHtml(txtvText.getText().toString()));
-        txtvText.setMovementMethod(LinkMovementMethod.getInstance());
-
-        mEdtxtComment = (EditText) findViewById(R.id.edttxtComment);
-        mEdtxtComment.setText(mBug.getComment());
-
-        mSpnState = (Spinner) findViewById(R.id.spnState);
-        mSpnState.setAdapter(new KeeprightStateAdapter(this, mBug.getOpenIcon()));
+        mState.setAdapter(new KeeprightStateAdapter(this, mBug.getOpenIcon()));
         switch (mBug.getState())
         {
             case OPEN:
-                mSpnState.setSelection(0);
+                mState.setSelection(0);
                 break;
 
             case IGNORED_TMP:
-                mSpnState.setSelection(1);
+                mState.setSelection(1);
                 break;
 
             case IGNORED:
-                mSpnState.setSelection(2);
+                mState.setSelection(2);
                 break;
         }
+
+        mSaveDialog = new MaterialDialog.Builder(this)
+                .title(R.string.saving)
+                .content(R.string.please_wait)
+                .cancelable(false)
+                .progress(true, 0)
+                .build();
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu)
+    @OptionsItem(R.id.action_done)
+    void menuDoneClicked()
     {
-        getMenuInflater().inflate(R.menu.keepright_edit, menu);
-
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item)
-    {
-        switch (item.getItemId())
+        KeeprightBug.STATE state;
+        switch (mState.getSelectedItemPosition())
         {
-            case R.id.action_done:
-                menuDoneClicked();
-                return true;
+            case 0:
+                state = KeeprightBug.STATE.OPEN;
+                break;
+
+            case 1:
+                state = KeeprightBug.STATE.IGNORED_TMP;
+                break;
+
+            default:
+                state = KeeprightBug.STATE.IGNORED;
+                break;
         }
 
-        return super.onOptionsItemSelected(item);
+        mSaveDialog.show();
+
+        uploadData(mComment.getText().toString(), state);
     }
 
 
-    private void menuDoneClicked()
+    @Background
+    void uploadData(String comment, KeeprightBug.STATE state)
     {
-        new IndeterminateProgressAsyncTask<Void, Void, Boolean>(this, R.string.saving)
+        boolean result = new KeeprightApi().comment(
+                mBug.getSchema(),
+                mBug.getId(),
+                comment,
+                state);
+
+        uploadDataDone(result);
+    }
+
+
+    @UiThread
+    void uploadDataDone(boolean result)
+    {
+        mSaveDialog.dismiss();
+
+        if (result)
         {
-            @Override
-            protected Boolean doInBackground(Void... params)
-            {
-                KeeprightBug.STATE state;
-                switch (mSpnState.getSelectedItemPosition())
-                {
-                    case 0:
-                        state = KeeprightBug.STATE.OPEN;
-                        break;
-
-                    case 1:
-                        state = KeeprightBug.STATE.IGNORED_TMP;
-                        break;
-
-                    default:
-                        state = KeeprightBug.STATE.IGNORED;
-                        break;
-                }
-
-                return new KeeprightApi().comment(
-                        mBug.getSchema(),
-                        mBug.getId(),
-                        mEdtxtComment.getText().toString(),
-                        state);
-            }
-
-
-            @Override
-            protected void onPostExecute(Boolean result)
-            {
-                super.onPostExecute(result);
-                if (result)
-                {
-                    setResult(RESULT_SAVED_KEEPRIGHT);
-                    finish();
-                }
-                else
-                {
-                    new AlertDialog.Builder(KeeprightEditActivity.this)
-                            .setMessage(R.string.failed_to_save_bug)
-                            .setCancelable(true)
-                            .create().show();
-                }
-            }
-        }.execute();
+            setResult(RESULT_SAVED_KEEPRIGHT);
+            finish();
+        }
+        else
+        {
+            new MaterialDialog.Builder(this)
+                    .title(R.string.error)
+                    .content(R.string.failed_to_save_bug)
+                    .cancelable(true)
+                    .show();
+        }
     }
 
 
@@ -158,9 +158,10 @@ public class KeeprightEditActivity extends BugEditActivity
         {
             super(context, R.layout.row_keepright_bug_state, R.id.txtvState);
 
-            add(KeeprightBug.STATE.OPEN);
-            add(KeeprightBug.STATE.IGNORED_TMP);
-            add(KeeprightBug.STATE.IGNORED);
+            addAll(
+                    KeeprightBug.STATE.OPEN,
+                    KeeprightBug.STATE.IGNORED_TMP,
+                    KeeprightBug.STATE.IGNORED);
 
             mIcon = icon;
         }

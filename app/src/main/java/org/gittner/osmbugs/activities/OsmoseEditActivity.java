@@ -1,12 +1,17 @@
 package org.gittner.osmbugs.activities;
 
-import android.os.AsyncTask;
-import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.OsmoseApi;
 import org.gittner.osmbugs.bugs.OsmoseBug;
@@ -15,71 +20,62 @@ import org.gittner.osmbugs.common.OsmoseElementView;
 
 import java.util.List;
 
-public class OsmoseEditActivity extends BugEditActivity
+@EActivity(R.layout.activity_osmose_edit)
+public class OsmoseEditActivity
+        extends ActionBarActivity
+        implements BugEditActivityConstants
 {
-    private AsyncTask<Long, Void, List<OsmoseElement>> mLoadDetailsTask = null;
+    @Extra(EXTRA_BUG)
+    OsmoseBug mBug;
+
+    @ViewById(R.id.txtvTitle)
+    TextView mTitle;
+    @ViewById(R.id.imgvIcon)
+    ImageView mIcon;
+    @ViewById(R.id.txtvDetailsTitle)
+    TextView mDetailsTitle;
+    @ViewById(R.id.layoutDetails)
+    LinearLayout mDetails;
 
 
-    @Override
-    public void onPause()
+    @AfterViews
+    void init()
     {
-        super.onPause();
-        if (mLoadDetailsTask != null)
-        {
-            mLoadDetailsTask.cancel(true);
-        }
+        mTitle.setText(mBug.getTitle());
+
+        mIcon.setImageDrawable(mBug.getIcon());
+
+        loadDetails();
     }
 
 
-    @Override
-    protected void onCreate(final Bundle savedInstanceState)
+    @Background
+    void loadDetails()
     {
-        super.onCreate(savedInstanceState);
+        List<OsmoseElement> elements = new OsmoseApi().loadElements(mBug.getId());
 
-        setContentView(R.layout.activity_osmose_edit);
+        detailsLoaded(elements);
+    }
 
-        Bundle args = getIntent().getExtras();
-        final OsmoseBug mBug = args.getParcelable(EXTRA_BUG);
 
-        TextView txtvTitle = (TextView) findViewById(R.id.txtvTitle);
-        txtvTitle.setText(mBug.getTitle());
+    @UiThread
+    void detailsLoaded(List<OsmoseElement> elements)
+    {
+        findViewById(R.id.pbarLoadingDetails).setVisibility(View.GONE);
 
-        ImageView imgvIcon = (ImageView) findViewById(R.id.imgvIcon);
-        imgvIcon.setImageDrawable(mBug.getIcon());
-
-        mLoadDetailsTask = new AsyncTask<Long, Void, List<OsmoseElement>>()
+        if (elements == null || elements.isEmpty())
         {
-            @Override
-            protected List<OsmoseElement> doInBackground(Long... id)
-            {
-                return new OsmoseApi().loadElements(id[0]);
-            }
+            mDetailsTitle.setVisibility(View.GONE);
+            return;
+        }
 
+        mDetailsTitle.setText(R.string.details);
 
-            @Override
-            protected void onPostExecute(List<OsmoseElement> osmoseElements)
-            {
-                findViewById(R.id.pbarLoadingDetails).setVisibility(View.GONE);
-
-                TextView txtvDetailsTitle = (TextView) findViewById(R.id.txtvDetailsTitle);
-                if (osmoseElements == null || osmoseElements.isEmpty())
-                {
-                    txtvDetailsTitle.setVisibility(View.GONE);
-                    return;
-                }
-                txtvDetailsTitle.setText(R.string.details);
-
-                for (OsmoseElement element : osmoseElements)
-                {
-                    OsmoseElementView elementView = new OsmoseElementView(OsmoseEditActivity.this);
-                    elementView.set(element);
-                    LinearLayout layoutDetails = (LinearLayout) findViewById(R.id.layoutDetails);
-                    layoutDetails.addView(elementView);
-                }
-
-                mLoadDetailsTask = null;
-            }
-        };
-        mLoadDetailsTask.execute(mBug.getId());
+        for (OsmoseElement element : elements)
+        {
+            OsmoseElementView elementView = new OsmoseElementView(this);
+            elementView.set(element);
+            mDetails.addView(elementView);
+        }
     }
 }

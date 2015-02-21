@@ -2,7 +2,7 @@ package org.gittner.osmbugs.activities;
 
 import android.support.v7.app.ActionBarActivity;
 
-public abstract class BugEditActivity extends ActionBarActivity
+public interface BugEditActivityConstants
 {
     public static final int RESULT_SAVED_KEEPRIGHT = 1;
     public static final int RESULT_SAVED_OSMOSE = 2;

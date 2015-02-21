@@ -80,7 +80,7 @@ public class BugMapActivity extends ActionBarActivity
         public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem)
         {
             Intent bugEditorIntent = new Intent(BugMapActivity.this, bugItem.getBug().getEditorClass());
-            bugEditorIntent.putExtra(BugEditActivity.EXTRA_BUG, bugItem.getBug());
+            bugEditorIntent.putExtra(BugEditActivityConstants.EXTRA_BUG, bugItem.getBug());
             startActivityForResult(bugEditorIntent, REQUEST_CODE_BUG_EDITOR_ACTIVITY);
             return false;
         }
@@ -544,19 +544,19 @@ public class BugMapActivity extends ActionBarActivity
         {
             switch (resultCode)
             {
-                case BugEditActivity.RESULT_SAVED_KEEPRIGHT:
+                case BugEditActivityConstants.RESULT_SAVED_KEEPRIGHT:
                     reloadBugs(Globals.KEEPRIGHT);
                     break;
 
-                case BugEditActivity.RESULT_SAVED_OSMOSE:
+                case BugEditActivityConstants.RESULT_SAVED_OSMOSE:
                     reloadBugs(Globals.OSMOSE);
                     break;
 
-                case BugEditActivity.RESULT_SAVED_MAPDUST:
+                case BugEditActivityConstants.RESULT_SAVED_MAPDUST:
                     reloadBugs(Globals.MAPDUST);
                     break;
 
-                case BugEditActivity.RESULT_SAVED_OSM_NOTES:
+                case BugEditActivityConstants.RESULT_SAVED_OSM_NOTES:
                     reloadBugs(Globals.OSM_NOTES);
                     break;
             }

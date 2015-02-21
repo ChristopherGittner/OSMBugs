@@ -31,10 +31,10 @@
         <activity
             android:name=".activities.AddOpenstreetmapNoteActivity"
             android:label="@string/title_activity_add_openstreetmap_note" />
-        <activity android:name=".activities.KeeprightEditActivity" />
-        <activity android:name=".activities.OsmoseEditActivity" />
-        <activity android:name=".activities.MapdustEditActivity" />
-        <activity android:name=".activities.OsmNoteEditActivity" />
+        <activity android:name=".activities.KeeprightEditActivity_" />
+        <activity android:name=".activities.OsmoseEditActivity_" />
+        <activity android:name=".activities.MapdustEditActivity_" />
+        <activity android:name=".activities.OsmNoteEditActivity_" />
         <activity
             android:name="org.acra.CrashReportDialog"
             android:excludeFromRecents="true"

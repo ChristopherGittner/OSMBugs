@@ -565,9 +565,12 @@ public class Settings
 
     public static class Mapdust
     {
+        private static final String DEFAULT_USERNAME = "Anonymous";
         public static String getUsername()
         {
-            return mPrefs.getString("pref_mapdust_username", "Anonymous");
+            String username = mPrefs.getString("pref_mapdust_username", DEFAULT_USERNAME);
+
+            return !username.equals("") ? username : DEFAULT_USERNAME;
         }
 
 

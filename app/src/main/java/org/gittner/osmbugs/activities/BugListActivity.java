@@ -91,19 +91,19 @@ public class BugListActivity
         {
             switch (resultCode)
             {
-                case BugEditActivity.RESULT_SAVED_KEEPRIGHT:
+                case BugEditActivityConstants.RESULT_SAVED_KEEPRIGHT:
                     BugDatabase.getInstance().reload(Globals.KEEPRIGHT);
                     break;
 
-                case BugEditActivity.RESULT_SAVED_OSMOSE:
+                case BugEditActivityConstants.RESULT_SAVED_OSMOSE:
                     BugDatabase.getInstance().reload(Globals.OSMOSE);
                     break;
 
-                case BugEditActivity.RESULT_SAVED_MAPDUST:
+                case BugEditActivityConstants.RESULT_SAVED_MAPDUST:
                     BugDatabase.getInstance().reload(Globals.MAPDUST);
                     break;
 
-                case BugEditActivity.RESULT_SAVED_OSM_NOTES:
+                case BugEditActivityConstants.RESULT_SAVED_OSM_NOTES:
                     BugDatabase.getInstance().reload(Globals.OSM_NOTES);
                     break;
             }
@@ -141,7 +141,7 @@ public class BugListActivity
     {
         /* Open the selected Bug in the Bug Editor */
         Intent i = new Intent(BugListActivity.this, bug.getEditorClass());
-        i.putExtra(BugEditActivity.EXTRA_BUG, bug);
+        i.putExtra(BugEditActivityConstants.EXTRA_BUG, bug);
         startActivityForResult(i, REQUEST_CODE_BUG_EDITOR_ACTIVITY);
     }
 

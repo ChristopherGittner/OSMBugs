@@ -26,6 +26,10 @@ Acra ( https://github.com/ACRA/acra )
 
 Osmdroid ( https://github.com/osmdroid/osmdroid )
 
+Androidannotations ( https://github.com/excilys/androidannotations )
+
+Material Dialogs ( https://github.com/afollestad/material-dialogs )
+
 MaterialDesignLibrary ( https://github.com/navasmdc/MaterialDesignLibrary )
 
 Openstreetmap ( https://www.openstreetmap.org )

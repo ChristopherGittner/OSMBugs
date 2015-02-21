@@ -5,6 +5,7 @@ import android.os.Parcel;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.activities.OsmoseEditActivity;
+import org.gittner.osmbugs.activities.OsmoseEditActivity_;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
@@ -97,7 +98,7 @@ public class OsmoseBug extends Bug
     @Override
     public Class<?> getEditorClass()
     {
-        return OsmoseEditActivity.class;
+        return OsmoseEditActivity_.class;
     }
 
 

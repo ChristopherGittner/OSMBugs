@@ -158,5 +158,7 @@
     <string name="open_railway_map_infrastructure">Open Railway Map Infrastructure</string>
     <string name="open_railway_map_maxspeed">Open Railway Map Maxspeed</string>
     <string name="open_railway_map_signals">Open Railway Map Signals</string>
+    <string name="please_wait">Bitte warten</string>
+    <string name="error">Fehler</string>
 
 </resources>

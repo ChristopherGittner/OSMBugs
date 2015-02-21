@@ -1,5 +1,7 @@
 package org.gittner.osmbugs.api;
 
+import android.util.Log;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
@@ -215,6 +217,8 @@ public class OsmNotesApi implements BugApi<OsmNote>
         {
             request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
         }
+
+        Log.d("", "http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
         try
         {
             /* Execute commit */

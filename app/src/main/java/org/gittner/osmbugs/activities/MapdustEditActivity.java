@@ -1,10 +1,7 @@
 package org.gittner.osmbugs.activities;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.os.AsyncTask;
-import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +11,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.MapdustApi;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.common.Comment;
-import org.gittner.osmbugs.common.IndeterminateProgressAsyncTask;
 import org.gittner.osmbugs.statics.Settings;
 
 import java.util.List;
@@ -30,282 +33,213 @@ import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class MapdustEditActivity extends BugEditActivity
+@EActivity(R.layout.activity_mapdust_edit)
+public class MapdustEditActivity
+        extends ActionBarActivity
+        implements BugEditActivityConstants
 {
-    private static final String EXTRA_BUG = "EXTRA_BUG";
+    @Extra(EXTRA_BUG)
+    MapdustBug mBug;
 
-    private MapdustBug mBug;
+    @ViewById(R.id.txtvDescription)
+    TextView mDescription;
+    @ViewById(R.id.txtvCommentsTitle)
+    TextView mCommentsTitle;
+    @ViewById(R.id.pbarLoadingComments)
+    ProgressBarCircularIndeterminate mProgressBarComments;
+    @ViewById(R.id.lstvComments)
+    ListView mComments;
+    @ViewById(R.id.imgbtnAddComment)
+    ImageButton mAddComment;
+    @ViewById(R.id.btnResolveBug)
+    ImageButton mResolveBug;
+    @ViewById(R.id.btnIgnoreBug)
+    ImageButton mIgnoreBug;
+    @ViewById(R.id.imgvArrowRight)
+    ImageView mArrowRight;
+    @ViewById(R.id.imgvIcon)
+    ImageView mIcon;
+
     private CommentAdapter mAdapter;
-    private AsyncTask mLoadCommentsTask;
 
-    private final View.OnClickListener mBtnResolveBugOnClickListener = new View.OnClickListener()
+    private MaterialDialog mSaveDialog = null;
+
+
+    @AfterViews
+    void init()
     {
-        @Override
-        public void onClick(View v)
-        {
-            if (Settings.Mapdust.getUsername().equals(""))
-            {
-                Toast.makeText(
-                        MapdustEditActivity.this,
-                        R.string.notification_mapdust_no_username,
-                        Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            final EditText edtxtResolveComment = new EditText(MapdustEditActivity.this);
-            new AlertDialog.Builder(MapdustEditActivity.this)
-                    .setView(edtxtResolveComment)
-                    .setCancelable(true)
-                    .setMessage(R.string.enter_comment)
-                    .setPositiveButton(
-                            R.string.resolve,
-                            new DialogInterface.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which)
-                                {
-                                    final String message = edtxtResolveComment.getText().toString();
-                                    new IndeterminateProgressAsyncTask<Void, Void, Boolean>(
-                                            MapdustEditActivity.this,
-                                            R.string.saving)
-                                    {
-                                        @Override
-                                        protected Boolean doInBackground(Void... params)
-                                        {
-                                            return new MapdustApi().changeBugStatus(
-                                                    mBug.getId(),
-                                                    MapdustBug.STATE.CLOSED,
-                                                    message,
-                                                    Settings.Mapdust.getUsername()
-                                            );
-                                        }
-
-
-                                        @Override
-                                        protected void onPostExecute(Boolean result)
-                                        {
-                                            super.onPostExecute(result);
-                                            if (result)
-                                            {
-                                                setResult(RESULT_SAVED_MAPDUST);
-                                                finish();
-                                            }
-                                            else
-                                            {
-                                                new AlertDialog.Builder(MapdustEditActivity.this)
-                                                        .setMessage(R.string.failed_to_save_bug)
-                                                        .setCancelable(true)
-                                                        .create().show();
-                                            }
-                                        }
-                                    }.execute();
-                                }
-                            })
-                    .setNegativeButton(getString(R.string.cancel), null)
-                    .create().show();
-        }
-    };
-    private final View.OnClickListener mBtnIgnoreBugOnClickListener = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(View v)
-        {
-            if (Settings.Mapdust.getUsername().equals(""))
-            {
-                Toast.makeText(MapdustEditActivity.this, R.string.notification_mapdust_no_username, Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            final EditText edtxtResolveComment = new EditText(MapdustEditActivity.this);
-            new AlertDialog.Builder(MapdustEditActivity.this)
-                    .setView(edtxtResolveComment)
-                    .setCancelable(true)
-                    .setMessage(R.string.enter_comment)
-                    .setPositiveButton(
-                            R.string.resolve,
-                            new DialogInterface.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which)
-                                {
-                                    final String message = edtxtResolveComment.getText().toString();
-                                    new IndeterminateProgressAsyncTask<Void, Void, Boolean>(
-                                            MapdustEditActivity.this,
-                                            R.string.saving)
-                                    {
-                                        @Override
-                                        protected Boolean doInBackground(Void... params)
-                                        {
-                                            return new MapdustApi().changeBugStatus(
-                                                    mBug.getId(),
-                                                    MapdustBug.STATE.IGNORED,
-                                                    message,
-                                                    Settings.Mapdust.getUsername());
-                                        }
-
-
-                                        @Override
-                                        protected void onPostExecute(Boolean result)
-                                        {
-                                            super.onPostExecute(result);
-                                            if (result)
-                                            {
-                                                setResult(RESULT_SAVED_MAPDUST);
-                                                finish();
-                                            }
-                                            else
-                                            {
-                                                new AlertDialog.Builder(MapdustEditActivity.this)
-                                                        .setMessage(R.string.failed_to_save_bug)
-                                                        .setCancelable(true)
-                                                        .create().show();
-                                            }
-                                        }
-                                    }.execute();
-                                }
-                            })
-                    .setNegativeButton(getString(R.string.cancel), null)
-                    .create().show();
-        }
-    };
-    private final View.OnClickListener mAddCommentOnClickListener = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(View v)
-        {
-            final EditText edtxtNewComment = new EditText(MapdustEditActivity.this);
-            new AlertDialog.Builder(MapdustEditActivity.this)
-                    .setView(edtxtNewComment)
-                    .setCancelable(true)
-                    .setMessage(R.string.enter_comment)
-                    .setPositiveButton(
-                            R.string.do_comment,
-                            new DialogInterface.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which)
-                                {
-                                    final String message = edtxtNewComment.getText().toString();
-                                    new IndeterminateProgressAsyncTask<Void, Void, Boolean>(
-                                            MapdustEditActivity.this,
-                                            R.string.saving)
-                                    {
-                                        @Override
-                                        protected Boolean doInBackground(Void... params)
-                                        {
-                                            return new MapdustApi().commentBug(
-                                                    mBug.getId(),
-                                                    message,
-                                                    Settings.Mapdust.getUsername());
-                                        }
-
-
-                                        @Override
-                                        protected void onPostExecute(Boolean result)
-                                        {
-                                            super.onPostExecute(result);
-                                            if (result)
-                                            {
-                                                setResult(RESULT_SAVED_MAPDUST);
-                                                finish();
-                                            }
-                                            else
-                                            {
-                                                new AlertDialog.Builder(MapdustEditActivity.this)
-                                                        .setMessage(R.string.failed_to_save_bug)
-                                                        .setCancelable(true)
-                                                        .create().show();
-                                            }
-                                        }
-                                    }.execute();
-                                }
-                            })
-                    .setNegativeButton(getString(R.string.cancel), null)
-                    .create().show();
-        }
-    };
-
-
-    @Override
-    protected void onCreate(final Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_mapdust_edit);
-
-        Bundle args = getIntent().getExtras();
-        mBug = args.getParcelable(EXTRA_BUG);
-
-        TextView txtvDescription = (TextView) findViewById(R.id.txtvDescription);
-        txtvDescription.setText(mBug.getDescription());
-
-        ListView lstvComments = (ListView) findViewById(R.id.lstvComments);
+        mDescription.setText(mBug.getDescription());
 
         mAdapter = new CommentAdapter(this);
-        lstvComments.setAdapter(mAdapter);
+        mComments.setAdapter(mAdapter);
 
-        final ImageButton imgvAddComment = (ImageButton) findViewById(R.id.imgbtnAddComment);
         if (mBug.getState() == MapdustBug.STATE.CLOSED)
         {
-            imgvAddComment.setVisibility(GONE);
-        }
-        else
-        {
-            imgvAddComment.setOnClickListener(mAddCommentOnClickListener);
+            mAddComment.setVisibility(GONE);
         }
 
-        ImageView imgvIcon = (ImageView) findViewById(R.id.imgvIcon);
-        ImageView imgvArrowRight = (ImageView) findViewById(R.id.imgvArrowRight);
-
-        ImageButton btnResolveBug = (ImageButton) findViewById(R.id.btnResolveBug);
-        ImageButton btnIgnoreBug = (ImageButton) findViewById(R.id.btnIgnoreBug);
         if (mBug.getState() == MapdustBug.STATE.OPEN)
         {
-            imgvIcon.setImageDrawable(mBug.getIcon());
-            btnResolveBug.setOnClickListener(mBtnResolveBugOnClickListener);
-            btnIgnoreBug.setOnClickListener(mBtnIgnoreBugOnClickListener);
+            mIcon.setImageDrawable(mBug.getIcon());
         }
         else
         {
-            imgvIcon.setVisibility(View.GONE);
-            imgvArrowRight.setVisibility(View.GONE);
-            btnResolveBug.setVisibility(View.GONE);
-            btnIgnoreBug.setVisibility(View.GONE);
+            mIcon.setVisibility(View.GONE);
+            mArrowRight.setVisibility(View.GONE);
+            mResolveBug.setVisibility(View.GONE);
+            mIgnoreBug.setVisibility(View.GONE);
         }
 
-        mLoadCommentsTask = new AsyncTask<Void, Void, List<Comment>>()
-        {
-            @Override
-            protected List<Comment> doInBackground(Void... params)
-            {
-                return new MapdustApi().retrieveComments(mBug.getId());
-            }
+        mSaveDialog = new MaterialDialog.Builder(this)
+                .title(R.string.saving)
+                .content(R.string.please_wait)
+                .cancelable(false)
+                .progress(true, 0)
+                .build();
 
-
-            @Override
-            protected void onPostExecute(List<Comment> comments)
-            {
-                mBug.setComments(comments);
-
-                mAdapter.addAll(comments);
-                mAdapter.notifyDataSetChanged();
-
-                TextView txtvLoadingComments = (TextView) findViewById(R.id.txtvCommentsTitle);
-                txtvLoadingComments.setText(R.string.comments);
-
-                ProgressBarCircularIndeterminate pbarLoadingComments = (ProgressBarCircularIndeterminate) findViewById(R.id.pbarLoadingComments);
-                pbarLoadingComments.setVisibility(View.GONE);
-            }
-        }.execute();
+        loadComments();
     }
 
 
-    @Override
-    public void onPause()
+    @Background
+    void loadComments()
     {
-        super.onPause();
+        List<Comment> comments = new MapdustApi().retrieveComments(mBug.getId());
 
-        mLoadCommentsTask.cancel(true);
+        commentsLoaded(comments);
+    }
+
+
+    @UiThread
+    void commentsLoaded(List<Comment> comments)
+    {
+        mBug.setComments(comments);
+
+        mAdapter.addAll(comments);
+        mAdapter.notifyDataSetChanged();
+
+        mCommentsTitle.setText(R.string.comments);
+
+        mProgressBarComments.setVisibility(View.GONE);
+    }
+
+
+    @Click(R.id.btnResolveBug)
+    void resolveBug()
+    {
+        final EditText resolveComment = new EditText(this);
+        new MaterialDialog.Builder(this)
+                .customView(resolveComment, false)
+                .cancelable(true)
+                .title(R.string.enter_comment)
+                .positiveText(R.string.resolve)
+                .negativeText(R.string.cancel)
+                .callback(new MaterialDialog.ButtonCallback()
+                {
+                    @Override
+                    public void onPositive(MaterialDialog dialog)
+                    {
+                        mSaveDialog.show();
+
+                        uploadBugStatus(
+                                MapdustBug.STATE.CLOSED,
+                                resolveComment.getText().toString());
+                    }
+                }).show();
+    }
+
+
+    @Click(R.id.btnIgnoreBug)
+    void ignoreBug()
+    {
+        final EditText resolveComment = new EditText(this);
+        new MaterialDialog.Builder(this)
+                .customView(resolveComment, false)
+                .cancelable(true)
+                .title(R.string.enter_comment)
+                .positiveText(R.string.resolve)
+                .negativeText(R.string.cancel)
+                .callback(new MaterialDialog.ButtonCallback()
+                {
+                    @Override
+                    public void onPositive(MaterialDialog dialog)
+                    {
+                        mSaveDialog.show();
+
+                        uploadBugStatus(
+                                MapdustBug.STATE.IGNORED,
+                                resolveComment.getText().toString());
+                    }
+                }).show();
+    }
+
+
+    @Click(R.id.imgbtnAddComment)
+    void addComment()
+    {
+        final EditText newComment = new EditText(this);
+        new MaterialDialog.Builder(this)
+                .customView(newComment, false)
+                .cancelable(true)
+                .title(R.string.enter_comment)
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
+                .callback(new MaterialDialog.ButtonCallback()
+                {
+                    @Override
+                    public void onPositive(MaterialDialog dialog)
+                    {
+                        mSaveDialog.show();
+
+                        uploadComment(newComment.getText().toString());
+                    }
+                }).show();
+    }
+
+
+    @Background
+    void uploadComment(String comment)
+    {
+        boolean result = new MapdustApi().commentBug(
+                mBug.getId(),
+                comment,
+                Settings.Mapdust.getUsername());
+
+        uploadDone(result);
+    }
+
+
+    @Background
+    void uploadBugStatus(MapdustBug.STATE state, String message)
+    {
+        boolean result = new MapdustApi().changeBugStatus(
+                mBug.getId(),
+                state,
+                message,
+                Settings.Mapdust.getUsername());
+
+        uploadDone(result);
+    }
+
+
+    @UiThread
+    void uploadDone(boolean result)
+    {
+        mSaveDialog.dismiss();
+
+        if (result)
+        {
+            setResult(RESULT_SAVED_MAPDUST);
+            finish();
+        }
+        else
+        {
+            new MaterialDialog.Builder(this)
+                    .title(R.string.error)
+                    .content(R.string.failed_to_save_bug)
+                    .cancelable(true)
+                    .show();
+        }
     }
 
 
@@ -322,21 +256,21 @@ public class MapdustEditActivity extends BugEditActivity
         {
             View v = convertView != null ? convertView : LayoutInflater.from(getContext()).inflate(R.layout.row_comment, parent, false);
 
-            Comment c = getItem(position);
+            Comment comment = getItem(position);
 
-            TextView txtvUsername = (TextView) v.findViewById(R.id.comment_username);
-            if (!c.getUsername().equals(""))
+            TextView username = (TextView) v.findViewById(R.id.username);
+            if (!comment.getUsername().equals(""))
             {
-                txtvUsername.setVisibility(VISIBLE);
-                txtvUsername.setText(c.getUsername());
+                username.setVisibility(VISIBLE);
+                username.setText(comment.getUsername());
             }
             else
             {
-                txtvUsername.setVisibility(GONE);
+                username.setVisibility(GONE);
             }
 
-            TextView txtvText = (TextView) v.findViewById(R.id.comment_text);
-            txtvText.setText(c.getText());
+            TextView text = (TextView) v.findViewById(R.id.text);
+            text.setText(comment.getText());
 
             return v;
         }

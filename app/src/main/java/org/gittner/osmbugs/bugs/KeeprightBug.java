@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 import org.gittner.osmbugs.Helpers.Openstreetmap;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.activities.KeeprightEditActivity;
+import org.gittner.osmbugs.activities.KeeprightEditActivity_;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
@@ -210,7 +210,7 @@ public class KeeprightBug extends Bug
     @Override
     public Class<?> getEditorClass()
     {
-        return KeeprightEditActivity.class;
+        return KeeprightEditActivity_.class;
     }
 
 
