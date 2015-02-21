@@ -54,45 +54,8 @@ import java.util.ArrayList;
 public class BugMapActivity extends ActionBarActivity
 {
     private static final String TAG = "OsmBugsActivity";
-
-    @ViewById(R.id.mapview)
-    MapView mMap;
-    @ViewById(R.id.btnRefreshBugs)
-    RotatingIconButtonFloat mRefreshBugs;
-
-    @OptionsMenuItem(R.id.add_bug)
-    MenuItem mMenuAddBug;
-    @OptionsMenuItem(R.id.enable_gps)
-    MenuItem mMenuEnableGps;
-    @OptionsMenuItem(R.id.follow_gps)
-    MenuItem mMenuFollowGps;
-    @OptionsMenuItem(R.id.list)
-    MenuItem mMenuList;
-
     /* Request Codes for activities */
     private static final int REQUEST_CODE_BUG_EDITOR_ACTIVITY = 1;
-    private static final int REQUEST_CODE_SETTINGS_ACTIVITY = 2;
-    private static final int REQUEST_CODE_BUG_LIST_ACTIVITY = 3;
-    private static final int REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY = 4;
-    private static final int REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY = 5;
-
-    /* Dialog Ids */
-    private static final int DIALOG_NEW_BUG = 1;
-
-    private static GeoPoint mNewBugLocation;
-
-    /* The next touch event on the map opens the add Bug Prompt */
-    private boolean mAddNewBugOnNextClick = false;
-
-    /* The Overlay for Bugs displayed on the map */
-    private ItemizedIconOverlay<BugOverlayItem> mKeeprightOverlay;
-    private ItemizedIconOverlay<BugOverlayItem> mOsmoseOverlay;
-    private ItemizedIconOverlay<BugOverlayItem> mMapdustOverlay;
-    private ItemizedIconOverlay<BugOverlayItem> mOsmNotesOverlay;
-
-    /* The Location Marker Overlay */
-    private MyLocationOverlay mLocationOverlay = null;
-
     private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mBugGestureListener
             = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>()
     {
@@ -112,7 +75,13 @@ public class BugMapActivity extends ActionBarActivity
             return false;
         }
     };
-
+    private static final int REQUEST_CODE_SETTINGS_ACTIVITY = 2;
+    private static final int REQUEST_CODE_BUG_LIST_ACTIVITY = 3;
+    private static final int REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY = 4;
+    private static final int REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY = 5;
+    /* Dialog Ids */
+    private static final int DIALOG_NEW_BUG = 1;
+    private static GeoPoint mNewBugLocation;
     private final MyLocationOverlay.FollowModeListener mFollowModeListener = new MyLocationOverlay.FollowModeListener()
     {
         @Override
@@ -122,7 +91,6 @@ public class BugMapActivity extends ActionBarActivity
             invalidateOptionsMenu();
         }
     };
-
     /* Listener for Database Updates */
     private final BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher()
     {
@@ -205,6 +173,27 @@ public class BugMapActivity extends ActionBarActivity
             updateRefreshBugsButton();
         }
     };
+    @ViewById(R.id.mapview)
+    MapView mMap;
+    @ViewById(R.id.btnRefreshBugs)
+    RotatingIconButtonFloat mRefreshBugs;
+    @OptionsMenuItem(R.id.add_bug)
+    MenuItem mMenuAddBug;
+    @OptionsMenuItem(R.id.enable_gps)
+    MenuItem mMenuEnableGps;
+    @OptionsMenuItem(R.id.follow_gps)
+    MenuItem mMenuFollowGps;
+    @OptionsMenuItem(R.id.list)
+    MenuItem mMenuList;
+    /* The next touch event on the map opens the add Bug Prompt */
+    private boolean mAddNewBugOnNextClick = false;
+    /* The Overlay for Bugs displayed on the map */
+    private ItemizedIconOverlay<BugOverlayItem> mKeeprightOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mOsmoseOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mMapdustOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mOsmNotesOverlay;
+    /* The Location Marker Overlay */
+    private MyLocationOverlay mLocationOverlay = null;
 
 
     @AfterViews
@@ -271,6 +260,73 @@ public class BugMapActivity extends ActionBarActivity
     }
 
 
+    private void showNewBugDialogDialog()
+    {
+        final Spinner spnPlatform = new Spinner(this);
+
+            /* Add the available Error Platforms to the Spinner */
+        ArrayList<String> spinnerArray = new ArrayList<>();
+        for (int i = 0;
+             i != getResources().getStringArray(R.array.new_bug_platforms).length;
+             ++i)
+        {
+            spinnerArray.add(getResources().getStringArray(R.array.new_bug_platforms)[i]);
+        }
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+        spnPlatform.setAdapter(spinnerArrayAdapter);
+
+        new MaterialDialog.Builder(this)
+                .title(getString(R.string.platform))
+                .cancelable(true)
+                .customView(spnPlatform, false)
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
+                .callback(new MaterialDialog.ButtonCallback()
+                {
+                    @Override
+                    public void onPositive(MaterialDialog dialog)
+                    {
+                        if (spnPlatform.getSelectedItemPosition() == 0)
+                        {
+                            Intent i = new Intent(BugMapActivity.this, AddOsmNoteActivity_.class);
+                            i.putExtra(AddOsmNoteActivity.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
+                            i.putExtra(AddOsmNoteActivity.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
+                            startActivityForResult(i, REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY);
+                        }
+                        else if (spnPlatform.getSelectedItemPosition() == 1)
+                        {
+                            Intent i = new Intent(BugMapActivity.this, AddMapdustBugActivity_.class);
+                            i.putExtra(AddMapdustBugActivity_.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
+                            i.putExtra(AddMapdustBugActivity_.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
+                            startActivityForResult(i, REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY);
+                        }
+                    }
+                })
+                .show();
+    }
+
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+
+        Settings.setLastMapCenter(mMap.getBoundingBox().getCenter());
+        Settings.setLastZoom(mMap.getZoomLevel());
+
+        BugDatabase.getInstance().removeDatabaseWatcher(mDatabaseWatcher);
+
+        mMap.getOverlays().remove(mKeeprightOverlay);
+        mMap.getOverlays().remove(mOsmoseOverlay);
+        mMap.getOverlays().remove(mMapdustOverlay);
+        mMap.getOverlays().remove(mOsmNotesOverlay);
+
+        mLocationOverlay.disableFollowLocation();
+        mLocationOverlay.disableMyLocation();
+    }
+
+
     @Override
     public void onResume()
     {
@@ -330,23 +386,52 @@ public class BugMapActivity extends ActionBarActivity
     }
 
 
-    @Override
-    public void onPause()
+    private void setupLocationOverlay()
     {
-        super.onPause();
+        if (mLocationOverlay == null)
+        {
+            mLocationOverlay = new MyLocationOverlay(this, mMap, mFollowModeListener);
+        }
 
-        Settings.setLastMapCenter(mMap.getBoundingBox().getCenter());
-        Settings.setLastZoom(mMap.getZoomLevel());
+        if (Settings.getEnableGps())
+        {
+            mLocationOverlay.enableMyLocation();
+            if (!mMap.getOverlays().contains(mLocationOverlay))
+            {
+                mMap.getOverlays().add(mLocationOverlay);
+            }
+        }
+        else
+        {
+            mLocationOverlay.disableMyLocation();
+            mMap.getOverlays().remove(mLocationOverlay);
+        }
 
-        BugDatabase.getInstance().removeDatabaseWatcher(mDatabaseWatcher);
+        if (Settings.getFollowGps())
+        {
+            mLocationOverlay.enableFollowLocation();
+        }
+        else
+        {
+            mLocationOverlay.disableFollowLocation();
+        }
+    }
 
-        mMap.getOverlays().remove(mKeeprightOverlay);
-        mMap.getOverlays().remove(mOsmoseOverlay);
-        mMap.getOverlays().remove(mMapdustOverlay);
-        mMap.getOverlays().remove(mOsmNotesOverlay);
 
-        mLocationOverlay.disableFollowLocation();
-        mLocationOverlay.disableMyLocation();
+    private void updateRefreshBugsButton()
+    {
+        if (Settings.Keepright.isEnabled()
+                || Settings.Osmose.isEnabled()
+                || Settings.Mapdust.isEnabled()
+                || Settings.OsmNotes.isEnabled())
+        {
+            mRefreshBugs.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mRefreshBugs.setVisibility(View.GONE);
+        }
+        mRefreshBugs.setRotate(BugDatabase.getInstance().isDownloadRunning());
     }
 
 
@@ -429,23 +514,6 @@ public class BugMapActivity extends ActionBarActivity
     }
 
 
-    private void updateRefreshBugsButton()
-    {
-        if (Settings.Keepright.isEnabled()
-                || Settings.Osmose.isEnabled()
-                || Settings.Mapdust.isEnabled()
-                || Settings.OsmNotes.isEnabled())
-        {
-            mRefreshBugs.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            mRefreshBugs.setVisibility(View.GONE);
-        }
-        mRefreshBugs.setRotate(BugDatabase.getInstance().isDownloadRunning());
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -475,7 +543,7 @@ public class BugMapActivity extends ActionBarActivity
     @OptionsItem(R.id.settings)
     void menuSettings()
     {
-        Intent i = new Intent(this, SettingsActivity.class);
+        Intent i = new Intent(this, SettingsActivity_.class);
         startActivityForResult(i, REQUEST_CODE_SETTINGS_ACTIVITY);
     }
 
@@ -483,7 +551,7 @@ public class BugMapActivity extends ActionBarActivity
     @OptionsItem(R.id.list)
     void menuListClicked()
     {
-        Intent bugListIntent = new Intent(this, BugListActivity.class);
+        Intent bugListIntent = new Intent(this, BugListActivity_.class);
         startActivityForResult(bugListIntent, REQUEST_CODE_BUG_LIST_ACTIVITY);
     }
 
@@ -516,6 +584,16 @@ public class BugMapActivity extends ActionBarActivity
     }
 
 
+    private void showSendFeedbackErrorDialog()
+    {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.sending_feedback_failed_title)
+                .setMessage(R.string.sending_feedback_failed_message)
+                .setCancelable(true)
+                .create().show();
+    }
+
+
     @OptionsItem(R.id.follow_gps)
     void menuFollowGpsClicked()
     {
@@ -544,94 +622,5 @@ public class BugMapActivity extends ActionBarActivity
         mAddNewBugOnNextClick = !mAddNewBugOnNextClick;
 
         invalidateOptionsMenu();
-    }
-
-
-    private void showSendFeedbackErrorDialog()
-    {
-        new AlertDialog.Builder(this)
-        .setTitle(R.string.sending_feedback_failed_title)
-        .setMessage(R.string.sending_feedback_failed_message)
-        .setCancelable(true)
-        .create().show();
-    }
-
-
-    private void showNewBugDialogDialog()
-    {
-        final Spinner spnPlatform = new Spinner(this);
-
-            /* Add the available Error Platforms to the Spinner */
-        ArrayList<String> spinnerArray = new ArrayList<>();
-        for (int i = 0;
-             i != getResources().getStringArray(R.array.new_bug_platforms).length;
-             ++i)
-        {
-            spinnerArray.add(getResources().getStringArray(R.array.new_bug_platforms)[i]);
-        }
-
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
-        spnPlatform.setAdapter(spinnerArrayAdapter);
-
-        new MaterialDialog.Builder(this)
-                .title(getString(R.string.platform))
-                .cancelable(true)
-                .customView(spnPlatform, false)
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback()
-                {
-                    @Override
-                    public void onPositive(MaterialDialog dialog)
-                    {
-                        if (spnPlatform.getSelectedItemPosition() == 0)
-                        {
-                            Intent i = new Intent(BugMapActivity.this, AddOsmNoteActivity_.class);
-                            i.putExtra(AddOsmNoteActivity.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
-                            i.putExtra(AddOsmNoteActivity.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
-                            startActivityForResult(i, REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY);
-                        }
-                        else if (spnPlatform.getSelectedItemPosition() == 1)
-                        {
-                            Intent i = new Intent(BugMapActivity.this, AddMapdustBugActivity_.class);
-                            i.putExtra(AddMapdustBugActivity_.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
-                            i.putExtra(AddMapdustBugActivity_.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
-                            startActivityForResult(i, REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY);
-                        }
-                    }
-                })
-                .show();
-    }
-
-
-    private void setupLocationOverlay()
-    {
-        if (mLocationOverlay == null)
-        {
-            mLocationOverlay = new MyLocationOverlay(this, mMap, mFollowModeListener);
-        }
-
-        if (Settings.getEnableGps())
-        {
-            mLocationOverlay.enableMyLocation();
-            if (!mMap.getOverlays().contains(mLocationOverlay))
-            {
-                mMap.getOverlays().add(mLocationOverlay);
-            }
-        }
-        else
-        {
-            mLocationOverlay.disableMyLocation();
-            mMap.getOverlays().remove(mLocationOverlay);
-        }
-
-        if (Settings.getFollowGps())
-        {
-            mLocationOverlay.enableFollowLocation();
-        }
-        else
-        {
-            mLocationOverlay.disableFollowLocation();
-        }
     }
 }

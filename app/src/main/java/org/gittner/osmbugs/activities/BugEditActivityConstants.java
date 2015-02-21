@@ -1,7 +1,5 @@
 package org.gittner.osmbugs.activities;
 
-import android.support.v7.app.ActionBarActivity;
-
 public interface BugEditActivityConstants
 {
     public static final int RESULT_SAVED_KEEPRIGHT = 1;

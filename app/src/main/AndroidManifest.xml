@@ -23,8 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.BugListActivity" />
-        <activity android:name=".activities.SettingsActivity" />
+        <activity android:name=".activities.BugListActivity_" />
+        <activity android:name=".activities.SettingsActivity_" />
         <activity
             android:name=".activities.AddMapdustBugActivity_"
             android:label="@string/title_activity_add_mapdust_bug" />

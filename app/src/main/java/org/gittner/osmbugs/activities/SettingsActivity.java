@@ -1,20 +1,18 @@
 package org.gittner.osmbugs.activities;
 
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.fragments.SettingsFragment;
 
+@EActivity(R.layout.activity_settings)
 public class SettingsActivity extends ActionBarActivity
 {
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
+    @AfterViews
+    void init()
     {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_settings);
-
         getFragmentManager().beginTransaction()
                 .add(R.id.container, SettingsFragment.newInstance())
                 .commit();

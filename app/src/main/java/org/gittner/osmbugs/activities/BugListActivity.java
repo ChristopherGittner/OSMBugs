@@ -3,22 +3,27 @@ package org.gittner.osmbugs.activities;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OnActivityResult;
+import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.fragments.BugPlatformListFragment;
+import org.gittner.osmbugs.fragments.BugPlatformListFragment_;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Globals;
 import org.gittner.osmbugs.statics.Settings;
 
 import java.util.ArrayList;
 
+@EActivity(R.layout.activity_bug_list)
 public class BugListActivity
         extends ActionBarActivity
         implements ActionBar.TabListener,
@@ -30,16 +35,13 @@ public class BugListActivity
 
     private static final int REQUEST_CODE_BUG_EDITOR_ACTIVITY = 1;
 
-    private ViewPager mPager = null;
+    @ViewById(R.id.pager)
+    ViewPager mPager;
 
 
-    @Override
-    protected void onCreate(final Bundle savedInstanceState)
+    @AfterViews
+    void init()
     {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_bug_list);
-
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -64,7 +66,6 @@ public class BugListActivity
 
         pagerAdapter.notifyDataSetChanged();
 
-        mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(pagerAdapter);
         mPager.setOnPageChangeListener(
                 new ViewPager.SimpleOnPageChangeListener()
@@ -84,33 +85,26 @@ public class BugListActivity
     }
 
 
-    @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    @OnActivityResult(REQUEST_CODE_BUG_EDITOR_ACTIVITY)
+    void onBugEditorActivityResult(int resultCode)
     {
-        if (requestCode == REQUEST_CODE_BUG_EDITOR_ACTIVITY)
+        switch (resultCode)
         {
-            switch (resultCode)
-            {
-                case BugEditActivityConstants.RESULT_SAVED_KEEPRIGHT:
-                    BugDatabase.getInstance().reload(Globals.KEEPRIGHT);
-                    break;
+            case BugEditActivityConstants.RESULT_SAVED_KEEPRIGHT:
+                BugDatabase.getInstance().reload(Globals.KEEPRIGHT);
+                break;
 
-                case BugEditActivityConstants.RESULT_SAVED_OSMOSE:
-                    BugDatabase.getInstance().reload(Globals.OSMOSE);
-                    break;
+            case BugEditActivityConstants.RESULT_SAVED_OSMOSE:
+                BugDatabase.getInstance().reload(Globals.OSMOSE);
+                break;
 
-                case BugEditActivityConstants.RESULT_SAVED_MAPDUST:
-                    BugDatabase.getInstance().reload(Globals.MAPDUST);
-                    break;
+            case BugEditActivityConstants.RESULT_SAVED_MAPDUST:
+                BugDatabase.getInstance().reload(Globals.MAPDUST);
+                break;
 
-                case BugEditActivityConstants.RESULT_SAVED_OSM_NOTES:
-                    BugDatabase.getInstance().reload(Globals.OSM_NOTES);
-                    break;
-            }
-        }
-        else
-        {
-            super.onActivityResult(requestCode, resultCode, data);
+            case BugEditActivityConstants.RESULT_SAVED_OSM_NOTES:
+                BugDatabase.getInstance().reload(Globals.OSM_NOTES);
+                break;
         }
     }
 
@@ -198,7 +192,7 @@ public class BugListActivity
         @Override
         public Fragment getItem(final int position)
         {
-            return BugPlatformListFragment.newInstance(mPlatforms.get(position));
+            return BugPlatformListFragment_.newInstance(mPlatforms.get(position));
         }
 
 

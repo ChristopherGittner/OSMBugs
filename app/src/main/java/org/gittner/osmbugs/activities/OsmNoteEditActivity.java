@@ -120,6 +120,40 @@ public class OsmNoteEditActivity
     }
 
 
+    @Background
+    void closeBug(String message)
+    {
+        boolean result = new OsmNotesApi().closeBug(
+                mBug.getId(),
+                Settings.OsmNotes.getUsername(),
+                Settings.OsmNotes.getPassword(),
+                message);
+
+        uploadDone(result);
+    }
+
+
+    @UiThread
+    void uploadDone(boolean result)
+    {
+        mSaveDialog.dismiss();
+
+        if (result)
+        {
+            setResult(RESULT_SAVED_OSM_NOTES);
+            finish();
+        }
+        else
+        {
+            new MaterialDialog.Builder(this)
+                    .title(R.string.error)
+                    .content(R.string.failed_to_save_bug)
+                    .cancelable(true)
+                    .show();
+        }
+    }
+
+
     @Click(R.id.imgbtnAddComment)
     void addComment()
     {
@@ -155,41 +189,6 @@ public class OsmNoteEditActivity
         uploadDone(result);
     }
 
-
-    @Background
-    void closeBug(String message)
-    {
-        boolean result = new OsmNotesApi().closeBug(
-                mBug.getId(),
-                Settings.OsmNotes.getUsername(),
-                Settings.OsmNotes.getPassword(),
-                message);
-
-        uploadDone(result);
-    }
-
-
-    @UiThread
-    void uploadDone(boolean result)
-    {
-        mSaveDialog.dismiss();
-
-        if (result)
-        {
-            setResult(RESULT_SAVED_OSM_NOTES);
-            finish();
-        }
-        else
-        {
-            new MaterialDialog.Builder(this)
-                    .title(R.string.error)
-                    .content(R.string.failed_to_save_bug)
-                    .cancelable(true)
-                    .show();
-        }
-    }
-
-
     public class CommentAdapter extends ArrayAdapter<Comment>
     {
         public CommentAdapter(Context context)
@@ -201,7 +200,7 @@ public class OsmNoteEditActivity
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
-            View v = convertView != null ? convertView :  LayoutInflater.from(getContext()).inflate(R.layout.row_comment, parent, false);
+            View v = convertView != null ? convertView : LayoutInflater.from(getContext()).inflate(R.layout.row_comment, parent, false);
 
             Comment comment = getItem(position);
 

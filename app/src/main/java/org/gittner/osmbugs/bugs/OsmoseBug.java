@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.activities.OsmoseEditActivity;
 import org.gittner.osmbugs.activities.OsmoseEditActivity_;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;

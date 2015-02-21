@@ -1,31 +1,29 @@
 package org.gittner.osmbugs.fragments;
 
-import android.app.Fragment;
-import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
 import org.gittner.osmbugs.R;
 
+@EFragment
 public class SettingsFragment
         extends PreferenceFragment
         implements
         OnPreferenceClickListener
 {
-    public static Fragment newInstance()
+    public static SettingsFragment_ newInstance()
     {
-        return new SettingsFragment();
+        return new SettingsFragment_();
     }
 
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onCreate(Bundle savedInstanceState)
+    @AfterViews
+    void init()
     {
-        super.onCreate(savedInstanceState);
-
         addPreferencesFromResource(R.xml.preferences);
 
         findPreference("pref_keepright_reset").setOnPreferenceClickListener(this);

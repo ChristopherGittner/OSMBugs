@@ -5,7 +5,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.activities.MapdustEditActivity;
 import org.gittner.osmbugs.activities.MapdustEditActivity_;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Images;

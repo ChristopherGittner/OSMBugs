@@ -13,6 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.KeeprightBug;
@@ -24,16 +27,12 @@ import org.gittner.osmbugs.statics.Globals;
 import org.gittner.osmbugs.statics.TileSources;
 import org.osmdroid.views.MapView;
 
+@EFragment
 public class BugPlatformListFragment extends ListFragment
 {
     private static final String ARG_PLATFORM = "ARG_PLATFORM";
-
-    private BugAdapter mAdapter = null;
-
-    private OnFragmentInteractionListener mListener = null;
-
-    private int mPlatform = 0;
-
+    @FragmentArg(ARG_PLATFORM)
+    int mPlatform;
     private final BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher()
     {
         @Override
@@ -57,16 +56,18 @@ public class BugPlatformListFragment extends ListFragment
         {
         }
     };
+    private BugAdapter mAdapter = null;
 
+    private OnFragmentInteractionListener mListener = null;
 
     public BugPlatformListFragment()
     {
     }
 
 
-    public static BugPlatformListFragment newInstance(int platform)
+    public static BugPlatformListFragment_ newInstance(int platform)
     {
-        BugPlatformListFragment fragment = new BugPlatformListFragment();
+        BugPlatformListFragment_ fragment = new BugPlatformListFragment_();
 
         Bundle args = new Bundle();
         args.putInt(ARG_PLATFORM, platform);
@@ -93,15 +94,6 @@ public class BugPlatformListFragment extends ListFragment
 
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        mPlatform = args.getInt(ARG_PLATFORM);
-    }
-
-
-    @Override
     public void onResume()
     {
         super.onResume();
@@ -117,10 +109,9 @@ public class BugPlatformListFragment extends ListFragment
     }
 
 
-    @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState)
+    @AfterViews
+    void init()
     {
-        super.onViewCreated(view, savedInstanceState);
         switch (mPlatform)
         {
             case Globals.KEEPRIGHT:
@@ -178,8 +169,8 @@ public class BugPlatformListFragment extends ListFragment
 
     private abstract class BugAdapter<T extends Bug> extends ArrayAdapter<T>
     {
-        TextView mTxtvTitle = null;
-        TextView mTxtvDescription = null;
+        TextView title = null;
+        TextView description = null;
 
 
         public BugAdapter(final Context context)
@@ -195,8 +186,8 @@ public class BugPlatformListFragment extends ListFragment
 
             final Bug bug = getItem(position);
 
-            mTxtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
-            mTxtvDescription = (TextView) v.findViewById(R.id.txtvDescription);
+            title = (TextView) v.findViewById(R.id.txtvTitle);
+            description = (TextView) v.findViewById(R.id.txtvDescription);
 
             ImageView imgvIcon = (ImageView) v.findViewById(R.id.imgvIcon);
             imgvIcon.setImageDrawable(bug.getIcon());
@@ -247,10 +238,10 @@ public class BugPlatformListFragment extends ListFragment
 
             final KeeprightBug bug = getItem(position);
 
-            mTxtvTitle.setText(bug.getTitle());
-            mTxtvDescription.setText(bug.getDescription());
-            mTxtvTitle.setText(Html.fromHtml(mTxtvTitle.getText().toString()));
-            mTxtvDescription.setText(Html.fromHtml(mTxtvDescription.getText().toString()));
+            title.setText(bug.getTitle());
+            description.setText(bug.getDescription());
+            title.setText(Html.fromHtml(title.getText().toString()));
+            description.setText(Html.fromHtml(description.getText().toString()));
 
             return v;
         }
@@ -271,10 +262,10 @@ public class BugPlatformListFragment extends ListFragment
 
             final OsmoseBug bug = getItem(position);
 
-            mTxtvTitle.setVisibility(View.GONE);
-            mTxtvDescription.setText(bug.getTitle());
-            mTxtvTitle.setText(Html.fromHtml(mTxtvTitle.getText().toString()));
-            mTxtvDescription.setText(Html.fromHtml(mTxtvDescription.getText().toString()));
+            title.setVisibility(View.GONE);
+            description.setText(bug.getTitle());
+            title.setText(Html.fromHtml(title.getText().toString()));
+            description.setText(Html.fromHtml(description.getText().toString()));
 
             return v;
         }
@@ -295,8 +286,8 @@ public class BugPlatformListFragment extends ListFragment
 
             final MapdustBug bug = getItem(position);
 
-            mTxtvTitle.setVisibility(View.GONE);
-            mTxtvDescription.setText(bug.getDescription());
+            title.setVisibility(View.GONE);
+            description.setText(bug.getDescription());
 
             return v;
         }
@@ -317,8 +308,8 @@ public class BugPlatformListFragment extends ListFragment
 
             final OsmNote bug = getItem(position);
 
-            mTxtvTitle.setVisibility(View.GONE);
-            mTxtvDescription.setText(bug.getDescription());
+            title.setVisibility(View.GONE);
+            description.setText(bug.getDescription());
 
             return v;
         }

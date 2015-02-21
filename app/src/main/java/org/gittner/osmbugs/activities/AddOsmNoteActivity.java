@@ -3,13 +3,12 @@ package org.gittner.osmbugs.activities;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
@@ -17,13 +16,10 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
-import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.api.MapdustApi;
 import org.gittner.osmbugs.api.OsmNotesApi;
-import org.gittner.osmbugs.bugs.MapdustBug;
 import org.osmdroid.util.GeoPoint;
 
 @EActivity(R.layout.activity_add_osm_note)
@@ -106,7 +102,7 @@ public class AddOsmNoteActivity extends ActionBarActivity
     }
 
 
-    @TextChange(R.id.edttxtDescription)
+    @AfterTextChange(R.id.edttxtDescription)
     void descriptionChanged()
     {
         invalidateOptionsMenu();

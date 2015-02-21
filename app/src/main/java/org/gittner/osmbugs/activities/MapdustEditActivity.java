@@ -145,6 +145,40 @@ public class MapdustEditActivity
     }
 
 
+    @Background
+    void uploadBugStatus(MapdustBug.STATE state, String message)
+    {
+        boolean result = new MapdustApi().changeBugStatus(
+                mBug.getId(),
+                state,
+                message,
+                Settings.Mapdust.getUsername());
+
+        uploadDone(result);
+    }
+
+
+    @UiThread
+    void uploadDone(boolean result)
+    {
+        mSaveDialog.dismiss();
+
+        if (result)
+        {
+            setResult(RESULT_SAVED_MAPDUST);
+            finish();
+        }
+        else
+        {
+            new MaterialDialog.Builder(this)
+                    .title(R.string.error)
+                    .content(R.string.failed_to_save_bug)
+                    .cancelable(true)
+                    .show();
+        }
+    }
+
+
     @Click(R.id.btnIgnoreBug)
     void ignoreBug()
     {
@@ -203,41 +237,6 @@ public class MapdustEditActivity
 
         uploadDone(result);
     }
-
-
-    @Background
-    void uploadBugStatus(MapdustBug.STATE state, String message)
-    {
-        boolean result = new MapdustApi().changeBugStatus(
-                mBug.getId(),
-                state,
-                message,
-                Settings.Mapdust.getUsername());
-
-        uploadDone(result);
-    }
-
-
-    @UiThread
-    void uploadDone(boolean result)
-    {
-        mSaveDialog.dismiss();
-
-        if (result)
-        {
-            setResult(RESULT_SAVED_MAPDUST);
-            finish();
-        }
-        else
-        {
-            new MaterialDialog.Builder(this)
-                    .title(R.string.error)
-                    .content(R.string.failed_to_save_bug)
-                    .cancelable(true)
-                    .show();
-        }
-    }
-
 
     public class CommentAdapter extends ArrayAdapter<Comment>
     {

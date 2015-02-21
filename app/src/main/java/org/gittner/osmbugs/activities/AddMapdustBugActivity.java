@@ -1,14 +1,8 @@
 package org.gittner.osmbugs.activities;
 
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -16,6 +10,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
@@ -23,7 +18,6 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
-import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
@@ -69,7 +63,6 @@ public class AddMapdustBugActivity extends ActionBarActivity
                 getString(R.string.roundabout),
                 getString(R.string.missing_speed_info),
                 getString(R.string.other));
-
 
         mSpnType.setAdapter(typeAdapter);
         mSpnType.setSelection(7);
@@ -162,7 +155,7 @@ public class AddMapdustBugActivity extends ActionBarActivity
     }
 
 
-    @TextChange(R.id.edttxtDescription)
+    @AfterTextChange(R.id.edttxtDescription)
     void descriptionChanged()
     {
         invalidateOptionsMenu();
