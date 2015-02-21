@@ -60,6 +60,7 @@ public class BugPlatformListFragment extends ListFragment
 
     private OnFragmentInteractionListener mListener = null;
 
+
     public BugPlatformListFragment()
     {
     }

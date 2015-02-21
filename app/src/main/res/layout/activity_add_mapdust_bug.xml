@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/txtv2"
@@ -9,13 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="8dp"
-        android:text="@string/type" />
+        android:text="@string/type"/>
 
     <Spinner
         android:id="@+id/spnType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"/>
 
     <TextView
         android:id="@+id/txtv1"
@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="8dp"
-        android:text="@string/description" />
+        android:text="@string/description"/>
 
     <EditText
         android:id="@+id/edttxtDescription"
@@ -35,6 +35,6 @@
         android:maxHeight="100dp"
         android:minHeight="40dp"
         android:scrollbars="vertical"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 </LinearLayout>

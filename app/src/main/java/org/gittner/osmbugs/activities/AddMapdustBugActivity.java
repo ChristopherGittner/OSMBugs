@@ -1,7 +1,6 @@
 package org.gittner.osmbugs.activities;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,7 +28,6 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.MapdustApi;
-import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
@@ -210,7 +208,6 @@ public class AddMapdustBugActivity extends ActionBarActivity
                     icon.setImageDrawable(Images.get(R.drawable.mapdust_bad_routing));
                     type.setText(R.string.bad_routing);
                     break;
-
 
                 case 2:
                     icon.setImageDrawable(Images.get(R.drawable.mapdust_oneway_road));

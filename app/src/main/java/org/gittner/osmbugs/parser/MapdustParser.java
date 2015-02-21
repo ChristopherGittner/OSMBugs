@@ -30,9 +30,7 @@ public class MapdustParser
             }
             JSONObject json = new JSONObject(line);
             JSONArray bugArray = json.getJSONArray("features");
-            for (int i = 0;
-                 i != bugArray.length();
-                 ++i)
+            for (int i = 0; i != bugArray.length(); ++i)
             {
                 JSONObject bug = bugArray.getJSONObject(i);
                 long id = bug.getLong("id");

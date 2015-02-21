@@ -10,8 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -54,8 +52,51 @@ import java.util.ArrayList;
 public class BugMapActivity extends ActionBarActivity
 {
     private static final String TAG = "OsmBugsActivity";
+
     /* Request Codes for activities */
     private static final int REQUEST_CODE_BUG_EDITOR_ACTIVITY = 1;
+    private static final int REQUEST_CODE_SETTINGS_ACTIVITY = 2;
+    private static final int REQUEST_CODE_BUG_LIST_ACTIVITY = 3;
+    private static final int REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY = 4;
+    private static final int REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY = 5;
+
+    @ViewById(R.id.mapview)
+    MapView mMap;
+    @ViewById(R.id.btnRefreshBugs)
+    RotatingIconButtonFloat mRefreshBugs;
+    @OptionsMenuItem(R.id.add_bug)
+    MenuItem mMenuAddBug;
+    @OptionsMenuItem(R.id.enable_gps)
+    MenuItem mMenuEnableGps;
+    @OptionsMenuItem(R.id.follow_gps)
+    MenuItem mMenuFollowGps;
+    @OptionsMenuItem(R.id.list)
+    MenuItem mMenuList;
+
+    /* The next touch event on the map opens the add Bug Prompt */
+    private boolean mAddNewBugOnNextClick = false;
+
+    /* The Overlay for Bugs displayed on the map */
+    private ItemizedIconOverlay<BugOverlayItem> mKeeprightOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mOsmoseOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mMapdustOverlay;
+    private ItemizedIconOverlay<BugOverlayItem> mOsmNotesOverlay;
+
+    /* The Location Marker Overlay */
+    private MyLocationOverlay mLocationOverlay = null;
+
+    private static GeoPoint mNewBugLocation;
+
+    private final MyLocationOverlay.FollowModeListener mFollowModeListener = new MyLocationOverlay.FollowModeListener()
+    {
+        @Override
+        public void onFollowingStopped()
+        {
+            Settings.setFollowGps(false);
+            invalidateOptionsMenu();
+        }
+    };
+
     private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mBugGestureListener
             = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>()
     {
@@ -75,23 +116,7 @@ public class BugMapActivity extends ActionBarActivity
             return false;
         }
     };
-    private static final int REQUEST_CODE_SETTINGS_ACTIVITY = 2;
-    private static final int REQUEST_CODE_BUG_LIST_ACTIVITY = 3;
-    private static final int REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY = 4;
-    private static final int REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY = 5;
-    /* Dialog Ids */
-    private static final int DIALOG_NEW_BUG = 1;
-    private static GeoPoint mNewBugLocation;
-    private final MyLocationOverlay.FollowModeListener mFollowModeListener = new MyLocationOverlay.FollowModeListener()
-    {
-        @Override
-        public void onFollowingStopped()
-        {
-            Settings.setFollowGps(false);
-            invalidateOptionsMenu();
-        }
-    };
-    /* Listener for Database Updates */
+
     private final BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher()
     {
         @Override
@@ -173,27 +198,6 @@ public class BugMapActivity extends ActionBarActivity
             updateRefreshBugsButton();
         }
     };
-    @ViewById(R.id.mapview)
-    MapView mMap;
-    @ViewById(R.id.btnRefreshBugs)
-    RotatingIconButtonFloat mRefreshBugs;
-    @OptionsMenuItem(R.id.add_bug)
-    MenuItem mMenuAddBug;
-    @OptionsMenuItem(R.id.enable_gps)
-    MenuItem mMenuEnableGps;
-    @OptionsMenuItem(R.id.follow_gps)
-    MenuItem mMenuFollowGps;
-    @OptionsMenuItem(R.id.list)
-    MenuItem mMenuList;
-    /* The next touch event on the map opens the add Bug Prompt */
-    private boolean mAddNewBugOnNextClick = false;
-    /* The Overlay for Bugs displayed on the map */
-    private ItemizedIconOverlay<BugOverlayItem> mKeeprightOverlay;
-    private ItemizedIconOverlay<BugOverlayItem> mOsmoseOverlay;
-    private ItemizedIconOverlay<BugOverlayItem> mMapdustOverlay;
-    private ItemizedIconOverlay<BugOverlayItem> mOsmNotesOverlay;
-    /* The Location Marker Overlay */
-    private MyLocationOverlay mLocationOverlay = null;
 
 
     @AfterViews
@@ -467,7 +471,7 @@ public class BugMapActivity extends ActionBarActivity
     @OnActivityResult(REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY)
     void onAddMapdustBugActivityResult(int resultCode)
     {
-        if(resultCode == RESULT_OK)
+        if (resultCode == RESULT_OK)
         {
             BugDatabase.getInstance().load(mMap.getBoundingBox(), Globals.MAPDUST);
         }
@@ -477,7 +481,7 @@ public class BugMapActivity extends ActionBarActivity
     @OnActivityResult(REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY)
     void onAddOsmNoteActivityResult(int resultCode)
     {
-        if(resultCode == RESULT_OK)
+        if (resultCode == RESULT_OK)
         {
             BugDatabase.getInstance().load(mMap.getBoundingBox(), Globals.OSM_NOTES);
         }

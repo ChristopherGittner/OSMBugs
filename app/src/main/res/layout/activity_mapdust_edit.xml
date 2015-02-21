@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="8dp">
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:paddingTop="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:text="@string/description"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="4dp"
-                android:background="@drawable/mapdust_other" />
+                android:background="@drawable/mapdust_other"/>
 
             <ImageView
                 android:id="@+id/imgvArrowRight"
@@ -39,7 +39,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
-                android:background="@drawable/arrow_right" />
+                android:background="@drawable/arrow_right"/>
 
             <ImageButton
                 android:id="@+id/btnResolveBug"
@@ -49,7 +49,7 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="8dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/mapdust_bug_green" />
+                android:src="@drawable/mapdust_bug_green"/>
 
             <ImageButton
                 android:id="@+id/btnIgnoreBug"
@@ -58,7 +58,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/mapdust_bug_gray" />
+                android:src="@drawable/mapdust_bug_gray"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -75,7 +75,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/comments" />
+            android:text="@string/comments"/>
 
         <ImageButton
             android:id="@+id/imgbtnAddComment"
@@ -83,21 +83,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_note_add_grey" />
+            android:src="@drawable/ic_note_add_grey"/>
     </LinearLayout>
 
     <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
         android:id="@+id/pbarLoadingComments"
-        android:layout_gravity="center_horizontal"
         android:layout_width="64dp"
         android:layout_height="64dp"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="8dp"
-        android:background="@color/primary" />
+        android:background="@color/primary"/>
 
     <ListView
         android:id="@+id/lstvComments"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"/>
 
 </LinearLayout>

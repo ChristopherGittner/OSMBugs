@@ -238,6 +238,7 @@ public class MapdustEditActivity
         uploadDone(result);
     }
 
+
     public class CommentAdapter extends ArrayAdapter<Comment>
     {
         public CommentAdapter(Context context)

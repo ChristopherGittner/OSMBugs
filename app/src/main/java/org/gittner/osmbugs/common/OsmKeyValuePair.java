@@ -20,7 +20,7 @@ public class OsmKeyValuePair implements Parcelable
             return new OsmKeyValuePair[size];
         }
     };
-    
+
     private String mKey = "";
     private String mValue = "";
 

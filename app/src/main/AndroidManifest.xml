@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.gittner.osmbugs">
+          package="org.gittner.osmbugs">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".OsmbugsApplication"
@@ -18,29 +18,29 @@
             android:name=".activities.BugMapActivity_"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.BugListActivity_" />
-        <activity android:name=".activities.SettingsActivity_" />
+        <activity android:name=".activities.BugListActivity_"/>
+        <activity android:name=".activities.SettingsActivity_"/>
         <activity
             android:name=".activities.AddMapdustBugActivity_"
-            android:label="@string/title_activity_add_mapdust_bug" />
+            android:label="@string/title_activity_add_mapdust_bug"/>
         <activity
             android:name=".activities.AddOsmNoteActivity_"
-            android:label="@string/title_activity_add_openstreetmap_note" />
-        <activity android:name=".activities.KeeprightEditActivity_" />
-        <activity android:name=".activities.OsmoseEditActivity_" />
-        <activity android:name=".activities.MapdustEditActivity_" />
-        <activity android:name=".activities.OsmNoteEditActivity_" />
+            android:label="@string/title_activity_add_openstreetmap_note"/>
+        <activity android:name=".activities.KeeprightEditActivity_"/>
+        <activity android:name=".activities.OsmoseEditActivity_"/>
+        <activity android:name=".activities.MapdustEditActivity_"/>
+        <activity android:name=".activities.OsmNoteEditActivity_"/>
         <activity
             android:name="org.acra.CrashReportDialog"
             android:excludeFromRecents="true"
             android:finishOnTaskLaunch="true"
             android:launchMode="singleInstance"
-            android:theme="@style/Theme.Dialog" />
+            android:theme="@style/Theme.Dialog"/>
     </application>
 
 </manifest>

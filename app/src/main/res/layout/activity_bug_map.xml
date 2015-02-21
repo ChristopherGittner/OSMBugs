@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+                xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-    <org.osmdroid.views.MapView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/mapview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true" />
+    <org.osmdroid.views.MapView android:id="@+id/mapview"
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clickable="true"/>
 
     <org.gittner.osmbugs.common.RotatingIconButtonFloat
         android:id="@+id/btnRefreshBugs"
@@ -17,7 +17,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
-        android:background="@color/primary"
-        materialdesign:iconDrawable="@drawable/ic_autorenew_white" />
+        materialdesign:iconDrawable="@drawable/ic_autorenew_white"/>
 
 </RelativeLayout>

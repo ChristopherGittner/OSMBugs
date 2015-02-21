@@ -189,6 +189,7 @@ public class OsmNoteEditActivity
         uploadDone(result);
     }
 
+
     public class CommentAdapter extends ArrayAdapter<Comment>
     {
         public CommentAdapter(Context context)

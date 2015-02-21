@@ -1,41 +1,41 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/add_bug"
         android:icon="@drawable/ic_menu_add_bug"
         android:orderInCategory="20"
         android:title="@string/add_bug"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/list"
         android:icon="@drawable/ic_view_list_white"
         android:orderInCategory="90"
         android:title="@string/list"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/enable_gps"
         android:checkable="true"
         android:checked="true"
         android:orderInCategory="50"
         android:title="@string/go_to_gps"
-        app:showAsAction="never" />
+        app:showAsAction="never"/>
     <item
         android:id="@+id/follow_gps"
         android:checkable="true"
         android:checked="true"
         android:orderInCategory="51"
-        android:title="@string/follow_gps" />
+        android:title="@string/follow_gps"/>
     <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings_white"
         android:orderInCategory="100"
         android:title="@string/action_settings"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/feedback"
         android:orderInCategory="100"
         android:title="@string/feedback"
-        app:showAsAction="never" />
+        app:showAsAction="never"/>
 
 </menu>

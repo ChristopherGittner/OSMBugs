@@ -26,9 +26,7 @@ public class OpenstreetmapNotesParser
             doc.getDocumentElement().normalize();
 
             NodeList nList = doc.getElementsByTagName("note");
-            for (int i = 0;
-                 i != nList.getLength();
-                 ++i)
+            for (int i = 0; i != nList.getLength(); ++i)
             {
                 Element wpt = (Element) nList.item(i);
                 double lat = Double.parseDouble(wpt.getAttribute("lat"));

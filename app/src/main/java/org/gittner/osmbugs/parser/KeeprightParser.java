@@ -76,9 +76,7 @@ public class KeeprightParser
                     token.nextToken();
 
                     /* 2 Unused token */
-                    for (int i = 0;
-                         i != 4;
-                         ++i)
+                    for (int i = 0; i != 4; ++i)
                     {
                         token.nextToken();
                     }

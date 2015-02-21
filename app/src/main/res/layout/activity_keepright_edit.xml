@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="8dp">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:paddingTop="8dp">
 
     <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
     <LinearLayout
@@ -12,7 +12,7 @@
         android:layout_height="0px"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        tools:ignore="UselessLeaf" />
+        tools:ignore="UselessLeaf"/>
 
     <TextView
         android:id="@+id/txtvTitle"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="@string/title"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <TextView
         android:id="@+id/txtv1"
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="@string/description" />
+        android:text="@string/description"/>
 
     <TextView
         android:id="@+id/txtvText"
@@ -37,7 +37,7 @@
         android:layout_margin="8dp"
         android:scrollbars="vertical"
         android:text="@string/description"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <TextView
         android:id="@+id/txtvState"
@@ -45,13 +45,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="@string/state" />
+        android:text="@string/state"/>
 
     <Spinner
         android:id="@+id/spnState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"/>
 
     <TextView
         android:id="@+id/txtvCommentTitle"
@@ -59,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="@string/comment" />
+        android:text="@string/comment"/>
 
     <EditText
         android:id="@+id/edttxtComment"
@@ -71,6 +71,6 @@
         android:maxHeight="100dp"
         android:minHeight="40dp"
         android:scrollbars="vertical"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 </LinearLayout>
