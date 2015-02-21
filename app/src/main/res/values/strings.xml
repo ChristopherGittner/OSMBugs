@@ -122,7 +122,7 @@
     <string name="bugs_to_display">Bugs to display</string>
     <string name="false_positive">False Positive</string>
     <string name="enter_comment">Enter Comment</string>
-    <string name="resolve">Resolve</string>
+    <string name="close">Close</string>
     <string name="notification_osm_notes_no_username">No Username provided.\nSettings -> Openstreetmap Notes -> Username</string>
     <string name="notification_osm_notes_no_password">No Password provided.\nSettings -> Openstreetmap Notes -> Password</string>
     <string name="notification_mapdust_no_username">No Username provided.\nSettings -> Mapdust Notes -> Username</string>

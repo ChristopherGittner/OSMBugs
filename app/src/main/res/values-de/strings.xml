@@ -125,7 +125,7 @@
     <string name="notification_osm_notes_no_password">Kein Password angegeben.\nEinstellungen -> Openstreetmap Notes -> Passwort</string>
     <string name="notification_osm_notes_no_username">Kein Benutzername angegeben.\nEinstellungen -> Openstreetmap Notes -> Benutzername</string>
     <string name="notification_mapdust_no_username">Kein Benutzername angegeben.\nEinstellungen -> Mapdust Notes -> Benutzername</string>
-    <string name="resolve">Auflösen</string>
+    <string name="close">Schließen</string>
     <string name="saving">Speichern</string>
     <string name="loading_comments">Kommentare laden…</string>
     <string name="feedback_to_osmbugs">Feedback to OSMBugs</string>

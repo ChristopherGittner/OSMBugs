@@ -3,12 +3,13 @@ package org.gittner.osmbugs.activities;
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,6 +21,9 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
@@ -34,6 +38,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 @EActivity(R.layout.activity_mapdust_edit)
+@OptionsMenu(R.menu.mapdust_edit)
 public class MapdustEditActivity
         extends ActionBarActivity
         implements BugEditActivityConstants
@@ -49,14 +54,11 @@ public class MapdustEditActivity
     ListView mComments;
     @ViewById(R.id.imgbtnAddComment)
     ImageButton mAddComment;
-    @ViewById(R.id.btnResolveBug)
-    ImageButton mResolveBug;
-    @ViewById(R.id.btnIgnoreBug)
-    ImageButton mIgnoreBug;
-    @ViewById(R.id.imgvArrowRight)
-    ImageView mArrowRight;
-    @ViewById(R.id.imgvIcon)
-    ImageView mIcon;
+
+    @OptionsMenuItem(R.id.action_close)
+    MenuItem mMenuCloseBug;
+    @OptionsMenuItem(R.id.action_ignore)
+    MenuItem mMenuIgnoreBug;
 
     private CommentAdapter mAdapter;
 
@@ -74,18 +76,6 @@ public class MapdustEditActivity
         if (mBug.getState() == MapdustBug.STATE.CLOSED)
         {
             mAddComment.setVisibility(GONE);
-        }
-
-        if (mBug.getState() == MapdustBug.STATE.OPEN)
-        {
-            mIcon.setImageDrawable(mBug.getIcon());
-        }
-        else
-        {
-            mIcon.setVisibility(View.GONE);
-            mArrowRight.setVisibility(View.GONE);
-            mResolveBug.setVisibility(View.GONE);
-            mIgnoreBug.setVisibility(View.GONE);
         }
 
         mSaveDialog = new MaterialDialog.Builder(this)
@@ -120,15 +110,27 @@ public class MapdustEditActivity
     }
 
 
-    @Click(R.id.btnResolveBug)
-    void resolveBug()
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        boolean visible = mBug.getState() == MapdustBug.STATE.OPEN;
+
+        mMenuCloseBug.setVisible(visible);
+        mMenuIgnoreBug.setVisible(visible);
+
+        return true;
+    }
+
+
+    @OptionsItem(R.id.action_close)
+    void menuCloseBugClicked()
     {
         final EditText resolveComment = new EditText(this);
         new MaterialDialog.Builder(this)
                 .customView(resolveComment, false)
                 .cancelable(true)
                 .title(R.string.enter_comment)
-                .positiveText(R.string.resolve)
+                .positiveText(R.string.close)
                 .negativeText(R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback()
                 {
@@ -139,6 +141,31 @@ public class MapdustEditActivity
 
                         uploadBugStatus(
                                 MapdustBug.STATE.CLOSED,
+                                resolveComment.getText().toString());
+                    }
+                }).show();
+    }
+
+
+    @OptionsItem(R.id.action_ignore)
+    void menuIgnoreBugClicked()
+    {
+        final EditText resolveComment = new EditText(this);
+        new MaterialDialog.Builder(this)
+                .customView(resolveComment, false)
+                .cancelable(true)
+                .title(R.string.enter_comment)
+                .positiveText(R.string.close)
+                .negativeText(R.string.cancel)
+                .callback(new MaterialDialog.ButtonCallback()
+                {
+                    @Override
+                    public void onPositive(MaterialDialog dialog)
+                    {
+                        mSaveDialog.show();
+
+                        uploadBugStatus(
+                                MapdustBug.STATE.IGNORED,
                                 resolveComment.getText().toString());
                     }
                 }).show();
@@ -176,31 +203,6 @@ public class MapdustEditActivity
                     .cancelable(true)
                     .show();
         }
-    }
-
-
-    @Click(R.id.btnIgnoreBug)
-    void ignoreBug()
-    {
-        final EditText resolveComment = new EditText(this);
-        new MaterialDialog.Builder(this)
-                .customView(resolveComment, false)
-                .cancelable(true)
-                .title(R.string.enter_comment)
-                .positiveText(R.string.resolve)
-                .negativeText(R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback()
-                {
-                    @Override
-                    public void onPositive(MaterialDialog dialog)
-                    {
-                        mSaveDialog.show();
-
-                        uploadBugStatus(
-                                MapdustBug.STATE.IGNORED,
-                                resolveComment.getText().toString());
-                    }
-                }).show();
     }
 
 

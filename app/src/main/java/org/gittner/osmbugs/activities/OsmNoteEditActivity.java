@@ -3,6 +3,8 @@ package org.gittner.osmbugs.activities;
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -19,6 +21,9 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
@@ -31,6 +36,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 @EActivity(R.layout.activity_osm_note_edit)
+@OptionsMenu(R.menu.osm_note_edit)
 public class OsmNoteEditActivity
         extends ActionBarActivity
         implements BugEditActivityConstants
@@ -42,10 +48,11 @@ public class OsmNoteEditActivity
     TextView mDescription;
     @ViewById(R.id.imgbtnAddComment)
     ImageButton mAddComment;
-    @ViewById(R.id.btnCloseBug)
-    ImageButton mCloseBug;
     @ViewById(R.id.lstvComments)
     ListView mComments;
+
+    @OptionsMenuItem(R.id.action_close)
+    MenuItem mMenuClose;
 
     private MaterialDialog mSaveDialog = null;
 
@@ -66,11 +73,6 @@ public class OsmNoteEditActivity
             mAddComment.setVisibility(GONE);
         }
 
-        if (mBug.getState() == OsmNote.STATE.CLOSED)
-        {
-            mCloseBug.setVisibility(GONE);
-        }
-
         mSaveDialog = new MaterialDialog.Builder(this)
                 .title(R.string.saving)
                 .content(R.string.please_wait)
@@ -80,8 +82,17 @@ public class OsmNoteEditActivity
     }
 
 
-    @Click(R.id.btnResolveBug)
-    void resolveBug()
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        mMenuClose.setVisible(mBug.getState() == OsmNote.STATE.OPEN);
+
+        return true;
+    }
+
+
+    @OptionsItem(R.id.action_close)
+    void closeBug()
     {
         if (Settings.OsmNotes.getUsername().equals(""))
         {
@@ -105,7 +116,7 @@ public class OsmNoteEditActivity
                 .customView(closeComment, false)
                 .cancelable(true)
                 .title(R.string.enter_comment)
-                .positiveText(R.string.resolve)
+                .positiveText(R.string.close)
                 .negativeText(R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback()
                 {
