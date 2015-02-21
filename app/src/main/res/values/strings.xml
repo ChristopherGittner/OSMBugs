@@ -167,9 +167,9 @@
     <string name="public_transport">Public Transport</string>
     <string name="mapquest_osm">Mapquest OSM</string>
     <string name="mapquest_aerial">Mapquest Satellit</string>
-    <string name="open_railway_map_infrastructure">Open Railway Map Infrastruktur</string>
-    <string name="open_railway_map_maxspeed">Open Railway Map Geschwindigkeiten</string>
-    <string name="open_railway_map_signals">Open Railway Map Signale</string>
+    <string name="open_railway_map_infrastructure">Open Railway Map Infrastructure</string>
+    <string name="open_railway_map_maxspeed">Open Railway Map Maxspeeds</string>
+    <string name="open_railway_map_signals">Open Railway Map Signals</string>
     <string name="please_wait">Please Wait</string>
     <string name="error">Error</string>
 

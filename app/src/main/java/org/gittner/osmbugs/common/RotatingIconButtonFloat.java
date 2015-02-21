@@ -74,6 +74,8 @@ public class RotatingIconButtonFloat extends ButtonFloat
     {
         super(context, attrs);
 
+        setAttributes(attrs);
+
         mAnimation = new RotateAnimation(
                 0f,
                 360f,

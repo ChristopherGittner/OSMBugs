@@ -17,6 +17,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
+        android:background="@color/accent"
         materialdesign:iconDrawable="@drawable/ic_autorenew_white"/>
 
 </RelativeLayout>

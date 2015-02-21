@@ -151,13 +151,13 @@
     <string name="map_style">Kartenstil</string>
     <string name="display">Display</string>
     <string name="mapnik">Mapnik</string>
-    <string name="cyclemap">Cycle Map</string>
-    <string name="public_transport">Public Transport</string>
+    <string name="cyclemap">Fahrradkarte</string>
+    <string name="public_transport">Öffentlicher Transport</string>
     <string name="mapquest_osm">Mapquest OSM</string>
     <string name="mapquest_aerial">Mapquest Aerial</string>
-    <string name="open_railway_map_infrastructure">Open Railway Map Infrastructure</string>
-    <string name="open_railway_map_maxspeed">Open Railway Map Maxspeed</string>
-    <string name="open_railway_map_signals">Open Railway Map Signals</string>
+    <string name="open_railway_map_infrastructure">Open Railway Map Infrastruktur</string>
+    <string name="open_railway_map_maxspeed">Open Railway Map Geschwindigkeiten</string>
+    <string name="open_railway_map_signals">Open Railway Map Signale</string>
     <string name="please_wait">Bitte warten</string>
     <string name="error">Fehler</string>
 
