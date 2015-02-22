@@ -27,7 +27,7 @@ import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.api.MapdustApi;
+import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
@@ -126,7 +126,7 @@ public class AddMapdustBugActivity extends ActionBarActivity
     @Background
     void addBug(GeoPoint geoPoint, String description, int type)
     {
-        boolean result = new MapdustApi().addBug(geoPoint, type, description);
+        boolean result = Apis.MAPDUST.addBug(geoPoint, type, description);
 
         addBugDone(result);
     }

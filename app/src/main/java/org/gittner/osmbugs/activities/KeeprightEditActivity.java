@@ -26,7 +26,7 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.api.KeeprightApi;
+import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.statics.Images;
 
@@ -118,7 +118,7 @@ public class KeeprightEditActivity
     @Background
     void uploadData(String comment, KeeprightBug.STATE state)
     {
-        boolean result = new KeeprightApi().comment(
+        boolean result = Apis.KEEPRIGHT.comment(
                 mBug.getSchema(),
                 mBug.getId(),
                 comment,

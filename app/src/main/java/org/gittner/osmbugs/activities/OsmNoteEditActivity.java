@@ -27,7 +27,7 @@ import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.api.OsmNotesApi;
+import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Settings;
@@ -134,7 +134,7 @@ public class OsmNoteEditActivity
     @Background
     void closeBug(String message)
     {
-        boolean result = new OsmNotesApi().closeBug(
+        boolean result = Apis.OSM_NOTES.closeBug(
                 mBug.getId(),
                 Settings.OsmNotes.getUsername(),
                 Settings.OsmNotes.getPassword(),
@@ -191,7 +191,7 @@ public class OsmNoteEditActivity
     @Background
     void uploadComment(String comment)
     {
-        boolean result = new OsmNotesApi().addComment(
+        boolean result = Apis.OSM_NOTES.addComment(
                 mBug.getId(),
                 Settings.OsmNotes.getUsername(),
                 Settings.OsmNotes.getPassword(),

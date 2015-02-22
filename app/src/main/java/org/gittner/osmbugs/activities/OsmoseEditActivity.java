@@ -13,7 +13,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.api.OsmoseApi;
+import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.OsmoseElement;
 import org.gittner.osmbugs.common.OsmoseElementView;
@@ -52,7 +52,7 @@ public class OsmoseEditActivity
     @Background
     void loadDetails()
     {
-        List<OsmoseElement> elements = new OsmoseApi().loadElements(mBug.getId());
+        List<OsmoseElement> elements = Apis.OSMOSE.loadElements(mBug.getId());
 
         detailsLoaded(elements);
     }

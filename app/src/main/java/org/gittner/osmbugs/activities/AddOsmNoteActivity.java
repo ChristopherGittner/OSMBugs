@@ -19,7 +19,7 @@ import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.api.OsmNotesApi;
+import org.gittner.osmbugs.api.Apis;
 import org.osmdroid.util.GeoPoint;
 
 @EActivity(R.layout.activity_add_osm_note)
@@ -79,7 +79,7 @@ public class AddOsmNoteActivity extends ActionBarActivity
     @Background
     void addBug(GeoPoint geoPoint, String description)
     {
-        boolean result = new OsmNotesApi().addNew(geoPoint, description);
+        boolean result = Apis.OSM_NOTES.addNew(geoPoint, description);
 
         addBugDone(result);
     }

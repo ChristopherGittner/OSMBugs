@@ -27,6 +27,7 @@ import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.api.MapdustApi;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.common.Comment;
@@ -92,7 +93,7 @@ public class MapdustEditActivity
     @Background
     void loadComments()
     {
-        List<Comment> comments = new MapdustApi().retrieveComments(mBug.getId());
+        List<Comment> comments = Apis.MAPDUST.retrieveComments(mBug.getId());
 
         commentsLoaded(comments);
     }
@@ -175,7 +176,7 @@ public class MapdustEditActivity
     @Background
     void uploadBugStatus(MapdustBug.STATE state, String message)
     {
-        boolean result = new MapdustApi().changeBugStatus(
+        boolean result = Apis.MAPDUST.changeBugStatus(
                 mBug.getId(),
                 state,
                 message,

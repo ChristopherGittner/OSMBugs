@@ -3,11 +3,8 @@ package org.gittner.osmbugs.statics;
 import android.os.AsyncTask;
 
 import org.gittner.osmbugs.BugDownloadTask;
+import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.api.BugApi;
-import org.gittner.osmbugs.api.KeeprightApi;
-import org.gittner.osmbugs.api.MapdustApi;
-import org.gittner.osmbugs.api.OsmNotesApi;
-import org.gittner.osmbugs.api.OsmoseApi;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
@@ -86,7 +83,7 @@ public class BugDatabase
                         platform,
                         bBox,
                         mKeeprightDownloadTask,
-                        new KeeprightApi(),
+                        Apis.KEEPRIGHT,
                         mKeeprightBugs,
                         listener);
                 break;
@@ -96,7 +93,7 @@ public class BugDatabase
                         platform,
                         bBox,
                         mOsmoseDownloadTask,
-                        new OsmoseApi(),
+                        Apis.OSMOSE,
                         mOsmoseBugs,
                         listener);
                 break;
@@ -106,7 +103,7 @@ public class BugDatabase
                         platform,
                         bBox,
                         mMapdustDownloadTask,
-                        new MapdustApi(),
+                        Apis.MAPDUST,
                         mMapdustBugs,
                         listener);
                 break;
@@ -116,7 +113,7 @@ public class BugDatabase
                         platform,
                         bBox,
                         mOsmNotesDownloadTask,
-                        new OsmNotesApi(),
+                        Apis.OSM_NOTES,
                         mOsmNotes,
                         listener);
                 break;
