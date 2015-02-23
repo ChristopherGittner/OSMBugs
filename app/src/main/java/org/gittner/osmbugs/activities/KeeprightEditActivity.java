@@ -66,7 +66,7 @@ public class KeeprightEditActivity
         mText.setText(Html.fromHtml(mText.getText().toString()));
         mText.setMovementMethod(LinkMovementMethod.getInstance());
 
-        mComment.setText(mBug.getComment());
+        mComment.setText(Html.fromHtml(mBug.getComment()));
 
         mState.setAdapter(new KeeprightStateAdapter(this, mBug.getOpenIcon()));
         switch (mBug.getState())
