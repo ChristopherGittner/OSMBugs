@@ -6,11 +6,12 @@
               android:orientation="horizontal"
               android:padding="16dp">
 
-    <org.osmdroid.views.MapView android:id="@+id/mapview"
-                                xmlns:android="http://schemas.android.com/apk/res/android"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                android:layout_marginRight="4dp"/>
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapview"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginRight="4dp"/>
 
     <LinearLayout
         android:id="@+id/layoutInfo"

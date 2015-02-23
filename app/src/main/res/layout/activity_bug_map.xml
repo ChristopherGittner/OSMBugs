@@ -3,11 +3,12 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
-    <org.osmdroid.views.MapView android:id="@+id/mapview"
-                                xmlns:android="http://schemas.android.com/apk/res/android"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:clickable="true"/>
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapview"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"/>
 
     <org.gittner.osmbugs.common.RotatingIconButtonFloat
         android:id="@+id/btnRefreshBugs"
