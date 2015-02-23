@@ -1,40 +1,44 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
-    <TextView
-        android:id="@+id/txtv2"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="8dp"
-        android:text="@string/type"/>
-
-    <Spinner
-        android:id="@+id/spnType"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtv1"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="8dp"
-        android:text="@string/description"/>
+        <TextView
+            android:id="@+id/txtv2"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:text="@string/type"/>
 
-    <EditText
-        android:id="@+id/edttxtDescription"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="@string/description"
-        android:inputType="textMultiLine"
-        android:maxHeight="100dp"
-        android:minHeight="40dp"
-        android:scrollbars="vertical"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        <Spinner
+            android:id="@+id/spnType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/txtv1"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:text="@string/description"/>
+
+        <EditText
+            android:id="@+id/edttxtDescription"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/description"
+            android:inputType="textMultiLine"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    </LinearLayout>
+
+</ScrollView>
