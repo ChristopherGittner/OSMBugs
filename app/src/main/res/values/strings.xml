@@ -172,5 +172,11 @@
     <string name="open_railway_map_signals">Open Railway Map Signals</string>
     <string name="please_wait">Please Wait</string>
     <string name="error">Error</string>
+    <string name="title_activity_keepright_edit">Bug Editor</string>
+    <string name="title_activity_osmose_edit">Bug Editor</string>
+    <string name="title_activity_mapdust_edit">Bug Editor</string>
+    <string name="title_activity_osm_note_edit">Bug Editor</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_bug_list">Bug List</string>
 
 </resources>

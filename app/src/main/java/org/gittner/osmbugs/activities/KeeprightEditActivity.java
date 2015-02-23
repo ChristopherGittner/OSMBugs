@@ -54,6 +54,9 @@ public class KeeprightEditActivity
     @AfterViews
     void init()
     {
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(mBug.getIcon());
+
         mTitle.setText(mBug.getTitle());
         Linkify.addLinks(mTitle, Linkify.WEB_URLS);
         mTitle.setText(Html.fromHtml(mTitle.getText().toString()));

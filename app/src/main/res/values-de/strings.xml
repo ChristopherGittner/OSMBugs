@@ -160,5 +160,11 @@
     <string name="open_railway_map_signals">Open Railway Map Signale</string>
     <string name="please_wait">Bitte warten</string>
     <string name="error">Fehler</string>
+    <string name="title_activity_keepright_edit">Fehler Editor</string>
+    <string name="title_activity_osmose_edit">Fehler Editor</string>
+    <string name="title_activity_mapdust_edit">Fehler Editor</string>
+    <string name="title_activity_osm_note_edit">Fehler Editor</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="title_activity_bug_list">Fehlerliste</string>
 
 </resources>
