@@ -149,7 +149,7 @@
     <string name="toast_failed_download_osm_notes_bugs">Fehler beim Herunterladen von Openstreetmap Notes</string>
     <string name="done">Fertig</string>
     <string name="map_style">Kartenstil</string>
-    <string name="display">Display</string>
+    <string name="display">Anzeige</string>
     <string name="mapnik">Mapnik</string>
     <string name="cyclemap">Fahrradkarte</string>
     <string name="public_transport">Öffentlicher Transport</string>
@@ -166,5 +166,8 @@
     <string name="title_activity_osm_note_edit">Fehler Editor</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_activity_bug_list">Fehlerliste</string>
+    <string name="platforms">Platformen</string>
+    <string name="enabled">Aktiv</string>
+
 
 </resources>

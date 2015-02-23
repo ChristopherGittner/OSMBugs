@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/general">
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pref_keepright_enabled"
-            android:title="@string/keepright"/>
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pref_osmose_enabled"
-            android:title="@string/osmose"/>
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pref_mapdust_enabled"
-            android:title="@string/mapdust"/>
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pref_openstreetmap_notes_enabled"
-            android:title="@string/openstreetmap_notes"/>
+    <PreferenceCategory android:title="@string/display">
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:defaultValue="1"
+            android:entries="@array/map_styles"
+            android:entryValues="@array/map_styles_values"
+            android:key="pref_map_style"
+            android:title="@string/map_style"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/specific">
+    <PreferenceCategory android:title="@string/platforms">
         <PreferenceScreen android:title="@string/keepright">
-            <Preference
-                android:key="pref_keepright_reset"
-                android:title="@string/reset"/>
+            <PreferenceCategory android:title="@string/keepright">
+                <CheckBoxPreference
+                    android:defaultValue="true"
+                    android:key="pref_keepright_enabled"
+                    android:title="@string/enabled"/>
+            </PreferenceCategory>
             <PreferenceCategory android:title="@string/visible_bugs">
+                <Preference
+                    android:key="pref_keepright_reset"
+                    android:title="@string/reset"/>
                 <CheckBoxPreference
                     android:defaultValue="true"
                     android:key="pref_keepright_enabled_30"
@@ -292,15 +288,20 @@
                     android:defaultValue="true"
                     android:key="pref_keepright_enabled_show_ign"
                     android:title="@string/show_ignored"/>
-
             </PreferenceCategory>
         </PreferenceScreen>
         <PreferenceScreen android:title="@string/mapdust">
             <PreferenceCategory android:title="@string/mapdust">
+                <CheckBoxPreference
+                    android:defaultValue="true"
+                    android:key="pref_mapdust_enabled"
+                    android:title="@string/enabled"/>
                 <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
                     android:defaultValue="Anonymous"
                     android:key="pref_mapdust_username"
                     android:title="@string/username"/>
+            </PreferenceCategory>
+            <PreferenceCategory android:title="@string/visible_bugs">
                 <CheckBoxPreference
                     android:defaultValue="true"
                     android:key="pref_mapdust_enabled_open"
@@ -349,6 +350,10 @@
         </PreferenceScreen>
         <PreferenceScreen android:title="@string/osmose">
             <PreferenceCategory android:title="@string/osmose">
+                <CheckBoxPreference
+                    android:defaultValue="true"
+                    android:key="pref_osmose_enabled"
+                    android:title="@string/enabled"/>
                 <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
                     android:defaultValue="100"
                     android:dialogTitle="@string/enter_new_limit"
@@ -366,6 +371,10 @@
         </PreferenceScreen>
         <PreferenceScreen android:title="@string/openstreetmap_notes">
             <PreferenceCategory android:title="@string/openstreetmap_notes">
+                <CheckBoxPreference
+                    android:defaultValue="true"
+                    android:key="pref_openstreetmap_notes_enabled"
+                    android:title="@string/enabled"/>
                 <CheckBoxPreference
                     android:defaultValue="true"
                     android:key="pref_openstreetmap_notes_enabled_only_open"
@@ -386,14 +395,6 @@
                     android:title="@string/password"/>
             </PreferenceCategory>
         </PreferenceScreen>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/display">
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
-            android:defaultValue="1"
-            android:entries="@array/map_styles"
-            android:entryValues="@array/map_styles_values"
-            android:key="pref_map_style"
-            android:title="@string/map_style"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/debug">
         <CheckBoxPreference
