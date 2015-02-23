@@ -2,6 +2,8 @@ package org.gittner.osmbugs.statics;
 
 import android.os.AsyncTask;
 
+import com.squareup.otto.Produce;
+
 import org.gittner.osmbugs.BugDownloadTask;
 import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.api.BugApi;
@@ -10,20 +12,21 @@ import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
+import org.gittner.osmbugs.events.BugsChangedEvents;
+import org.gittner.osmbugs.events.BugsDownloadCancelledEvent;
+import org.gittner.osmbugs.events.BugsDownloadFailedEvent;
 import org.osmdroid.util.BoundingBoxE6;
 
 import java.util.ArrayList;
 
 public class BugDatabase
 {
-    private static final BugDatabase mInstance = new BugDatabase();
+    private static BugDatabase mInstance = null;
 
     private final ArrayList<KeeprightBug> mKeeprightBugs = new ArrayList<>();
     private final ArrayList<OsmoseBug> mOsmoseBugs = new ArrayList<>();
     private final ArrayList<MapdustBug> mMapdustBugs = new ArrayList<>();
     private final ArrayList<OsmNote> mOsmNotes = new ArrayList<>();
-
-    private final ArrayList<DatabaseWatcher> mDatabaseWatchers = new ArrayList<>();
 
     private BugDownloadTask<KeeprightBug> mKeeprightDownloadTask = null;
     private BugDownloadTask<OsmoseBug> mOsmoseDownloadTask = null;
@@ -38,7 +41,41 @@ public class BugDatabase
 
     public static BugDatabase getInstance()
     {
+        if (mInstance == null)
+        {
+            mInstance = new BugDatabase();
+            OttoBus.getInstance().register(mInstance);
+        }
+
         return mInstance;
+    }
+
+
+    @Produce
+    public BugsChangedEvents.Keepright keeprightProducer()
+    {
+        return new BugsChangedEvents.Keepright(mKeeprightBugs);
+    }
+
+
+    @Produce
+    public BugsChangedEvents.Osmose OsmoseProducer()
+    {
+        return new BugsChangedEvents.Osmose(mOsmoseBugs);
+    }
+
+
+    @Produce
+    public BugsChangedEvents.Mapdust mapdustProducer()
+    {
+        return new BugsChangedEvents.Mapdust(mMapdustBugs);
+    }
+
+
+    @Produce
+    public BugsChangedEvents.OsmNotes OsmNotesProducer()
+    {
+        return new BugsChangedEvents.OsmNotes(mOsmNotes);
     }
 
 
@@ -131,7 +168,24 @@ public class BugDatabase
     {
         destination.clear();
 
-        notifyAllDatabaseUpdated(platform);
+        switch (platform)
+        {
+            case Globals.KEEPRIGHT:
+                OttoBus.getInstance().post(new BugsChangedEvents.Keepright(mKeeprightBugs));
+                break;
+
+            case Globals.OSMOSE:
+                OttoBus.getInstance().post(new BugsChangedEvents.Osmose(mOsmoseBugs));
+                break;
+
+            case Globals.MAPDUST:
+                OttoBus.getInstance().post(new BugsChangedEvents.Mapdust(mMapdustBugs));
+                break;
+
+            case Globals.OSM_NOTES:
+                OttoBus.getInstance().post(new BugsChangedEvents.OsmNotes(mOsmNotes));
+                break;
+        }
 
         if (task != null)
         {
@@ -144,45 +198,6 @@ public class BugDatabase
     }
 
 
-    private void notifyAllDatabaseUpdated(int platform)
-    {
-        for (DatabaseWatcher listener : mDatabaseWatchers)
-        {
-            listener.onDatabaseUpdated(platform);
-        }
-    }
-
-
-    private void notifyAllDownloadCancelled(int platform)
-    {
-        for (DatabaseWatcher listener : mDatabaseWatchers)
-        {
-            listener.onDownloadCancelled(platform);
-        }
-    }
-
-
-    private void notifyAllDownloadError(int platform)
-    {
-        for (DatabaseWatcher listener : mDatabaseWatchers)
-        {
-            listener.onDownloadError(platform);
-        }
-    }
-
-
-    public void addDatabaseWatcher(DatabaseWatcher watcher)
-    {
-        mDatabaseWatchers.add(watcher);
-    }
-
-
-    public void removeDatabaseWatcher(DatabaseWatcher watcher)
-    {
-        mDatabaseWatchers.remove(watcher);
-    }
-
-
     public boolean isDownloadRunning()
     {
         return mKeeprightDownloadTask != null && !mKeeprightDownloadTask.isCancelled() && mKeeprightDownloadTask.getStatus() != AsyncTask.Status.FINISHED && !mKeeprightDownloadTask.isDownloadFinished()
@@ -191,15 +206,6 @@ public class BugDatabase
                 || mOsmNotesDownloadTask != null && !mOsmNotesDownloadTask.isCancelled() && mOsmNotesDownloadTask.getStatus() != AsyncTask.Status.FINISHED && !mOsmNotesDownloadTask.isDownloadFinished();
     }
 
-
-    public interface DatabaseWatcher
-    {
-        void onDatabaseUpdated(int platform);
-
-        void onDownloadCancelled(int platform);
-
-        void onDownloadError(int platform);
-    }
 
     private class DownloadStatusListener implements BugDownloadTask.StatusListener
     {
@@ -215,21 +221,38 @@ public class BugDatabase
         @Override
         public void onCompletion()
         {
-            notifyAllDatabaseUpdated(mPlatform);
+            switch (mPlatform)
+            {
+                case Globals.KEEPRIGHT:
+                    OttoBus.getInstance().post(new BugsChangedEvents.Keepright(mKeeprightBugs));
+                    break;
+
+                case Globals.OSMOSE:
+                    OttoBus.getInstance().post(new BugsChangedEvents.Osmose(mOsmoseBugs));
+                    break;
+
+                case Globals.MAPDUST:
+                    OttoBus.getInstance().post(new BugsChangedEvents.Mapdust(mMapdustBugs));
+                    break;
+
+                case Globals.OSM_NOTES:
+                    OttoBus.getInstance().post(new BugsChangedEvents.OsmNotes(mOsmNotes));
+                    break;
+            }
         }
 
 
         @Override
         public void onCancelled()
         {
-            notifyAllDownloadCancelled(mPlatform);
+            OttoBus.getInstance().post(new BugsDownloadCancelledEvent(mPlatform));
         }
 
 
         @Override
         public void onError()
         {
-            notifyAllDownloadError(mPlatform);
+            OttoBus.getInstance().post(new BugsDownloadFailedEvent(mPlatform));
         }
     }
 }

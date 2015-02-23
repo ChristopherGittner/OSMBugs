@@ -3,24 +3,18 @@ package org.gittner.osmbugs.fragments;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceFragment;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.base.BasePreferenceFragment;
 
 @EFragment
 public class SettingsFragment
-        extends PreferenceFragment
+        extends BasePreferenceFragment
         implements
         OnPreferenceClickListener
 {
-    public static SettingsFragment_ newInstance()
-    {
-        return new SettingsFragment_();
-    }
-
-
     @AfterViews
     void init()
     {

@@ -1,6 +1,5 @@
 package org.gittner.osmbugs.activities;
 
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -20,11 +19,12 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
+import org.gittner.osmbugs.base.BaseActionBarActivity;
 import org.osmdroid.util.GeoPoint;
 
 @EActivity(R.layout.activity_add_osm_note)
 @OptionsMenu(R.menu.add_osm_note)
-public class AddOsmNoteActivity extends ActionBarActivity
+public class AddOsmNoteActivity extends BaseActionBarActivity
 {
     public static final String EXTRA_LATITUDE = "EXTRA_LATITUDE";
     public static final String EXTRA_LONGITUDE = "EXTRA_LONGITUDE";

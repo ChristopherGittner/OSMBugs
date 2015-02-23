@@ -1,9 +1,7 @@
 package org.gittner.osmbugs.fragments;
 
 import android.app.Activity;
-import android.app.ListFragment;
 import android.content.Context;
-import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,49 +11,31 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.base.BaseListFragment;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
-import org.gittner.osmbugs.statics.BugDatabase;
+import org.gittner.osmbugs.events.BugsChangedEvents;
 import org.gittner.osmbugs.statics.Globals;
 import org.gittner.osmbugs.statics.TileSources;
 import org.osmdroid.views.MapView;
 
 @EFragment
-public class BugPlatformListFragment extends ListFragment
+public class BugPlatformListFragment extends BaseListFragment
 {
     private static final String ARG_PLATFORM = "ARG_PLATFORM";
+
     @FragmentArg(ARG_PLATFORM)
     int mPlatform;
-    private final BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher()
-    {
-        @Override
-        public void onDatabaseUpdated(final int platform)
-        {
-            if (platform == mPlatform)
-            {
-                reloadBugs();
-            }
-        }
 
-
-        @Override
-        public void onDownloadCancelled(final int platform)
-        {
-        }
-
-
-        @Override
-        public void onDownloadError(final int platform)
-        {
-        }
-    };
     private BugAdapter mAdapter = null;
 
     private OnFragmentInteractionListener mListener = null;
@@ -63,18 +43,6 @@ public class BugPlatformListFragment extends ListFragment
 
     public BugPlatformListFragment()
     {
-    }
-
-
-    public static BugPlatformListFragment_ newInstance(int platform)
-    {
-        BugPlatformListFragment_ fragment = new BugPlatformListFragment_();
-
-        Bundle args = new Bundle();
-        args.putInt(ARG_PLATFORM, platform);
-        fragment.setArguments(args);
-
-        return fragment;
     }
 
 
@@ -91,22 +59,6 @@ public class BugPlatformListFragment extends ListFragment
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-    }
-
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        BugDatabase.getInstance().addDatabaseWatcher(mDatabaseWatcher);
-    }
-
-
-    @Override
-    public void onPause()
-    {
-        super.onPause();
-        BugDatabase.getInstance().removeDatabaseWatcher(mDatabaseWatcher);
     }
 
 
@@ -131,32 +83,55 @@ public class BugPlatformListFragment extends ListFragment
                 mAdapter = new OsmNoteAdapter(getActivity());
                 break;
         }
-        reloadBugs();
+
         setListAdapter(mAdapter);
     }
 
 
-    private void reloadBugs()
+    @Subscribe
+    public void onKeeprightBugsChanged(BugsChangedEvents.Keepright event)
+    {
+        if (mPlatform == Globals.KEEPRIGHT)
+        {
+            setBugs(event);
+        }
+    }
+
+
+    @Subscribe
+    public void onOsmoseBugsChanged(BugsChangedEvents.Osmose event)
+    {
+        if (mPlatform == Globals.OSMOSE)
+        {
+            setBugs(event);
+        }
+    }
+
+
+    @Subscribe
+    public void onMapdustBugsChanged(BugsChangedEvents.Mapdust event)
+    {
+        if (mPlatform == Globals.MAPDUST)
+        {
+            setBugs(event);
+        }
+    }
+
+
+    @Subscribe
+    public void onOsmNotesChanged(BugsChangedEvents.OsmNotes event)
+    {
+        if (mPlatform == Globals.OSM_NOTES)
+        {
+            setBugs(event);
+        }
+    }
+
+
+    private void setBugs(BugsChangedEvents.BugsChangedEventsBase event)
     {
         mAdapter.clear();
-        switch (mPlatform)
-        {
-            case Globals.KEEPRIGHT:
-                mAdapter.addAll(BugDatabase.getInstance().getKeeprightBugs());
-                break;
-
-            case Globals.OSMOSE:
-                mAdapter.addAll(BugDatabase.getInstance().getOsmoseBugs());
-                break;
-
-            case Globals.MAPDUST:
-                mAdapter.addAll(BugDatabase.getInstance().getMapdustBugs());
-                break;
-
-            case Globals.OSM_NOTES:
-                mAdapter.addAll(BugDatabase.getInstance().getOsmNotes());
-                break;
-        }
+        mAdapter.addAll(event.getBugs());
         mAdapter.notifyDataSetChanged();
     }
 

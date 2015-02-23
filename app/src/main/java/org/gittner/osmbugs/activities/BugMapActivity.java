@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -25,6 +25,7 @@ import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.Helpers.IntentHelper;
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.base.BaseActionBarActivity;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.BugOverlayItem;
 import org.gittner.osmbugs.bugs.KeeprightBug;
@@ -33,6 +34,9 @@ import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.MyLocationOverlay;
 import org.gittner.osmbugs.common.RotatingIconButtonFloat;
+import org.gittner.osmbugs.events.BugsChangedEvents;
+import org.gittner.osmbugs.events.BugsDownloadCancelledEvent;
+import org.gittner.osmbugs.events.BugsDownloadFailedEvent;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Globals;
 import org.gittner.osmbugs.statics.Images;
@@ -49,7 +53,7 @@ import java.util.ArrayList;
 
 @EActivity(R.layout.activity_bug_map)
 @OptionsMenu(R.menu.bug_map)
-public class BugMapActivity extends ActionBarActivity
+public class BugMapActivity extends BaseActionBarActivity
 {
     private static final String TAG = "OsmBugsActivity";
 
@@ -114,88 +118,6 @@ public class BugMapActivity extends ActionBarActivity
         public boolean onItemLongPress(int i, BugOverlayItem bugItem)
         {
             return false;
-        }
-    };
-
-    private final BugDatabase.DatabaseWatcher mDatabaseWatcher = new BugDatabase.DatabaseWatcher()
-    {
-        @Override
-        public void onDatabaseUpdated(int platform)
-        {
-            switch (platform)
-            {
-                case Globals.KEEPRIGHT:
-                    mKeeprightOverlay.removeAllItems();
-                    for (KeeprightBug bug : BugDatabase.getInstance().getKeeprightBugs())
-                    {
-                        mKeeprightOverlay.addItem(new BugOverlayItem(bug));
-                    }
-                    break;
-
-                case Globals.OSMOSE:
-                    mOsmoseOverlay.removeAllItems();
-                    for (OsmoseBug bug : BugDatabase.getInstance().getOsmoseBugs())
-                    {
-                        mOsmoseOverlay.addItem(new BugOverlayItem(bug));
-                    }
-                    break;
-
-                case Globals.MAPDUST:
-                    mMapdustOverlay.removeAllItems();
-                    for (MapdustBug bug : BugDatabase.getInstance().getMapdustBugs())
-                    {
-                        mMapdustOverlay.addItem(new BugOverlayItem(bug));
-                    }
-                    break;
-
-                case Globals.OSM_NOTES:
-                    mOsmNotesOverlay.removeAllItems();
-                    for (OsmNote bug : BugDatabase.getInstance().getOsmNotes())
-                    {
-                        mOsmNotesOverlay.addItem(new BugOverlayItem(bug));
-                    }
-                    break;
-            }
-
-            mMap.invalidate();
-
-            updateRefreshBugsButton();
-        }
-
-
-        @Override
-        public void onDownloadCancelled(int platform)
-        {
-            updateRefreshBugsButton();
-        }
-
-
-        @Override
-        public void onDownloadError(int platform)
-        {
-            String text = "";
-            switch (platform)
-            {
-                case Globals.KEEPRIGHT:
-                    text = getString(R.string.toast_failed_download_keepright_bugs);
-                    break;
-
-                case Globals.OSMOSE:
-                    text = getString(R.string.toast_failed_download_osmose_bugs);
-                    break;
-
-                case Globals.MAPDUST:
-                    text = getString(R.string.toast_failed_download_mapdust_bugs);
-                    break;
-
-                case Globals.OSM_NOTES:
-                    text = getString(R.string.toast_failed_download_osm_notes_bugs);
-                    break;
-            }
-
-            Toast.makeText(BugMapActivity.this, text, Toast.LENGTH_LONG).show();
-
-            updateRefreshBugsButton();
         }
     };
 
@@ -309,8 +231,6 @@ public class BugMapActivity extends ActionBarActivity
         Settings.setLastMapCenter(mMap.getBoundingBox().getCenter());
         Settings.setLastZoom(mMap.getZoomLevel());
 
-        BugDatabase.getInstance().removeDatabaseWatcher(mDatabaseWatcher);
-
         mMap.getOverlays().remove(mKeeprightOverlay);
         mMap.getOverlays().remove(mOsmoseOverlay);
         mMap.getOverlays().remove(mMapdustOverlay);
@@ -325,32 +245,6 @@ public class BugMapActivity extends ActionBarActivity
     public void onResume()
     {
         super.onResume();
-
-        /* Register a DatabaseWatcher for update notification */
-        BugDatabase.getInstance().addDatabaseWatcher(mDatabaseWatcher);
-
-        /* Reload all Bugs into the Map */
-        mKeeprightOverlay.removeAllItems();
-        mOsmoseOverlay.removeAllItems();
-        mMapdustOverlay.removeAllItems();
-        mOsmNotesOverlay.removeAllItems();
-
-        for (KeeprightBug bug : BugDatabase.getInstance().getKeeprightBugs())
-        {
-            mKeeprightOverlay.addItem(new BugOverlayItem(bug));
-        }
-        for (OsmoseBug bug : BugDatabase.getInstance().getOsmoseBugs())
-        {
-            mOsmoseOverlay.addItem(new BugOverlayItem(bug));
-        }
-        for (MapdustBug bug : BugDatabase.getInstance().getMapdustBugs())
-        {
-            mMapdustOverlay.addItem(new BugOverlayItem(bug));
-        }
-        for (OsmNote bug : BugDatabase.getInstance().getOsmNotes())
-        {
-            mOsmNotesOverlay.addItem(new BugOverlayItem(bug));
-        }
 
 		/* Display enabled Bug platforms */
         if (Settings.Keepright.isEnabled())
@@ -622,5 +516,105 @@ public class BugMapActivity extends ActionBarActivity
         mAddNewBugOnNextClick = !mAddNewBugOnNextClick;
 
         invalidateOptionsMenu();
+    }
+
+
+    @Subscribe
+    public void onKeeprightBugsChanged(BugsChangedEvents.Keepright event)
+    {
+        mKeeprightOverlay.removeAllItems();
+
+        for (KeeprightBug bug : event.getBugs())
+        {
+            mKeeprightOverlay.addItem(new BugOverlayItem(bug));
+        }
+
+        mMap.invalidate();
+
+        updateRefreshBugsButton();
+    }
+
+
+    @Subscribe
+    public void onOsmoseBugsChanged(BugsChangedEvents.Osmose event)
+    {
+        mOsmoseOverlay.removeAllItems();
+
+        for (OsmoseBug bug : event.getBugs())
+        {
+            mOsmoseOverlay.addItem(new BugOverlayItem(bug));
+        }
+
+        mMap.invalidate();
+
+        updateRefreshBugsButton();
+    }
+
+
+    @Subscribe
+    public void onMapdustBugsChanged(BugsChangedEvents.Mapdust event)
+    {
+        mMapdustOverlay.removeAllItems();
+
+        for (MapdustBug bug : event.getBugs())
+        {
+            mMapdustOverlay.addItem(new BugOverlayItem(bug));
+        }
+
+        mMap.invalidate();
+
+        updateRefreshBugsButton();
+    }
+
+
+    @Subscribe
+    public void onOsmNotesChanged(BugsChangedEvents.OsmNotes event)
+    {
+        mOsmNotesOverlay.removeAllItems();
+
+        for (OsmNote bug : event.getBugs())
+        {
+            mOsmNotesOverlay.addItem(new BugOverlayItem(bug));
+        }
+
+        mMap.invalidate();
+
+        updateRefreshBugsButton();
+    }
+
+
+    @Subscribe
+    public void onBugsDownloadFailed(BugsDownloadFailedEvent event)
+    {
+        String text = "";
+        switch (event.getPlatform())
+        {
+            case Globals.KEEPRIGHT:
+                text = getString(R.string.toast_failed_download_keepright_bugs);
+                break;
+
+            case Globals.OSMOSE:
+                text = getString(R.string.toast_failed_download_osmose_bugs);
+                break;
+
+            case Globals.MAPDUST:
+                text = getString(R.string.toast_failed_download_mapdust_bugs);
+                break;
+
+            case Globals.OSM_NOTES:
+                text = getString(R.string.toast_failed_download_osm_notes_bugs);
+                break;
+        }
+
+        Toast.makeText(BugMapActivity.this, text, Toast.LENGTH_LONG).show();
+
+        updateRefreshBugsButton();
+    }
+
+
+    @Subscribe
+    public void onBugsDownloadCancelled(BugsDownloadCancelledEvent event)
+    {
+        updateRefreshBugsButton();
     }
 }

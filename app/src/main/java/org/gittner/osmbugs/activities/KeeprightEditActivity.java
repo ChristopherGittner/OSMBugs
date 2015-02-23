@@ -2,7 +2,6 @@ package org.gittner.osmbugs.activities;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
@@ -27,13 +26,14 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
+import org.gittner.osmbugs.base.BaseActionBarActivity;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.statics.Images;
 
 @EActivity(R.layout.activity_keepright_edit)
 @OptionsMenu(R.menu.keepright_edit)
 public class KeeprightEditActivity
-        extends ActionBarActivity
+        extends BaseActionBarActivity
         implements BugEditActivityConstants
 {
     @ViewById(R.id.txtvTitle)

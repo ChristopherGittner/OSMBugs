@@ -28,6 +28,8 @@ Osmdroid ( https://github.com/osmdroid/osmdroid )
 
 Androidannotations ( https://github.com/excilys/androidannotations )
 
+OttoBus ( https://square.github.io/otto )
+
 Material Dialogs ( https://github.com/afollestad/material-dialogs )
 
 MaterialDesignLibrary ( https://github.com/navasmdc/MaterialDesignLibrary )
