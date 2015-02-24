@@ -89,7 +89,7 @@ public class BugDatabase
 
         switch (platform)
         {
-            case Globals.KEEPRIGHT:
+            case Platforms.KEEPRIGHT:
                 mKeeprightBugs.clear();
 
                 OttoBus.getInstance().post(new BugsChangedEvents.Keepright(mKeeprightBugs));
@@ -116,7 +116,7 @@ public class BugDatabase
                             @Override
                             public void onCancelled()
                             {
-                                OttoBus.getInstance().post(new BugsDownloadCancelledEvent(Globals.KEEPRIGHT));
+                                OttoBus.getInstance().post(new BugsDownloadCancelledEvent(Platforms.KEEPRIGHT));
                             }
                         },
                         new ApiDownloadTask.ErrorListener()
@@ -124,14 +124,14 @@ public class BugDatabase
                             @Override
                             public void onError()
                             {
-                                OttoBus.getInstance().post(new BugsDownloadFailedEvent(Globals.KEEPRIGHT));
+                                OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.KEEPRIGHT));
                             }
                         });
                 mKeeprightDownloadTask.execute(bBox);
 
                 break;
 
-            case Globals.OSMOSE:
+            case Platforms.OSMOSE:
                 mOsmoseBugs.clear();
 
                 OttoBus.getInstance().post(new BugsChangedEvents.Osmose(mOsmoseBugs));
@@ -158,7 +158,7 @@ public class BugDatabase
                             @Override
                             public void onCancelled()
                             {
-                                OttoBus.getInstance().post(new BugsDownloadCancelledEvent(Globals.OSMOSE));
+                                OttoBus.getInstance().post(new BugsDownloadCancelledEvent(Platforms.OSMOSE));
                             }
                         },
                         new ApiDownloadTask.ErrorListener()
@@ -166,13 +166,13 @@ public class BugDatabase
                             @Override
                             public void onError()
                             {
-                                OttoBus.getInstance().post(new BugsDownloadFailedEvent(Globals.OSMOSE));
+                                OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.OSMOSE));
                             }
                         });
                 mOsmoseDownloadTask.execute(bBox);
                 break;
 
-            case Globals.MAPDUST:
+            case Platforms.MAPDUST:
                 mMapdustBugs.clear();
 
                 OttoBus.getInstance().post(new BugsChangedEvents.Mapdust(mMapdustBugs));
@@ -199,7 +199,7 @@ public class BugDatabase
                             @Override
                             public void onCancelled()
                             {
-                                OttoBus.getInstance().post(new BugsDownloadCancelledEvent(Globals.MAPDUST));
+                                OttoBus.getInstance().post(new BugsDownloadCancelledEvent(Platforms.MAPDUST));
                             }
                         },
                         new ApiDownloadTask.ErrorListener()
@@ -207,13 +207,13 @@ public class BugDatabase
                             @Override
                             public void onError()
                             {
-                                OttoBus.getInstance().post(new BugsDownloadFailedEvent(Globals.MAPDUST));
+                                OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.MAPDUST));
                             }
                         });
                 mMapdustDownloadTask.execute(bBox);
                 break;
 
-            case Globals.OSM_NOTES:
+            case Platforms.OSM_NOTES:
                 mOsmNotes.clear();
 
                 OttoBus.getInstance().post(new BugsChangedEvents.OsmNotes(mOsmNotes));
@@ -240,7 +240,7 @@ public class BugDatabase
                             @Override
                             public void onCancelled()
                             {
-                                OttoBus.getInstance().post(new BugsDownloadCancelledEvent(Globals.OSM_NOTES));
+                                OttoBus.getInstance().post(new BugsDownloadCancelledEvent(Platforms.OSM_NOTES));
                             }
                         },
                         new ApiDownloadTask.ErrorListener()
@@ -248,7 +248,7 @@ public class BugDatabase
                             @Override
                             public void onError()
                             {
-                                OttoBus.getInstance().post(new BugsDownloadFailedEvent(Globals.OSM_NOTES));
+                                OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.OSM_NOTES));
                             }
                         });
                 mOsmNotesDownloadTask.execute(bBox);

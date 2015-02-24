@@ -18,7 +18,7 @@ import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.fragments.BugPlatformListFragment;
 import org.gittner.osmbugs.fragments.BugPlatformListFragment_;
 import org.gittner.osmbugs.statics.BugDatabase;
-import org.gittner.osmbugs.statics.Globals;
+import org.gittner.osmbugs.statics.Platforms;
 import org.gittner.osmbugs.statics.Settings;
 
 import java.util.ArrayList;
@@ -49,19 +49,19 @@ public class BugListActivity
 
         if (Settings.Keepright.isEnabled())
         {
-            pagerAdapter.add(Globals.KEEPRIGHT);
+            pagerAdapter.add(Platforms.KEEPRIGHT);
         }
         if (Settings.Osmose.isEnabled())
         {
-            pagerAdapter.add(Globals.OSMOSE);
+            pagerAdapter.add(Platforms.OSMOSE);
         }
         if (Settings.Mapdust.isEnabled())
         {
-            pagerAdapter.add(Globals.MAPDUST);
+            pagerAdapter.add(Platforms.MAPDUST);
         }
         if (Settings.OsmNotes.isEnabled())
         {
-            pagerAdapter.add(Globals.OSM_NOTES);
+            pagerAdapter.add(Platforms.OSM_NOTES);
         }
 
         pagerAdapter.notifyDataSetChanged();
@@ -91,19 +91,19 @@ public class BugListActivity
         switch (resultCode)
         {
             case BugEditActivityConstants.RESULT_SAVED_KEEPRIGHT:
-                BugDatabase.getInstance().reload(Globals.KEEPRIGHT);
+                BugDatabase.getInstance().reload(Platforms.KEEPRIGHT);
                 break;
 
             case BugEditActivityConstants.RESULT_SAVED_OSMOSE:
-                BugDatabase.getInstance().reload(Globals.OSMOSE);
+                BugDatabase.getInstance().reload(Platforms.OSMOSE);
                 break;
 
             case BugEditActivityConstants.RESULT_SAVED_MAPDUST:
-                BugDatabase.getInstance().reload(Globals.MAPDUST);
+                BugDatabase.getInstance().reload(Platforms.MAPDUST);
                 break;
 
             case BugEditActivityConstants.RESULT_SAVED_OSM_NOTES:
-                BugDatabase.getInstance().reload(Globals.OSM_NOTES);
+                BugDatabase.getInstance().reload(Platforms.OSM_NOTES);
                 break;
         }
     }
@@ -173,16 +173,16 @@ public class BugListActivity
         {
             switch (mPlatforms.get(position))
             {
-                case Globals.KEEPRIGHT:
+                case Platforms.KEEPRIGHT:
                     return getString(R.string.keepright);
 
-                case Globals.OSMOSE:
+                case Platforms.OSMOSE:
                     return getString(R.string.osmose);
 
-                case Globals.MAPDUST:
+                case Platforms.MAPDUST:
                     return getString(R.string.mapdust);
 
-                case Globals.OSM_NOTES:
+                case Platforms.OSM_NOTES:
                     return getString(R.string.openstreetmap_notes);
             }
             return null;

@@ -38,7 +38,7 @@ import org.gittner.osmbugs.events.BugsChangedEvents;
 import org.gittner.osmbugs.events.BugsDownloadCancelledEvent;
 import org.gittner.osmbugs.events.BugsDownloadFailedEvent;
 import org.gittner.osmbugs.statics.BugDatabase;
-import org.gittner.osmbugs.statics.Globals;
+import org.gittner.osmbugs.statics.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
 import org.gittner.osmbugs.statics.TileSources;
@@ -329,19 +329,19 @@ public class BugMapActivity extends BaseActionBarActivity
         switch (resultCode)
         {
             case BugEditActivityConstants.RESULT_SAVED_KEEPRIGHT:
-                BugDatabase.getInstance().load(mMap.getBoundingBox(), Globals.KEEPRIGHT);
+                BugDatabase.getInstance().load(mMap.getBoundingBox(), Platforms.KEEPRIGHT);
                 break;
 
             case BugEditActivityConstants.RESULT_SAVED_OSMOSE:
-                BugDatabase.getInstance().load(mMap.getBoundingBox(), Globals.OSMOSE);
+                BugDatabase.getInstance().load(mMap.getBoundingBox(), Platforms.OSMOSE);
                 break;
 
             case BugEditActivityConstants.RESULT_SAVED_MAPDUST:
-                BugDatabase.getInstance().load(mMap.getBoundingBox(), Globals.MAPDUST);
+                BugDatabase.getInstance().load(mMap.getBoundingBox(), Platforms.MAPDUST);
                 break;
 
             case BugEditActivityConstants.RESULT_SAVED_OSM_NOTES:
-                BugDatabase.getInstance().load(mMap.getBoundingBox(), Globals.OSM_NOTES);
+                BugDatabase.getInstance().load(mMap.getBoundingBox(), Platforms.OSM_NOTES);
                 break;
         }
     }
@@ -367,7 +367,7 @@ public class BugMapActivity extends BaseActionBarActivity
     {
         if (resultCode == RESULT_OK)
         {
-            BugDatabase.getInstance().load(mMap.getBoundingBox(), Globals.MAPDUST);
+            BugDatabase.getInstance().load(mMap.getBoundingBox(), Platforms.MAPDUST);
         }
     }
 
@@ -377,7 +377,7 @@ public class BugMapActivity extends BaseActionBarActivity
     {
         if (resultCode == RESULT_OK)
         {
-            BugDatabase.getInstance().load(mMap.getBoundingBox(), Globals.OSM_NOTES);
+            BugDatabase.getInstance().load(mMap.getBoundingBox(), Platforms.OSM_NOTES);
         }
     }
 
@@ -389,19 +389,19 @@ public class BugMapActivity extends BaseActionBarActivity
 
         if (Settings.Keepright.isEnabled())
         {
-            BugDatabase.getInstance().load(bbox, Globals.KEEPRIGHT);
+            BugDatabase.getInstance().load(bbox, Platforms.KEEPRIGHT);
         }
         if (Settings.Osmose.isEnabled())
         {
-            BugDatabase.getInstance().load(bbox, Globals.OSMOSE);
+            BugDatabase.getInstance().load(bbox, Platforms.OSMOSE);
         }
         if (Settings.Mapdust.isEnabled())
         {
-            BugDatabase.getInstance().load(bbox, Globals.MAPDUST);
+            BugDatabase.getInstance().load(bbox, Platforms.MAPDUST);
         }
         if (Settings.OsmNotes.isEnabled())
         {
-            BugDatabase.getInstance().load(bbox, Globals.OSM_NOTES);
+            BugDatabase.getInstance().load(bbox, Platforms.OSM_NOTES);
         }
 
         updateRefreshBugsButton();
@@ -589,19 +589,19 @@ public class BugMapActivity extends BaseActionBarActivity
         String text = "";
         switch (event.getPlatform())
         {
-            case Globals.KEEPRIGHT:
+            case Platforms.KEEPRIGHT:
                 text = getString(R.string.toast_failed_download_keepright_bugs);
                 break;
 
-            case Globals.OSMOSE:
+            case Platforms.OSMOSE:
                 text = getString(R.string.toast_failed_download_osmose_bugs);
                 break;
 
-            case Globals.MAPDUST:
+            case Platforms.MAPDUST:
                 text = getString(R.string.toast_failed_download_mapdust_bugs);
                 break;
 
-            case Globals.OSM_NOTES:
+            case Platforms.OSM_NOTES:
                 text = getString(R.string.toast_failed_download_osm_notes_bugs);
                 break;
         }

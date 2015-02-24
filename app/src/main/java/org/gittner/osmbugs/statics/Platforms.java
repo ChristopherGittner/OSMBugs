@@ -1,6 +1,6 @@
 package org.gittner.osmbugs.statics;
 
-public class Globals
+public class Platforms
 {
     public static final int KEEPRIGHT = 1;
     public static final int OSMOSE = 2;

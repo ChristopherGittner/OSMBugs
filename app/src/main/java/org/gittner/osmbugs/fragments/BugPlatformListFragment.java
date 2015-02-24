@@ -24,7 +24,7 @@ import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.events.BugsChangedEvents;
-import org.gittner.osmbugs.statics.Globals;
+import org.gittner.osmbugs.statics.Platforms;
 import org.gittner.osmbugs.statics.TileSources;
 import org.osmdroid.views.MapView;
 
@@ -67,19 +67,19 @@ public class BugPlatformListFragment extends BaseListFragment
     {
         switch (mPlatform)
         {
-            case Globals.KEEPRIGHT:
+            case Platforms.KEEPRIGHT:
                 mAdapter = new KeeprightBugAdapter(getActivity());
                 break;
 
-            case Globals.OSMOSE:
+            case Platforms.OSMOSE:
                 mAdapter = new OsmoseBugAdapter(getActivity());
                 break;
 
-            case Globals.MAPDUST:
+            case Platforms.MAPDUST:
                 mAdapter = new MapdustBugAdapter(getActivity());
                 break;
 
-            case Globals.OSM_NOTES:
+            case Platforms.OSM_NOTES:
                 mAdapter = new OsmNoteAdapter(getActivity());
                 break;
         }
@@ -91,7 +91,7 @@ public class BugPlatformListFragment extends BaseListFragment
     @Subscribe
     public void onKeeprightBugsChanged(BugsChangedEvents.Keepright event)
     {
-        if (mPlatform == Globals.KEEPRIGHT)
+        if (mPlatform == Platforms.KEEPRIGHT)
         {
             setBugs(event);
         }
@@ -101,7 +101,7 @@ public class BugPlatformListFragment extends BaseListFragment
     @Subscribe
     public void onOsmoseBugsChanged(BugsChangedEvents.Osmose event)
     {
-        if (mPlatform == Globals.OSMOSE)
+        if (mPlatform == Platforms.OSMOSE)
         {
             setBugs(event);
         }
@@ -111,7 +111,7 @@ public class BugPlatformListFragment extends BaseListFragment
     @Subscribe
     public void onMapdustBugsChanged(BugsChangedEvents.Mapdust event)
     {
-        if (mPlatform == Globals.MAPDUST)
+        if (mPlatform == Platforms.MAPDUST)
         {
             setBugs(event);
         }
@@ -121,7 +121,7 @@ public class BugPlatformListFragment extends BaseListFragment
     @Subscribe
     public void onOsmNotesChanged(BugsChangedEvents.OsmNotes event)
     {
-        if (mPlatform == Globals.OSM_NOTES)
+        if (mPlatform == Platforms.OSM_NOTES)
         {
             setBugs(event);
         }
