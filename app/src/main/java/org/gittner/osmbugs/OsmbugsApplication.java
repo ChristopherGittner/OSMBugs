@@ -7,6 +7,7 @@ import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
+import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
 
@@ -44,6 +45,8 @@ public class OsmbugsApplication extends Application
 
         /* Init the Drawings Class to load all Resources */
         Images.init(this);
+
+        BugDatabase.init(this);
 
 		/* Enable Acra Crash reports only on Release */
         if (!BuildConfig.DEBUG)

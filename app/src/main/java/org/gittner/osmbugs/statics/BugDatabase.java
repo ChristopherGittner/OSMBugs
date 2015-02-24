@@ -1,50 +1,60 @@
 package org.gittner.osmbugs.statics;
 
-import android.os.AsyncTask;
+import android.content.Context;
 
 import com.squareup.otto.Produce;
 
-import org.gittner.osmbugs.api.ApiDownloadTask;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.api.BackgroundExecutor;
 import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.events.BugsChangedEvents;
-import org.gittner.osmbugs.events.BugsDownloadCancelledEvent;
 import org.gittner.osmbugs.events.BugsDownloadFailedEvent;
+import org.gittner.osmbugs.events.BugsDownloadingStateChangedEvent;
 import org.osmdroid.util.BoundingBoxE6;
 
 import java.util.ArrayList;
 
+@EBean
 public class BugDatabase
 {
-    private static BugDatabase mInstance = null;
+    private static final String TASK_ID_KEEPRIGHT = "TASK_ID_KEEPRIGHT";
+    private static final String TASK_ID_OSMOSE = "TASK_ID_OSMOSE";
+    private static final String TASK_ID_MAPDUST = "TASK_ID_MAPDUST";
+    private static final String TASK_ID_OSM_NOTES = "TASK_ID_OSM_NOTES";
+
+    private static BugDatabase_ mInstance = null;
 
     private final ArrayList<KeeprightBug> mKeeprightBugs = new ArrayList<>();
     private final ArrayList<OsmoseBug> mOsmoseBugs = new ArrayList<>();
     private final ArrayList<MapdustBug> mMapdustBugs = new ArrayList<>();
     private final ArrayList<OsmNote> mOsmNotes = new ArrayList<>();
 
-    private ApiDownloadTask<KeeprightBug> mKeeprightDownloadTask = null;
-    private ApiDownloadTask<OsmoseBug> mOsmoseDownloadTask = null;
-    private ApiDownloadTask<MapdustBug> mMapdustDownloadTask = null;
-    private ApiDownloadTask<OsmNote> mOsmNotesDownloadTask = null;
+    private boolean mKeeprightDownloadRunning = false;
+    private boolean mOsmoseDownloadRunning = false;
+    private boolean mMapdustDownloadRunning = false;
+    private boolean mOsmNotesDownloadRunning = false;
+
+    private boolean mLastDownloadState;
 
 
-    private BugDatabase()
-    {
-    }
-
-
-    public static BugDatabase getInstance()
+    public static void init(Context context)
     {
         if (mInstance == null)
         {
-            mInstance = new BugDatabase();
+            mInstance = BugDatabase_.getInstance_(context);
             OttoBus.getInstance().register(mInstance);
         }
+    }
 
+
+    public static BugDatabase_ getInstance()
+    {
         return mInstance;
     }
 
@@ -77,9 +87,10 @@ public class BugDatabase
     }
 
 
-    public void reload(final int platform)
+    @Produce
+    public BugsDownloadingStateChangedEvent isDownloadRunning()
     {
-        load(Settings.getLastBBox(), platform);
+        return new BugsDownloadingStateChangedEvent(getDownloadState());
     }
 
 
@@ -90,178 +101,210 @@ public class BugDatabase
         switch (platform)
         {
             case Platforms.KEEPRIGHT:
-                mKeeprightBugs.clear();
-
-                OttoBus.getInstance().post(new BugsChangedEvents.Keepright(mKeeprightBugs));
-
-                if (mKeeprightDownloadTask != null)
-                {
-                    mKeeprightDownloadTask.cancel(true);
-                }
-                mKeeprightDownloadTask = new ApiDownloadTask<>(
-                        Apis.KEEPRIGHT,
-                        new ApiDownloadTask.CompletionListener<KeeprightBug>()
-                        {
-                            @Override
-                            public void onCompletion(ArrayList<KeeprightBug> bugs)
-                            {
-                                mKeeprightBugs.clear();
-                                mKeeprightBugs.addAll(bugs);
-
-                                OttoBus.getInstance().post(new BugsChangedEvents.Keepright(mKeeprightBugs));
-                            }
-                        },
-                        new ApiDownloadTask.CancelledListener()
-                        {
-                            @Override
-                            public void onCancelled()
-                            {
-                                OttoBus.getInstance().post(new BugsDownloadCancelledEvent(Platforms.KEEPRIGHT));
-                            }
-                        },
-                        new ApiDownloadTask.ErrorListener()
-                        {
-                            @Override
-                            public void onError()
-                            {
-                                OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.KEEPRIGHT));
-                            }
-                        });
-                mKeeprightDownloadTask.execute(bBox);
-
+                loadKeepright(bBox);
                 break;
 
             case Platforms.OSMOSE:
-                mOsmoseBugs.clear();
-
-                OttoBus.getInstance().post(new BugsChangedEvents.Osmose(mOsmoseBugs));
-
-                if (mOsmoseDownloadTask != null)
-                {
-                    mOsmoseDownloadTask.cancel(true);
-                }
-                mOsmoseDownloadTask = new ApiDownloadTask<>(
-                        Apis.OSMOSE,
-                        new ApiDownloadTask.CompletionListener<OsmoseBug>()
-                        {
-                            @Override
-                            public void onCompletion(ArrayList<OsmoseBug> bugs)
-                            {
-                                mOsmoseBugs.clear();
-                                mOsmoseBugs.addAll(bugs);
-
-                                OttoBus.getInstance().post(new BugsChangedEvents.Osmose(mOsmoseBugs));
-                            }
-                        },
-                        new ApiDownloadTask.CancelledListener()
-                        {
-                            @Override
-                            public void onCancelled()
-                            {
-                                OttoBus.getInstance().post(new BugsDownloadCancelledEvent(Platforms.OSMOSE));
-                            }
-                        },
-                        new ApiDownloadTask.ErrorListener()
-                        {
-                            @Override
-                            public void onError()
-                            {
-                                OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.OSMOSE));
-                            }
-                        });
-                mOsmoseDownloadTask.execute(bBox);
+                loadOsmose(bBox);
                 break;
 
             case Platforms.MAPDUST:
-                mMapdustBugs.clear();
-
-                OttoBus.getInstance().post(new BugsChangedEvents.Mapdust(mMapdustBugs));
-
-                if (mMapdustDownloadTask != null)
-                {
-                    mMapdustDownloadTask.cancel(true);
-                }
-                mMapdustDownloadTask = new ApiDownloadTask<>(
-                        Apis.MAPDUST,
-                        new ApiDownloadTask.CompletionListener<MapdustBug>()
-                        {
-                            @Override
-                            public void onCompletion(ArrayList<MapdustBug> bugs)
-                            {
-                                mMapdustBugs.clear();
-                                mMapdustBugs.addAll(bugs);
-
-                                OttoBus.getInstance().post(new BugsChangedEvents.Mapdust(mMapdustBugs));
-                            }
-                        },
-                        new ApiDownloadTask.CancelledListener()
-                        {
-                            @Override
-                            public void onCancelled()
-                            {
-                                OttoBus.getInstance().post(new BugsDownloadCancelledEvent(Platforms.MAPDUST));
-                            }
-                        },
-                        new ApiDownloadTask.ErrorListener()
-                        {
-                            @Override
-                            public void onError()
-                            {
-                                OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.MAPDUST));
-                            }
-                        });
-                mMapdustDownloadTask.execute(bBox);
+                loadMapdust(bBox);
                 break;
 
             case Platforms.OSM_NOTES:
-                mOsmNotes.clear();
-
-                OttoBus.getInstance().post(new BugsChangedEvents.OsmNotes(mOsmNotes));
-
-                if (mOsmNotesDownloadTask != null)
-                {
-                    mOsmNotesDownloadTask.cancel(true);
-                }
-                mOsmNotesDownloadTask = new ApiDownloadTask<>(
-                        Apis.OSM_NOTES,
-                        new ApiDownloadTask.CompletionListener<OsmNote>()
-                        {
-                            @Override
-                            public void onCompletion(ArrayList<OsmNote> bugs)
-                            {
-                                mOsmNotes.clear();
-                                mOsmNotes.addAll(bugs);
-
-                                OttoBus.getInstance().post(new BugsChangedEvents.OsmNotes(mOsmNotes));
-                            }
-                        },
-                        new ApiDownloadTask.CancelledListener()
-                        {
-                            @Override
-                            public void onCancelled()
-                            {
-                                OttoBus.getInstance().post(new BugsDownloadCancelledEvent(Platforms.OSM_NOTES));
-                            }
-                        },
-                        new ApiDownloadTask.ErrorListener()
-                        {
-                            @Override
-                            public void onError()
-                            {
-                                OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.OSM_NOTES));
-                            }
-                        });
-                mOsmNotesDownloadTask.execute(bBox);
+                loadOsmNotes(bBox);
                 break;
         }
     }
 
 
-    public boolean isDownloadRunning()
+    void loadKeepright(final BoundingBoxE6 bBox)
     {
-        return mKeeprightDownloadTask != null && !mKeeprightDownloadTask.isCancelled() && mKeeprightDownloadTask.getStatus() != AsyncTask.Status.FINISHED && !mKeeprightDownloadTask.isDownloadFinished()
-                || mOsmoseDownloadTask != null && !mOsmoseDownloadTask.isCancelled() && mOsmoseDownloadTask.getStatus() != AsyncTask.Status.FINISHED && !mOsmoseDownloadTask.isDownloadFinished()
-                || mMapdustDownloadTask != null && !mMapdustDownloadTask.isCancelled() && mMapdustDownloadTask.getStatus() != AsyncTask.Status.FINISHED && !mMapdustDownloadTask.isDownloadFinished()
-                || mOsmNotesDownloadTask != null && !mOsmNotesDownloadTask.isCancelled() && mOsmNotesDownloadTask.getStatus() != AsyncTask.Status.FINISHED && !mOsmNotesDownloadTask.isDownloadFinished();
+        mKeeprightBugs.clear();
+        OttoBus.getInstance().post(new BugsChangedEvents.Keepright(mKeeprightBugs));
+
+        BackgroundExecutor.cancelAll(TASK_ID_KEEPRIGHT, true);
+        loadKeeprightTask(bBox);
+
+        mKeeprightDownloadRunning = true;
+        updateDownloadState();
+    }
+
+
+    @Background(id = TASK_ID_KEEPRIGHT)
+    void loadKeeprightTask(final BoundingBoxE6 bBox)
+    {
+        ArrayList<KeeprightBug> bugs = Apis.KEEPRIGHT.downloadBBox(bBox);
+        loadKeeprightDone(bugs);
+    }
+
+
+    @UiThread
+    void loadKeeprightDone(final ArrayList<KeeprightBug> bugs)
+    {
+        mKeeprightDownloadRunning = false;
+
+        if (bugs == null)
+        {
+            OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.KEEPRIGHT));
+            return;
+        }
+
+        mKeeprightBugs.clear();
+        mKeeprightBugs.addAll(bugs);
+
+        OttoBus.getInstance().post(new BugsChangedEvents.Keepright(mKeeprightBugs));
+
+        updateDownloadState();
+    }
+
+
+    void loadOsmose(final BoundingBoxE6 bBox)
+    {
+        mOsmoseBugs.clear();
+        OttoBus.getInstance().post(new BugsChangedEvents.Osmose(mOsmoseBugs));
+
+
+        BackgroundExecutor.cancelAll(TASK_ID_OSMOSE, true);
+        loadKeeprightTask(bBox);
+
+        mOsmoseDownloadRunning = true;
+        updateDownloadState();
+    }
+
+
+    @Background(id = TASK_ID_OSMOSE)
+    void loadOsmoseTask(final BoundingBoxE6 bBox)
+    {
+        ArrayList<OsmoseBug> bugs = Apis.OSMOSE.downloadBBox(bBox);
+        loadOsmoseDone(bugs);
+    }
+
+
+    @UiThread
+    void loadOsmoseDone(final ArrayList<OsmoseBug> bugs)
+    {
+        mOsmoseDownloadRunning = false;
+
+        if (bugs == null)
+        {
+            OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.OSMOSE));
+            return;
+        }
+
+        mOsmoseBugs.clear();
+        mOsmoseBugs.addAll(bugs);
+
+        OttoBus.getInstance().post(new BugsChangedEvents.Osmose(mOsmoseBugs));
+
+        updateDownloadState();
+    }
+
+
+    void loadMapdust(final BoundingBoxE6 bBox)
+    {
+        mMapdustBugs.clear();
+        OttoBus.getInstance().post(new BugsChangedEvents.Mapdust(mMapdustBugs));
+
+        BackgroundExecutor.cancelAll(TASK_ID_MAPDUST, true);
+        loadMapdustTask(bBox);
+
+        mMapdustDownloadRunning = true;
+        updateDownloadState();
+    }
+
+
+    @Background(id = TASK_ID_MAPDUST)
+    void loadMapdustTask(final BoundingBoxE6 bBox)
+    {
+        ArrayList<MapdustBug> bugs = Apis.MAPDUST.downloadBBox(bBox);
+        loadMapdustDone(bugs);
+    }
+
+
+    @UiThread
+    void loadMapdustDone(final ArrayList<MapdustBug> bugs)
+    {
+        mMapdustDownloadRunning = false;
+
+        if (bugs == null)
+        {
+            OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.MAPDUST));
+            return;
+        }
+
+        mMapdustBugs.clear();
+        mMapdustBugs.addAll(bugs);
+
+        OttoBus.getInstance().post(new BugsChangedEvents.Mapdust(mMapdustBugs));
+
+        updateDownloadState();
+    }
+
+
+    void loadOsmNotes(final BoundingBoxE6 bBox)
+    {
+        mOsmNotes.clear();
+        OttoBus.getInstance().post(new BugsChangedEvents.OsmNotes(mOsmNotes));
+
+        BackgroundExecutor.cancelAll(TASK_ID_OSM_NOTES, true);
+        loadOsmNotesTask(bBox);
+
+        mOsmNotesDownloadRunning = true;
+        updateDownloadState();
+    }
+
+
+    @Background(id = TASK_ID_OSM_NOTES)
+    void loadOsmNotesTask(final BoundingBoxE6 bBox)
+    {
+        ArrayList<OsmNote> bugs = Apis.OSM_NOTES.downloadBBox(bBox);
+        loadOsmNotesDone(bugs);
+    }
+
+
+    @UiThread
+    void loadOsmNotesDone(final ArrayList<OsmNote> bugs)
+    {
+        mOsmNotesDownloadRunning = false;
+
+        if (bugs == null)
+        {
+            OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.OSMOSE));
+            return;
+        }
+
+        mOsmNotes.clear();
+        mOsmNotes.addAll(bugs);
+
+        OttoBus.getInstance().post(new BugsChangedEvents.OsmNotes(mOsmNotes));
+
+        updateDownloadState();
+    }
+
+
+    void updateDownloadState()
+    {
+        if (getDownloadState() != mLastDownloadState)
+        {
+            OttoBus.getInstance().post(new BugsDownloadingStateChangedEvent(getDownloadState()));
+        }
+        mLastDownloadState = getDownloadState();
+    }
+
+
+    boolean getDownloadState()
+    {
+        return mKeeprightDownloadRunning
+                || mOsmoseDownloadRunning
+                || mMapdustDownloadRunning
+                || mOsmNotesDownloadRunning;
+    }
+
+
+    public void reload(final int platform)
+    {
+        load(Settings.getLastBBox(), platform);
     }
 }

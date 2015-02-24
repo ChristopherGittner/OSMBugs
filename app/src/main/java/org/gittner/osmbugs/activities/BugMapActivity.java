@@ -35,11 +35,11 @@ import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.MyLocationOverlay;
 import org.gittner.osmbugs.common.RotatingIconButtonFloat;
 import org.gittner.osmbugs.events.BugsChangedEvents;
-import org.gittner.osmbugs.events.BugsDownloadCancelledEvent;
 import org.gittner.osmbugs.events.BugsDownloadFailedEvent;
+import org.gittner.osmbugs.events.BugsDownloadingStateChangedEvent;
 import org.gittner.osmbugs.statics.BugDatabase;
-import org.gittner.osmbugs.statics.Platforms;
 import org.gittner.osmbugs.statics.Images;
+import org.gittner.osmbugs.statics.Platforms;
 import org.gittner.osmbugs.statics.Settings;
 import org.gittner.osmbugs.statics.TileSources;
 import org.osmdroid.DefaultResourceProxyImpl;
@@ -268,9 +268,20 @@ public class BugMapActivity extends BaseActionBarActivity
 
         setupLocationOverlay();
 
-        updateRefreshBugsButton();
-
         mMap.invalidate();
+
+        /* Show the refresh Button only if at least one Platform is enabled */
+        if (Settings.Keepright.isEnabled()
+                || Settings.Osmose.isEnabled()
+                || Settings.Mapdust.isEnabled()
+                || Settings.OsmNotes.isEnabled())
+        {
+            mRefreshBugs.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mRefreshBugs.setVisibility(View.GONE);
+        }
     }
 
 
@@ -303,23 +314,6 @@ public class BugMapActivity extends BaseActionBarActivity
         {
             mLocationOverlay.disableFollowLocation();
         }
-    }
-
-
-    private void updateRefreshBugsButton()
-    {
-        if (Settings.Keepright.isEnabled()
-                || Settings.Osmose.isEnabled()
-                || Settings.Mapdust.isEnabled()
-                || Settings.OsmNotes.isEnabled())
-        {
-            mRefreshBugs.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            mRefreshBugs.setVisibility(View.GONE);
-        }
-        mRefreshBugs.setRotate(BugDatabase.getInstance().isDownloadRunning());
     }
 
 
@@ -403,8 +397,6 @@ public class BugMapActivity extends BaseActionBarActivity
         {
             BugDatabase.getInstance().load(bbox, Platforms.OSM_NOTES);
         }
-
-        updateRefreshBugsButton();
     }
 
 
@@ -530,8 +522,6 @@ public class BugMapActivity extends BaseActionBarActivity
         }
 
         mMap.invalidate();
-
-        updateRefreshBugsButton();
     }
 
 
@@ -546,8 +536,6 @@ public class BugMapActivity extends BaseActionBarActivity
         }
 
         mMap.invalidate();
-
-        updateRefreshBugsButton();
     }
 
 
@@ -562,8 +550,6 @@ public class BugMapActivity extends BaseActionBarActivity
         }
 
         mMap.invalidate();
-
-        updateRefreshBugsButton();
     }
 
 
@@ -578,8 +564,6 @@ public class BugMapActivity extends BaseActionBarActivity
         }
 
         mMap.invalidate();
-
-        updateRefreshBugsButton();
     }
 
 
@@ -607,14 +591,12 @@ public class BugMapActivity extends BaseActionBarActivity
         }
 
         Toast.makeText(BugMapActivity.this, text, Toast.LENGTH_LONG).show();
-
-        updateRefreshBugsButton();
     }
 
 
     @Subscribe
-    public void onBugsDownloadCancelled(BugsDownloadCancelledEvent event)
+    public void onBugsDownloadStateChanged(BugsDownloadingStateChangedEvent event)
     {
-        updateRefreshBugsButton();
+        mRefreshBugs.setRotate(event.getState());
     }
 }
