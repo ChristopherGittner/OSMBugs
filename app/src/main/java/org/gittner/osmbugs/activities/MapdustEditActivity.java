@@ -28,7 +28,6 @@ import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.api.MapdustApi;
-import org.gittner.osmbugs.base.BaseActionBarActivity;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Settings;
@@ -41,7 +40,7 @@ import static android.view.View.VISIBLE;
 @EActivity(R.layout.activity_mapdust_edit)
 @OptionsMenu(R.menu.mapdust_edit)
 public class MapdustEditActivity
-        extends BaseActionBarActivity
+        extends OttoActionBarActivity
         implements BugEditActivityConstants
 {
     @Extra(EXTRA_BUG)
@@ -193,7 +192,7 @@ public class MapdustEditActivity
 
         if (result)
         {
-            setResult(RESULT_SAVED_MAPDUST);
+            setResult(RESULT_OK);
             finish();
         }
         else

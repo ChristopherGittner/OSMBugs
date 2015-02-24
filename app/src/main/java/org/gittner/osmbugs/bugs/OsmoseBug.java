@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.activities.OsmoseEditActivity_;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
@@ -91,13 +90,6 @@ public class OsmoseBug extends Bug
     public Drawable getIcon()
     {
         return Images.getByName(ICON_PREFIX + mItem, R.drawable.osmose_marker_b_0);
-    }
-
-
-    @Override
-    public Class<?> getEditorClass()
-    {
-        return OsmoseEditActivity_.class;
     }
 
 

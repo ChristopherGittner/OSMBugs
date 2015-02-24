@@ -1,11 +1,15 @@
-package org.gittner.osmbugs.base;
+package org.gittner.osmbugs.fragments;
 
-import android.preference.PreferenceFragment;
+import android.app.ListFragment;
 
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
 import org.gittner.osmbugs.statics.OttoBus;
 
-public class BasePreferenceFragment extends PreferenceFragment
+@EBean
+public class OttoListFragment extends ListFragment
 {
+    @Bean
     OttoBus mBus;
 
 
@@ -14,7 +18,6 @@ public class BasePreferenceFragment extends PreferenceFragment
     {
         super.onResume();
 
-        mBus = OttoBus.getInstance();
         mBus.register(this);
     }
 

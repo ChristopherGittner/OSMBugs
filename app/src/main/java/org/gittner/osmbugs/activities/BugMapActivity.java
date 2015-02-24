@@ -15,6 +15,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
@@ -25,7 +26,6 @@ import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.Helpers.IntentHelper;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.base.BaseActionBarActivity;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.BugOverlayItem;
 import org.gittner.osmbugs.bugs.KeeprightBug;
@@ -53,16 +53,19 @@ import java.util.ArrayList;
 
 @EActivity(R.layout.activity_bug_map)
 @OptionsMenu(R.menu.bug_map)
-public class BugMapActivity extends BaseActionBarActivity
+public class BugMapActivity extends OttoActionBarActivity
 {
     private static final String TAG = "OsmBugsActivity";
 
     /* Request Codes for activities */
-    private static final int REQUEST_CODE_BUG_EDITOR_ACTIVITY = 1;
-    private static final int REQUEST_CODE_SETTINGS_ACTIVITY = 2;
-    private static final int REQUEST_CODE_BUG_LIST_ACTIVITY = 3;
-    private static final int REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY = 4;
-    private static final int REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY = 5;
+    private static final int REQUEST_CODE_KEEPRIGHT_EDIT_ACTIVITY = 1;
+    private static final int REQUEST_CODE_OSMOSE_EDIT_ACTIVITY = 2;
+    private static final int REQUEST_CODE_MAPDUST_EDIT_ACTIVITY = 3;
+    private static final int REQUEST_CODE_OSM_NOTE_EDIT_ACTIVITY = 4;
+    private static final int REQUEST_CODE_SETTINGS_ACTIVITY = 5;
+    private static final int REQUEST_CODE_BUG_LIST_ACTIVITY = 6;
+    private static final int REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY = 7;
+    private static final int REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY = 8;
 
     @ViewById(R.id.mapview)
     MapView mMap;
@@ -76,6 +79,9 @@ public class BugMapActivity extends BaseActionBarActivity
     MenuItem mMenuFollowGps;
     @OptionsMenuItem(R.id.list)
     MenuItem mMenuList;
+
+    @Bean
+    BugDatabase mBugDatabase;
 
     /* The next touch event on the map opens the add Bug Prompt */
     private boolean mAddNewBugOnNextClick = false;
@@ -101,26 +107,6 @@ public class BugMapActivity extends BaseActionBarActivity
         }
     };
 
-    private final ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem> mBugGestureListener
-            = new ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>()
-    {
-        @Override
-        public boolean onItemSingleTapUp(int position, BugOverlayItem bugItem)
-        {
-            Intent bugEditorIntent = new Intent(BugMapActivity.this, bugItem.getBug().getEditorClass());
-            bugEditorIntent.putExtra(BugEditActivityConstants.EXTRA_BUG, bugItem.getBug());
-            startActivityForResult(bugEditorIntent, REQUEST_CODE_BUG_EDITOR_ACTIVITY);
-            return false;
-        }
-
-
-        @Override
-        public boolean onItemLongPress(int i, BugOverlayItem bugItem)
-        {
-            return false;
-        }
-    };
-
 
     @AfterViews
     void init()
@@ -129,25 +115,25 @@ public class BugMapActivity extends BaseActionBarActivity
         mKeeprightOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.keepright_zap),
-                mBugGestureListener,
+                new LaunchEditorListener(KeeprightEditActivity_.class, REQUEST_CODE_KEEPRIGHT_EDIT_ACTIVITY),
                 new DefaultResourceProxyImpl(this));
 
         mOsmoseOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.osmose_marker_b_0),
-                mBugGestureListener,
+                new LaunchEditorListener(KeeprightEditActivity_.class, REQUEST_CODE_OSMOSE_EDIT_ACTIVITY),
                 new DefaultResourceProxyImpl(this));
 
         mMapdustOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.mapdust_other),
-                mBugGestureListener,
+                new LaunchEditorListener(KeeprightEditActivity_.class, REQUEST_CODE_MAPDUST_EDIT_ACTIVITY),
                 new DefaultResourceProxyImpl(this));
 
         mOsmNotesOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.osm_notes_open_bug),
-                mBugGestureListener,
+                new LaunchEditorListener(KeeprightEditActivity_.class, REQUEST_CODE_OSM_NOTE_EDIT_ACTIVITY),
                 new DefaultResourceProxyImpl(this));
 
         /* Setup Main MapView */
@@ -317,26 +303,42 @@ public class BugMapActivity extends BaseActionBarActivity
     }
 
 
-    @OnActivityResult(REQUEST_CODE_BUG_EDITOR_ACTIVITY)
-    void onBugEditorActivityResult(int resultCode)
+    @OnActivityResult(REQUEST_CODE_KEEPRIGHT_EDIT_ACTIVITY)
+    void onKeeprightEditActivityResult(int resultCode)
     {
-        switch (resultCode)
+        if (resultCode == RESULT_OK)
         {
-            case BugEditActivityConstants.RESULT_SAVED_KEEPRIGHT:
-                BugDatabase.getInstance().load(mMap.getBoundingBox(), Platforms.KEEPRIGHT);
-                break;
+            mBugDatabase.load(mMap.getBoundingBox(), Platforms.KEEPRIGHT);
+        }
+    }
 
-            case BugEditActivityConstants.RESULT_SAVED_OSMOSE:
-                BugDatabase.getInstance().load(mMap.getBoundingBox(), Platforms.OSMOSE);
-                break;
 
-            case BugEditActivityConstants.RESULT_SAVED_MAPDUST:
-                BugDatabase.getInstance().load(mMap.getBoundingBox(), Platforms.MAPDUST);
-                break;
+    @OnActivityResult(REQUEST_CODE_OSMOSE_EDIT_ACTIVITY)
+    void onOsmoseEditActivityResult(int resultCode)
+    {
+        if (resultCode == RESULT_OK)
+        {
+            mBugDatabase.load(mMap.getBoundingBox(), Platforms.OSMOSE);
+        }
+    }
 
-            case BugEditActivityConstants.RESULT_SAVED_OSM_NOTES:
-                BugDatabase.getInstance().load(mMap.getBoundingBox(), Platforms.OSM_NOTES);
-                break;
+
+    @OnActivityResult(REQUEST_CODE_MAPDUST_EDIT_ACTIVITY)
+    void onMapdustEditActivityResult(int resultCode)
+    {
+        if (resultCode == RESULT_OK)
+        {
+            mBugDatabase.load(mMap.getBoundingBox(), Platforms.MAPDUST);
+        }
+    }
+
+
+    @OnActivityResult(REQUEST_CODE_OSM_NOTE_EDIT_ACTIVITY)
+    void onOsmNoteEditActivityResult(int resultCode)
+    {
+        if (resultCode == RESULT_OK)
+        {
+            mBugDatabase.load(mMap.getBoundingBox(), Platforms.OSM_NOTES);
         }
     }
 
@@ -361,7 +363,7 @@ public class BugMapActivity extends BaseActionBarActivity
     {
         if (resultCode == RESULT_OK)
         {
-            BugDatabase.getInstance().load(mMap.getBoundingBox(), Platforms.MAPDUST);
+            mBugDatabase.load(mMap.getBoundingBox(), Platforms.MAPDUST);
         }
     }
 
@@ -371,7 +373,7 @@ public class BugMapActivity extends BaseActionBarActivity
     {
         if (resultCode == RESULT_OK)
         {
-            BugDatabase.getInstance().load(mMap.getBoundingBox(), Platforms.OSM_NOTES);
+            mBugDatabase.load(mMap.getBoundingBox(), Platforms.OSM_NOTES);
         }
     }
 
@@ -379,23 +381,23 @@ public class BugMapActivity extends BaseActionBarActivity
     @Click(R.id.btnRefreshBugs)
     void refreshBugs()
     {
-        BoundingBoxE6 bbox = mMap.getBoundingBox();
+        BoundingBoxE6 bBox = mMap.getBoundingBox();
 
         if (Settings.Keepright.isEnabled())
         {
-            BugDatabase.getInstance().load(bbox, Platforms.KEEPRIGHT);
+            mBugDatabase.load(bBox, Platforms.KEEPRIGHT);
         }
         if (Settings.Osmose.isEnabled())
         {
-            BugDatabase.getInstance().load(bbox, Platforms.OSMOSE);
+            mBugDatabase.load(bBox, Platforms.OSMOSE);
         }
         if (Settings.Mapdust.isEnabled())
         {
-            BugDatabase.getInstance().load(bbox, Platforms.MAPDUST);
+            mBugDatabase.load(bBox, Platforms.MAPDUST);
         }
         if (Settings.OsmNotes.isEnabled())
         {
-            BugDatabase.getInstance().load(bbox, Platforms.OSM_NOTES);
+            mBugDatabase.load(bBox, Platforms.OSM_NOTES);
         }
     }
 
@@ -437,8 +439,7 @@ public class BugMapActivity extends BaseActionBarActivity
     @OptionsItem(R.id.list)
     void menuListClicked()
     {
-        Intent bugListIntent = new Intent(this, BugListActivity_.class);
-        startActivityForResult(bugListIntent, REQUEST_CODE_BUG_LIST_ACTIVITY);
+        BugListActivity_.intent(this).startForResult(REQUEST_CODE_BUG_LIST_ACTIVITY);
     }
 
 
@@ -597,6 +598,39 @@ public class BugMapActivity extends BaseActionBarActivity
     @Subscribe
     public void onBugsDownloadStateChanged(BugsDownloadingStateChangedEvent event)
     {
+        Log.d("", "" + event.getState());
         mRefreshBugs.setRotate(event.getState());
+    }
+
+
+    private class LaunchEditorListener implements ItemizedIconOverlay.OnItemGestureListener<BugOverlayItem>
+    {
+        final Class<?> mEditorClass;
+        final int mRequestCode;
+
+
+        public LaunchEditorListener(Class<?> editorClass, int requestCode)
+        {
+            mEditorClass = editorClass;
+            mRequestCode = requestCode;
+        }
+
+
+        @Override
+        public boolean onItemSingleTapUp(int index, BugOverlayItem bugItem)
+        {
+            Intent bugEditorIntent = new Intent(BugMapActivity.this, mEditorClass);
+            bugEditorIntent.putExtra(BugEditActivityConstants.EXTRA_BUG, bugItem.getBug());
+            startActivityForResult(bugEditorIntent, mRequestCode);
+
+            return true;
+        }
+
+
+        @Override
+        public boolean onItemLongPress(int index, BugOverlayItem item)
+        {
+            return false;
+        }
     }
 }

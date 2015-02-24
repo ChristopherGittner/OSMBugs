@@ -27,7 +27,6 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
-import org.gittner.osmbugs.base.BaseActionBarActivity;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Settings;
@@ -38,7 +37,7 @@ import static android.view.View.VISIBLE;
 @EActivity(R.layout.activity_osm_note_edit)
 @OptionsMenu(R.menu.osm_note_edit)
 public class OsmNoteEditActivity
-        extends BaseActionBarActivity
+        extends OttoActionBarActivity
         implements BugEditActivityConstants
 {
     @Extra(EXTRA_BUG)
@@ -151,7 +150,7 @@ public class OsmNoteEditActivity
 
         if (result)
         {
-            setResult(RESULT_SAVED_OSM_NOTES);
+            setResult(RESULT_OK);
             finish();
         }
         else

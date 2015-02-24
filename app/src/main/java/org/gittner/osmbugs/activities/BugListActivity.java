@@ -9,11 +9,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.base.BaseActionBarActivity;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.fragments.BugPlatformListFragment;
 import org.gittner.osmbugs.fragments.BugPlatformListFragment_;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 @EActivity(R.layout.activity_bug_list)
 public class BugListActivity
-        extends BaseActionBarActivity
+        extends OttoActionBarActivity
         implements ActionBar.TabListener,
         BugPlatformListFragment.OnFragmentInteractionListener
 {
@@ -33,10 +33,16 @@ public class BugListActivity
 
     public static final String RESULT_EXTRA_BUG = "RESULT_EXTRA_BUG";
 
-    private static final int REQUEST_CODE_BUG_EDITOR_ACTIVITY = 1;
+    private static final int REQUEST_CODE_KEEPRIGHT_EDIT_ACTIVITY = 1;
+    private static final int REQUEST_CODE_OSMOSE_EDIT_ACTIVITY = 2;
+    private static final int REQUEST_CODE_MAPDUST_EDIT_ACTIVITY = 3;
+    private static final int REQUEST_CODE_OSM_NOTE_EDIT_ACTIVITY = 4;
 
     @ViewById(R.id.pager)
     ViewPager mPager;
+
+    @Bean
+    BugDatabase mBugDatabase;
 
 
     @AfterViews
@@ -85,26 +91,42 @@ public class BugListActivity
     }
 
 
-    @OnActivityResult(REQUEST_CODE_BUG_EDITOR_ACTIVITY)
-    void onBugEditorActivityResult(int resultCode)
+    @OnActivityResult(REQUEST_CODE_KEEPRIGHT_EDIT_ACTIVITY)
+    void onKeeprightEditActivityResult(int resultCode)
     {
-        switch (resultCode)
+        if (resultCode == RESULT_OK)
         {
-            case BugEditActivityConstants.RESULT_SAVED_KEEPRIGHT:
-                BugDatabase.getInstance().reload(Platforms.KEEPRIGHT);
-                break;
+            mBugDatabase.reload(Platforms.KEEPRIGHT);
+        }
+    }
 
-            case BugEditActivityConstants.RESULT_SAVED_OSMOSE:
-                BugDatabase.getInstance().reload(Platforms.OSMOSE);
-                break;
 
-            case BugEditActivityConstants.RESULT_SAVED_MAPDUST:
-                BugDatabase.getInstance().reload(Platforms.MAPDUST);
-                break;
+    @OnActivityResult(REQUEST_CODE_OSMOSE_EDIT_ACTIVITY)
+    void onOsmoseEditActivityResult(int resultCode)
+    {
+        if (resultCode == RESULT_OK)
+        {
+            mBugDatabase.reload(Platforms.OSMOSE);
+        }
+    }
 
-            case BugEditActivityConstants.RESULT_SAVED_OSM_NOTES:
-                BugDatabase.getInstance().reload(Platforms.OSM_NOTES);
-                break;
+
+    @OnActivityResult(REQUEST_CODE_MAPDUST_EDIT_ACTIVITY)
+    void onMapdustEditActivityResult(int resultCode)
+    {
+        if (resultCode == RESULT_OK)
+        {
+            mBugDatabase.reload(Platforms.MAPDUST);
+        }
+    }
+
+
+    @OnActivityResult(REQUEST_CODE_OSM_NOTE_EDIT_ACTIVITY)
+    void onOsmNoteEditActivityResult(int resultCode)
+    {
+        if (resultCode == RESULT_OK)
+        {
+            mBugDatabase.reload(Platforms.OSM_NOTES);
         }
     }
 
@@ -131,17 +153,43 @@ public class BugListActivity
 
 
     @Override
-    public void onBugClicked(final Bug bug)
+    public void onBugClicked(final Bug bug, int platform)
     {
-        /* Open the selected Bug in the Bug Editor */
-        Intent i = new Intent(BugListActivity.this, bug.getEditorClass());
-        i.putExtra(BugEditActivityConstants.EXTRA_BUG, bug);
-        startActivityForResult(i, REQUEST_CODE_BUG_EDITOR_ACTIVITY);
+        switch (platform)
+        {
+            case Platforms.KEEPRIGHT:
+                KeeprightEditActivity_
+                        .intent(this)
+                        .extra(BugEditActivityConstants.EXTRA_BUG, bug)
+                        .startForResult(REQUEST_CODE_KEEPRIGHT_EDIT_ACTIVITY);
+                break;
+
+            case Platforms.OSMOSE:
+                OsmoseEditActivity_
+                        .intent(this)
+                        .extra(BugEditActivityConstants.EXTRA_BUG, bug)
+                        .startForResult(REQUEST_CODE_OSMOSE_EDIT_ACTIVITY);
+                break;
+
+            case Platforms.MAPDUST:
+                MapdustEditActivity_
+                        .intent(this)
+                        .extra(BugEditActivityConstants.EXTRA_BUG, bug)
+                        .startForResult(REQUEST_CODE_MAPDUST_EDIT_ACTIVITY);
+                break;
+
+            case Platforms.OSM_NOTES:
+                OsmNoteEditActivity_
+                        .intent(this)
+                        .extra(BugEditActivityConstants.EXTRA_BUG, bug)
+                        .startForResult(REQUEST_CODE_OSM_NOTE_EDIT_ACTIVITY);
+                break;
+        }
     }
 
 
     @Override
-    public void onBugMiniMapClicked(final Bug bug)
+    public void onBugMiniMapClicked(final Bug bug, int platform)
     {
         Intent data = new Intent();
         data.putExtra(RESULT_EXTRA_BUG, bug);

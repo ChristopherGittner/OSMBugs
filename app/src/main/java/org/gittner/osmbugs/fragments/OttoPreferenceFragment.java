@@ -1,11 +1,15 @@
-package org.gittner.osmbugs.base;
+package org.gittner.osmbugs.fragments;
 
-import android.support.v7.app.ActionBarActivity;
+import android.preference.PreferenceFragment;
 
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
 import org.gittner.osmbugs.statics.OttoBus;
 
-public class BaseActionBarActivity extends ActionBarActivity
+@EBean
+public class OttoPreferenceFragment extends PreferenceFragment
 {
+    @Bean
     OttoBus mBus;
 
 
@@ -14,7 +18,6 @@ public class BaseActionBarActivity extends ActionBarActivity
     {
         super.onResume();
 
-        mBus = OttoBus.getInstance();
         mBus.register(this);
     }
 

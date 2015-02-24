@@ -1,11 +1,15 @@
-package org.gittner.osmbugs.base;
+package org.gittner.osmbugs.activities;
 
-import android.app.ListFragment;
+import android.support.v7.app.ActionBarActivity;
 
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
 import org.gittner.osmbugs.statics.OttoBus;
 
-public class BaseListFragment extends ListFragment
+@EBean
+public class OttoActionBarActivity extends ActionBarActivity
 {
+    @Bean
     OttoBus mBus;
 
 
@@ -14,7 +18,6 @@ public class BaseListFragment extends ListFragment
     {
         super.onResume();
 
-        mBus = OttoBus.getInstance();
         mBus.register(this);
     }
 

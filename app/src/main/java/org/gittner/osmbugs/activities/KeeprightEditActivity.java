@@ -26,14 +26,13 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
-import org.gittner.osmbugs.base.BaseActionBarActivity;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.statics.Images;
 
 @EActivity(R.layout.activity_keepright_edit)
 @OptionsMenu(R.menu.keepright_edit)
 public class KeeprightEditActivity
-        extends BaseActionBarActivity
+        extends OttoActionBarActivity
         implements BugEditActivityConstants
 {
     @ViewById(R.id.txtvTitle)
@@ -138,7 +137,7 @@ public class KeeprightEditActivity
 
         if (result)
         {
-            setResult(RESULT_SAVED_KEEPRIGHT);
+            setResult(RESULT_OK);
             finish();
         }
         else

@@ -5,7 +5,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.activities.MapdustEditActivity_;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
@@ -198,13 +197,6 @@ public class MapdustBug extends Bug
     int getType()
     {
         return mType;
-    }
-
-
-    @Override
-    public Class<?> getEditorClass()
-    {
-        return MapdustEditActivity_.class;
     }
 
 

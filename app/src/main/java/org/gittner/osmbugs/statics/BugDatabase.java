@@ -1,10 +1,10 @@
 package org.gittner.osmbugs.statics;
 
-import android.content.Context;
-
 import com.squareup.otto.Produce;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.api.BackgroundExecutor;
@@ -20,15 +20,13 @@ import org.osmdroid.util.BoundingBoxE6;
 
 import java.util.ArrayList;
 
-@EBean
+@EBean(scope = EBean.Scope.Singleton)
 public class BugDatabase
 {
     private static final String TASK_ID_KEEPRIGHT = "TASK_ID_KEEPRIGHT";
     private static final String TASK_ID_OSMOSE = "TASK_ID_OSMOSE";
     private static final String TASK_ID_MAPDUST = "TASK_ID_MAPDUST";
     private static final String TASK_ID_OSM_NOTES = "TASK_ID_OSM_NOTES";
-
-    private static BugDatabase_ mInstance = null;
 
     private final ArrayList<KeeprightBug> mKeeprightBugs = new ArrayList<>();
     private final ArrayList<OsmoseBug> mOsmoseBugs = new ArrayList<>();
@@ -42,20 +40,16 @@ public class BugDatabase
 
     private boolean mLastDownloadState;
 
+    BugDatabase_ ref;
 
-    public static void init(Context context)
+    @Bean
+    OttoBus mBus;
+
+
+    @AfterInject
+    void init()
     {
-        if (mInstance == null)
-        {
-            mInstance = BugDatabase_.getInstance_(context);
-            OttoBus.getInstance().register(mInstance);
-        }
-    }
-
-
-    public static BugDatabase_ getInstance()
-    {
-        return mInstance;
+        mBus.register(this);
     }
 
 
@@ -122,7 +116,7 @@ public class BugDatabase
     void loadKeepright(final BoundingBoxE6 bBox)
     {
         mKeeprightBugs.clear();
-        OttoBus.getInstance().post(new BugsChangedEvents.Keepright(mKeeprightBugs));
+        mBus.post(new BugsChangedEvents.Keepright(mKeeprightBugs));
 
         BackgroundExecutor.cancelAll(TASK_ID_KEEPRIGHT, true);
         loadKeeprightTask(bBox);
@@ -147,14 +141,14 @@ public class BugDatabase
 
         if (bugs == null)
         {
-            OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.KEEPRIGHT));
+            mBus.post(new BugsDownloadFailedEvent(Platforms.KEEPRIGHT));
             return;
         }
 
         mKeeprightBugs.clear();
         mKeeprightBugs.addAll(bugs);
 
-        OttoBus.getInstance().post(new BugsChangedEvents.Keepright(mKeeprightBugs));
+        mBus.post(new BugsChangedEvents.Keepright(mKeeprightBugs));
 
         updateDownloadState();
     }
@@ -163,8 +157,7 @@ public class BugDatabase
     void loadOsmose(final BoundingBoxE6 bBox)
     {
         mOsmoseBugs.clear();
-        OttoBus.getInstance().post(new BugsChangedEvents.Osmose(mOsmoseBugs));
-
+        mBus.post(new BugsChangedEvents.Osmose(mOsmoseBugs));
 
         BackgroundExecutor.cancelAll(TASK_ID_OSMOSE, true);
         loadKeeprightTask(bBox);
@@ -189,14 +182,14 @@ public class BugDatabase
 
         if (bugs == null)
         {
-            OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.OSMOSE));
+            mBus.post(new BugsDownloadFailedEvent(Platforms.OSMOSE));
             return;
         }
 
         mOsmoseBugs.clear();
         mOsmoseBugs.addAll(bugs);
 
-        OttoBus.getInstance().post(new BugsChangedEvents.Osmose(mOsmoseBugs));
+        mBus.post(new BugsChangedEvents.Osmose(mOsmoseBugs));
 
         updateDownloadState();
     }
@@ -205,7 +198,7 @@ public class BugDatabase
     void loadMapdust(final BoundingBoxE6 bBox)
     {
         mMapdustBugs.clear();
-        OttoBus.getInstance().post(new BugsChangedEvents.Mapdust(mMapdustBugs));
+        mBus.post(new BugsChangedEvents.Mapdust(mMapdustBugs));
 
         BackgroundExecutor.cancelAll(TASK_ID_MAPDUST, true);
         loadMapdustTask(bBox);
@@ -230,14 +223,14 @@ public class BugDatabase
 
         if (bugs == null)
         {
-            OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.MAPDUST));
+            mBus.post(new BugsDownloadFailedEvent(Platforms.MAPDUST));
             return;
         }
 
         mMapdustBugs.clear();
         mMapdustBugs.addAll(bugs);
 
-        OttoBus.getInstance().post(new BugsChangedEvents.Mapdust(mMapdustBugs));
+        mBus.post(new BugsChangedEvents.Mapdust(mMapdustBugs));
 
         updateDownloadState();
     }
@@ -246,7 +239,7 @@ public class BugDatabase
     void loadOsmNotes(final BoundingBoxE6 bBox)
     {
         mOsmNotes.clear();
-        OttoBus.getInstance().post(new BugsChangedEvents.OsmNotes(mOsmNotes));
+        mBus.post(new BugsChangedEvents.OsmNotes(mOsmNotes));
 
         BackgroundExecutor.cancelAll(TASK_ID_OSM_NOTES, true);
         loadOsmNotesTask(bBox);
@@ -271,14 +264,14 @@ public class BugDatabase
 
         if (bugs == null)
         {
-            OttoBus.getInstance().post(new BugsDownloadFailedEvent(Platforms.OSMOSE));
+            mBus.post(new BugsDownloadFailedEvent(Platforms.OSMOSE));
             return;
         }
 
         mOsmNotes.clear();
         mOsmNotes.addAll(bugs);
 
-        OttoBus.getInstance().post(new BugsChangedEvents.OsmNotes(mOsmNotes));
+        mBus.post(new BugsChangedEvents.OsmNotes(mOsmNotes));
 
         updateDownloadState();
     }
@@ -288,7 +281,7 @@ public class BugDatabase
     {
         if (getDownloadState() != mLastDownloadState)
         {
-            OttoBus.getInstance().post(new BugsDownloadingStateChangedEvent(getDownloadState()));
+            mBus.post(new BugsDownloadingStateChangedEvent(getDownloadState()));
         }
         mLastDownloadState = getDownloadState();
     }

@@ -7,11 +7,10 @@ import android.preference.Preference.OnPreferenceClickListener;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.base.BasePreferenceFragment;
 
 @EFragment
 public class SettingsFragment
-        extends BasePreferenceFragment
+        extends OttoPreferenceFragment
         implements
         OnPreferenceClickListener
 {

@@ -19,12 +19,11 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
-import org.gittner.osmbugs.base.BaseActionBarActivity;
 import org.osmdroid.util.GeoPoint;
 
 @EActivity(R.layout.activity_add_osm_note)
 @OptionsMenu(R.menu.add_osm_note)
-public class AddOsmNoteActivity extends BaseActionBarActivity
+public class AddOsmNoteActivity extends OttoActionBarActivity
 {
     public static final String EXTRA_LATITUDE = "EXTRA_LATITUDE";
     public static final String EXTRA_LONGITUDE = "EXTRA_LONGITUDE";

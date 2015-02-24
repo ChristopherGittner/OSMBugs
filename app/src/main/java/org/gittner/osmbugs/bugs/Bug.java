@@ -38,6 +38,4 @@ public abstract class Bug implements Parcelable
 
 
     public abstract Drawable getIcon();
-
-    public abstract Class<?> getEditorClass();
 }

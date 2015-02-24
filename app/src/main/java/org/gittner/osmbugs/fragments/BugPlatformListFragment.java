@@ -17,7 +17,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.base.BaseListFragment;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
@@ -29,7 +28,7 @@ import org.gittner.osmbugs.statics.TileSources;
 import org.osmdroid.views.MapView;
 
 @EFragment
-public class BugPlatformListFragment extends BaseListFragment
+public class BugPlatformListFragment extends OttoListFragment
 {
     private static final String ARG_PLATFORM = "ARG_PLATFORM";
 
@@ -138,9 +137,9 @@ public class BugPlatformListFragment extends BaseListFragment
 
     public interface OnFragmentInteractionListener
     {
-        public void onBugClicked(Bug bug);
+        public void onBugClicked(Bug bug, int platform);
 
-        public void onBugMiniMapClicked(Bug bug);
+        public void onBugMiniMapClicked(Bug bug, int platform);
     }
 
     private abstract class BugAdapter<T extends Bug> extends ArrayAdapter<T>
@@ -180,7 +179,7 @@ public class BugPlatformListFragment extends BaseListFragment
                 {
                     if (event.getAction() == MotionEvent.ACTION_UP)
                     {
-                        mListener.onBugMiniMapClicked(bug);
+                        mListener.onBugMiniMapClicked(bug, mPlatform);
                     }
                     return true;
                 }
@@ -191,7 +190,7 @@ public class BugPlatformListFragment extends BaseListFragment
                 @Override
                 public void onClick(View v)
                 {
-                    mListener.onBugClicked(bug);
+                    mListener.onBugClicked(bug, mPlatform);
                 }
             });
 

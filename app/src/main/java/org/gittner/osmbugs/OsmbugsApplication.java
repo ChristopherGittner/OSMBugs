@@ -7,7 +7,7 @@ import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
-import org.gittner.osmbugs.statics.BugDatabase;
+import org.androidannotations.annotations.EApplication;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
 
@@ -33,6 +33,7 @@ import org.gittner.osmbugs.statics.Settings;
         resDialogTitle = R.string.crash_dialog_title,
         resDialogCommentPrompt = R.string.crash_dialog_comment_prompt,
         resDialogOkToast = R.string.crash_dialog_ok_toast)
+@EApplication
 public class OsmbugsApplication extends Application
 {
     @Override
@@ -46,7 +47,7 @@ public class OsmbugsApplication extends Application
         /* Init the Drawings Class to load all Resources */
         Images.init(this);
 
-        BugDatabase.init(this);
+        //BugDatabase.init(this);
 
 		/* Enable Acra Crash reports only on Release */
         if (!BuildConfig.DEBUG)
