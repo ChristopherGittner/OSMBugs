@@ -32,7 +32,7 @@ import org.gittner.osmbugs.statics.Images;
 @EActivity(R.layout.activity_keepright_edit)
 @OptionsMenu(R.menu.keepright_edit)
 public class KeeprightEditActivity
-        extends OttoActionBarActivity
+        extends EventBusActionBarActivity
         implements BugEditActivityConstants
 {
     @ViewById(R.id.txtvTitle)

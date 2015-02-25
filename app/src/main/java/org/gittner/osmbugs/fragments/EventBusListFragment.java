@@ -2,23 +2,19 @@ package org.gittner.osmbugs.fragments;
 
 import android.app.ListFragment;
 
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
-import org.gittner.osmbugs.statics.OttoBus;
+
+import de.greenrobot.event.EventBus;
 
 @EBean
-public class OttoListFragment extends ListFragment
+public class EventBusListFragment extends ListFragment
 {
-    @Bean
-    OttoBus mBus;
-
-
     @Override
     public void onResume()
     {
         super.onResume();
 
-        mBus.register(this);
+        EventBus.getDefault().registerSticky(this);
     }
 
 
@@ -27,6 +23,6 @@ public class OttoListFragment extends ListFragment
     {
         super.onPause();
 
-        mBus.unregister(this);
+        EventBus.getDefault().unregister(this);
     }
 }

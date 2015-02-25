@@ -33,7 +33,7 @@ import org.osmdroid.util.GeoPoint;
 
 @EActivity(R.layout.activity_add_mapdust_bug)
 @OptionsMenu(R.menu.add_mapdust_bug)
-public class AddMapdustBugActivity extends OttoActionBarActivity
+public class AddMapdustBugActivity extends EventBusActionBarActivity
 {
     public static final String EXTRA_LATITUDE = "EXTRA_LATITUDE";
     public static final String EXTRA_LONGITUDE = "EXTRA_LONGITUDE";

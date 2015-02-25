@@ -2,23 +2,19 @@ package org.gittner.osmbugs.fragments;
 
 import android.preference.PreferenceFragment;
 
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
-import org.gittner.osmbugs.statics.OttoBus;
+
+import de.greenrobot.event.EventBus;
 
 @EBean
-public class OttoPreferenceFragment extends PreferenceFragment
+public class EventBusPreferenceFragment extends PreferenceFragment
 {
-    @Bean
-    OttoBus mBus;
-
-
     @Override
     public void onResume()
     {
         super.onResume();
 
-        mBus.register(this);
+        EventBus.getDefault().registerSticky(this);
     }
 
 
@@ -27,6 +23,6 @@ public class OttoPreferenceFragment extends PreferenceFragment
     {
         super.onPause();
 
-        mBus.unregister(this);
+        EventBus.getDefault().unregister(this);
     }
 }

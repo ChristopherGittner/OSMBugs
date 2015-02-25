@@ -37,7 +37,7 @@ import static android.view.View.VISIBLE;
 @EActivity(R.layout.activity_osm_note_edit)
 @OptionsMenu(R.menu.osm_note_edit)
 public class OsmNoteEditActivity
-        extends OttoActionBarActivity
+        extends EventBusActionBarActivity
         implements BugEditActivityConstants
 {
     @Extra(EXTRA_BUG)

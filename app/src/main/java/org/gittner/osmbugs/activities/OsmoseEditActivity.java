@@ -21,7 +21,7 @@ import java.util.List;
 
 @EActivity(R.layout.activity_osmose_edit)
 public class OsmoseEditActivity
-        extends OttoActionBarActivity
+        extends EventBusActionBarActivity
         implements BugEditActivityConstants
 {
     @Extra(EXTRA_BUG)

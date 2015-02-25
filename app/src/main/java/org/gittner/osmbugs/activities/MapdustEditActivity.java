@@ -40,7 +40,7 @@ import static android.view.View.VISIBLE;
 @EActivity(R.layout.activity_mapdust_edit)
 @OptionsMenu(R.menu.mapdust_edit)
 public class MapdustEditActivity
-        extends OttoActionBarActivity
+        extends EventBusActionBarActivity
         implements BugEditActivityConstants
 {
     @Extra(EXTRA_BUG)

@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -53,7 +52,7 @@ import java.util.ArrayList;
 
 @EActivity(R.layout.activity_bug_map)
 @OptionsMenu(R.menu.bug_map)
-public class BugMapActivity extends OttoActionBarActivity
+public class BugMapActivity extends EventBusActionBarActivity
 {
     private static final String TAG = "OsmBugsActivity";
 
@@ -512,8 +511,7 @@ public class BugMapActivity extends OttoActionBarActivity
     }
 
 
-    @Subscribe
-    public void onKeeprightBugsChanged(BugsChangedEvents.Keepright event)
+    public void onEventMainThread(BugsChangedEvents.Keepright event)
     {
         mKeeprightOverlay.removeAllItems();
 
@@ -526,8 +524,7 @@ public class BugMapActivity extends OttoActionBarActivity
     }
 
 
-    @Subscribe
-    public void onOsmoseBugsChanged(BugsChangedEvents.Osmose event)
+    public void onEventMainThread(BugsChangedEvents.Osmose event)
     {
         mOsmoseOverlay.removeAllItems();
 
@@ -540,8 +537,7 @@ public class BugMapActivity extends OttoActionBarActivity
     }
 
 
-    @Subscribe
-    public void onMapdustBugsChanged(BugsChangedEvents.Mapdust event)
+    public void onEventMainThread(BugsChangedEvents.Mapdust event)
     {
         mMapdustOverlay.removeAllItems();
 
@@ -554,8 +550,7 @@ public class BugMapActivity extends OttoActionBarActivity
     }
 
 
-    @Subscribe
-    public void onOsmNotesChanged(BugsChangedEvents.OsmNotes event)
+    public void onEventMainThread(BugsChangedEvents.OsmNotes event)
     {
         mOsmNotesOverlay.removeAllItems();
 
@@ -568,8 +563,7 @@ public class BugMapActivity extends OttoActionBarActivity
     }
 
 
-    @Subscribe
-    public void onBugsDownloadFailed(BugsDownloadFailedEvent event)
+    public void onEventMainThread(BugsDownloadFailedEvent event)
     {
         String text = "";
         switch (event.getPlatform())
@@ -595,10 +589,8 @@ public class BugMapActivity extends OttoActionBarActivity
     }
 
 
-    @Subscribe
-    public void onBugsDownloadStateChanged(BugsDownloadingStateChangedEvent event)
+    public void onEventMainThread(BugsDownloadingStateChangedEvent event)
     {
-        Log.d("", "" + event.getState());
         mRefreshBugs.setRotate(event.getState());
     }
 

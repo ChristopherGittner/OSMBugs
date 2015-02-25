@@ -11,8 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.otto.Subscribe;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
@@ -28,7 +26,7 @@ import org.gittner.osmbugs.statics.TileSources;
 import org.osmdroid.views.MapView;
 
 @EFragment
-public class BugPlatformListFragment extends OttoListFragment
+public class BugPlatformListFragment extends EventBusListFragment
 {
     private static final String ARG_PLATFORM = "ARG_PLATFORM";
 
@@ -87,8 +85,7 @@ public class BugPlatformListFragment extends OttoListFragment
     }
 
 
-    @Subscribe
-    public void onKeeprightBugsChanged(BugsChangedEvents.Keepright event)
+    public void onEventMainThread(BugsChangedEvents.Keepright event)
     {
         if (mPlatform == Platforms.KEEPRIGHT)
         {
@@ -97,8 +94,7 @@ public class BugPlatformListFragment extends OttoListFragment
     }
 
 
-    @Subscribe
-    public void onOsmoseBugsChanged(BugsChangedEvents.Osmose event)
+    public void onEventMainThread(BugsChangedEvents.Osmose event)
     {
         if (mPlatform == Platforms.OSMOSE)
         {
@@ -107,8 +103,7 @@ public class BugPlatformListFragment extends OttoListFragment
     }
 
 
-    @Subscribe
-    public void onMapdustBugsChanged(BugsChangedEvents.Mapdust event)
+    public void onEventMainThread(BugsChangedEvents.Mapdust event)
     {
         if (mPlatform == Platforms.MAPDUST)
         {
@@ -117,8 +112,7 @@ public class BugPlatformListFragment extends OttoListFragment
     }
 
 
-    @Subscribe
-    public void onOsmNotesChanged(BugsChangedEvents.OsmNotes event)
+    public void onEventMainThread(BugsChangedEvents.OsmNotes event)
     {
         if (mPlatform == Platforms.OSM_NOTES)
         {

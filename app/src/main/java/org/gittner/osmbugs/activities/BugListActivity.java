@@ -7,6 +7,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 
 @EActivity(R.layout.activity_bug_list)
 public class BugListActivity
-        extends OttoActionBarActivity
+        extends ActionBarActivity
         implements ActionBar.TabListener,
         BugPlatformListFragment.OnFragmentInteractionListener
 {

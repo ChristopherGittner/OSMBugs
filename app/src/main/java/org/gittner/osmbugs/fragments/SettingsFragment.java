@@ -10,7 +10,7 @@ import org.gittner.osmbugs.R;
 
 @EFragment
 public class SettingsFragment
-        extends OttoPreferenceFragment
+        extends EventBusPreferenceFragment
         implements
         OnPreferenceClickListener
 {

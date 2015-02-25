@@ -28,7 +28,7 @@ dependencies {
     compile 'org.osmdroid:osmdroid-android:4.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:support-v13:21.0.3'
-    compile 'com.squareup:otto:1.3.6'
+    compile 'de.greenrobot:eventbus:2.4.0'
     compile "org.androidannotations:androidannotations-api:$AAVersion"
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile 'com.afollestad:material-dialogs:0.6.3.1'

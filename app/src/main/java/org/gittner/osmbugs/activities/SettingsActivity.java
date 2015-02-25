@@ -8,7 +8,7 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.fragments.SettingsFragment_;
 
 @EActivity(R.layout.activity_settings)
-public class SettingsActivity extends OttoActionBarActivity
+public class SettingsActivity extends EventBusActionBarActivity
 {
     @AfterViews
     void init()
