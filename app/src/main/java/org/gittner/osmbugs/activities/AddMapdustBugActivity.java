@@ -1,6 +1,7 @@
 package org.gittner.osmbugs.activities;
 
 import android.content.Context;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,7 +34,7 @@ import org.osmdroid.util.GeoPoint;
 
 @EActivity(R.layout.activity_add_mapdust_bug)
 @OptionsMenu(R.menu.add_mapdust_bug)
-public class AddMapdustBugActivity extends EventBusActionBarActivity
+public class AddMapdustBugActivity extends ActionBarActivity
 {
     public static final String EXTRA_LATITUDE = "EXTRA_LATITUDE";
     public static final String EXTRA_LONGITUDE = "EXTRA_LONGITUDE";

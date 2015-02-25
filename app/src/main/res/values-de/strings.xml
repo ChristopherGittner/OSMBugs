@@ -168,6 +168,7 @@
     <string name="title_activity_bug_list">Fehlerliste</string>
     <string name="platforms">Platformen</string>
     <string name="enabled">Aktiv</string>
+    <string name="loading">Lade</string>
 
 
 </resources>

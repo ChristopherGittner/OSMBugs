@@ -1,6 +1,7 @@
 package org.gittner.osmbugs.activities;
 
 import android.content.Context;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,7 +38,7 @@ import static android.view.View.VISIBLE;
 @EActivity(R.layout.activity_osm_note_edit)
 @OptionsMenu(R.menu.osm_note_edit)
 public class OsmNoteEditActivity
-        extends EventBusActionBarActivity
+        extends ActionBarActivity
         implements BugEditActivityConstants
 {
     @Extra(EXTRA_BUG)

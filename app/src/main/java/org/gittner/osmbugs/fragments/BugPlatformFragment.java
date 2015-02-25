@@ -9,11 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
+import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.KeeprightBug;
@@ -21,24 +24,30 @@ import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.events.BugsChangedEvents;
+import org.gittner.osmbugs.events.BugsLoadingStateChangedEvent;
 import org.gittner.osmbugs.statics.Platforms;
 import org.gittner.osmbugs.statics.TileSources;
 import org.osmdroid.views.MapView;
 
-@EFragment
-public class BugPlatformListFragment extends EventBusListFragment
+@EFragment(R.layout.fragment_bug_list)
+public class BugPlatformFragment extends EventBusFragment
 {
     private static final String ARG_PLATFORM = "ARG_PLATFORM";
 
     @FragmentArg(ARG_PLATFORM)
     int mPlatform;
 
+    @ViewById(R.id.progressBar)
+    ProgressBar mProgressBar;
+    @ViewById(R.id.list)
+    ListView mList;
+
     private BugAdapter mAdapter = null;
 
     private OnFragmentInteractionListener mListener = null;
 
 
-    public BugPlatformListFragment()
+    public BugPlatformFragment()
     {
     }
 
@@ -81,7 +90,7 @@ public class BugPlatformListFragment extends EventBusListFragment
                 break;
         }
 
-        setListAdapter(mAdapter);
+        mList.setAdapter(mAdapter);
     }
 
 
@@ -117,6 +126,70 @@ public class BugPlatformListFragment extends EventBusListFragment
         if (mPlatform == Platforms.OSM_NOTES)
         {
             setBugs(event);
+        }
+    }
+
+
+    public void onEventMainThread(BugsLoadingStateChangedEvent.Keepright event)
+    {
+        if (mPlatform == Platforms.KEEPRIGHT)
+        {
+            if (event.getState())
+            {
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                mProgressBar.setVisibility(View.GONE);
+            }
+        }
+    }
+
+
+    public void onEventMainThread(BugsLoadingStateChangedEvent.Osmose event)
+    {
+        if (mPlatform == Platforms.OSMOSE)
+        {
+            if (event.getState())
+            {
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                mProgressBar.setVisibility(View.GONE);
+            }
+        }
+    }
+
+
+    public void onEventMainThread(BugsLoadingStateChangedEvent.Mapdust event)
+    {
+        if (mPlatform == Platforms.MAPDUST)
+        {
+            if (event.getState())
+            {
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                mProgressBar.setVisibility(View.GONE);
+            }
+        }
+    }
+
+
+    public void onEventMainThread(BugsLoadingStateChangedEvent.OsmNotes event)
+    {
+        if (mPlatform == Platforms.OSM_NOTES)
+        {
+            if (event.getState())
+            {
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                mProgressBar.setVisibility(View.GONE);
+            }
         }
     }
 

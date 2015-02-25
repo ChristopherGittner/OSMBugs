@@ -35,7 +35,7 @@ import org.gittner.osmbugs.common.MyLocationOverlay;
 import org.gittner.osmbugs.common.RotatingIconButtonFloat;
 import org.gittner.osmbugs.events.BugsChangedEvents;
 import org.gittner.osmbugs.events.BugsDownloadFailedEvent;
-import org.gittner.osmbugs.events.BugsDownloadingStateChangedEvent;
+import org.gittner.osmbugs.events.BugsLoadingStateChangedEvent;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Platforms;
@@ -120,19 +120,19 @@ public class BugMapActivity extends EventBusActionBarActivity
         mOsmoseOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.osmose_marker_b_0),
-                new LaunchEditorListener(KeeprightEditActivity_.class, REQUEST_CODE_OSMOSE_EDIT_ACTIVITY),
+                new LaunchEditorListener(OsmoseEditActivity_.class, REQUEST_CODE_OSMOSE_EDIT_ACTIVITY),
                 new DefaultResourceProxyImpl(this));
 
         mMapdustOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.mapdust_other),
-                new LaunchEditorListener(KeeprightEditActivity_.class, REQUEST_CODE_MAPDUST_EDIT_ACTIVITY),
+                new LaunchEditorListener(MapdustEditActivity_.class, REQUEST_CODE_MAPDUST_EDIT_ACTIVITY),
                 new DefaultResourceProxyImpl(this));
 
         mOsmNotesOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.osm_notes_open_bug),
-                new LaunchEditorListener(KeeprightEditActivity_.class, REQUEST_CODE_OSM_NOTE_EDIT_ACTIVITY),
+                new LaunchEditorListener(OsmNoteEditActivity_.class, REQUEST_CODE_OSM_NOTE_EDIT_ACTIVITY),
                 new DefaultResourceProxyImpl(this));
 
         /* Setup Main MapView */
@@ -589,7 +589,7 @@ public class BugMapActivity extends EventBusActionBarActivity
     }
 
 
-    public void onEventMainThread(BugsDownloadingStateChangedEvent event)
+    public void onEventMainThread(BugsLoadingStateChangedEvent.All event)
     {
         mRefreshBugs.setRotate(event.getState());
     }

@@ -1,5 +1,6 @@
 package org.gittner.osmbugs.activities;
 
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @EActivity(R.layout.activity_osmose_edit)
 public class OsmoseEditActivity
-        extends EventBusActionBarActivity
+        extends ActionBarActivity
         implements BugEditActivityConstants
 {
     @Extra(EXTRA_BUG)

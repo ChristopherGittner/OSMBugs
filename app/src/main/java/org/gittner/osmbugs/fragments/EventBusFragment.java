@@ -1,13 +1,13 @@
 package org.gittner.osmbugs.fragments;
 
-import android.preference.PreferenceFragment;
+import android.app.Fragment;
 
 import org.androidannotations.annotations.EBean;
 
 import de.greenrobot.event.EventBus;
 
 @EBean
-public class EventBusPreferenceFragment extends PreferenceFragment
+public class EventBusFragment extends Fragment
 {
     @Override
     public void onResume()

@@ -16,8 +16,8 @@ import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
-import org.gittner.osmbugs.fragments.BugPlatformListFragment;
-import org.gittner.osmbugs.fragments.BugPlatformListFragment_;
+import org.gittner.osmbugs.fragments.BugPlatformFragment;
+import org.gittner.osmbugs.fragments.BugPlatformFragment_;
 import org.gittner.osmbugs.statics.BugDatabase;
 import org.gittner.osmbugs.statics.Platforms;
 import org.gittner.osmbugs.statics.Settings;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class BugListActivity
         extends ActionBarActivity
         implements ActionBar.TabListener,
-        BugPlatformListFragment.OnFragmentInteractionListener
+        BugPlatformFragment.OnFragmentInteractionListener
 {
     public static final int RESULT_BUG_MINI_MAP_CLICKED = 1;
 
@@ -241,7 +241,7 @@ public class BugListActivity
         @Override
         public Fragment getItem(final int position)
         {
-            return BugPlatformListFragment_.builder()
+            return BugPlatformFragment_.builder()
                     .mPlatform(mPlatforms.get(position))
                     .build();
         }
