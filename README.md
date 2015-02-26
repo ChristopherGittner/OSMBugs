@@ -28,7 +28,7 @@ Osmdroid ( https://github.com/osmdroid/osmdroid )
 
 Androidannotations ( https://github.com/excilys/androidannotations )
 
-OttoBus ( https://square.github.io/otto )
+EventBus ( https://github.com/greenrobot/EventBus )
 
 Material Dialogs ( https://github.com/afollestad/material-dialogs )
 

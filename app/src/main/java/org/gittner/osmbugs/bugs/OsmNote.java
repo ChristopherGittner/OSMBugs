@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.common.Comment;
+import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
@@ -47,7 +48,7 @@ public class OsmNote extends Bug
             List<Comment> comments,
             STATE state)
     {
-        super(new GeoPoint(lat, lon));
+        super(new GeoPoint(lat, lon), Platforms.OSM_NOTES);
         mId = id;
         mState = state;
         mDescription = description;

@@ -664,7 +664,7 @@ public class Settings
 
         public static int getBugLimit()
         {
-            return Integer.parseInt(mPrefs.getString("pref_openstreetmap_notes_note_limit", "1000"));
+            return Integer.parseInt(mPrefs.getString("pref_openstreetmap_notes_note_limit", "200"));
         }
 
 

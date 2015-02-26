@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
@@ -47,7 +48,7 @@ public class OsmoseBug extends Bug
             int item,
             String title)
     {
-        super(new GeoPoint(lat, lon));
+        super(new GeoPoint(lat, lon), Platforms.OSMOSE);
         mId = id;
         mItem = item;
         mTitle = title;

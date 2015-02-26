@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import org.gittner.osmbugs.Helpers.Openstreetmap;
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
@@ -56,7 +57,7 @@ public class KeeprightBug extends Bug
             String comment,
             long way)
     {
-        super(new GeoPoint(lat, lon));
+        super(new GeoPoint(lat, lon), Platforms.KEEPRIGHT);
         mId = id;
         mSchema = schema;
         mType = type;

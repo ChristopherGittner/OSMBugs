@@ -23,9 +23,10 @@ import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
-import org.gittner.osmbugs.events.BugsChangedEvents;
-import org.gittner.osmbugs.events.BugsLoadingStateChangedEvent;
-import org.gittner.osmbugs.statics.Platforms;
+import org.gittner.osmbugs.events.BugsChangedEvent;
+import org.gittner.osmbugs.loader.Loader;
+import org.gittner.osmbugs.platforms.Platform;
+import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.TileSources;
 import org.osmdroid.views.MapView;
 
@@ -35,7 +36,9 @@ public class BugPlatformFragment extends EventBusFragment
     private static final String ARG_PLATFORM = "ARG_PLATFORM";
 
     @FragmentArg(ARG_PLATFORM)
-    int mPlatform;
+    String mArgPlatform;
+
+    private Platform mPlatform = null;
 
     @ViewById(R.id.progressBar)
     ProgressBar mProgressBar;
@@ -71,70 +74,57 @@ public class BugPlatformFragment extends EventBusFragment
     @AfterViews
     void init()
     {
-        switch (mPlatform)
+        mPlatform = Platforms.byName(mArgPlatform);
+
+        if (mPlatform == Platforms.KEEPRIGHT)
         {
-            case Platforms.KEEPRIGHT:
-                mAdapter = new KeeprightBugAdapter(getActivity());
-                break;
-
-            case Platforms.OSMOSE:
-                mAdapter = new OsmoseBugAdapter(getActivity());
-                break;
-
-            case Platforms.MAPDUST:
-                mAdapter = new MapdustBugAdapter(getActivity());
-                break;
-
-            case Platforms.OSM_NOTES:
-                mAdapter = new OsmNoteAdapter(getActivity());
-                break;
+            mAdapter = new KeeprightBugAdapter(getActivity());
         }
+        else if (mPlatform == Platforms.OSMOSE)
+        {
+            mAdapter = new OsmoseBugAdapter(getActivity());
+        }
+        else if (mPlatform == Platforms.MAPDUST)
+        {
+            mAdapter = new MapdustBugAdapter(getActivity());
+        }
+        else if (mPlatform == Platforms.OSM_NOTES)
+        {
+            mAdapter = new OsmNoteAdapter(getActivity());
+        }
+
+        mAdapter.addAll(mPlatform.getBugs());
+        mAdapter.notifyDataSetChanged();
 
         mList.setAdapter(mAdapter);
-    }
 
-
-    public void onEventMainThread(BugsChangedEvents.Keepright event)
-    {
-        if (mPlatform == Platforms.KEEPRIGHT)
+        if (mPlatform.getLoader().getState() == Loader.LOADING)
         {
-            setBugs(event);
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mProgressBar.setVisibility(View.GONE);
         }
     }
 
 
-    public void onEventMainThread(BugsChangedEvents.Osmose event)
+    public void onEventMainThread(BugsChangedEvent event)
     {
-        if (mPlatform == Platforms.OSMOSE)
+        if (event.getPlatform() == mPlatform)
         {
-            setBugs(event);
+            mAdapter.clear();
+            mAdapter.addAll(event.getPlatform().getBugs());
+            mAdapter.notifyDataSetChanged();
         }
     }
 
 
-    public void onEventMainThread(BugsChangedEvents.Mapdust event)
+    public void onEventMainThread(Loader.StateChangedEvent event)
     {
-        if (mPlatform == Platforms.MAPDUST)
+        if (event.getPlatform() == mPlatform)
         {
-            setBugs(event);
-        }
-    }
-
-
-    public void onEventMainThread(BugsChangedEvents.OsmNotes event)
-    {
-        if (mPlatform == Platforms.OSM_NOTES)
-        {
-            setBugs(event);
-        }
-    }
-
-
-    public void onEventMainThread(BugsLoadingStateChangedEvent.Keepright event)
-    {
-        if (mPlatform == Platforms.KEEPRIGHT)
-        {
-            if (event.getState())
+            if (event.getState() == Loader.LOADING)
             {
                 mProgressBar.setVisibility(View.VISIBLE);
             }
@@ -143,70 +133,14 @@ public class BugPlatformFragment extends EventBusFragment
                 mProgressBar.setVisibility(View.GONE);
             }
         }
-    }
-
-
-    public void onEventMainThread(BugsLoadingStateChangedEvent.Osmose event)
-    {
-        if (mPlatform == Platforms.OSMOSE)
-        {
-            if (event.getState())
-            {
-                mProgressBar.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                mProgressBar.setVisibility(View.GONE);
-            }
-        }
-    }
-
-
-    public void onEventMainThread(BugsLoadingStateChangedEvent.Mapdust event)
-    {
-        if (mPlatform == Platforms.MAPDUST)
-        {
-            if (event.getState())
-            {
-                mProgressBar.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                mProgressBar.setVisibility(View.GONE);
-            }
-        }
-    }
-
-
-    public void onEventMainThread(BugsLoadingStateChangedEvent.OsmNotes event)
-    {
-        if (mPlatform == Platforms.OSM_NOTES)
-        {
-            if (event.getState())
-            {
-                mProgressBar.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                mProgressBar.setVisibility(View.GONE);
-            }
-        }
-    }
-
-
-    private void setBugs(BugsChangedEvents.BugsChangedEventsBase event)
-    {
-        mAdapter.clear();
-        mAdapter.addAll(event.getBugs());
-        mAdapter.notifyDataSetChanged();
     }
 
 
     public interface OnFragmentInteractionListener
     {
-        public void onBugClicked(Bug bug, int platform);
+        public void onBugClicked(Bug bug);
 
-        public void onBugMiniMapClicked(Bug bug, int platform);
+        public void onBugMiniMapClicked(Bug bug);
     }
 
     private abstract class BugAdapter<T extends Bug> extends ArrayAdapter<T>
@@ -246,7 +180,7 @@ public class BugPlatformFragment extends EventBusFragment
                 {
                     if (event.getAction() == MotionEvent.ACTION_UP)
                     {
-                        mListener.onBugMiniMapClicked(bug, mPlatform);
+                        mListener.onBugMiniMapClicked(bug);
                     }
                     return true;
                 }
@@ -257,7 +191,7 @@ public class BugPlatformFragment extends EventBusFragment
                 @Override
                 public void onClick(View v)
                 {
-                    mListener.onBugClicked(bug, mPlatform);
+                    mListener.onBugClicked(bug);
                 }
             });
 

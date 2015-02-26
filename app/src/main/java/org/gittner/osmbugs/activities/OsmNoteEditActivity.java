@@ -60,6 +60,9 @@ public class OsmNoteEditActivity
     @AfterViews
     void init()
     {
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(mBug.getIcon());
+
         mDescription.setText(mBug.getDescription());
 
         CommentAdapter adapter = new CommentAdapter(this);

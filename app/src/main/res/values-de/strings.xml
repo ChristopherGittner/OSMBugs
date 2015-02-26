@@ -5,7 +5,6 @@
     <string name="action_settings">Einstellungen</string>
     <string name="go_to_gps">GPS aktivieren</string>
     <string name="follow_gps">GPS Folgen</string>
-    <string name="refresh">Aktualisieren</string>
     <string name="save">Speichern</string>
     <string name="comment">Kommentar</string>
     <string name="title">Titel</string>
@@ -75,8 +74,6 @@
     <string name="show_open_bugs">Zeige Offene Fehler</string>
     <string name="show_fixed_bugs">Zeige Behobene Fehler</string>
     <string name="show_invalid_bugs">Zeige Ungültige Fehler</string>
-    <string name="specific">Spezifisch</string>
-    <string name="general">Allgemein</string>
     <string name="openstreetmap_notes">Openstreetmap Notes</string>
     <string name="comments">Kommentare</string>
     <string name="open">Offen</string>
@@ -120,14 +117,11 @@
     <string name="osmose">Osmose</string>
     <string name="bugs_to_display">Anzuzeigende Fehler</string>
     <string name="false_positive">Falschmeldung</string>
-    <string name="do_comment">Kommentieren</string>
     <string name="enter_comment">Kommentar eingeben</string>
     <string name="notification_osm_notes_no_password">Kein Password angegeben.\nEinstellungen -> Openstreetmap Notes -> Passwort</string>
     <string name="notification_osm_notes_no_username">Kein Benutzername angegeben.\nEinstellungen -> Openstreetmap Notes -> Benutzername</string>
-    <string name="notification_mapdust_no_username">Kein Benutzername angegeben.\nEinstellungen -> Mapdust Notes -> Benutzername</string>
     <string name="close">Schließen</string>
     <string name="saving">Speichern</string>
-    <string name="loading_comments">Kommentare laden…</string>
     <string name="feedback_to_osmbugs">Feedback to OSMBugs</string>
     <string name="email_feedback">Email Feedback…</string>
     <string name="sending_feedback_failed_message">Scheinbar ist keine Email App installiert.\n\nTrotzdem gute Nachrichten:\nSie Können mir gerne von woanders aus eine Email senden z.B. an:\n\nchristopher@gittner.org\n\nVielen Dank</string>
@@ -143,10 +137,6 @@
     <string name="crash_dialog_text">Uuuuups!\n\nDa ist wohl ein Fehler aufgetreten aber ein Fehlerbericht ist erstellt und kann an meinen Entwickler geschickt werden, um ihn zu beheben!\nAlles was du zu tun hast ist OK drücken.</string>
     <string name="crash_dialog_comment_prompt">Hier unten kannst Du noch einen Kommentar zu diesem Fehler abgeben:</string>
     <string name="crash_dialog_ok_toast">Vielen Dank!</string>
-    <string name="toast_failed_download_keepright_bugs">Fehler beim Herunterladen von Keepright</string>
-    <string name="toast_failed_download_osmose_bugs">Fehler beim Herunterladen von Osmose</string>
-    <string name="toast_failed_download_mapdust_bugs">Fehler beim Herunterladen von Mapdust</string>
-    <string name="toast_failed_download_osm_notes_bugs">Fehler beim Herunterladen von Openstreetmap Notes</string>
     <string name="done">Fertig</string>
     <string name="map_style">Kartenstil</string>
     <string name="display">Anzeige</string>
@@ -168,7 +158,8 @@
     <string name="title_activity_bug_list">Fehlerliste</string>
     <string name="platforms">Platformen</string>
     <string name="enabled">Aktiv</string>
-    <string name="loading">Lade</string>
+    <string name="failed_to_download_from">Fehler beim laden von</string>
+    <string name="ignore">Ignorieren</string>
 
 
 </resources>

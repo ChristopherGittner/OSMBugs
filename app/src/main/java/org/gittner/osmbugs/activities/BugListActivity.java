@@ -10,7 +10,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
@@ -18,8 +17,8 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.fragments.BugPlatformFragment;
 import org.gittner.osmbugs.fragments.BugPlatformFragment_;
-import org.gittner.osmbugs.statics.BugDatabase;
-import org.gittner.osmbugs.statics.Platforms;
+import org.gittner.osmbugs.platforms.Platform;
+import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Settings;
 
 import java.util.ArrayList;
@@ -41,9 +40,6 @@ public class BugListActivity
 
     @ViewById(R.id.pager)
     ViewPager mPager;
-
-    @Bean
-    BugDatabase mBugDatabase;
 
 
     @AfterViews
@@ -97,7 +93,7 @@ public class BugListActivity
     {
         if (resultCode == RESULT_OK)
         {
-            mBugDatabase.reload(Platforms.KEEPRIGHT);
+            Platforms.KEEPRIGHT.getLoader().reload();
         }
     }
 
@@ -107,7 +103,7 @@ public class BugListActivity
     {
         if (resultCode == RESULT_OK)
         {
-            mBugDatabase.reload(Platforms.OSMOSE);
+            Platforms.OSMOSE.getLoader().reload();
         }
     }
 
@@ -117,7 +113,7 @@ public class BugListActivity
     {
         if (resultCode == RESULT_OK)
         {
-            mBugDatabase.reload(Platforms.MAPDUST);
+            Platforms.MAPDUST.getLoader().reload();
         }
     }
 
@@ -127,7 +123,7 @@ public class BugListActivity
     {
         if (resultCode == RESULT_OK)
         {
-            mBugDatabase.reload(Platforms.OSM_NOTES);
+            Platforms.OSM_NOTES.getLoader().reload();
         }
     }
 
@@ -154,43 +150,31 @@ public class BugListActivity
 
 
     @Override
-    public void onBugClicked(final Bug bug, int platform)
+    public void onBugClicked(final Bug bug)
     {
-        switch (platform)
+        Platform platform = bug.getPlatform();
+
+        if (platform == Platforms.KEEPRIGHT)
         {
-            case Platforms.KEEPRIGHT:
-                KeeprightEditActivity_
-                        .intent(this)
-                        .extra(BugEditActivityConstants.EXTRA_BUG, bug)
-                        .startForResult(REQUEST_CODE_KEEPRIGHT_EDIT_ACTIVITY);
-                break;
-
-            case Platforms.OSMOSE:
-                OsmoseEditActivity_
-                        .intent(this)
-                        .extra(BugEditActivityConstants.EXTRA_BUG, bug)
-                        .startForResult(REQUEST_CODE_OSMOSE_EDIT_ACTIVITY);
-                break;
-
-            case Platforms.MAPDUST:
-                MapdustEditActivity_
-                        .intent(this)
-                        .extra(BugEditActivityConstants.EXTRA_BUG, bug)
-                        .startForResult(REQUEST_CODE_MAPDUST_EDIT_ACTIVITY);
-                break;
-
-            case Platforms.OSM_NOTES:
-                OsmNoteEditActivity_
-                        .intent(this)
-                        .extra(BugEditActivityConstants.EXTRA_BUG, bug)
-                        .startForResult(REQUEST_CODE_OSM_NOTE_EDIT_ACTIVITY);
-                break;
+            startActivityForResult(bug.createEditor(this), REQUEST_CODE_KEEPRIGHT_EDIT_ACTIVITY);
+        }
+        else if (platform == Platforms.OSMOSE)
+        {
+            startActivityForResult(bug.createEditor(this), REQUEST_CODE_OSMOSE_EDIT_ACTIVITY);
+        }
+        else if (platform == Platforms.MAPDUST)
+        {
+            startActivityForResult(bug.createEditor(this), REQUEST_CODE_MAPDUST_EDIT_ACTIVITY);
+        }
+        else if (platform == Platforms.OSM_NOTES)
+        {
+            startActivityForResult(bug.createEditor(this), REQUEST_CODE_OSM_NOTE_EDIT_ACTIVITY);
         }
     }
 
 
     @Override
-    public void onBugMiniMapClicked(final Bug bug, int platform)
+    public void onBugMiniMapClicked(final Bug bug)
     {
         Intent data = new Intent();
         data.putExtra(RESULT_EXTRA_BUG, bug);
@@ -201,7 +185,7 @@ public class BugListActivity
 
     private class PlatformPagerAdapter extends FragmentPagerAdapter
     {
-        private final ArrayList<Integer> mPlatforms = new ArrayList<>();
+        private final ArrayList<Platform> mPlatforms = new ArrayList<>();
 
 
         public PlatformPagerAdapter(final FragmentManager fm)
@@ -220,21 +204,7 @@ public class BugListActivity
         @Override
         public CharSequence getPageTitle(final int position)
         {
-            switch (mPlatforms.get(position))
-            {
-                case Platforms.KEEPRIGHT:
-                    return getString(R.string.keepright);
-
-                case Platforms.OSMOSE:
-                    return getString(R.string.osmose);
-
-                case Platforms.MAPDUST:
-                    return getString(R.string.mapdust);
-
-                case Platforms.OSM_NOTES:
-                    return getString(R.string.openstreetmap_notes);
-            }
-            return null;
+            return mPlatforms.get(position).getName();
         }
 
 
@@ -242,12 +212,12 @@ public class BugListActivity
         public Fragment getItem(final int position)
         {
             return BugPlatformFragment_.builder()
-                    .mPlatform(mPlatforms.get(position))
+                    .mArgPlatform(mPlatforms.get(position).getName())
                     .build();
         }
 
 
-        public void add(int platform)
+        public void add(Platform platform)
         {
             mPlatforms.add(platform);
         }

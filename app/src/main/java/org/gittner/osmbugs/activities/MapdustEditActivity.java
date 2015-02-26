@@ -69,6 +69,9 @@ public class MapdustEditActivity
     @AfterViews
     void init()
     {
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(mBug.getIcon());
+
         mDescription.setText(mBug.getDescription());
 
         mAdapter = new CommentAdapter(this);

@@ -4,7 +4,7 @@ import org.osmdroid.util.BoundingBoxE6;
 
 import java.util.ArrayList;
 
-public interface BugApi<T>
+public interface BugApi<TBug>
 {
-    public ArrayList<T> downloadBBox(BoundingBoxE6 bBox);
+    public ArrayList<TBug> downloadBBox(BoundingBoxE6 bBox);
 }

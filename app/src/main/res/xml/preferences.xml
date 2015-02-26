@@ -380,7 +380,7 @@
                     android:key="pref_openstreetmap_notes_enabled_only_open"
                     android:title="@string/show_only_open_bugs"/>
                 <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
-                    android:defaultValue="1000"
+                    android:defaultValue="200"
                     android:dialogTitle="@string/enter_new_limit"
                     android:key="pref_openstreetmap_notes_bug_limit"
                     android:maxLength="5"

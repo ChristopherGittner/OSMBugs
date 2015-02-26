@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.common.Comment;
+import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
@@ -60,7 +61,7 @@ public class MapdustBug extends Bug
             ArrayList<Comment> comments,
             STATE state)
     {
-        super(new GeoPoint(lat, lon));
+        super(new GeoPoint(lat, lon), Platforms.MAPDUST);
         mId = id;
         mType = type;
         mComments = comments;

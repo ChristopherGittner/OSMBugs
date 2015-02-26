@@ -5,7 +5,6 @@
     <string name="action_settings">Settings</string>
     <string name="go_to_gps">Enable GPS</string>
     <string name="follow_gps">Follow GPS</string>
-    <string name="refresh">Refresh</string>
     <string name="save">Save</string>
     <string name="comment">Comment</string>
     <string name="title">Title</string>
@@ -76,8 +75,6 @@
     <string name="show_open_bugs">Show Open Bugs</string>
     <string name="show_fixed_bugs">Show Closed Bugs</string>
     <string name="show_invalid_bugs">Show Invalid Bugs</string>
-    <string name="specific">Specific</string>
-    <string name="general">General</string>
     <string name="openstreetmap_notes">Openstreetmap Notes</string>
     <string name="comments">Comments</string>
     <string name="open">Open</string>
@@ -125,10 +122,7 @@
     <string name="close">Close</string>
     <string name="notification_osm_notes_no_username">No Username provided.\nSettings -> Openstreetmap Notes -> Username</string>
     <string name="notification_osm_notes_no_password">No Password provided.\nSettings -> Openstreetmap Notes -> Password</string>
-    <string name="notification_mapdust_no_username">No Username provided.\nSettings -> Mapdust Notes -> Username</string>
     <string name="saving">Saving</string>
-    <string name="do_comment">Comment</string>
-    <string name="loading_comments">Loading Comments…</string>
     <string name="developer_mail" tools:ignore="MissingTranslation">christopher@gittner.org</string>
     <string name="feedback_to_osmbugs">Feedback to OSMBugs</string>
     <string name="email_feedback">Email Feedback…</string>
@@ -155,10 +149,6 @@
     <string name="crash_dialog_text">Ooooops!\n\nI crashed,\nbut a report has been created and is ready to be delivered to my developer to help fix the issue!\nAll you have to do is click OK.</string>
     <string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
     <string name="crash_dialog_ok_toast">Thank you !</string>
-    <string name="toast_failed_download_keepright_bugs">Failed to download Keepright Bugs</string>
-    <string name="toast_failed_download_osmose_bugs">Failed to download Osmose Bugs</string>
-    <string name="toast_failed_download_mapdust_bugs">Failed to download Mapdust Bugs</string>
-    <string name="toast_failed_download_osm_notes_bugs">Failed to download Openstreetmap Note</string>
     <string name="done">Done</string>
     <string name="map_style">Map Style</string>
     <string name="display">Display</string>
@@ -180,6 +170,7 @@
     <string name="title_activity_bug_list">Bug List</string>
     <string name="platforms">Platforms</string>
     <string name="enabled">Enabled</string>
-    <string name="loading">Loading</string>
+    <string name="failed_to_download_from">Failed to Download from</string>
+    <string name="ignore">Ignore</string>
 
 </resources>

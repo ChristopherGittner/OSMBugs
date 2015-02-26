@@ -5,13 +5,13 @@
     <item
         android:id="@+id/action_ignore"
         android:icon="@drawable/ic_mapdust_ignore"
-        android:title="@string/done"
+        android:title="@string/ignore"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_close"
         android:icon="@drawable/ic_mapdust_close"
-        android:title="@string/done"
+        android:title="@string/close"
         app:showAsAction="always"/>
 
 </menu>

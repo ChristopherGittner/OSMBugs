@@ -8,6 +8,7 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
 import org.androidannotations.annotations.EApplication;
+import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
 
@@ -47,7 +48,7 @@ public class OsmbugsApplication extends Application
         /* Init the Drawings Class to load all Resources */
         Images.init(this);
 
-        //BugDatabase.init(this);
+        Platforms.init(this);
 
 		/* Enable Acra Crash reports only on Release */
         if (!BuildConfig.DEBUG)

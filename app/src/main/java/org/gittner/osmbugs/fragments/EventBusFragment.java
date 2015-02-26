@@ -2,11 +2,8 @@ package org.gittner.osmbugs.fragments;
 
 import android.app.Fragment;
 
-import org.androidannotations.annotations.EBean;
-
 import de.greenrobot.event.EventBus;
 
-@EBean
 public class EventBusFragment extends Fragment
 {
     @Override

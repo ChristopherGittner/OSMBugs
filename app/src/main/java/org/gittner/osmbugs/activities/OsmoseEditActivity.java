@@ -41,6 +41,9 @@ public class OsmoseEditActivity
     @AfterViews
     void init()
     {
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(mBug.getIcon());
+
         mTitle.setText(mBug.getTitle());
 
         mIcon.setImageDrawable(mBug.getIcon());
