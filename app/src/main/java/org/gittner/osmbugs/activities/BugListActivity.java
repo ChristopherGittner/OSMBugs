@@ -93,7 +93,7 @@ public class BugListActivity
     {
         if (resultCode == RESULT_OK)
         {
-            Platforms.KEEPRIGHT.getLoader().reload();
+            Platforms.KEEPRIGHT.getLoader().getQueue().add(Settings.getLastBBox());
         }
     }
 
@@ -103,7 +103,7 @@ public class BugListActivity
     {
         if (resultCode == RESULT_OK)
         {
-            Platforms.OSMOSE.getLoader().reload();
+            Platforms.OSMOSE.getLoader().getQueue().add(Settings.getLastBBox());
         }
     }
 
@@ -113,7 +113,7 @@ public class BugListActivity
     {
         if (resultCode == RESULT_OK)
         {
-            Platforms.MAPDUST.getLoader().reload();
+            Platforms.MAPDUST.getLoader().getQueue().add(Settings.getLastBBox());
         }
     }
 
@@ -123,7 +123,7 @@ public class BugListActivity
     {
         if (resultCode == RESULT_OK)
         {
-            Platforms.OSM_NOTES.getLoader().reload();
+            Platforms.OSM_NOTES.getLoader().getQueue().add(Settings.getLastBBox());
         }
     }
 

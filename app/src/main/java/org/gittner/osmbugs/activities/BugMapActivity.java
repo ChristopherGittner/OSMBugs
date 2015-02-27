@@ -319,7 +319,7 @@ public class BugMapActivity extends EventBusActionBarActivity
     {
         if (resultCode == RESULT_OK)
         {
-            Platforms.KEEPRIGHT.getLoader().load(mMap.getBoundingBox());
+            Platforms.KEEPRIGHT.getLoader().getQueue().add(mMap.getBoundingBox());
         }
     }
 
@@ -329,7 +329,7 @@ public class BugMapActivity extends EventBusActionBarActivity
     {
         if (resultCode == RESULT_OK)
         {
-            Platforms.OSMOSE.getLoader().load(mMap.getBoundingBox());
+            Platforms.OSMOSE.getLoader().getQueue().add(mMap.getBoundingBox());
         }
     }
 
@@ -339,7 +339,7 @@ public class BugMapActivity extends EventBusActionBarActivity
     {
         if (resultCode == RESULT_OK)
         {
-            Platforms.MAPDUST.getLoader().load(mMap.getBoundingBox());
+            Platforms.MAPDUST.getLoader().getQueue().add(mMap.getBoundingBox());
         }
     }
 
@@ -349,7 +349,7 @@ public class BugMapActivity extends EventBusActionBarActivity
     {
         if (resultCode == RESULT_OK)
         {
-            Platforms.OSM_NOTES.getLoader().load(mMap.getBoundingBox());
+            Platforms.OSM_NOTES.getLoader().getQueue().add(mMap.getBoundingBox());
         }
     }
 
@@ -374,7 +374,7 @@ public class BugMapActivity extends EventBusActionBarActivity
     {
         if (resultCode == RESULT_OK)
         {
-            Platforms.MAPDUST.getLoader().load(mMap.getBoundingBox());
+            Platforms.MAPDUST.getLoader().getQueue().add(mMap.getBoundingBox());
         }
     }
 
@@ -384,7 +384,7 @@ public class BugMapActivity extends EventBusActionBarActivity
     {
         if (resultCode == RESULT_OK)
         {
-            Platforms.OSM_NOTES.getLoader().load(mMap.getBoundingBox());
+            Platforms.OSM_NOTES.getLoader().getQueue().add(mMap.getBoundingBox());
         }
     }
 

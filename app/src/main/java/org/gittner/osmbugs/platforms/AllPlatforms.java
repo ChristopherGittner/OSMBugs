@@ -25,7 +25,7 @@ public class AllPlatforms extends HashMap<String, Platform>
 
             if (platform.isEnabled())
             {
-                platform.getLoader().load(bBox);
+                platform.getLoader().getQueue().add(bBox);
             }
         }
     }
