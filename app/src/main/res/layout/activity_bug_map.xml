@@ -8,17 +8,19 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:layout_below="@+id/progressBar2"/>
 
-    <org.gittner.osmbugs.common.RotatingIconButtonFloat
-        android:id="@+id/btnRefreshBugs"
-        android:layout_width="wrap_content"
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@color/accent"
-        materialdesign:iconDrawable="@drawable/ic_autorenew_white"/>
+        android:id="@+id/progressBar"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        />
 
 </RelativeLayout>

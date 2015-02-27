@@ -38,9 +38,9 @@ public class LoaderManager
 
     public int getState()
     {
-        for(Loader loader : mLoaders)
+        for (Loader loader : mLoaders)
         {
-            if(loader.getState() == Loader.LOADING)
+            if (loader.getState() == Loader.LOADING)
             {
                 return LOADING;
             }
@@ -54,7 +54,7 @@ public class LoaderManager
     {
         int currentState = getState();
 
-        if(currentState != mLastState)
+        if (currentState != mLastState)
         {
             mLastState = currentState;
 

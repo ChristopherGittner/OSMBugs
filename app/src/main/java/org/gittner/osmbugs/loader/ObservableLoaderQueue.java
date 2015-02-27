@@ -19,16 +19,14 @@ public abstract class ObservableLoaderQueue<T>
 
     public abstract void add(T newEntry);
 
-
     abstract boolean hasNext();
-
 
     public abstract T getNext();
 
 
     protected void notifyDataChanged()
     {
-        if(mListener != null)
+        if (mListener != null)
         {
             mListener.onChange();
         }

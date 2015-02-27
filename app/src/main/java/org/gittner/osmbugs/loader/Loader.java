@@ -60,7 +60,7 @@ public class Loader<TBug extends Bug>
      */
     private void checkQueue()
     {
-        if(mTask == null)
+        if (mTask == null)
         {
             if (mQueue.hasNext())
             {
@@ -124,7 +124,7 @@ public class Loader<TBug extends Bug>
             }
 
             /* Check if there is still something in the queue */
-            if(!mQueue.hasNext())
+            if (!mQueue.hasNext())
             {
                 setState(STOPPED);
             }
@@ -132,7 +132,6 @@ public class Loader<TBug extends Bug>
             checkQueue();
         }
     }
-
 
     public class StateChangedEvent<TPlatform extends Platform>
     {

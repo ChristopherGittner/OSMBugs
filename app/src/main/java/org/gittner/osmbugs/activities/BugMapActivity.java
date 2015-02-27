@@ -9,12 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.OnActivityResult.Extra;
@@ -30,8 +30,8 @@ import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
+import org.gittner.osmbugs.common.MapScrollWatcher;
 import org.gittner.osmbugs.common.MyLocationOverlay;
-import org.gittner.osmbugs.common.RotatingIconButtonFloat;
 import org.gittner.osmbugs.events.BugsChangedEvent;
 import org.gittner.osmbugs.loader.Loader;
 import org.gittner.osmbugs.loader.LoaderManager;
@@ -65,8 +65,8 @@ public class BugMapActivity extends EventBusActionBarActivity
 
     @ViewById(R.id.mapview)
     MapView mMap;
-    @ViewById(R.id.btnRefreshBugs)
-    RotatingIconButtonFloat mRefreshBugs;
+    @ViewById(R.id.progressBar)
+    ProgressBar mProgressBar;
     @OptionsMenuItem(R.id.add_bug)
     MenuItem mMenuAddBug;
     @OptionsMenuItem(R.id.enable_gps)
@@ -90,6 +90,8 @@ public class BugMapActivity extends EventBusActionBarActivity
 
     private static GeoPoint mNewBugLocation;
 
+    private MapScrollWatcher mMapScrollWatcher = null;
+
     private final MyLocationOverlay.FollowModeListener mFollowModeListener = new MyLocationOverlay.FollowModeListener()
     {
         @Override
@@ -104,6 +106,10 @@ public class BugMapActivity extends EventBusActionBarActivity
     @AfterViews
     void init()
     {
+        setSupportProgressBarIndeterminate(true);
+        setSupportProgressBarVisibility(true);
+        setSupportProgressBarIndeterminateVisibility(true);
+
         /* Create Bug Overlays */
         mKeeprightOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
@@ -130,19 +136,19 @@ public class BugMapActivity extends EventBusActionBarActivity
                 new DefaultResourceProxyImpl(this));
 
         /* Add all bugs to the Map */
-        for(KeeprightBug bug : Platforms.KEEPRIGHT.getBugs())
+        for (KeeprightBug bug : Platforms.KEEPRIGHT.getBugs())
         {
             mKeeprightOverlay.addItem(new BugOverlayItem(bug));
         }
-        for(OsmoseBug bug : Platforms.OSMOSE.getBugs())
+        for (OsmoseBug bug : Platforms.OSMOSE.getBugs())
         {
             mOsmoseOverlay.addItem(new BugOverlayItem(bug));
         }
-        for(MapdustBug bug : Platforms.MAPDUST.getBugs())
+        for (MapdustBug bug : Platforms.MAPDUST.getBugs())
         {
             mMapdustOverlay.addItem(new BugOverlayItem(bug));
         }
-        for(OsmNote note : Platforms.OSM_NOTES.getBugs())
+        for (OsmNote note : Platforms.OSM_NOTES.getBugs())
         {
             mOsmNotesOverlay.addItem(new BugOverlayItem(note));
         }
@@ -180,6 +186,8 @@ public class BugMapActivity extends EventBusActionBarActivity
         });
         mMap.getController().setZoom(Settings.getLastZoom());
         mMap.getController().setCenter(Settings.getLastMapCenter());
+
+        mProgressBar.setVisibility(View.GONE);
     }
 
 
@@ -235,6 +243,8 @@ public class BugMapActivity extends EventBusActionBarActivity
 
         mLocationOverlay.disableFollowLocation();
         mLocationOverlay.disableMyLocation();
+
+        mMapScrollWatcher.cancel();
     }
 
 
@@ -267,18 +277,14 @@ public class BugMapActivity extends EventBusActionBarActivity
 
         mMap.invalidate();
 
-        /* Show the refresh Button only if at least one Platform is enabled */
-        if (Settings.Keepright.isEnabled()
-                || Settings.Osmose.isEnabled()
-                || Settings.Mapdust.isEnabled()
-                || Settings.OsmNotes.isEnabled())
+        mMapScrollWatcher = new MapScrollWatcher(mMap, new MapScrollWatcher.Listener()
         {
-            mRefreshBugs.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            mRefreshBugs.setVisibility(View.GONE);
-        }
+            @Override
+            public void onScrolled()
+            {
+                Platforms.ALL_PLATFORMS.loadIfEnabled(mMap.getBoundingBox());
+            }
+        });
     }
 
 
@@ -386,13 +392,6 @@ public class BugMapActivity extends EventBusActionBarActivity
         {
             Platforms.OSM_NOTES.getLoader().getQueue().add(mMap.getBoundingBox());
         }
-    }
-
-
-    @Click(R.id.btnRefreshBugs)
-    void refreshBugs()
-    {
-        Platforms.ALL_PLATFORMS.loadIfEnabled(mMap.getBoundingBox());
     }
 
 
@@ -557,12 +556,16 @@ public class BugMapActivity extends EventBusActionBarActivity
 
             Toast.makeText(BugMapActivity.this, text, Toast.LENGTH_LONG).show();
         }
-    }
 
-
-    public void onEventMainThread(LoaderManager.LoadersStateChangedEvent event)
-    {
-        mRefreshBugs.setRotate(event.getState() == LoaderManager.LOADING);
+        //TODO Events from LoaderManager are not working correct if Activity is reopened while a download was / is running
+        if (Platforms.LOADER_MANAGER.getState() == LoaderManager.LOADING)
+        {
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mProgressBar.setVisibility(View.GONE);
+        }
     }
 
 

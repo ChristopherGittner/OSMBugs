@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 /**
  * A LoadingQueue implementation that will rotate the first Element out if capacity limit is reached
+ *
  * @param <T>
  */
 public class FixedSizeLoaderQueue<T> extends ObservableLoaderQueue<T>
@@ -12,9 +13,10 @@ public class FixedSizeLoaderQueue<T> extends ObservableLoaderQueue<T>
 
     private LinkedList<T> mData = new LinkedList<>();
 
+
     public FixedSizeLoaderQueue(final int maxSize)
     {
-        if(maxSize == 0)
+        if (maxSize == 0)
         {
             throw new IllegalArgumentException("Illegal Max Size: " + maxSize);
         }
@@ -26,7 +28,7 @@ public class FixedSizeLoaderQueue<T> extends ObservableLoaderQueue<T>
     @Override
     public void add(final T newEntry)
     {
-        if(mData.size() == mMaxSize)
+        if (mData.size() == mMaxSize)
         {
             mData.removeFirst();
         }
