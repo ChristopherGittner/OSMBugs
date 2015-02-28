@@ -160,6 +160,7 @@
     <string name="enabled">Aktiv</string>
     <string name="failed_to_download_from">Fehler beim laden von</string>
     <string name="ignore">Ignorieren</string>
+    <string name="auto_load">Automatisch Laden</string>
 
 
 </resources>

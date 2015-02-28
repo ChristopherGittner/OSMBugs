@@ -172,5 +172,6 @@
     <string name="enabled">Enabled</string>
     <string name="failed_to_download_from">Failed to Download from</string>
     <string name="ignore">Ignore</string>
+    <string name="auto_load">Auto Load</string>
 
 </resources>

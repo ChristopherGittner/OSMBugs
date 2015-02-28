@@ -1,6 +1,7 @@
 package org.gittner.osmbugs.platforms;
 
 import org.androidannotations.annotations.EBean;
+import org.gittner.osmbugs.loader.Loader;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.BoundingBoxE6;
 
@@ -43,5 +44,21 @@ public class AllPlatforms extends HashMap<String, Platform>
         {
             put(platform.getName(), platform);
         }
+    }
+
+
+    public int getLoaderState()
+    {
+        for (final Entry<String, Platform> entry : entrySet())
+        {
+            Platform platform = entry.getValue();
+
+            if (platform.getLoader().getState() == Loader.LOADING)
+            {
+                return Loader.LOADING;
+            }
+        }
+
+        return Loader.STOPPED;
     }
 }

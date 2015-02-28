@@ -52,6 +52,12 @@ public class Settings
     }
 
 
+    public static boolean getAutoLoad()
+    {
+        return mPrefs.getBoolean("pref_auto_load", true);
+    }
+
+
     /* Location will be saved as String since Preferences can not store Double */
     public static GeoPoint getLastMapCenter()
     {

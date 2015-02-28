@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.OnActivityResult.Extra;
@@ -32,9 +33,9 @@ import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.MapScrollWatcher;
 import org.gittner.osmbugs.common.MyLocationOverlay;
+import org.gittner.osmbugs.common.RotatingIconButtonFloat;
 import org.gittner.osmbugs.events.BugsChangedEvent;
 import org.gittner.osmbugs.loader.Loader;
-import org.gittner.osmbugs.loader.LoaderManager;
 import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
@@ -67,6 +68,8 @@ public class BugMapActivity extends EventBusActionBarActivity
     MapView mMap;
     @ViewById(R.id.progressBar)
     ProgressBar mProgressBar;
+    @ViewById(R.id.btnRefreshBugs)
+    RotatingIconButtonFloat mRefreshButton;
     @OptionsMenuItem(R.id.add_bug)
     MenuItem mMenuAddBug;
     @OptionsMenuItem(R.id.enable_gps)
@@ -186,8 +189,6 @@ public class BugMapActivity extends EventBusActionBarActivity
         });
         mMap.getController().setZoom(Settings.getLastZoom());
         mMap.getController().setCenter(Settings.getLastMapCenter());
-
-        mProgressBar.setVisibility(View.GONE);
     }
 
 
@@ -244,7 +245,10 @@ public class BugMapActivity extends EventBusActionBarActivity
         mLocationOverlay.disableFollowLocation();
         mLocationOverlay.disableMyLocation();
 
-        mMapScrollWatcher.cancel();
+        if (mMapScrollWatcher != null)
+        {
+            mMapScrollWatcher.cancel();
+        }
     }
 
 
@@ -277,14 +281,40 @@ public class BugMapActivity extends EventBusActionBarActivity
 
         mMap.invalidate();
 
-        mMapScrollWatcher = new MapScrollWatcher(mMap, new MapScrollWatcher.Listener()
+        if (Settings.getAutoLoad())
         {
-            @Override
-            public void onScrolled()
+            mRefreshButton.setVisibility(View.GONE);
+
+            if (Platforms.ALL_PLATFORMS.getLoaderState() == Loader.LOADING)
             {
-                Platforms.ALL_PLATFORMS.loadIfEnabled(mMap.getBoundingBox());
+                mProgressBar.setVisibility(View.VISIBLE);
             }
-        });
+            else
+            {
+                mProgressBar.setVisibility(View.GONE);
+            }
+
+            mMapScrollWatcher = new MapScrollWatcher(mMap, new MapScrollWatcher.Listener()
+            {
+                @Override
+                public void onScrolled()
+                {
+                    Platforms.ALL_PLATFORMS.loadIfEnabled(mMap.getBoundingBox());
+                }
+            });
+        }
+        else
+        {
+            mRefreshButton.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.GONE);
+        }
+    }
+
+
+    @Click(R.id.btnRefreshBugs)
+    void onRefreshButtonClicked()
+    {
+        Platforms.ALL_PLATFORMS.loadIfEnabled(mMap.getBoundingBox());
     }
 
 
@@ -557,14 +587,27 @@ public class BugMapActivity extends EventBusActionBarActivity
             Toast.makeText(BugMapActivity.this, text, Toast.LENGTH_LONG).show();
         }
 
-        //TODO Events from LoaderManager are not working correct if Activity is reopened while a download was / is running
-        if (Platforms.LOADER_MANAGER.getState() == LoaderManager.LOADING)
+        if (Platforms.ALL_PLATFORMS.getLoaderState() == Loader.LOADING)
         {
-            mProgressBar.setVisibility(View.VISIBLE);
+            if (Settings.getAutoLoad())
+            {
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                mRefreshButton.setRotate(true);
+            }
         }
         else
         {
-            mProgressBar.setVisibility(View.GONE);
+            if (Settings.getAutoLoad())
+            {
+                mProgressBar.setVisibility(View.GONE);
+            }
+            else
+            {
+                mRefreshButton.setRotate(false);
+            }
         }
     }
 

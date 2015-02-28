@@ -2,8 +2,6 @@ package org.gittner.osmbugs.platforms;
 
 import android.content.Context;
 
-import org.gittner.osmbugs.loader.LoaderManager;
-
 public class Platforms
 {
     public static AllPlatforms ALL_PLATFORMS;
@@ -12,8 +10,6 @@ public class Platforms
     public static Osmose OSMOSE;
     public static Mapdust MAPDUST;
     public static OsmNotes OSM_NOTES;
-
-    public static LoaderManager LOADER_MANAGER;
 
 
     public static void init(Context context)
@@ -31,13 +27,6 @@ public class Platforms
                 MAPDUST,
                 OSM_NOTES
         });
-
-        LOADER_MANAGER = LoaderManager.getInstance();
-
-        LOADER_MANAGER.addLoader(KEEPRIGHT.getLoader());
-        LOADER_MANAGER.addLoader(OSMOSE.getLoader());
-        LOADER_MANAGER.addLoader(MAPDUST.getLoader());
-        LOADER_MANAGER.addLoader(OSM_NOTES.getLoader());
     }
 
 

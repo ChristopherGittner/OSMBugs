@@ -7,6 +7,10 @@
             android:entryValues="@array/map_styles_values"
             android:key="pref_map_style"
             android:title="@string/map_style"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_auto_load"
+            android:title="@string/auto_load"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/platforms">
         <PreferenceScreen android:title="@string/keepright">
