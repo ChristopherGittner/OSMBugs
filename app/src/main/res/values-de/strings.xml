@@ -134,8 +134,8 @@
     <string name="tags">Tags</string>
     <string name="modify">Ändern</string>
     <string name="crash_dialog_title">Osmbugs ist abgestürzt</string>
-    <string name="crash_dialog_text">Uuuuups!\n\nDa ist wohl ein Fehler aufgetreten aber ein Fehlerbericht ist erstellt und kann an meinen Entwickler geschickt werden, um ihn zu beheben!\nAlles was du zu tun hast ist OK drücken.</string>
-    <string name="crash_dialog_comment_prompt">Hier unten kannst Du noch einen Kommentar zu diesem Fehler abgeben:</string>
+    <string name="crash_dialog_text">Uuuuups!\n\nDa ist wohl ein Fehler aufgetreten.\nAber ein Fehlerbericht ist erstellt und kann an meinen Entwickler geschickt werden, um ihn zu beheben!\nAlles was Du zu tun hast ist "OK" drücken.</string>
+    <string name="crash_dialog_comment_prompt">Hier unten kannst Du noch einen Kommentar zu diesem Fehler eintragen:</string>
     <string name="crash_dialog_ok_toast">Vielen Dank!</string>
     <string name="done">Fertig</string>
     <string name="map_style">Kartenstil</string>
