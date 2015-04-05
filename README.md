@@ -13,6 +13,16 @@ Currently supported Platforms are:
 
 -Osmose ( Read-Only )
 
+Build Status
+============
+__master__
+
+[![Build Status](https://travis-ci.org/ChristopherGittner/OSMBugs.svg?branch=master)](https://travis-ci.org/ChristopherGittner/OSMBugs.svg?branch=master)
+
+__dev__
+
+[![Build Status](https://travis-ci.org/ChristopherGittner/OSMBugs.svg?branch=dev)](https://travis-ci.org/ChristopherGittner/OSMBugs.svg?branch=dev)
+
 License
 =======
 The Code is licensed under WTFPL. See "LICENSE"
