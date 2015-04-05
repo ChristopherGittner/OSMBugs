@@ -6,7 +6,6 @@
 
     <TextView
         android:id="@+id/txtvTitle"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -17,7 +16,6 @@
 
     <TextView
         android:id="@+id/txtvTags"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"

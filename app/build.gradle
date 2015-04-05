@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 22
     buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "org.gittner.osmbugs"
         minSdkVersion 14
-        targetSdkVersion 21
-        versionCode 19
-        versionName "0-9-0"
+        targetSdkVersion 22
+        versionCode 20
+        versionName "0-9-1"
     }
     buildTypes {
         release {
