@@ -1,7 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <org.osmdroid.views.MapView
         android:id="@+id/mapview"
@@ -10,26 +11,25 @@
         android:layout_height="match_parent"
         android:clickable="true"/>
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <com.rey.material.widget.ProgressView
         android:id="@+id/progressBar"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:indeterminate="true"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_margin="8dp"
+        android:layout_gravity="center"
+        app:pv_autostart="false"
+        app:pv_circular="false"
+        app:pv_progressStyle="@style/IndeterminateProgressDrawableStyle"
+        app:pv_progressMode="indeterminate"/>
 
-    <org.gittner.osmbugs.common.RotatingIconButtonFloat
+    <com.rey.material.widget.FloatingActionButton
+        style="@style/FloatingRefreshButton"
         android:id="@+id/btnRefreshBugs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@color/accent"
-        materialdesign:iconDrawable="@drawable/ic_autorenew_white"/>
+        android:layout_marginRight="16dp"/>
 
 </RelativeLayout>

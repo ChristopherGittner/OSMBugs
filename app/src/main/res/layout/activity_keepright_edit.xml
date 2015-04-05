@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
@@ -44,36 +45,34 @@
             android:text="@string/description"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-        <TextView
-            android:id="@+id/txtvState"
-            style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/state"/>
-
-        <Spinner
+        <com.rey.material.widget.Spinner
+            style="@style/Material.Widget.Spinner"
             android:id="@+id/spnState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"/>
-
-        <TextView
-            android:id="@+id/txtvCommentTitle"
-            style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="@string/comment"/>
+            app:ripple="@style/FlatWaveButtonRippleStyle"
+            app:delayClick="false"
+            app:spn_labelEnable="true"
+            app:spn_label="@string/state"
+            app:spn_arrowSwitchMode="true"
+            app:spn_arrowAnimDuration="@android:integer/config_shortAnimTime"
+            app:spn_arrowInterpolator="@android:anim/decelerate_interpolator"/>
 
-        <EditText
+
+        <com.rey.material.widget.EditText
+            style="@style/Material.Widget.EditText"
             android:id="@+id/edttxtComment"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="@string/comment"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:inputType="textMultiLine"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:hint="@string/comment"
+            android:imeOptions="actionNext|flagNoEnterAction|flagNoExtractUi"
+            app:et_inputId="@+id/textfield_et_contact_input"
+            app:et_supportMode="none"
+            app:et_dividerPadding="4dp"/>
 
     </LinearLayout>
 </ScrollView>

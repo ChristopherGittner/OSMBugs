@@ -2,19 +2,21 @@ package org.gittner.osmbugs.activities;
 
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.rey.material.widget.EditText;
+import com.rey.material.widget.Spinner;
 
 import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
@@ -29,6 +31,7 @@ import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.bugs.MapdustBug;
+import org.gittner.osmbugs.common.InvalidateOptionsMenuTextWatcher;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
 
@@ -62,6 +65,9 @@ public class AddMapdustBugActivity extends ActionBarActivity
         MapdustBugTypeAdapter typeAdapter = new MapdustBugTypeAdapter(this);
 
         mSpnType.setAdapter(typeAdapter);
+
+        /* Invalidate Options Menu on Text change */
+        mDescription.addTextChangedListener(new InvalidateOptionsMenuTextWatcher(this));
 
         mSaveDialog = new MaterialDialog.Builder(this)
                 .title(R.string.saving)
@@ -149,18 +155,11 @@ public class AddMapdustBugActivity extends ActionBarActivity
     }
 
 
-    @AfterTextChange(R.id.edttxtDescription)
-    void descriptionChanged()
-    {
-        invalidateOptionsMenu();
-    }
-
-
     private class MapdustBugTypeAdapter extends ArrayAdapter<Integer>
     {
         public MapdustBugTypeAdapter(Context context)
         {
-            super(context, R.layout.row_keepright_bug_state, R.id.txtvState);
+            super(context, R.layout.row_mapdust_bug_type, R.id.txtvState);
 
             addAll(
                     MapdustBug.WRONG_TURN,

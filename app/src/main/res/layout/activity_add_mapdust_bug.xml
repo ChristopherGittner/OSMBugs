@@ -1,5 +1,6 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
@@ -8,36 +9,33 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txtv2"
-            style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_margin="8dp"
-            android:text="@string/type"/>
-
-        <Spinner
+        <com.rey.material.widget.Spinner
+            style="@style/Material.Widget.Spinner"
             android:id="@+id/spnType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"/>
-
-        <TextView
-            android:id="@+id/txtv1"
-            style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
             android:layout_margin="8dp"
-            android:text="@string/description"/>
+            app:ripple="@style/FlatWaveButtonRippleStyle"
+            app:delayClick="false"
+            app:spn_labelEnable="true"
+            app:spn_label="@string/type"
+            app:spn_arrowSwitchMode="true"
+            app:spn_arrowAnimDuration="@android:integer/config_shortAnimTime"
+            app:spn_arrowInterpolator="@android:anim/decelerate_interpolator"/>
 
-        <EditText
+        <com.rey.material.widget.EditText
+            style="@style/Material.Widget.EditText"
             android:id="@+id/edttxtDescription"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="@string/description"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:inputType="textMultiLine"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:hint="@string/description"
+            android:imeOptions="actionNext|flagNoEnterAction|flagNoExtractUi"
+            app:et_inputId="@+id/textfield_et_contact_input"
+            app:et_supportMode="none"
+            app:et_dividerPadding="4dp"/>
 
     </LinearLayout>
 

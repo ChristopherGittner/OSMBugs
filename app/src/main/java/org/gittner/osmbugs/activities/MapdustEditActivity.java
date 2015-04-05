@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
+import com.rey.material.widget.ProgressView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -50,7 +50,7 @@ public class MapdustEditActivity
     @ViewById(R.id.txtvDescription)
     TextView mDescription;
     @ViewById(R.id.pbarLoadingComments)
-    ProgressBarCircularIndeterminate mProgressBarComments;
+    ProgressView mProgressBarComments;
     @ViewById(R.id.lstvComments)
     ListView mComments;
     @ViewById(R.id.imgbtnAddComment)

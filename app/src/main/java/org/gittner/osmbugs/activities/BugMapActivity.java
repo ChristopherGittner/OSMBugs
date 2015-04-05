@@ -13,6 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.rey.material.widget.FloatingActionButton;
+import com.rey.material.widget.ProgressView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -33,7 +35,6 @@ import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.MapScrollWatcher;
 import org.gittner.osmbugs.common.MyLocationOverlay;
-import org.gittner.osmbugs.common.RotatingIconButtonFloat;
 import org.gittner.osmbugs.events.BugsChangedEvent;
 import org.gittner.osmbugs.loader.Loader;
 import org.gittner.osmbugs.platforms.Platforms;
@@ -67,9 +68,9 @@ public class BugMapActivity extends EventBusActionBarActivity
     @ViewById(R.id.mapview)
     MapView mMap;
     @ViewById(R.id.progressBar)
-    ProgressBar mProgressBar;
+    ProgressView mProgressBar;
     @ViewById(R.id.btnRefreshBugs)
-    RotatingIconButtonFloat mRefreshButton;
+    FloatingActionButton mRefreshButton;
     @OptionsMenuItem(R.id.add_bug)
     MenuItem mMenuAddBug;
     @OptionsMenuItem(R.id.enable_gps)
@@ -178,7 +179,6 @@ public class BugMapActivity extends EventBusActionBarActivity
                 if (event.getAction() == MotionEvent.ACTION_DOWN && mAddNewBugOnNextClick)
                 {
                     mNewBugLocation = (GeoPoint) mMap.getProjection().fromPixels((int) event.getX(), (int) event.getY());
-                    //noinspection deprecation
                     showNewBugDialogDialog();
                     mAddNewBugOnNextClick = false;
                     invalidateOptionsMenu();
@@ -285,15 +285,6 @@ public class BugMapActivity extends EventBusActionBarActivity
         {
             mRefreshButton.setVisibility(View.GONE);
 
-            if (Platforms.ALL_PLATFORMS.getLoaderState() == Loader.LOADING)
-            {
-                mProgressBar.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                mProgressBar.setVisibility(View.GONE);
-            }
-
             mMapScrollWatcher = new MapScrollWatcher(mMap, new MapScrollWatcher.Listener()
             {
                 @Override
@@ -306,7 +297,15 @@ public class BugMapActivity extends EventBusActionBarActivity
         else
         {
             mRefreshButton.setVisibility(View.VISIBLE);
-            mProgressBar.setVisibility(View.GONE);
+        }
+
+        if (Platforms.ALL_PLATFORMS.getLoaderState() == Loader.LOADING)
+        {
+            mProgressBar.start();
+        }
+        else
+        {
+            mProgressBar.stop();
         }
     }
 
@@ -589,25 +588,11 @@ public class BugMapActivity extends EventBusActionBarActivity
 
         if (Platforms.ALL_PLATFORMS.getLoaderState() == Loader.LOADING)
         {
-            if (Settings.getAutoLoad())
-            {
-                mProgressBar.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                mRefreshButton.setRotate(true);
-            }
+            mProgressBar.start();
         }
         else
         {
-            if (Settings.getAutoLoad())
-            {
-                mProgressBar.setVisibility(View.GONE);
-            }
-            else
-            {
-                mRefreshButton.setRotate(false);
-            }
+            mProgressBar.stop();
         }
     }
 

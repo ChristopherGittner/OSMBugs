@@ -32,7 +32,7 @@ EventBus ( https://github.com/greenrobot/EventBus )
 
 Material Dialogs ( https://github.com/afollestad/material-dialogs )
 
-MaterialDesignLibrary ( https://github.com/navasmdc/MaterialDesignLibrary )
+Material ( https://github.com/rey5137/material )
 
 Openstreetmap ( https://www.openstreetmap.org )
 
