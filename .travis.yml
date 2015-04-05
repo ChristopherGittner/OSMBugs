@@ -3,11 +3,6 @@ android:
   components:
     - android-22
 
-    # Uncomment the lines below if you want to
-    # use the latest revision of Android SDK Tools
-     - platform-tools
-     - tools
-
   components:
     - extra-android-m2repository
     - extra-android-support
