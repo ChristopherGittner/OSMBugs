@@ -9,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 
+import com.rey.material.widget.TabPageIndicator;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
@@ -40,14 +42,13 @@ public class BugListActivity
 
     @ViewById(R.id.pager)
     ViewPager mPager;
+    @ViewById(R.id.tabPageIndicator)
+    TabPageIndicator mTabPageIndicator;
 
 
     @AfterViews
     void init()
     {
-        final ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
         PlatformPagerAdapter pagerAdapter = new PlatformPagerAdapter(getFragmentManager());
 
         if (Settings.Keepright.isEnabled())
@@ -70,21 +71,9 @@ public class BugListActivity
         pagerAdapter.notifyDataSetChanged();
 
         mPager.setAdapter(pagerAdapter);
-        mPager.setOnPageChangeListener(
-                new ViewPager.SimpleOnPageChangeListener()
-                {
-                    @Override
-                    public void onPageSelected(final int position)
-                    {
-                        actionBar.setSelectedNavigationItem(position);
-                    }
-                });
 
-        for (int i = 0; i < mPager.getAdapter().getCount(); i++)
-        {
-            actionBar.addTab(
-                    actionBar.newTab().setText(mPager.getAdapter().getPageTitle(i)).setTabListener(this));
-        }
+        mTabPageIndicator.setViewPager(mPager);
+        mTabPageIndicator.setOnPageChangeListener(new TabPageIndicator(this){});
     }
 
 

@@ -17,6 +17,26 @@
 
     <style name="Theme.Dialog" parent="Theme.AppCompat.Dialog"/>
 
+    <style name="TabPageIndicator" parent="Material.Widget.TabPageIndicator.Light">
+        <item name="tpi_tabPadding">12dp</item>
+        <item name="tpi_tabRipple">@style/TabRippleStyle</item>
+        <item name="tpi_indicatorHeight">3dp</item>
+        <item name="android:textAppearance">@style/TabTextAppearance</item>
+        <item name="tpi_mode">scroll</item>
+    </style>
+
+    <style name="TabRippleStyle" parent="Material.Drawable.Ripple.Wave">
+        <item name="rd_background">@null</item>
+        <item name="rd_rippleColor">@color/accent</item>
+        <item name="rd_rippleAnimDuration">300</item>
+        <item name="rd_maskType">oval</item>
+        <item name="rd_padding">0dp</item>
+    </style>
+
+    <style name="TabTextAppearance" parent="@style/Base.TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">@drawable/color_tpi</item>
+    </style>
+
     <style name="IndeterminateProgressDrawableStyle" parent="Material.Drawable.LinearProgress">
         <item name="lpd_strokeColor">@color/accent</item>
         <item name="lpd_strokeSecondaryColor">#00000000</item>
