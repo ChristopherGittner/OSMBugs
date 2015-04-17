@@ -128,7 +128,7 @@ public class KeeprightParser
                     /* Finally add our Bug to the results */
                     bugs.add(new KeeprightBug(lat, lon, id, object_type, schema, type, state, title, text, comment, way));
                 }
-                catch (NumberFormatException e)
+                catch (Exception e)
                 {
                     e.printStackTrace();
                 }
