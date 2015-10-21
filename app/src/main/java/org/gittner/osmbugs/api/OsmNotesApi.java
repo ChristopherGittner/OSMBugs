@@ -5,12 +5,14 @@ import android.util.Log;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.gittner.osmbugs.bugs.OsmNote;
@@ -88,20 +90,13 @@ public class OsmNotesApi implements BugApi<OsmNote>
     {
         DefaultHttpClient client = new DefaultHttpClient();
 
-        /* Add the Authentication Details if we have a username */
-        if (!username.equals(""))
-        {
-            client.getCredentialsProvider().setCredentials(AuthScope.ANY,
-                    new UsernamePasswordCredentials(username, password)
-            );
-        }
-
         /* Add all Arguments */
         ArrayList<NameValuePair> arguments = new ArrayList<>();
 
         arguments.add(new BasicNameValuePair("text", comment));
 
         HttpPost request;
+
         if (!Settings.isDebugEnabled())
         {
             request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
@@ -112,6 +107,12 @@ public class OsmNotesApi implements BugApi<OsmNote>
         }
         try
         {
+            /* Add the Authentication Details if we have a username */
+            if (!username.equals(""))
+            {
+                request.addHeader(new BasicScheme().authenticate(new UsernamePasswordCredentials(username, password), request));
+            }
+
             /* Execute commit */
             HttpResponse response = client.execute(request);
 
@@ -131,6 +132,11 @@ public class OsmNotesApi implements BugApi<OsmNote>
             e.printStackTrace();
             return false;
         }
+        catch (AuthenticationException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 
@@ -138,14 +144,6 @@ public class OsmNotesApi implements BugApi<OsmNote>
     public boolean closeBug(long id, String username, String password, String comment)
     {
         DefaultHttpClient client = new DefaultHttpClient();
-
-        /* Add the Authentication Details if we have a username */
-        if (!username.equals(""))
-        {
-            client.getCredentialsProvider().setCredentials(AuthScope.ANY,
-                    new UsernamePasswordCredentials(username, password)
-            );
-        }
 
         /* Add all Arguments */
         ArrayList<NameValuePair> arguments = new ArrayList<>();
@@ -163,6 +161,12 @@ public class OsmNotesApi implements BugApi<OsmNote>
         }
         try
         {
+            /* Add the Authentication Details if we have a username */
+            if (!username.equals(""))
+            {
+                request.addHeader(new BasicScheme().authenticate(new UsernamePasswordCredentials(username, password), request));
+            }
+
             /* Execute commit */
             HttpResponse response = client.execute(request);
 
@@ -182,6 +186,11 @@ public class OsmNotesApi implements BugApi<OsmNote>
             e.printStackTrace();
             return false;
         }
+        catch (AuthenticationException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 
@@ -189,15 +198,6 @@ public class OsmNotesApi implements BugApi<OsmNote>
     public boolean addNew(GeoPoint position, String text)
     {
         DefaultHttpClient client = new DefaultHttpClient();
-
-        /* Add the Authentication Details if we have a username in the Preferences */
-        if (!Settings.OsmNotes.getUsername().equals(""))
-        {
-            client.getCredentialsProvider().setCredentials(AuthScope.ANY,
-                    new UsernamePasswordCredentials(Settings.OsmNotes.getUsername(),
-                            Settings.OsmNotes.getPassword())
-            );
-        }
 
         /* Add all Arguments */
         ArrayList<NameValuePair> arguments = new ArrayList<>();
@@ -218,9 +218,14 @@ public class OsmNotesApi implements BugApi<OsmNote>
             request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
         }
 
-        Log.d("", "http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
         try
         {
+            /* Add the Authentication Details if we have a username */
+            if (!Settings.OsmNotes.getUsername().equals(""))
+            {
+                request.addHeader(new BasicScheme().authenticate(new UsernamePasswordCredentials(Settings.OsmNotes.getUsername(), Settings.OsmNotes.getPassword()), request));
+            }
+
             /* Execute commit */
             HttpResponse response = client.execute(request);
 
@@ -236,6 +241,11 @@ public class OsmNotesApi implements BugApi<OsmNote>
             return false;
         }
         catch (IOException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+        catch (AuthenticationException e)
         {
             e.printStackTrace();
             return false;
