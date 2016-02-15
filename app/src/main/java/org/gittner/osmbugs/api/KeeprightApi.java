@@ -1,13 +1,5 @@
 package org.gittner.osmbugs.api;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.parser.KeeprightParser;
 import org.gittner.osmbugs.statics.Settings;
@@ -16,8 +8,15 @@ import org.osmdroid.util.BoundingBoxE6;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class KeeprightApi implements BugApi<KeeprightBug>
 {
+    public static OkHttpClient client = new OkHttpClient();
+
     @Override
     public ArrayList<KeeprightBug> downloadBBox(BoundingBoxE6 bBox)
     {
@@ -36,57 +35,34 @@ public class KeeprightApi implements BugApi<KeeprightBug>
             boolean showTempIgnored,
             boolean langGerman)
     {
-        HttpClient client = new DefaultHttpClient();
+        Request request = new Request.Builder()
+                .url("http://keepright.ipax.at/points.php?")
+                .post(new FormBody.Builder()
+                        .add("show_ign", showIgnored ? "1" : "0")
+                        .add("show_tmpign", showTempIgnored ? "1" : "0")
+                        .add("ch", getKeeprightSelectionString())
+                        .add("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0))
+                        .add("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0))
+                        .add("lang", langGerman ? "de" : "en")
+                        .build())
+                .build();
 
-        ArrayList<NameValuePair> arguments = new ArrayList<>();
-
-        if (showIgnored)
-        {
-            arguments.add(new BasicNameValuePair("show_ign", "1"));
-        }
-        else
-        {
-            arguments.add(new BasicNameValuePair("show_ign", "0"));
-        }
-
-        if (showTempIgnored)
-        {
-            arguments.add(new BasicNameValuePair("show_tmpign", "1"));
-        }
-        else
-        {
-            arguments.add(new BasicNameValuePair("show_tmpign", "0"));
-        }
-
-        arguments.add(new BasicNameValuePair("ch", getKeeprightSelectionString()));
-        arguments.add(new BasicNameValuePair("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0)));
-
-        if (langGerman)
-        {
-            arguments.add(new BasicNameValuePair("lang", "de"));
-        }
-
-        HttpGet request = new HttpGet("http://keepright.ipax.at/points.php?" + URLEncodedUtils.format(arguments, "utf-8"));
         try
         {
-            /* Execute Query */
-            HttpResponse response = client.execute(request);
+            Response response = client.newCall(request).execute();
 
-            /* Check for Success */
-            if (response.getStatusLine().getStatusCode() != 200)
+            if (response.code() != 200)
             {
                 return null;
             }
 
-            /* If Request was Successful, parse the Stream */
-            return KeeprightParser.parse(response.getEntity().getContent());
+            return KeeprightParser.parse(response.body().byteStream());
         }
         catch (IOException e)
         {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
 
@@ -368,52 +344,45 @@ public class KeeprightApi implements BugApi<KeeprightBug>
 
     public boolean comment(int schema, int id, String comment, KeeprightBug.STATE state)
     {
-        HttpClient client = new DefaultHttpClient();
-
-        ArrayList<NameValuePair> arguments = new ArrayList<>();
-
-        arguments.add(new BasicNameValuePair("co", comment));
-
+        String sState = "";
         switch (state)
         {
             case OPEN:
-                arguments.add(new BasicNameValuePair("st", "open"));
+                sState= "open";
                 break;
 
             case IGNORED:
-                arguments.add(new BasicNameValuePair("st", "ignore"));
+                sState= "ignore";
                 break;
 
             case IGNORED_TMP:
-                arguments.add(new BasicNameValuePair("st", "ignore_t"));
+                sState= "ignore_t";
                 break;
         }
 
-        arguments.add(new BasicNameValuePair("schema", String.valueOf(schema)));
-        arguments.add(new BasicNameValuePair("id", String.valueOf(id)));
+        Request request = new Request.Builder()
+                .url("http://keepright.at/comment.php?")
+                .post(new FormBody.Builder()
+                        .add("state", sState)
+                        .add("co", comment)
+                        .add("schema", String.valueOf(schema))
+                        .add("id", String.valueOf(id))
+                        .build())
+                .build();
 
-        HttpGet request = new HttpGet("http://keepright.at/comment.php?" + URLEncodedUtils.format(arguments, "utf-8"));
         try
         {
-            /* Execute commit */
-            HttpResponse response = client.execute(request);
-
-            /* Check result for Success */
-            if (response.getStatusLine().getStatusCode() != 200)
+            if (client.newCall(request).execute().code() != 200)
             {
                 return false;
             }
-        }
-        catch (ClientProtocolException e)
-        {
-            e.printStackTrace();
-            return false;
+
+            return true;
         }
         catch (IOException e)
         {
             e.printStackTrace();
             return false;
         }
-        return true;
     }
 }

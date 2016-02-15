@@ -15,8 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:ripple="@style/FlatWaveButtonRippleStyle"
-            app:delayClick="false"
             app:spn_labelEnable="true"
             app:spn_label="@string/type"
             app:spn_arrowSwitchMode="true"

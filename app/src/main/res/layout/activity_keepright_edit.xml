@@ -51,8 +51,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:ripple="@style/FlatWaveButtonRippleStyle"
-            app:delayClick="false"
             app:spn_labelEnable="true"
             app:spn_label="@string/state"
             app:spn_arrowSwitchMode="true"
