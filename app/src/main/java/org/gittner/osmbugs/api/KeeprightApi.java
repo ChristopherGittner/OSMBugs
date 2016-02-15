@@ -15,7 +15,7 @@ import okhttp3.Response;
 
 public class KeeprightApi implements BugApi<KeeprightBug>
 {
-    public static OkHttpClient client = new OkHttpClient();
+    public static OkHttpClient mOkHttpClient = new OkHttpClient();
 
     @Override
     public ArrayList<KeeprightBug> downloadBBox(BoundingBoxE6 bBox)
@@ -49,7 +49,7 @@ public class KeeprightApi implements BugApi<KeeprightBug>
 
         try
         {
-            Response response = client.newCall(request).execute();
+            Response response = mOkHttpClient.newCall(request).execute();
 
             if (response.code() != 200)
             {
@@ -372,7 +372,7 @@ public class KeeprightApi implements BugApi<KeeprightBug>
 
         try
         {
-            if (client.newCall(request).execute().code() != 200)
+            if (mOkHttpClient.newCall(request).execute().code() != 200)
             {
                 return false;
             }

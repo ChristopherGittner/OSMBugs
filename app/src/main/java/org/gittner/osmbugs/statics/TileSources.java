@@ -14,9 +14,6 @@ public class TileSources extends HashMap<Integer, ITileSource>
     public static final int PUBLIC_TRANSPORT = 3;
     public static final int MAPQUEST_OSM = 4;
     public static final int MAPQUEST_AERIAL = 5;
-    public static final int OPEN_RAILWAY_MAP_INFRASTRUCTURE = 6;
-    public static final int OPEN_RAILWAY_MAP_MAXSPEED = 7;
-    public static final int OPEN_RAILWAY_MAP_SIGNALS = 8;
 
     private static final TileSources instance = new TileSources();
 
@@ -28,39 +25,6 @@ public class TileSources extends HashMap<Integer, ITileSource>
         put(PUBLIC_TRANSPORT, TileSourceFactory.PUBLIC_TRANSPORT);
         put(MAPQUEST_OSM, TileSourceFactory.MAPQUESTOSM);
         put(MAPQUEST_AERIAL, TileSourceFactory.MAPQUESTAERIAL);
-        put(OPEN_RAILWAY_MAP_INFRASTRUCTURE, new XYTileSource(
-                "Open Railway Map Infrastructure",
-                ResourceProxy.string.mapnik,
-                0,
-                19,
-                256,
-                ".png",
-                new String[]{
-                        "http://a.tiles.openrailwaymap.org/standard/",
-                        "http://a.tiles.openrailwaymap.org/standard/",
-                        "http://a.tiles.openrailwaymap.org/standard/"}));
-        put(OPEN_RAILWAY_MAP_MAXSPEED, new XYTileSource(
-                "Open Railway Map Maxspeed",
-                ResourceProxy.string.mapnik,
-                0,
-                19,
-                256,
-                ".png",
-                new String[]{
-                        "http://a.tiles.openrailwaymap.org/maxspeed/",
-                        "http://a.tiles.openrailwaymap.org/maxspeed/",
-                        "http://a.tiles.openrailwaymap.org/maxspeed/"}));
-        put(OPEN_RAILWAY_MAP_SIGNALS, new XYTileSource(
-                "Open Railway Map Signals",
-                ResourceProxy.string.mapnik,
-                0,
-                19,
-                256,
-                ".png",
-                new String[]{
-                        "http://a.tiles.openrailwaymap.org/signals/",
-                        "http://a.tiles.openrailwaymap.org/signals/",
-                        "http://a.tiles.openrailwaymap.org/signals/"}));
     }
 
 

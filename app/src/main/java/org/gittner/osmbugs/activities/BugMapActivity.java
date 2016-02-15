@@ -198,29 +198,26 @@ public class BugMapActivity extends EventBusActionBarActivity
                 .title(getString(R.string.platform))
                 .cancelable(true)
                 .items(R.array.new_bug_platforms)
-                .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallback()
+                .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice()
                 {
                     @Override
-                    public void onSelection(
-                            MaterialDialog materialDialog,
-                            View view,
-                            int i,
-                            CharSequence charSequence)
+                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text)
                     {
-                        if (i == 0)
+                        if (which == 0)
                         {
                             Intent addBugIntent = new Intent(BugMapActivity.this, AddOsmNoteActivity_.class);
                             addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
                             addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
                             startActivityForResult(addBugIntent, REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY);
-                        }
-                        else if (i == 1)
+                        } else if (which == 1)
                         {
                             Intent addBugIntent = new Intent(BugMapActivity.this, AddMapdustBugActivity_.class);
                             addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
                             addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
                             startActivityForResult(addBugIntent, REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY);
                         }
+
+                        return true;
                     }
                 })
                 .positiveText(R.string.ok)

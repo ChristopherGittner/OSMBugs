@@ -9,86 +9,70 @@ import org.osmdroid.util.BoundingBoxE6;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class OsmoseApi implements BugApi<OsmoseBug>
 {
+    public static OkHttpClient mOkHttpClient = new OkHttpClient();
+
     public ArrayList<OsmoseBug> downloadBBox(BoundingBoxE6 bBox)
     {
-        HttpClient client = new DefaultHttpClient();
+        Request request = new Request.Builder()
+                .url(!Settings.isLanguageGerman() ? "http://osmose.openstreetmap.fr/en/api/0.2/errors?" : "http://osmose.openstreetmap.fr/de/api/0.2/errors?")
+                .post(new FormBody.Builder()
+                        .add("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0))
+                        .add("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0))
+                        .add("limit", String.valueOf(Settings.Osmose.getBugLimit()))
+                        .add("full", "true")
+                        .add("comment", Settings.Osmose.getBugsToDisplay() == 1 ? "done" : "false")
+                        .build())
+                .build();
 
-        ArrayList<NameValuePair> arguments = new ArrayList<>();
-
-        arguments.add(new BasicNameValuePair("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("limit", String.valueOf(Settings.Osmose.getBugLimit())));
-        arguments.add(new BasicNameValuePair("full", "true"));
-
-        if (Settings.Osmose.getBugsToDisplay() == 1)
-        {
-            arguments.add(new BasicNameValuePair("status", "done"));
-        }
-        if (Settings.Osmose.getBugsToDisplay() == 2)
-        {
-            arguments.add(new BasicNameValuePair("status", "false"));
-        }
-
-        String api;
-        if (Settings.isLanguageGerman())
-        {
-            api = "http://osmose.openstreetmap.fr/de/api/0.2/errors?";
-        }
-        else
-        {
-            api = "http://osmose.openstreetmap.fr/en/api/0.2/errors?";
-        }
-
-        HttpGet request = new HttpGet(api + URLEncodedUtils.format(arguments, "utf-8"));
         try
         {
-            /* Execute Query */
-            HttpResponse response = client.execute(request);
+            Response response = mOkHttpClient.newCall(request).execute();
 
-            /* Check for Success */
-            if (response.getStatusLine().getStatusCode() != 200)
+            if (response.code() != 200)
             {
                 return null;
             }
 
-            /* If Request was Successful, parse the Stream */
-            return OsmoseParser.parseBugList(response.getEntity().getContent());
+            return OsmoseParser.parseBugList(response.body().byteStream());
         }
         catch (IOException e)
         {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
 
     public ArrayList<OsmoseElement> loadElements(long id)
     {
-        HttpClient client = new DefaultHttpClient();
+        Request request = new Request.Builder()
+                .url(!Settings.isLanguageGerman() ? "http://osmose.openstreetmap.fr/en/api/0.2/error/" + id : "http://osmose.openstreetmap.fr/de/api/0.2/error/" + id)
+                .post(new FormBody.Builder()
+                        .build())
+                .build();
 
-        String url = "http://osmose.openstreetmap.fr/en/api/0.2/error/" + id;
-
-        HttpGet request = new HttpGet(url);
         try
         {
-            /* Execute Query */
-            HttpResponse response = client.execute(request);
+            Response response = mOkHttpClient.newCall(request).execute();
 
-            /* Check for Success */
-            if (response.getStatusLine().getStatusCode() != 200)
+            if (response.code() != 200)
             {
                 return null;
             }
 
-            /* If Request was Successful, parse the Stream */
-            return OsmoseParser.parseBugElements(response.getEntity().getContent());
+            return OsmoseParser.parseBugElements(response.body().byteStream());
         }
         catch (IOException e)
         {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

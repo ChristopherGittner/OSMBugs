@@ -1,20 +1,5 @@
 package org.gittner.osmbugs.api;
 
-import android.util.Log;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.AuthenticationException;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.parser.OpenstreetmapNotesParser;
 import org.gittner.osmbugs.statics.Settings;
@@ -23,9 +8,18 @@ import org.osmdroid.util.GeoPoint;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
+
+import okhttp3.Credentials;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class OsmNotesApi implements BugApi<OsmNote>
 {
+    public static OkHttpClient mOkHttpClient = new OkHttpClient();
+
     @Override
     public ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox)
     {
@@ -39,217 +33,110 @@ public class OsmNotesApi implements BugApi<OsmNote>
 
     private ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox, int limit, boolean showClosed)
     {
-        HttpClient client = new DefaultHttpClient();
+        Request request = new Request.Builder()
+                .url(!Settings.isDebugEnabled() ? "http://api.openstreetmap.org/api/0.6/notes?" : "http://api06.dev.openstreetmap.org/api/0.6/notes?")
+                .post(new FormBody.Builder()
+                        .add("bbox", String.format(
+                                Locale.US,
+                                "%f,%f,%f,%f",
+                                bBox.getLonEastE6() / 1000000.0,
+                                bBox.getLatSouthE6() / 1000000.0,
+                                bBox.getLonWestE6() / 1000000.0,
+                                bBox.getLatNorthE6() / 1000000.0))
+                        .add("closed", showClosed ? "1" : "0")
+                        .add("limit", String.valueOf(limit))
+                        .build())
+                .build();
 
-        ArrayList<NameValuePair> arguments = new ArrayList<>();
-
-        arguments.add(new BasicNameValuePair("bbox", String.valueOf(bBox.getLonWestE6() / 1000000.0) + ","
-                + String.valueOf(bBox.getLatSouthE6() / 1000000.0) + ","
-                + String.valueOf(bBox.getLonEastE6() / 1000000.0) + ","
-                + String.valueOf(bBox.getLatNorthE6() / 1000000.0)));
-
-        if (!showClosed)
-        {
-            arguments.add(new BasicNameValuePair("closed", "0"));
-        }
-
-        arguments.add(new BasicNameValuePair("limit", String.valueOf(limit)));
-
-        HttpGet request;
-        if (!Settings.isDebugEnabled())
-        {
-            request = new HttpGet("http://api.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
-        }
-        else
-        {
-            request = new HttpGet("http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
-        }
         try
         {
-            /* Execute Query */
-            HttpResponse response = client.execute(request);
+            Response response = mOkHttpClient.newCall(request).execute();
 
-            /* Check for Success */
-            if (response.getStatusLine().getStatusCode() != 200)
+            if (response.code() != 200)
             {
                 return null;
             }
 
-            /* If Request was Successful, parse the Stream */
-            return OpenstreetmapNotesParser.parse(response.getEntity().getContent());
+            return OpenstreetmapNotesParser.parse(response.body().byteStream());
         }
         catch (IOException e)
         {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
 
     public boolean addComment(long id, String username, String password, String comment)
     {
-        DefaultHttpClient client = new DefaultHttpClient();
+        Request request = new Request.Builder()
+                .url(!Settings.isDebugEnabled() ? "http://api.openstreetmap.org/api/0.6/notes?/" + id + "/comment?" : "http://api06.dev.openstreetmap.org/api/0.6/notes?/" + id + "/comment?")
+                .post(new FormBody.Builder()
+                        .add("text", comment)
+                        .build())
+                .addHeader("Authorization", Credentials.basic(username, password))
+                .build();
 
-        /* Add all Arguments */
-        ArrayList<NameValuePair> arguments = new ArrayList<>();
-
-        arguments.add(new BasicNameValuePair("text", comment));
-
-        HttpPost request;
-
-        if (!Settings.isDebugEnabled())
-        {
-            request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
-        }
-        else
-        {
-            request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id + "/comment?" + URLEncodedUtils.format(arguments, "utf-8"));
-        }
         try
         {
-            /* Add the Authentication Details if we have a username */
-            if (!username.equals(""))
-            {
-                request.addHeader(new BasicScheme().authenticate(new UsernamePasswordCredentials(username, password), request));
-            }
+            Response response = mOkHttpClient.newCall(request).execute();
 
-            /* Execute commit */
-            HttpResponse response = client.execute(request);
-
-            /* Check result for Success */
-            if (response.getStatusLine().getStatusCode() != 200)
-            {
-                return false;
-            }
-        }
-        catch (ClientProtocolException e)
-        {
-            e.printStackTrace();
-            return false;
+            return response.code() == 200;
         }
         catch (IOException e)
         {
             e.printStackTrace();
             return false;
         }
-        catch (AuthenticationException e)
-        {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
 
 
     public boolean closeBug(long id, String username, String password, String comment)
     {
-        DefaultHttpClient client = new DefaultHttpClient();
+        Request request = new Request.Builder()
+                .url(!Settings.isDebugEnabled() ? "http://api.openstreetmap.org/api/0.6/notes?/" + id + "/close?" : "http://api06.dev.openstreetmap.org/api/0.6/notes?/" + id + "/close?")
+                .post(new FormBody.Builder()
+                        .add("text", comment)
+                        .build())
+                .addHeader("Authorization", Credentials.basic(username, password))
+                .build();
 
-        /* Add all Arguments */
-        ArrayList<NameValuePair> arguments = new ArrayList<>();
-
-        arguments.add(new BasicNameValuePair("text", comment));
-
-        HttpPost request;
-        if (!Settings.isDebugEnabled())
-        {
-            request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes/" + id + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
-        }
-        else
-        {
-            request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes/" + id + "/close?" + URLEncodedUtils.format(arguments, "utf-8"));
-        }
         try
         {
-            /* Add the Authentication Details if we have a username */
-            if (!username.equals(""))
-            {
-                request.addHeader(new BasicScheme().authenticate(new UsernamePasswordCredentials(username, password), request));
-            }
+            Response response = mOkHttpClient.newCall(request).execute();
 
-            /* Execute commit */
-            HttpResponse response = client.execute(request);
-
-            /* Check result for Success */
-            if (response.getStatusLine().getStatusCode() != 200)
-            {
-                return false;
-            }
-        }
-        catch (ClientProtocolException e)
-        {
-            e.printStackTrace();
-            return false;
+            return response.code() == 200;
         }
         catch (IOException e)
         {
             e.printStackTrace();
             return false;
         }
-        catch (AuthenticationException e)
-        {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
 
 
     public boolean addNew(GeoPoint position, String text)
     {
-        DefaultHttpClient client = new DefaultHttpClient();
-
-        /* Add all Arguments */
-        ArrayList<NameValuePair> arguments = new ArrayList<>();
-
-        arguments.add(new BasicNameValuePair("lat",
-                String.valueOf(position.getLatitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("lon",
-                String.valueOf(position.getLongitudeE6() / 1000000.0)));
-        arguments.add(new BasicNameValuePair("text", text));
-
-        HttpPost request;
-        if (!Settings.isDebugEnabled())
-        {
-            request = new HttpPost("http://api.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
-        }
-        else
-        {
-            request = new HttpPost("http://api06.dev.openstreetmap.org/api/0.6/notes?" + URLEncodedUtils.format(arguments, "utf-8"));
-        }
+        Request request = new Request.Builder()
+                .url(!Settings.isDebugEnabled() ? "http://api.openstreetmap.org/api/0.6/notes?" : "http://api06.dev.openstreetmap.org/api/0.6/notes?")
+                .post(new FormBody.Builder()
+                        .add("lat", String.valueOf(position.getLatitudeE6() / 1000000.0))
+                        .add("lon", String.valueOf(position.getLongitudeE6() / 1000000.0))
+                        .add("text", text)
+                        .build())
+                .addHeader("Authorization", Credentials.basic(Settings.OsmNotes.getUsername(), Settings.OsmNotes.getPassword()))
+                .build();
 
         try
         {
-            /* Add the Authentication Details if we have a username */
-            if (!Settings.OsmNotes.getUsername().equals(""))
-            {
-                request.addHeader(new BasicScheme().authenticate(new UsernamePasswordCredentials(Settings.OsmNotes.getUsername(), Settings.OsmNotes.getPassword()), request));
-            }
+            Response response = mOkHttpClient.newCall(request).execute();
 
-            /* Execute commit */
-            HttpResponse response = client.execute(request);
-
-            /* Check result for Success */
-            if (response.getStatusLine().getStatusCode() != 200)
-            {
-                return false;
-            }
-        }
-        catch (ClientProtocolException e)
-        {
-            e.printStackTrace();
-            return false;
+            return response.code() == 200;
         }
         catch (IOException e)
         {
             e.printStackTrace();
             return false;
         }
-        catch (AuthenticationException e)
-        {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
 }
