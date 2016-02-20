@@ -44,9 +44,9 @@ public class OsmNotesApi implements BugApi<OsmNote>
                         .addQueryParameter("bbox", String.format(
                                 Locale.US,
                                 "%f,%f,%f,%f",
-                                bBox.getLonEastE6() / 1000000.0,
-                                bBox.getLatSouthE6() / 1000000.0,
                                 bBox.getLonWestE6() / 1000000.0,
+                                bBox.getLatSouthE6() / 1000000.0,
+                                bBox.getLonEastE6() / 1000000.0,
                                 bBox.getLatNorthE6() / 1000000.0))
                         .addQueryParameter("closed", showClosed ? "1" : "0")
                         .addQueryParameter("limit", String.valueOf(limit))
