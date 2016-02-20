@@ -1,9 +1,13 @@
 package org.gittner.osmbugs.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.greysonparrelli.permiso.Permiso;
 import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ProgressView;
 
@@ -227,6 +232,37 @@ public class BugMapActivity extends EventBusActionBarActivity
 
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+        Permiso.getInstance().setActivity(this);
+
+        Permiso.getInstance().requestPermissions(new Permiso.IOnPermissionResult()
+        {
+            @Override
+            public void onPermissionResult(Permiso.ResultSet resultSet)
+            {
+                if (resultSet.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION))
+                {
+                    Toast.makeText(BugMapActivity.this, "Fine Location Permission Granted", Toast.LENGTH_LONG).show();
+                }
+                if (resultSet.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION))
+                {
+                    Toast.makeText(BugMapActivity.this, "Write External Storage Permission Granted", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onRationaleRequested(Permiso.IOnRationaleProvided callback, String... permissions)
+            {
+                Permiso.getInstance().showRationaleInDialog("Title", "Message", null, callback);
+            }
+        }, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    }
+
+
+    @Override
     public void onPause()
     {
         super.onPause();
@@ -253,6 +289,8 @@ public class BugMapActivity extends EventBusActionBarActivity
     public void onResume()
     {
         super.onResume();
+
+        Permiso.getInstance().setActivity(this);
 
 		/* Display enabled Bug platforms */
         if (Settings.Keepright.isEnabled())
@@ -306,6 +344,14 @@ public class BugMapActivity extends EventBusActionBarActivity
         }
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        Permiso.getInstance().onRequestPermissionResult(requestCode, permissions, grantResults);
+    }
 
     @Click(R.id.btnRefreshBugs)
     void onRefreshButtonClicked()
