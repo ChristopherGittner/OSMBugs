@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.FormBody;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -21,13 +22,18 @@ public class OsmoseApi implements BugApi<OsmoseBug>
     public ArrayList<OsmoseBug> downloadBBox(BoundingBoxE6 bBox)
     {
         Request request = new Request.Builder()
-                .url(!Settings.isLanguageGerman() ? "http://osmose.openstreetmap.fr/en/api/0.2/errors?" : "http://osmose.openstreetmap.fr/de/api/0.2/errors?")
-                .post(new FormBody.Builder()
-                        .add("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0))
-                        .add("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0))
-                        .add("limit", String.valueOf(Settings.Osmose.getBugLimit()))
-                        .add("full", "true")
-                        .add("comment", Settings.Osmose.getBugsToDisplay() == 1 ? "done" : "false")
+                .url(new HttpUrl.Builder()
+                        .scheme("http")
+                        .host("osmose.openstreetmap.fr")
+                        .addPathSegment(!Settings.isLanguageGerman() ? "en" : "de")
+                        .addPathSegment("api")
+                        .addPathSegment("0.2")
+                        .addPathSegment("errors")
+                        .addQueryParameter("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0))
+                        .addQueryParameter("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0))
+                        .addQueryParameter("limit", String.valueOf(Settings.Osmose.getBugLimit()))
+                        .addQueryParameter("full", "true")
+                        .addQueryParameter("comment", Settings.Osmose.getBugsToDisplay() == 1 ? "done" : "false")
                         .build())
                 .build();
 
@@ -53,8 +59,14 @@ public class OsmoseApi implements BugApi<OsmoseBug>
     public ArrayList<OsmoseElement> loadElements(long id)
     {
         Request request = new Request.Builder()
-                .url(!Settings.isLanguageGerman() ? "http://osmose.openstreetmap.fr/en/api/0.2/error/" + id : "http://osmose.openstreetmap.fr/de/api/0.2/error/" + id)
-                .post(new FormBody.Builder()
+                .url(new HttpUrl.Builder()
+                        .scheme("http")
+                        .host("osmose.openstreetmap.fr")
+                        .addPathSegment(!Settings.isLanguageGerman() ? "en" : "de")
+                        .addPathSegment("api")
+                        .addPathSegment("0.2")
+                        .addPathSegment("error")
+                        .addPathSegment((String.valueOf(id)))
                         .build())
                 .build();
 

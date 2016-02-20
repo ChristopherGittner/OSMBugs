@@ -12,6 +12,7 @@ import java.util.Locale;
 
 import okhttp3.Credentials;
 import okhttp3.FormBody;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -34,17 +35,21 @@ public class OsmNotesApi implements BugApi<OsmNote>
     private ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox, int limit, boolean showClosed)
     {
         Request request = new Request.Builder()
-                .url(!Settings.isDebugEnabled() ? "http://api.openstreetmap.org/api/0.6/notes?" : "http://api06.dev.openstreetmap.org/api/0.6/notes?")
-                .post(new FormBody.Builder()
-                        .add("bbox", String.format(
+                .url(new HttpUrl.Builder()
+                        .scheme("http")
+                        .host(!Settings.isDebugEnabled() ? "api.openstreetmap.org" : "api06.dev.openstreetmap.org")
+                        .addPathSegment("api")
+                        .addPathSegment("0.6")
+                        .addPathSegment("notes")
+                        .addQueryParameter("bbox", String.format(
                                 Locale.US,
                                 "%f,%f,%f,%f",
                                 bBox.getLonEastE6() / 1000000.0,
                                 bBox.getLatSouthE6() / 1000000.0,
                                 bBox.getLonWestE6() / 1000000.0,
                                 bBox.getLatNorthE6() / 1000000.0))
-                        .add("closed", showClosed ? "1" : "0")
-                        .add("limit", String.valueOf(limit))
+                        .addQueryParameter("closed", showClosed ? "1" : "0")
+                        .addQueryParameter("limit", String.valueOf(limit))
                         .build())
                 .build();
 
@@ -70,10 +75,17 @@ public class OsmNotesApi implements BugApi<OsmNote>
     public boolean addComment(long id, String username, String password, String comment)
     {
         Request request = new Request.Builder()
-                .url(!Settings.isDebugEnabled() ? "http://api.openstreetmap.org/api/0.6/notes?/" + id + "/comment?" : "http://api06.dev.openstreetmap.org/api/0.6/notes?/" + id + "/comment?")
-                .post(new FormBody.Builder()
-                        .add("text", comment)
+                .url(new HttpUrl.Builder()
+                        .scheme("http")
+                        .host(!Settings.isDebugEnabled() ? "api.openstreetmap.org" : "api06.dev.openstreetmap.org")
+                        .addPathSegment("api")
+                        .addPathSegment("0.6")
+                        .addPathSegment("notes")
+                        .addPathSegment(String.valueOf(id))
+                        .addPathSegment("comment")
+                        .addQueryParameter("text", comment)
                         .build())
+                .post(new FormBody.Builder().build())
                 .addHeader("Authorization", Credentials.basic(username, password))
                 .build();
 
@@ -94,10 +106,17 @@ public class OsmNotesApi implements BugApi<OsmNote>
     public boolean closeBug(long id, String username, String password, String comment)
     {
         Request request = new Request.Builder()
-                .url(!Settings.isDebugEnabled() ? "http://api.openstreetmap.org/api/0.6/notes?/" + id + "/close?" : "http://api06.dev.openstreetmap.org/api/0.6/notes?/" + id + "/close?")
-                .post(new FormBody.Builder()
-                        .add("text", comment)
+                .url(new HttpUrl.Builder()
+                        .scheme("http")
+                        .host(!Settings.isDebugEnabled() ? "api.openstreetmap.org" : "api06.dev.openstreetmap.org")
+                        .addPathSegment("api")
+                        .addPathSegment("0.6")
+                        .addPathSegment("notes")
+                        .addPathSegment(String.valueOf(id))
+                        .addPathSegment("close")
+                        .addQueryParameter("text", comment)
                         .build())
+                .post(new FormBody.Builder().build())
                 .addHeader("Authorization", Credentials.basic(username, password))
                 .build();
 
@@ -118,12 +137,17 @@ public class OsmNotesApi implements BugApi<OsmNote>
     public boolean addNew(GeoPoint position, String text)
     {
         Request request = new Request.Builder()
-                .url(!Settings.isDebugEnabled() ? "http://api.openstreetmap.org/api/0.6/notes?" : "http://api06.dev.openstreetmap.org/api/0.6/notes?")
-                .post(new FormBody.Builder()
-                        .add("lat", String.valueOf(position.getLatitudeE6() / 1000000.0))
-                        .add("lon", String.valueOf(position.getLongitudeE6() / 1000000.0))
-                        .add("text", text)
+                .url(new HttpUrl.Builder()
+                        .scheme("http")
+                        .host(!Settings.isDebugEnabled() ? "api.openstreetmap.org" : "api06.dev.openstreetmap.org")
+                        .addPathSegment("api")
+                        .addPathSegment("0.6")
+                        .addPathSegment("notes")
+                        .addQueryParameter("lat", String.valueOf(position.getLatitudeE6() / 1000000.0))
+                        .addQueryParameter("lon", String.valueOf(position.getLongitudeE6() / 1000000.0))
+                        .addQueryParameter("text", text)
                         .build())
+                .post(new FormBody.Builder().build())
                 .addHeader("Authorization", Credentials.basic(Settings.OsmNotes.getUsername(), Settings.OsmNotes.getPassword()))
                 .build();
 
