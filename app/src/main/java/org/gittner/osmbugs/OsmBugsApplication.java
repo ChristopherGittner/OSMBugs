@@ -37,7 +37,7 @@ import timber.log.Timber;
         resDialogCommentPrompt = R.string.crash_dialog_comment_prompt,
         resDialogOkToast = R.string.crash_dialog_ok_toast)
 @EApplication
-public class OsmbugsApplication extends Application
+public class OsmBugsApplication extends Application
 {
     @Override
     public void onCreate()
