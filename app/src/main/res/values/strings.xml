@@ -175,5 +175,7 @@
     <string name="auto_load">Auto Load</string>
     <string name="title_request_permissions">Requesting Permissions</string>
     <string name="message_request_permissions">As of Android 6 ( Marshmallow ) you have to grant Permissions to the App in the now following Dialogs</string>
+    <string name="share">Share</string>
+    <string name="toast_geo_intent_no_app_found">No App found to share the Bug with</string>
 
 </resources>

@@ -163,6 +163,8 @@
     <string name="auto_load">Automatisch Laden</string>
     <string name="title_request_permissions">Benötige Berechtigungen</string>
     <string name="message_request_permissions">Ab Android 6 ( Marshmallow ) müssen Berechtigungen in den nachfolgenden Dialogen gewährt werden</string>
+    <string name="share">Teilen</string>
+    <string name="toast_geo_intent_no_app_found">Keine App gefunden, an die der Fehler gesendet werden kann</string>
 
 
 </resources>

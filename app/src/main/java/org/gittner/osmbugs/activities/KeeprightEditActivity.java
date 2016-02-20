@@ -28,6 +28,7 @@ import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.bugs.KeeprightBug;
+import org.gittner.osmbugs.statics.GeoIntentStarter;
 import org.gittner.osmbugs.statics.Images;
 
 @EActivity(R.layout.activity_keepright_edit)
@@ -211,5 +212,12 @@ public class KeeprightEditActivity
 
             return v;
         }
+    }
+
+
+    @OptionsItem(R.id.action_share)
+    void shareBug()
+    {
+        GeoIntentStarter.start(this, mBug.getPoint());
     }
 }

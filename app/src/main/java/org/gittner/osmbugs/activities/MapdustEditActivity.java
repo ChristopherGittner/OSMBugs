@@ -31,6 +31,7 @@ import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.api.MapdustApi;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.common.Comment;
+import org.gittner.osmbugs.statics.GeoIntentStarter;
 import org.gittner.osmbugs.statics.Settings;
 
 import java.util.List;
@@ -276,5 +277,12 @@ public class MapdustEditActivity
 
             return v;
         }
+    }
+
+
+    @OptionsItem(R.id.action_share)
+    void shareBug()
+    {
+        GeoIntentStarter.start(this, mBug.getPoint());
     }
 }
