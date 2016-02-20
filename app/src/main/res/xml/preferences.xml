@@ -355,7 +355,7 @@
         <PreferenceScreen android:title="@string/osmose">
             <PreferenceCategory android:title="@string/osmose">
                 <CheckBoxPreference
-                    android:defaultValue="false"
+                    android:defaultValue="true"
                     android:key="pref_osmose_enabled"
                     android:title="@string/enabled"/>
                 <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference

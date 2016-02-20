@@ -553,7 +553,7 @@ public class Settings
     {
         public static boolean isEnabled()
         {
-            return mPrefs.getBoolean("pref_osmose_enabled", false);
+            return mPrefs.getBoolean("pref_osmose_enabled", true);
         }
 
 
