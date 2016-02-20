@@ -34,12 +34,7 @@ dependencies {
     compile "org.androidannotations:androidannotations-api:$AAVersion"
     apt "org.androidannotations:androidannotations:$AAVersion"
 
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.4@aar') {
-        transitive = true
-    }
-    compile('com.github.afollestad.material-dialogs:commons:0.8.5.4@aar') {
-        transitive = true
-    }
+    compile 'com.github.afollestad.material-dialogs:commons:0.8.5.4'
 
     compile 'com.github.rey5137:material:1.2.2'
     compile 'org.slf4j:slf4j-simple:1.6.1'
