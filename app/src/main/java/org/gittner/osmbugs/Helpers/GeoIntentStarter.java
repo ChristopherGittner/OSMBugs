@@ -1,4 +1,4 @@
-package org.gittner.osmbugs.statics;
+package org.gittner.osmbugs.Helpers;
 
 import android.content.Context;
 import android.content.Intent;

@@ -15,7 +15,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 /* Parser for Openstreetmap Notes bug lists retrieved from notes */
-public class OpenstreetmapNotesParser
+public class OsmNotesParser
 {
     public static ArrayList<OsmNote> parse(InputStream stream)
     {
