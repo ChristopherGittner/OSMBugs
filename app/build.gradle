@@ -46,7 +46,7 @@ dependencies {
 
     compile 'com.squareup.okhttp3:okhttp:3.1.2'
 
-    compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
 
     compile "org.androidannotations:androidannotations-api:3.3.2"
     apt "org.androidannotations:androidannotations:3.3.2"

@@ -2,7 +2,7 @@ package org.gittner.osmbugs.fragments;
 
 import android.app.Fragment;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 public class EventBusFragment extends Fragment
 {
@@ -11,7 +11,7 @@ public class EventBusFragment extends Fragment
     {
         super.onResume();
 
-        EventBus.getDefault().registerSticky(this);
+        EventBus.getDefault().register(this);
     }
 
 

@@ -3,8 +3,7 @@ package org.gittner.osmbugs.activities;
 import android.support.v7.app.ActionBarActivity;
 
 import org.androidannotations.annotations.EBean;
-
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 @EBean
 public class EventBusActionBarActivity extends ActionBarActivity
@@ -14,7 +13,7 @@ public class EventBusActionBarActivity extends ActionBarActivity
     {
         super.onResume();
 
-        EventBus.getDefault().registerSticky(this);
+        EventBus.getDefault().register(this);
     }
 
 

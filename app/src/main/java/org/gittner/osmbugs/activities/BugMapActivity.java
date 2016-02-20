@@ -46,6 +46,8 @@ import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
 import org.gittner.osmbugs.statics.TileSources;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -572,8 +574,8 @@ public class BugMapActivity extends EventBusActionBarActivity
         invalidateOptionsMenu();
     }
 
-
-    public void onEventMainThread(BugsChangedEvent event)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onBugsChanged(BugsChangedEvent event)
     {
         if (event.getPlatform() == Platforms.KEEPRIGHT)
         {
@@ -616,7 +618,8 @@ public class BugMapActivity extends EventBusActionBarActivity
     }
 
 
-    public void onEventMainThread(Loader.StateChangedEvent event)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoaderStateChanged(Loader.StateChangedEvent event)
     {
         if (event.getState() == Loader.FAILED)
         {

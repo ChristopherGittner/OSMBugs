@@ -6,11 +6,10 @@ import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.events.BugsChangedEvent;
 import org.gittner.osmbugs.platforms.Platform;
 import org.gittner.osmbugs.statics.BackgroundTasks;
+import org.greenrobot.eventbus.EventBus;
 import org.osmdroid.util.BoundingBoxE6;
 
 import java.util.ArrayList;
-
-import de.greenrobot.event.EventBus;
 
 public class Loader<TBug extends Bug>
 {
