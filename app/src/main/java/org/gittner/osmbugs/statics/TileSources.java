@@ -1,9 +1,7 @@
 package org.gittner.osmbugs.statics;
 
-import org.osmdroid.ResourceProxy;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.tileprovider.tilesource.XYTileSource;
 
 import java.util.HashMap;
 

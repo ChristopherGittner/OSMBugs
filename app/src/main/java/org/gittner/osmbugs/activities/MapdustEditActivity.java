@@ -26,12 +26,12 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.gittner.osmbugs.Helpers.GeoIntentStarter;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.api.MapdustApi;
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.common.Comment;
-import org.gittner.osmbugs.Helpers.GeoIntentStarter;
 import org.gittner.osmbugs.statics.Settings;
 
 import java.util.List;

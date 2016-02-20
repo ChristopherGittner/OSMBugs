@@ -1,7 +1,5 @@
 package org.gittner.osmbugs.api;
 
-import android.util.Log;
-
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.parser.MapdustParser;
@@ -16,7 +14,6 @@ import java.util.Locale;
 
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

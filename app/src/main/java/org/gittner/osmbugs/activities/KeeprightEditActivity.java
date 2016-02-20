@@ -25,10 +25,10 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.gittner.osmbugs.Helpers.GeoIntentStarter;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.bugs.KeeprightBug;
-import org.gittner.osmbugs.Helpers.GeoIntentStarter;
 import org.gittner.osmbugs.statics.Images;
 
 @EActivity(R.layout.activity_keepright_edit)

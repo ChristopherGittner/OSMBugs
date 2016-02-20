@@ -14,12 +14,12 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.gittner.osmbugs.Helpers.GeoIntentStarter;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.OsmoseElement;
 import org.gittner.osmbugs.common.OsmoseElementView;
-import org.gittner.osmbugs.Helpers.GeoIntentStarter;
 
 import java.util.List;
 
