@@ -243,20 +243,16 @@ public class BugMapActivity extends EventBusActionBarActivity
             @Override
             public void onPermissionResult(Permiso.ResultSet resultSet)
             {
-                if (resultSet.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION))
-                {
-                    Toast.makeText(BugMapActivity.this, "Fine Location Permission Granted", Toast.LENGTH_LONG).show();
-                }
-                if (resultSet.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION))
-                {
-                    Toast.makeText(BugMapActivity.this, "Write External Storage Permission Granted", Toast.LENGTH_LONG).show();
-                }
             }
 
             @Override
             public void onRationaleRequested(Permiso.IOnRationaleProvided callback, String... permissions)
             {
-                Permiso.getInstance().showRationaleInDialog("Title", "Message", null, callback);
+                Permiso.getInstance().showRationaleInDialog(
+                        getString(R.string.title_request_permissions),
+                        getString(R.string.message_request_permissions),
+                        null,
+                        callback);
             }
         }, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }

@@ -161,6 +161,8 @@
     <string name="failed_to_download_from">Fehler beim laden von</string>
     <string name="ignore">Ignorieren</string>
     <string name="auto_load">Automatisch Laden</string>
+    <string name="title_request_permissions">Benötige Berechtigungen</string>
+    <string name="message_request_permissions">Ab Android 6 ( Marshmallow ) müssen Berechtigungen in den nachfolgenden Dialogen gewährt werden</string>
 
 
 </resources>

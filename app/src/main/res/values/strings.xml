@@ -173,5 +173,7 @@
     <string name="failed_to_download_from">Failed to Download from</string>
     <string name="ignore">Ignore</string>
     <string name="auto_load">Auto Load</string>
+    <string name="title_request_permissions">Requesting Permissions</string>
+    <string name="message_request_permissions">As of Android 6 ( Marshmallow ) you have to grant Permissions to the App in the now following Dialogs</string>
 
 </resources>
