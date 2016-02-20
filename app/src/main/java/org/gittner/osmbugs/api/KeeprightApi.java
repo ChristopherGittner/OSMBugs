@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.FormBody;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -36,15 +37,18 @@ public class KeeprightApi implements BugApi<KeeprightBug>
             boolean langGerman)
     {
         Request request = new Request.Builder()
-                .url("http://keepright.ipax.at/points.php?")
-                .post(new FormBody.Builder()
-                        .add("show_ign", showIgnored ? "1" : "0")
-                        .add("show_tmpign", showTempIgnored ? "1" : "0")
-                        .add("ch", getKeeprightSelectionString())
-                        .add("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0))
-                        .add("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0))
-                        .add("lang", langGerman ? "de" : "en")
+                .url(new HttpUrl.Builder()
+                        .scheme("http")
+                        .host("keepright.ipax.at")
+                        .addPathSegment("points.php")
+                        .addQueryParameter("show_ign", showIgnored ? "1" : "0")
+                        .addQueryParameter("show_tmpign", showTempIgnored ? "1" : "0")
+                        .addQueryParameter("ch", getKeeprightSelectionString())
+                        .addQueryParameter("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0))
+                        .addQueryParameter("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0))
+                        .addQueryParameter("lang", langGerman ? "de" : "en")
                         .build())
+                .post(new FormBody.Builder().build())
                 .build();
 
         try
@@ -361,28 +365,30 @@ public class KeeprightApi implements BugApi<KeeprightBug>
         }
 
         Request request = new Request.Builder()
-                .url("http://keepright.at/comment.php?")
-                .post(new FormBody.Builder()
-                        .add("state", sState)
-                        .add("co", comment)
-                        .add("schema", String.valueOf(schema))
-                        .add("id", String.valueOf(id))
+                .url(new HttpUrl.Builder()
+                        .scheme("http")
+                        .host("keepright.ipax.at")
+                        .addPathSegment("comment.php")
+                        .addQueryParameter("state", sState)
+                        .addQueryParameter("co", comment)
+                        .addQueryParameter("schema", String.valueOf(schema))
+                        .addQueryParameter("id", String.valueOf(id))
                         .build())
+                .post(new FormBody.Builder().build())
                 .build();
 
         try
         {
-            if (mOkHttpClient.newCall(request).execute().code() != 200)
+            if (mOkHttpClient.newCall(request).execute().code() == 200)
             {
-                return false;
+                return true;
             }
-
-            return true;
         }
         catch (IOException e)
         {
             e.printStackTrace();
-            return false;
         }
+
+        return false;
     }
 }
