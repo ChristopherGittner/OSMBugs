@@ -12,6 +12,8 @@ import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
 
+import timber.log.Timber;
+
 @ReportsCrashes(
         formKey = "",
         httpMethod = HttpSender.Method.PUT,
@@ -41,6 +43,9 @@ public class OsmbugsApplication extends Application
     public void onCreate()
     {
         super.onCreate();
+
+        /* Initialize Timber */
+        Timber.plant(new Timber.DebugTree());
 
 		/* Init Settings Class */
         Settings.init(this);
