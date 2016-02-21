@@ -1,12 +1,8 @@
 package org.gittner.osmbugs.platforms;
 
-import android.content.Context;
-import android.content.Intent;
-
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.res.StringRes;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.activities.KeeprightEditActivity_;
 import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.api.BugApi;
 import org.gittner.osmbugs.bugs.KeeprightBug;
@@ -37,14 +33,5 @@ public class Keepright extends Platform<KeeprightBug>
     public BugApi<KeeprightBug> getApi()
     {
         return Apis.KEEPRIGHT;
-    }
-
-
-    @Override
-    public Intent createEditor(Context context, final KeeprightBug bug)
-    {
-        return KeeprightEditActivity_.intent(context)
-                .mBug(bug)
-                .get();
     }
 }

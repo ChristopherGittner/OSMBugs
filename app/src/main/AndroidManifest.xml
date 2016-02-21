@@ -36,17 +36,8 @@
             android:name=".activities.AddOsmNoteActivity_"
             android:label="@string/title_activity_add_openstreetmap_note"/>
         <activity
-            android:name=".activities.KeeprightEditActivity_"
+            android:name=".activities.BugEditActivity_"
             android:label="@string/title_activity_keepright_edit"/>
-        <activity
-            android:name=".activities.OsmoseEditActivity_"
-            android:label="@string/title_activity_osmose_edit"/>
-        <activity
-            android:name=".activities.MapdustEditActivity_"
-            android:label="@string/title_activity_mapdust_edit"/>
-        <activity
-            android:name=".activities.OsmNoteEditActivity_"
-            android:label="@string/title_activity_osm_note_edit"/>
         <activity
             android:name="org.acra.CrashReportDialog"
             android:excludeFromRecents="true"

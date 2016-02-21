@@ -1,9 +1,11 @@
-package org.gittner.osmbugs.activities;
+package org.gittner.osmbugs.fragments;
 
+import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +21,13 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.gittner.osmbugs.Helpers.GeoIntentStarter;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.bugs.OsmNote;
@@ -36,13 +37,13 @@ import org.gittner.osmbugs.statics.Settings;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-@EActivity(R.layout.activity_osm_note_edit)
+@EFragment(R.layout.fragment_osm_note_edit)
 @OptionsMenu(R.menu.osm_note_edit)
-public class OsmNoteEditActivity
-        extends ActionBarActivity
-        implements BugEditActivityConstants
+public class OsmNoteEditFragment extends Fragment
 {
-    @Extra(EXTRA_BUG)
+    public static final String ARG_BUG = "ARG_BUG";
+
+    @FragmentArg(ARG_BUG)
     OsmNote mBug;
 
     @ViewById(R.id.txtvDescription)
@@ -61,12 +62,9 @@ public class OsmNoteEditActivity
     @AfterViews
     void init()
     {
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(mBug.getIcon());
-
         mDescription.setText(mBug.getDescription());
 
-        CommentAdapter adapter = new CommentAdapter(this);
+        CommentAdapter adapter = new CommentAdapter(getActivity());
 
         mComments.setAdapter(adapter);
         adapter.addAll(mBug.getComments());
@@ -77,7 +75,7 @@ public class OsmNoteEditActivity
             mAddComment.setVisibility(GONE);
         }
 
-        mSaveDialog = new MaterialDialog.Builder(this)
+        mSaveDialog = new MaterialDialog.Builder(getActivity())
                 .title(R.string.saving)
                 .content(R.string.please_wait)
                 .cancelable(false)
@@ -87,11 +85,9 @@ public class OsmNoteEditActivity
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
         mMenuClose.setVisible(mBug.getState() == OsmNote.STATE.OPEN);
-
-        return true;
     }
 
 
@@ -101,7 +97,7 @@ public class OsmNoteEditActivity
         if (Settings.OsmNotes.getUsername().equals(""))
         {
             Toast.makeText(
-                    this,
+                    getActivity(),
                     R.string.notification_osm_notes_no_username,
                     Toast.LENGTH_LONG).show();
             return;
@@ -109,14 +105,14 @@ public class OsmNoteEditActivity
         if (Settings.OsmNotes.getPassword().equals(""))
         {
             Toast.makeText(
-                    this,
+                    getActivity(),
                     R.string.notification_osm_notes_no_password,
                     Toast.LENGTH_LONG).show();
             return;
         }
 
-        final EditText closeComment = new EditText(this);
-        new MaterialDialog.Builder(this)
+        final EditText closeComment = new EditText(getActivity());
+        new MaterialDialog.Builder(getActivity())
                 .customView(closeComment, false)
                 .cancelable(true)
                 .title(R.string.enter_comment)
@@ -155,12 +151,12 @@ public class OsmNoteEditActivity
 
         if (result)
         {
-            setResult(RESULT_OK);
-            finish();
+            getActivity().setResult(Activity.RESULT_OK);
+            getActivity().finish();
         }
         else
         {
-            new MaterialDialog.Builder(this)
+            new MaterialDialog.Builder(getActivity())
                     .title(R.string.error)
                     .content(R.string.failed_to_save_bug)
                     .cancelable(true)
@@ -172,8 +168,8 @@ public class OsmNoteEditActivity
     @Click(R.id.imgbtnAddComment)
     void addComment()
     {
-        final EditText newComment = new EditText(this);
-        new MaterialDialog.Builder(this)
+        final EditText newComment = new EditText(getActivity());
+        new MaterialDialog.Builder(getActivity())
                 .customView(newComment, false)
                 .cancelable(true)
                 .title(R.string.enter_comment)
@@ -236,12 +232,5 @@ public class OsmNoteEditActivity
 
             return v;
         }
-    }
-
-
-    @OptionsItem(R.id.action_share)
-    void shareBug()
-    {
-        GeoIntentStarter.start(this, mBug.getPoint());
     }
 }

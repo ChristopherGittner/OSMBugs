@@ -3,7 +3,7 @@ package org.gittner.osmbugs.common;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.gittner.osmbugs.Helpers.Openstreetmap;
+import org.gittner.osmbugs.statics.Openstreetmap;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -28,6 +28,7 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
+import org.gittner.osmbugs.Helpers.EmailFeedbackStarter;
 import org.gittner.osmbugs.Helpers.IntentHelper;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
@@ -509,38 +510,7 @@ public class BugMapActivity extends EventBusActionBarActivity
     @OptionsItem(R.id.feedback)
     void onFeedbackClicked()
     {
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.developer_mail)});
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback_to_osmbugs));
-        emailIntent.setType("plain/text");
-
-        if (IntentHelper.intentHasReceivers(this, emailIntent))
-        {
-            try
-            {
-                startActivity(Intent.createChooser(emailIntent, getString(R.string.email_feedback)));
-            }
-            catch (ActivityNotFoundException e)
-            {
-                Timber.e(e, "No Email Activity found");
-                e.printStackTrace();
-                showSendFeedbackErrorDialog();
-            }
-        }
-        else
-        {
-            showSendFeedbackErrorDialog();
-        }
-    }
-
-
-    private void showSendFeedbackErrorDialog()
-    {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.sending_feedback_failed_title)
-                .setMessage(R.string.sending_feedback_failed_message)
-                .setCancelable(true)
-                .create().show();
+        EmailFeedbackStarter.start(this);
     }
 
 
@@ -653,7 +623,9 @@ public class BugMapActivity extends EventBusActionBarActivity
         @Override
         public boolean onItemSingleTapUp(int index, BugOverlayItem bugItem)
         {
-            startActivityForResult(bugItem.getBug().createEditor(BugMapActivity.this), mRequestCode);
+            BugEditActivity_.intent(BugMapActivity.this)
+                    .mBug(bugItem.getBug())
+                    .startForResult(mRequestCode);
             return true;
         }
 

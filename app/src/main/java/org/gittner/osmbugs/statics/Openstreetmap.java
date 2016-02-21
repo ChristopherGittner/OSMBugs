@@ -1,4 +1,4 @@
-package org.gittner.osmbugs.Helpers;
+package org.gittner.osmbugs.statics;
 
 public class Openstreetmap
 {

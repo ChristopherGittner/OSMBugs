@@ -141,24 +141,9 @@ public class BugListActivity
     @Override
     public void onBugClicked(final Bug bug)
     {
-        Platform platform = bug.getPlatform();
-
-        if (platform == Platforms.KEEPRIGHT)
-        {
-            startActivityForResult(bug.createEditor(this), REQUEST_CODE_KEEPRIGHT_EDIT_ACTIVITY);
-        }
-        else if (platform == Platforms.OSMOSE)
-        {
-            startActivityForResult(bug.createEditor(this), REQUEST_CODE_OSMOSE_EDIT_ACTIVITY);
-        }
-        else if (platform == Platforms.MAPDUST)
-        {
-            startActivityForResult(bug.createEditor(this), REQUEST_CODE_MAPDUST_EDIT_ACTIVITY);
-        }
-        else if (platform == Platforms.OSM_NOTES)
-        {
-            startActivityForResult(bug.createEditor(this), REQUEST_CODE_OSM_NOTE_EDIT_ACTIVITY);
-        }
+        BugEditActivity_.intent(this)
+                .mBug(bug)
+                .startForResult(REQUEST_CODE_KEEPRIGHT_EDIT_ACTIVITY);
     }
 
 

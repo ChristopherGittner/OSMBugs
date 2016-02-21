@@ -1,12 +1,8 @@
 package org.gittner.osmbugs.platforms;
 
-import android.content.Context;
-import android.content.Intent;
-
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.res.StringRes;
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.activities.MapdustEditActivity_;
 import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.api.BugApi;
 import org.gittner.osmbugs.bugs.MapdustBug;
@@ -37,14 +33,5 @@ public class Mapdust extends Platform<MapdustBug>
     public BugApi<MapdustBug> getApi()
     {
         return Apis.MAPDUST;
-    }
-
-
-    @Override
-    public Intent createEditor(Context context, final MapdustBug bug)
-    {
-        return MapdustEditActivity_.intent(context)
-                .mBug(bug)
-                .get();
     }
 }
