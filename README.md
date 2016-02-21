@@ -44,9 +44,9 @@ Osmdroid ( https://github.com/osmdroid/osmdroid )
 
 Mapdust ( http://www.mapdust.com )
 
-Material Dialogs ( https://github.com/afollestad/material-dialogs )
-
 Material ( https://github.com/rey5137/material )
+
+Material Dialogs ( https://github.com/afollestad/material-dialogs )
 
 Openstreetmap ( https://www.openstreetmap.org )
 
