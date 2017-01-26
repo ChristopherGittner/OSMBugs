@@ -34,24 +34,24 @@ This Project uses Software / Code / Images from:
 
 Acra ( https://github.com/ACRA/acra )
 
-Osmdroid ( https://github.com/osmdroid/osmdroid )
-
 Androidannotations ( https://github.com/excilys/androidannotations )
 
 EventBus ( https://github.com/greenrobot/EventBus )
 
-Material Dialogs ( https://github.com/afollestad/material-dialogs )
+Keepright ( http://keepright.at )
 
-Material ( https://github.com/rey5137/material )
-
-Timber ( https://github.com/JakeWharton/timber )
-
-Permiso ( https://github.com/greysonp/permiso )
-
-Openstreetmap ( https://www.openstreetmap.org )
+Osmdroid ( https://github.com/osmdroid/osmdroid )
 
 Mapdust ( http://www.mapdust.com )
 
-Keepright ( http://keepright.at )
+Material ( https://github.com/rey5137/material )
+
+Material Dialogs ( https://github.com/afollestad/material-dialogs )
+
+Openstreetmap ( https://www.openstreetmap.org )
 
 Osmose ( http://osmose.openstreetmap.fr )
+
+Permiso ( https://github.com/greysonp/permiso )
+
+Timber ( https://github.com/JakeWharton/timber )

@@ -1,7 +1,7 @@
 package org.gittner.osmbugs.api;
 
 import org.gittner.osmbugs.bugs.OsmNote;
-import org.gittner.osmbugs.parser.OpenstreetmapNotesParser;
+import org.gittner.osmbugs.parser.OsmNotesParser;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
@@ -62,7 +62,7 @@ public class OsmNotesApi implements BugApi<OsmNote>
                 return null;
             }
 
-            return OpenstreetmapNotesParser.parse(response.body().byteStream());
+            return OsmNotesParser.parse(response.body().byteStream());
         }
         catch (IOException e)
         {

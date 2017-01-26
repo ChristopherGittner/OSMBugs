@@ -28,6 +28,8 @@ import org.gittner.osmbugs.loader.Loader;
 import org.gittner.osmbugs.platforms.Platform;
 import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.TileSources;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.osmdroid.views.MapView;
 
 @EFragment(R.layout.fragment_bug_list)
@@ -109,7 +111,8 @@ public class BugPlatformFragment extends EventBusFragment
     }
 
 
-    public void onEventMainThread(BugsChangedEvent event)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onBugsChanged(BugsChangedEvent event)
     {
         if (event.getPlatform() == mPlatform)
         {
@@ -120,7 +123,8 @@ public class BugPlatformFragment extends EventBusFragment
     }
 
 
-    public void onEventMainThread(Loader.StateChangedEvent event)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoaderStateChanged(Loader.StateChangedEvent event)
     {
         if (event.getPlatform() == mPlatform)
         {

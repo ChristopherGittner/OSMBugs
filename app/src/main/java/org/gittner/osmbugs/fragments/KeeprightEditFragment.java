@@ -1,8 +1,9 @@
-package org.gittner.osmbugs.activities;
+package org.gittner.osmbugs.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
@@ -19,8 +20,8 @@ import com.rey.material.widget.Spinner;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
@@ -28,15 +29,15 @@ import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.bugs.KeeprightBug;
-import org.gittner.osmbugs.statics.GeoIntentStarter;
 import org.gittner.osmbugs.statics.Images;
 
-@EActivity(R.layout.activity_keepright_edit)
+@EFragment(R.layout.fragment_keepright_edit)
 @OptionsMenu(R.menu.keepright_edit)
-public class KeeprightEditActivity
-        extends ActionBarActivity
-        implements BugEditActivityConstants
+public class KeeprightEditFragment
+        extends Fragment
 {
+    public static final String ARG_BUG = "ARG_BUG";
+
     @ViewById(R.id.txtvTitle)
     TextView mTitle;
     @ViewById(R.id.txtvText)
@@ -46,7 +47,7 @@ public class KeeprightEditActivity
     @ViewById(R.id.spnState)
     Spinner mState;
 
-    @Extra(EXTRA_BUG)
+    @FragmentArg(ARG_BUG)
     KeeprightBug mBug;
 
     private MaterialDialog mSaveDialog = null;
@@ -55,9 +56,6 @@ public class KeeprightEditActivity
     @AfterViews
     void init()
     {
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(mBug.getIcon());
-
         mTitle.setText(mBug.getTitle());
         Linkify.addLinks(mTitle, Linkify.WEB_URLS);
         mTitle.setText(Html.fromHtml(mTitle.getText().toString()));
@@ -69,7 +67,7 @@ public class KeeprightEditActivity
 
         mComment.setText(Html.fromHtml(mBug.getComment()));
 
-        mState.setAdapter(new KeeprightStateAdapter(this, mBug.getOpenIcon()));
+        mState.setAdapter(new KeeprightStateAdapter(getActivity(), mBug.getOpenIcon()));
         switch (mBug.getState())
         {
             case OPEN:
@@ -85,7 +83,7 @@ public class KeeprightEditActivity
                 break;
         }
 
-        mSaveDialog = new MaterialDialog.Builder(this)
+        mSaveDialog = new MaterialDialog.Builder(getActivity())
                 .title(R.string.saving)
                 .content(R.string.please_wait)
                 .cancelable(false)
@@ -139,12 +137,12 @@ public class KeeprightEditActivity
 
         if (result)
         {
-            setResult(RESULT_OK);
-            finish();
+            getActivity().setResult(Activity.RESULT_OK);
+            getActivity().finish();
         }
         else
         {
-            new MaterialDialog.Builder(this)
+            new MaterialDialog.Builder(getActivity())
                     .title(R.string.error)
                     .content(R.string.failed_to_save_bug)
                     .cancelable(true)
@@ -212,12 +210,5 @@ public class KeeprightEditActivity
 
             return v;
         }
-    }
-
-
-    @OptionsItem(R.id.action_share)
-    void shareBug()
-    {
-        GeoIntentStarter.start(this, mBug.getPoint());
     }
 }

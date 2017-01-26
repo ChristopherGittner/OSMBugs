@@ -1,7 +1,5 @@
 package org.gittner.osmbugs.bugs;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -44,12 +42,6 @@ public abstract class Bug implements Parcelable
     public Platform getPlatform()
     {
         return mPlatform;
-    }
-
-
-    public Intent createEditor(Context context)
-    {
-        return mPlatform.createEditor(context, this);
     }
 
 

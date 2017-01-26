@@ -1,9 +1,11 @@
-package org.gittner.osmbugs.activities;
+package org.gittner.osmbugs.fragments;
 
+import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +14,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.rey.material.widget.ProgressView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
@@ -28,32 +30,40 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
-import org.gittner.osmbugs.bugs.OsmNote;
+import org.gittner.osmbugs.api.MapdustApi;
+import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.common.Comment;
-import org.gittner.osmbugs.statics.GeoIntentStarter;
 import org.gittner.osmbugs.statics.Settings;
+
+import java.util.List;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-@EActivity(R.layout.activity_osm_note_edit)
-@OptionsMenu(R.menu.osm_note_edit)
-public class OsmNoteEditActivity
-        extends ActionBarActivity
-        implements BugEditActivityConstants
+@EFragment(R.layout.fragment_mapdust_edit)
+@OptionsMenu(R.menu.mapdust_edit)
+public class MapdustEditFragment extends Fragment
 {
-    @Extra(EXTRA_BUG)
-    OsmNote mBug;
+    public static final String ARG_BUG = "ARG_BUG";
+
+    @FragmentArg(ARG_BUG)
+    MapdustBug mBug;
 
     @ViewById(R.id.txtvDescription)
     TextView mDescription;
-    @ViewById(R.id.imgbtnAddComment)
-    ImageButton mAddComment;
+    @ViewById(R.id.pbarLoadingComments)
+    ProgressView mProgressBarComments;
     @ViewById(R.id.lstvComments)
     ListView mComments;
+    @ViewById(R.id.imgbtnAddComment)
+    ImageButton mAddComment;
 
     @OptionsMenuItem(R.id.action_close)
-    MenuItem mMenuClose;
+    MenuItem mMenuCloseBug;
+    @OptionsMenuItem(R.id.action_ignore)
+    MenuItem mMenuIgnoreBug;
+
+    private CommentAdapter mAdapter;
 
     private MaterialDialog mSaveDialog = null;
 
@@ -61,63 +71,64 @@ public class OsmNoteEditActivity
     @AfterViews
     void init()
     {
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(mBug.getIcon());
-
         mDescription.setText(mBug.getDescription());
 
-        CommentAdapter adapter = new CommentAdapter(this);
+        mAdapter = new CommentAdapter(getActivity());
+        mComments.setAdapter(mAdapter);
 
-        mComments.setAdapter(adapter);
-        adapter.addAll(mBug.getComments());
-        adapter.notifyDataSetChanged();
-
-        if (mBug.getState() == OsmNote.STATE.CLOSED)
+        if (mBug.getState() == MapdustBug.STATE.CLOSED)
         {
             mAddComment.setVisibility(GONE);
         }
 
-        mSaveDialog = new MaterialDialog.Builder(this)
+        mSaveDialog = new MaterialDialog.Builder(getActivity())
                 .title(R.string.saving)
                 .content(R.string.please_wait)
                 .cancelable(false)
                 .progress(true, 0)
                 .build();
+
+        loadComments();
+    }
+
+
+    @Background
+    void loadComments()
+    {
+        List<Comment> comments = Apis.MAPDUST.retrieveComments(mBug.getId());
+
+        commentsLoaded(comments);
+    }
+
+
+    @UiThread
+    void commentsLoaded(List<Comment> comments)
+    {
+        mBug.setComments(comments);
+
+        mAdapter.addAll(comments);
+        mAdapter.notifyDataSetChanged();
+
+        mProgressBarComments.setVisibility(View.GONE);
     }
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        mMenuClose.setVisible(mBug.getState() == OsmNote.STATE.OPEN);
+        boolean visible = mBug.getState() == MapdustBug.STATE.OPEN;
 
-        return true;
+        mMenuCloseBug.setVisible(visible);
+        mMenuIgnoreBug.setVisible(visible);
     }
 
 
     @OptionsItem(R.id.action_close)
-    void closeBug()
+    void menuCloseBugClicked()
     {
-        if (Settings.OsmNotes.getUsername().equals(""))
-        {
-            Toast.makeText(
-                    this,
-                    R.string.notification_osm_notes_no_username,
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (Settings.OsmNotes.getPassword().equals(""))
-        {
-            Toast.makeText(
-                    this,
-                    R.string.notification_osm_notes_no_password,
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        final EditText closeComment = new EditText(this);
-        new MaterialDialog.Builder(this)
-                .customView(closeComment, false)
+        final EditText resolveComment = new EditText(getActivity());
+        new MaterialDialog.Builder(getActivity())
+                .customView(resolveComment, false)
                 .cancelable(true)
                 .title(R.string.enter_comment)
                 .positiveText(R.string.close)
@@ -129,20 +140,47 @@ public class OsmNoteEditActivity
                     {
                         mSaveDialog.show();
 
-                        closeBug(closeComment.getText().toString());
+                        uploadBugStatus(
+                                MapdustBug.STATE.CLOSED,
+                                resolveComment.getText().toString());
+                    }
+                }).show();
+    }
+
+
+    @OptionsItem(R.id.action_ignore)
+    void menuIgnoreBugClicked()
+    {
+        final EditText resolveComment = new EditText(getActivity());
+        new MaterialDialog.Builder(getActivity())
+                .customView(resolveComment, false)
+                .cancelable(true)
+                .title(R.string.enter_comment)
+                .positiveText(R.string.close)
+                .negativeText(R.string.cancel)
+                .callback(new MaterialDialog.ButtonCallback()
+                {
+                    @Override
+                    public void onPositive(MaterialDialog dialog)
+                    {
+                        mSaveDialog.show();
+
+                        uploadBugStatus(
+                                MapdustBug.STATE.IGNORED,
+                                resolveComment.getText().toString());
                     }
                 }).show();
     }
 
 
     @Background
-    void closeBug(String message)
+    void uploadBugStatus(MapdustBug.STATE state, String message)
     {
-        boolean result = Apis.OSM_NOTES.closeBug(
+        boolean result = Apis.MAPDUST.changeBugStatus(
                 mBug.getId(),
-                Settings.OsmNotes.getUsername(),
-                Settings.OsmNotes.getPassword(),
-                message);
+                state,
+                message,
+                Settings.Mapdust.getUsername());
 
         uploadDone(result);
     }
@@ -155,12 +193,12 @@ public class OsmNoteEditActivity
 
         if (result)
         {
-            setResult(RESULT_OK);
-            finish();
+            getActivity().setResult(Activity.RESULT_OK);
+            getActivity().finish();
         }
         else
         {
-            new MaterialDialog.Builder(this)
+            new MaterialDialog.Builder(getActivity())
                     .title(R.string.error)
                     .content(R.string.failed_to_save_bug)
                     .cancelable(true)
@@ -172,8 +210,8 @@ public class OsmNoteEditActivity
     @Click(R.id.imgbtnAddComment)
     void addComment()
     {
-        final EditText newComment = new EditText(this);
-        new MaterialDialog.Builder(this)
+        final EditText newComment = new EditText(getActivity());
+        new MaterialDialog.Builder(getActivity())
                 .customView(newComment, false)
                 .cancelable(true)
                 .title(R.string.enter_comment)
@@ -195,11 +233,10 @@ public class OsmNoteEditActivity
     @Background
     void uploadComment(String comment)
     {
-        boolean result = Apis.OSM_NOTES.addComment(
+        boolean result = new MapdustApi().commentBug(
                 mBug.getId(),
-                Settings.OsmNotes.getUsername(),
-                Settings.OsmNotes.getPassword(),
-                comment);
+                comment,
+                Settings.Mapdust.getUsername());
 
         uploadDone(result);
     }
@@ -236,12 +273,5 @@ public class OsmNoteEditActivity
 
             return v;
         }
-    }
-
-
-    @OptionsItem(R.id.action_share)
-    void shareBug()
-    {
-        GeoIntentStarter.start(this, mBug.getPoint());
     }
 }
