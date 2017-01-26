@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import org.osmdroid.api.IGeoPoint;
-import org.osmdroid.util.BoundingBoxE6;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.Locale;
@@ -74,23 +74,23 @@ public class Settings
     }
 
 
-    public static BoundingBoxE6 getLastBBox()
+    public static BoundingBox getLastBBox()
     {
-        return new BoundingBoxE6(
-                mPrefs.getInt("pref_last_bbox_lat_north", 0),
-                mPrefs.getInt("pref_last_bbox_lon_east", 0),
-                mPrefs.getInt("pref_last_bbox_lat_south", 0),
-                mPrefs.getInt("pref_last_bbox_lon_west", 0));
+        return new BoundingBox(
+                Double.parseDouble(mPrefs.getString("pref_last_bbox_lat_north", "0")),
+                Double.parseDouble(mPrefs.getString("pref_last_bbox_lon_east", "0")),
+                Double.parseDouble(mPrefs.getString("pref_last_bbox_lat_south", "0")),
+                Double.parseDouble(mPrefs.getString("pref_last_bbox_lon_west", "0")));
     }
 
 
-    public static void setLastBBox(BoundingBoxE6 bBox)
+    public static void setLastBBox(BoundingBox bBox)
     {
         mPrefs.edit()
-                .putInt("pref_last_bbox_lat_north", bBox.getLatNorthE6())
-                .putInt("pref_last_bbox_lon_east", bBox.getLonEastE6())
-                .putInt("pref_last_bbox_lat_south", bBox.getLatSouthE6())
-                .putInt("pref_last_bbox_lon_west", bBox.getLonWestE6()).apply();
+                .putString("pref_last_bbox_lat_north", String.valueOf(bBox.getLatNorth()))
+                .putString("pref_last_bbox_lon_east", String.valueOf(bBox.getLonEast()))
+                .putString("pref_last_bbox_lat_south", String.valueOf(bBox.getLatSouth()))
+                .putString("pref_last_bbox_lon_west", String.valueOf(bBox.getLonWest())).apply();
     }
 
 

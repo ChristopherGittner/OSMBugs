@@ -3,7 +3,7 @@ package org.gittner.osmbugs.api;
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.parser.KeeprightParser;
 import org.gittner.osmbugs.statics.Settings;
-import org.osmdroid.util.BoundingBoxE6;
+import org.osmdroid.util.BoundingBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class KeeprightApi implements BugApi<KeeprightBug>
     public static OkHttpClient mOkHttpClient = new OkHttpClient();
 
     @Override
-    public ArrayList<KeeprightBug> downloadBBox(BoundingBoxE6 bBox)
+    public ArrayList<KeeprightBug> downloadBBox(BoundingBox bBox)
     {
         return downloadBBox(
                 bBox,
@@ -31,7 +31,7 @@ public class KeeprightApi implements BugApi<KeeprightBug>
 
 
     private ArrayList<KeeprightBug> downloadBBox(
-            BoundingBoxE6 bBox,
+            BoundingBox bBox,
             boolean showIgnored,
             boolean showTempIgnored,
             boolean langGerman)
@@ -44,8 +44,8 @@ public class KeeprightApi implements BugApi<KeeprightBug>
                         .addQueryParameter("show_ign", showIgnored ? "1" : "0")
                         .addQueryParameter("show_tmpign", showTempIgnored ? "1" : "0")
                         .addQueryParameter("ch", getKeeprightSelectionString())
-                        .addQueryParameter("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0))
-                        .addQueryParameter("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0))
+                        .addQueryParameter("lat", String.valueOf(bBox.getCenter().getLatitude()))
+                        .addQueryParameter("lon", String.valueOf(bBox.getCenter().getLongitude()))
                         .addQueryParameter("lang", langGerman ? "de" : "en")
                         .build())
                 .post(new FormBody.Builder().build())

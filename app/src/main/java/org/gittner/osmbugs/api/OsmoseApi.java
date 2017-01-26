@@ -4,12 +4,11 @@ import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.OsmoseElement;
 import org.gittner.osmbugs.parser.OsmoseParser;
 import org.gittner.osmbugs.statics.Settings;
-import org.osmdroid.util.BoundingBoxE6;
+import org.osmdroid.util.BoundingBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -19,7 +18,7 @@ public class OsmoseApi implements BugApi<OsmoseBug>
 {
     public static OkHttpClient mOkHttpClient = new OkHttpClient();
 
-    public ArrayList<OsmoseBug> downloadBBox(BoundingBoxE6 bBox)
+    public ArrayList<OsmoseBug> downloadBBox(BoundingBox bBox)
     {
         Request request = new Request.Builder()
                 .url(new HttpUrl.Builder()
@@ -29,8 +28,8 @@ public class OsmoseApi implements BugApi<OsmoseBug>
                         .addPathSegment("api")
                         .addPathSegment("0.2")
                         .addPathSegment("errors")
-                        .addQueryParameter("lat", String.valueOf(bBox.getCenter().getLatitudeE6() / 1000000.0))
-                        .addQueryParameter("lon", String.valueOf(bBox.getCenter().getLongitudeE6() / 1000000.0))
+                        .addQueryParameter("lat", String.valueOf(bBox.getCenter().getLatitude()))
+                        .addQueryParameter("lon", String.valueOf(bBox.getCenter().getLongitude()))
                         .addQueryParameter("limit", String.valueOf(Settings.Osmose.getBugLimit()))
                         .addQueryParameter("full", "true")
                         .addQueryParameter("comment", Settings.Osmose.getBugsToDisplay() == 1 ? "done" : "false")

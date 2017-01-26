@@ -1,12 +1,10 @@
 package org.gittner.osmbugs.api;
 
-import android.util.Log;
-
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.parser.MapdustParser;
 import org.gittner.osmbugs.statics.Settings;
-import org.osmdroid.util.BoundingBoxE6;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 
 import java.io.IOException;
@@ -16,7 +14,6 @@ import java.util.Locale;
 
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -27,7 +24,7 @@ public class MapdustApi implements BugApi<MapdustBug>
 
     public static OkHttpClient mOkHttpClient = new OkHttpClient();
 
-    public ArrayList<MapdustBug> downloadBBox(BoundingBoxE6 bBox)
+    public ArrayList<MapdustBug> downloadBBox(BoundingBox bBox)
     {
         Request request = new Request.Builder()
                 .url(new HttpUrl.Builder()
@@ -39,10 +36,10 @@ public class MapdustApi implements BugApi<MapdustBug>
                         .addQueryParameter("bbox", String.format(
                                 Locale.US,
                                 "%f,%f,%f,%f",
-                                bBox.getLonEastE6() / 1000000.0,
-                                bBox.getLatSouthE6() / 1000000.0,
-                                bBox.getLonWestE6() / 1000000.0,
-                                bBox.getLatNorthE6() / 1000000.0))
+                                bBox.getLonEast(),
+                                bBox.getLatSouth(),
+                                bBox.getLonWest(),
+                                bBox.getLatNorth()))
                         .addQueryParameter("comments", "1")
                         .addQueryParameter("ft", getMapdustSelectionString())
                         .addQueryParameter("fs", getMapdustEnabledTypesString())

@@ -6,11 +6,10 @@ import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.events.BugsChangedEvent;
 import org.gittner.osmbugs.platforms.Platform;
 import org.gittner.osmbugs.statics.BackgroundTasks;
-import org.osmdroid.util.BoundingBoxE6;
+import org.greenrobot.eventbus.EventBus;
+import org.osmdroid.util.BoundingBox;
 
 import java.util.ArrayList;
-
-import de.greenrobot.event.EventBus;
 
 public class Loader<TBug extends Bug>
 {
@@ -23,12 +22,12 @@ public class Loader<TBug extends Bug>
     final Platform<TBug> mPlatform;
     final ArrayList<TBug> mBugs;
 
-    private final ObservableLoaderQueue<BoundingBoxE6> mQueue;
+    private final ObservableLoaderQueue<BoundingBox> mQueue;
 
     private LoaderAsyncTask mTask = null;
 
 
-    public Loader(final ObservableLoaderQueue<BoundingBoxE6> queue, final Platform<TBug> platform)
+    public Loader(final ObservableLoaderQueue<BoundingBox> queue, final Platform<TBug> platform)
     {
         mQueue = queue;
 
@@ -49,7 +48,7 @@ public class Loader<TBug extends Bug>
     }
 
 
-    public ObservableLoaderQueue<BoundingBoxE6> getQueue()
+    public ObservableLoaderQueue<BoundingBox> getQueue()
     {
         return mQueue;
     }
@@ -88,7 +87,7 @@ public class Loader<TBug extends Bug>
     }
 
 
-    private class LoaderAsyncTask extends AsyncTask<BoundingBoxE6, Void, ArrayList<TBug>>
+    private class LoaderAsyncTask extends AsyncTask<BoundingBox, Void, ArrayList<TBug>>
     {
         @Override
         protected void onPreExecute()
@@ -98,7 +97,7 @@ public class Loader<TBug extends Bug>
 
 
         @Override
-        protected ArrayList<TBug> doInBackground(final BoundingBoxE6... bBox)
+        protected ArrayList<TBug> doInBackground(final BoundingBox... bBox)
         {
             return mPlatform.getApi().downloadBBox(bBox[0]);
         }

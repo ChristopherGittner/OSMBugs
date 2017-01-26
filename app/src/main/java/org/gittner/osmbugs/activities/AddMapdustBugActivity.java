@@ -2,8 +2,6 @@ package org.gittner.osmbugs.activities;
 
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +16,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.rey.material.widget.EditText;
 import com.rey.material.widget.Spinner;
 
-import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;

@@ -3,7 +3,7 @@ package org.gittner.osmbugs.platforms;
 import org.androidannotations.annotations.EBean;
 import org.gittner.osmbugs.loader.Loader;
 import org.gittner.osmbugs.statics.Settings;
-import org.osmdroid.util.BoundingBoxE6;
+import org.osmdroid.util.BoundingBox;
 
 import java.util.HashMap;
 
@@ -16,7 +16,7 @@ public class AllPlatforms extends HashMap<String, Platform>
     }
 
 
-    public void loadIfEnabled(final BoundingBoxE6 bBox)
+    public void loadIfEnabled(final BoundingBox bBox)
     {
         Settings.setLastBBox(bBox);
 

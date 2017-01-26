@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -46,7 +45,8 @@ import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
 import org.gittner.osmbugs.statics.TileSources;
-import org.osmdroid.DefaultResourceProxyImpl;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
@@ -124,25 +124,25 @@ public class BugMapActivity extends EventBusActionBarActivity
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.keepright_zap),
                 new LaunchEditorListener(REQUEST_CODE_KEEPRIGHT_EDIT_ACTIVITY),
-                new DefaultResourceProxyImpl(this));
+                this);
 
         mOsmoseOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.osmose_marker_b_0),
                 new LaunchEditorListener(REQUEST_CODE_OSMOSE_EDIT_ACTIVITY),
-                new DefaultResourceProxyImpl(this));
+                this);
 
         mMapdustOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.mapdust_other),
                 new LaunchEditorListener(REQUEST_CODE_MAPDUST_EDIT_ACTIVITY),
-                new DefaultResourceProxyImpl(this));
+                this);
 
         mOsmNotesOverlay = new ItemizedIconOverlay<>(
                 new ArrayList<BugOverlayItem>(),
                 Images.get(R.drawable.osm_notes_open_bug),
                 new LaunchEditorListener(REQUEST_CODE_OSM_NOTE_EDIT_ACTIVITY),
-                new DefaultResourceProxyImpl(this));
+                this);
 
         /* Add all bugs to the Map */
         for (KeeprightBug bug : Platforms.KEEPRIGHT.getBugs())
@@ -172,10 +172,10 @@ public class BugMapActivity extends EventBusActionBarActivity
         mMap.getOverlays().add(new Overlay(this)
         {
             @Override
-            protected void draw(Canvas arg0, MapView arg1, boolean arg2)
+            public void draw(Canvas c, MapView osmv, boolean shadow)
             {
-            }
 
+            }
 
             @SuppressWarnings("deprecation")
             @Override
@@ -192,6 +192,7 @@ public class BugMapActivity extends EventBusActionBarActivity
                 return super.onTouchEvent(event, mapView);
             }
         });
+
         mMap.getController().setZoom(Settings.getLastZoom());
         mMap.getController().setCenter(Settings.getLastMapCenter());
     }
@@ -360,7 +361,7 @@ public class BugMapActivity extends EventBusActionBarActivity
     {
         if (mLocationOverlay == null)
         {
-            mLocationOverlay = new MyLocationOverlay(this, mMap, mFollowModeListener);
+            mLocationOverlay = new MyLocationOverlay(mMap, mFollowModeListener);
         }
 
         if (Settings.getEnableGps())
@@ -573,7 +574,8 @@ public class BugMapActivity extends EventBusActionBarActivity
     }
 
 
-    public void onEventMainThread(BugsChangedEvent event)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onBugsChanged(BugsChangedEvent event)
     {
         if (event.getPlatform() == Platforms.KEEPRIGHT)
         {
@@ -616,7 +618,8 @@ public class BugMapActivity extends EventBusActionBarActivity
     }
 
 
-    public void onEventMainThread(Loader.StateChangedEvent event)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoaderStateChanged(Loader.StateChangedEvent event)
     {
         if (event.getState() == Loader.FAILED)
         {

@@ -3,7 +3,7 @@ package org.gittner.osmbugs.api;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.parser.OpenstreetmapNotesParser;
 import org.gittner.osmbugs.statics.Settings;
-import org.osmdroid.util.BoundingBoxE6;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class OsmNotesApi implements BugApi<OsmNote>
     public static OkHttpClient mOkHttpClient = new OkHttpClient();
 
     @Override
-    public ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox)
+    public ArrayList<OsmNote> downloadBBox(BoundingBox bBox)
     {
         return downloadBBox(
                 bBox,
@@ -32,7 +32,7 @@ public class OsmNotesApi implements BugApi<OsmNote>
     }
 
 
-    private ArrayList<OsmNote> downloadBBox(BoundingBoxE6 bBox, int limit, boolean showClosed)
+    private ArrayList<OsmNote> downloadBBox(BoundingBox bBox, int limit, boolean showClosed)
     {
         Request request = new Request.Builder()
                 .url(new HttpUrl.Builder()
@@ -44,10 +44,10 @@ public class OsmNotesApi implements BugApi<OsmNote>
                         .addQueryParameter("bbox", String.format(
                                 Locale.US,
                                 "%f,%f,%f,%f",
-                                bBox.getLonWestE6() / 1000000.0,
-                                bBox.getLatSouthE6() / 1000000.0,
-                                bBox.getLonEastE6() / 1000000.0,
-                                bBox.getLatNorthE6() / 1000000.0))
+                                bBox.getLonWest(),
+                                bBox.getLatSouth(),
+                                bBox.getLonEast(),
+                                bBox.getLatNorth()))
                         .addQueryParameter("closed", showClosed ? "1" : "0")
                         .addQueryParameter("limit", String.valueOf(limit))
                         .build())
