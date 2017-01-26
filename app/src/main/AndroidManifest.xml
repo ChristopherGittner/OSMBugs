@@ -38,12 +38,6 @@
         <activity
             android:name=".activities.BugEditActivity_"
             android:label="@string/title_activity_keepright_edit"/>
-        <activity
-            android:name="org.acra.CrashReportDialog"
-            android:excludeFromRecents="true"
-            android:finishOnTaskLaunch="true"
-            android:launchMode="singleInstance"
-            android:theme="@style/Theme.Dialog"/>
     </application>
 
 </manifest>

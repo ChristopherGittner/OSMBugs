@@ -363,7 +363,7 @@ public class BugMapActivity extends EventBusActionBarActivity
     {
         if (mLocationOverlay == null)
         {
-            mLocationOverlay = new MyLocationOverlay(this, mMap, mFollowModeListener);
+            mLocationOverlay = new MyLocationOverlay(mMap, mFollowModeListener);
         }
 
         if (Settings.getEnableGps())
@@ -624,7 +624,9 @@ public class BugMapActivity extends EventBusActionBarActivity
         @Override
         public boolean onItemSingleTapUp(int index, BugOverlayItem bugItem)
         {
-            startActivityForResult(bugItem.getBug().createEditor(BugMapActivity.this), mRequestCode);
+            BugEditActivity_.intent(BugMapActivity.this)
+                    .mBug(bugItem.getBug())
+                    .startForResult(mRequestCode);
             return true;
         }
 
