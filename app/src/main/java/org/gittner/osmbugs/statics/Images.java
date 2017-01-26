@@ -3,15 +3,18 @@ package org.gittner.osmbugs.statics;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 
 public class Images
 {
+    private static Context mContext;
     private static Resources mResources;
     private static String mPackageName;
 
 
     public static void init(Context context)
     {
+        mContext = context;
         mResources = context.getResources();
         mPackageName = context.getPackageName();
     }
@@ -23,7 +26,7 @@ public class Images
 
         try
         {
-            return mResources.getDrawable(id);
+            return ContextCompat.getDrawable(mContext, id);
         }
         catch (android.content.res.Resources.NotFoundException e)
         {
@@ -34,6 +37,6 @@ public class Images
 
     public static Drawable get(int id)
     {
-        return mResources.getDrawable(id);
+        return ContextCompat.getDrawable(mContext, id);
     }
 }
