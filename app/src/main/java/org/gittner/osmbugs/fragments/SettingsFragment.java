@@ -24,7 +24,6 @@ public class SettingsFragment
     }
 
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean onPreferenceClick(Preference preference)
     {
