@@ -1,10 +1,10 @@
 package org.gittner.osmbugs.parser;
 
-import org.gittner.osmbugs.statics.Openstreetmap;
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.OsmKeyValuePair;
 import org.gittner.osmbugs.common.OsmoseElement;
 import org.gittner.osmbugs.common.OsmoseFix;
+import org.gittner.osmbugs.statics.Openstreetmap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

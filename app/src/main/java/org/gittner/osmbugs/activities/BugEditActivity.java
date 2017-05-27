@@ -1,7 +1,7 @@
 package org.gittner.osmbugs.activities;
 
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -23,7 +23,7 @@ import org.gittner.osmbugs.platforms.Platforms;
 
 @EActivity(R.layout.activity_bug_edit)
 @OptionsMenu(R.menu.bug_edit)
-public class BugEditActivity extends ActionBarActivity
+public class BugEditActivity extends AppCompatActivity
 {
     public static final String EXTRA_BUG = "ARG_BUG";
 

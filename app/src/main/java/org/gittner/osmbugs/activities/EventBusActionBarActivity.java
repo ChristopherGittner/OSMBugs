@@ -1,12 +1,12 @@
 package org.gittner.osmbugs.activities;
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import org.androidannotations.annotations.EBean;
 import org.greenrobot.eventbus.EventBus;
 
 @EBean
-public class EventBusActionBarActivity extends ActionBarActivity
+public class EventBusActionBarActivity extends AppCompatActivity
 {
     @Override
     public void onResume()

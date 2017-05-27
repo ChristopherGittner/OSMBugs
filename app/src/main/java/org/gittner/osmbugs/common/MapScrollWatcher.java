@@ -74,8 +74,8 @@ public class MapScrollWatcher
         boolean differ = false;
         for (IGeoPoint center : mLastCentres)
         {
-            if (center.getLatitudeE6() != currentCenter.getLatitudeE6()
-                    || center.getLongitudeE6() != currentCenter.getLongitudeE6())
+            if (center.getLatitude() != currentCenter.getLatitude()
+                    || center.getLongitude() != currentCenter.getLongitude())
             {
                 differ = true;
             }

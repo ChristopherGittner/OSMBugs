@@ -271,8 +271,8 @@ public class MapdustApi implements BugApi<MapdustBug>
                         .addQueryParameter("coordinates", String.format(
                                 Locale.US,
                                 "%f,%f",
-                                position.getLongitudeE6() / 1000000.0,
-                                position.getLatitudeE6() / 1000000.0))
+                                position.getLatitude(),
+                                position.getLatitude()))
                         .addQueryParameter("description", description)
                         .addQueryParameter("nickname", Settings.Mapdust.getUsername())
                         .addQueryParameter("type", sType)

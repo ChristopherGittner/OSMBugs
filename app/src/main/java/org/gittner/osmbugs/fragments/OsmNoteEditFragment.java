@@ -118,15 +118,10 @@ public class OsmNoteEditFragment extends Fragment
                 .title(R.string.enter_comment)
                 .positiveText(R.string.close)
                 .negativeText(R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback()
-                {
-                    @Override
-                    public void onPositive(MaterialDialog dialog)
-                    {
-                        mSaveDialog.show();
+                .onPositive((materialDialog, dialogAction) -> {
+                    mSaveDialog.show();
 
-                        closeBug(closeComment.getText().toString());
-                    }
+                    closeBug(closeComment.getText().toString());
                 }).show();
     }
 
@@ -175,15 +170,10 @@ public class OsmNoteEditFragment extends Fragment
                 .title(R.string.enter_comment)
                 .positiveText(R.string.ok)
                 .negativeText(R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback()
-                {
-                    @Override
-                    public void onPositive(MaterialDialog dialog)
-                    {
-                        mSaveDialog.show();
+                .onPositive((materialDialog, dialogAction) -> {
+                    mSaveDialog.show();
 
-                        uploadComment(newComment.getText().toString());
-                    }
+                    uploadComment(newComment.getText().toString());
                 }).show();
     }
 

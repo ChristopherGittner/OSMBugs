@@ -25,7 +25,7 @@ public abstract class Bug implements Parcelable
     Bug(Parcel parcel)
     {
         mPlatform = Platforms.byName(parcel.readString());
-        mPoint = new GeoPoint(parcel.readInt(), parcel.readInt());
+        mPoint = new GeoPoint(parcel.readDouble(), parcel.readDouble());
     }
 
 
@@ -34,8 +34,8 @@ public abstract class Bug implements Parcelable
     {
         parcel.writeString(mPlatform.getName());
 
-        parcel.writeInt(mPoint.getLatitudeE6());
-        parcel.writeInt(mPoint.getLongitudeE6());
+        parcel.writeDouble(mPoint.getLatitude());
+        parcel.writeDouble(mPoint.getLongitude());
     }
 
 

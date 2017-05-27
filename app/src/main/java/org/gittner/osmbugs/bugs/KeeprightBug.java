@@ -4,10 +4,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.gittner.osmbugs.statics.Openstreetmap;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
+import org.gittner.osmbugs.statics.Openstreetmap;
 import org.osmdroid.util.GeoPoint;
 
 public class KeeprightBug extends Bug

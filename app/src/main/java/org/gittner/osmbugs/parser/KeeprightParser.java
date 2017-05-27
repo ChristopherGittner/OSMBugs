@@ -1,7 +1,7 @@
 package org.gittner.osmbugs.parser;
 
-import org.gittner.osmbugs.statics.Openstreetmap;
 import org.gittner.osmbugs.bugs.KeeprightBug;
+import org.gittner.osmbugs.statics.Openstreetmap;
 
 import java.io.BufferedReader;
 import java.io.IOException;

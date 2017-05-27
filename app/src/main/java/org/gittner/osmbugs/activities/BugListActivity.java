@@ -7,7 +7,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.rey.material.widget.TabPageIndicator;
 
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 @EActivity(R.layout.activity_bug_list)
 public class BugListActivity
-        extends ActionBarActivity
+        extends AppCompatActivity
         implements ActionBar.TabListener,
         BugPlatformFragment.OnFragmentInteractionListener
 {
