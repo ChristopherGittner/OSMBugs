@@ -53,43 +53,45 @@ public class OsmoseFixView extends LinearLayout
     {
         if (!fix.getAdd().isEmpty())
         {
-            String textAdd = "";
+            StringBuilder textAdd = new StringBuilder();
             for (OsmKeyValuePair tag : fix.getAdd())
             {
-                textAdd += "+ " + tag.toString() + "\n";
+                textAdd.append("+ ").append(tag.toString()).append("\n");
             }
-            textAdd = textAdd.trim();
-            mAdd.setText(textAdd);
+            textAdd = new StringBuilder(textAdd.toString().trim());
+            mAdd.setText(textAdd.toString());
             mAdd.setVisibility(View.VISIBLE);
         }
         else
         {
             mAdd.setVisibility(View.GONE);
         }
+
         if (!fix.getModify().isEmpty())
         {
-            String textModify = "";
+            StringBuilder textModify = new StringBuilder();
             for (OsmKeyValuePair tag : fix.getModify())
             {
-                textModify += "~ " + tag.toString() + "\n";
+                textModify.append("~ ").append(tag.toString()).append("\n");
             }
-            textModify = textModify.trim();
-            mModify.setText(textModify);
+            textModify = new StringBuilder(textModify.toString().trim());
+            mModify.setText(textModify.toString());
             mModify.setVisibility(View.VISIBLE);
         }
         else
         {
             mModify.setVisibility(View.GONE);
         }
+
         if (!fix.getDelete().isEmpty())
         {
-            String textDelete = "";
+            StringBuilder textDelete = new StringBuilder();
             for (OsmKeyValuePair tag : fix.getDelete())
             {
-                textDelete += "- " + tag.toString() + "\n";
+                textDelete.append("- ").append(tag.toString()).append("\n");
             }
-            textDelete = textDelete.trim();
-            mDelete.setText(textDelete);
+            textDelete = new StringBuilder(textDelete.toString().trim());
+            mDelete.setText(textDelete.toString());
             mDelete.setVisibility(View.VISIBLE);
         }
         else

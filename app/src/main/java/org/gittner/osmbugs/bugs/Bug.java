@@ -1,7 +1,5 @@
 package org.gittner.osmbugs.bugs;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;

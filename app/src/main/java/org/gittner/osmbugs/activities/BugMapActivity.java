@@ -1,19 +1,15 @@
 package org.gittner.osmbugs.activities;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -31,7 +27,6 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.Helpers.EmailFeedbackStarter;
-import org.gittner.osmbugs.Helpers.IntentHelper;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.bugs.BugOverlayItem;
@@ -103,14 +98,10 @@ public class BugMapActivity extends EventBusActionBarActivity
 
     private MapScrollWatcher mMapScrollWatcher = null;
 
-    private final MyLocationOverlay.FollowModeListener mFollowModeListener = new MyLocationOverlay.FollowModeListener()
+    private final MyLocationOverlay.FollowModeListener mFollowModeListener = () ->
     {
-        @Override
-        public void onFollowingStopped()
-        {
-            Settings.setFollowGps(false);
-            invalidateOptionsMenu();
-        }
+        Settings.setFollowGps(false);
+        invalidateOptionsMenu();
     };
 
 
@@ -123,25 +114,25 @@ public class BugMapActivity extends EventBusActionBarActivity
 
         /* Create Bug Overlays */
         mKeeprightOverlay = new ItemizedIconOverlay<>(
-                new ArrayList<BugOverlayItem>(),
+                new ArrayList<>(),
                 Images.get(R.drawable.keepright_zap),
                 new LaunchEditorListener(REQUEST_CODE_KEEPRIGHT_EDIT_ACTIVITY),
                 this);
 
         mOsmoseOverlay = new ItemizedIconOverlay<>(
-                new ArrayList<BugOverlayItem>(),
+                new ArrayList<>(),
                 Images.get(R.drawable.osmose_marker_b_0),
                 new LaunchEditorListener(REQUEST_CODE_OSMOSE_EDIT_ACTIVITY),
                 this);
 
         mMapdustOverlay = new ItemizedIconOverlay<>(
-                new ArrayList<BugOverlayItem>(),
+                new ArrayList<>(),
                 Images.get(R.drawable.mapdust_other),
                 new LaunchEditorListener(REQUEST_CODE_MAPDUST_EDIT_ACTIVITY),
                 this);
 
         mOsmNotesOverlay = new ItemizedIconOverlay<>(
-                new ArrayList<BugOverlayItem>(),
+                new ArrayList<>(),
                 Images.get(R.drawable.osm_notes_open_bug),
                 new LaunchEditorListener(REQUEST_CODE_OSM_NOTE_EDIT_ACTIVITY),
                 this);
@@ -206,27 +197,23 @@ public class BugMapActivity extends EventBusActionBarActivity
                 .title(getString(R.string.platform))
                 .cancelable(true)
                 .items(R.array.new_bug_platforms)
-                .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice()
+                .itemsCallbackSingleChoice(0, (dialog, itemView, which, text) ->
                 {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text)
+                    if (which == 0)
                     {
-                        if (which == 0)
-                        {
-                            Intent addBugIntent = new Intent(BugMapActivity.this, AddOsmNoteActivity_.class);
-                            addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
-                            addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
-                            startActivityForResult(addBugIntent, REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY);
-                        } else if (which == 1)
-                        {
-                            Intent addBugIntent = new Intent(BugMapActivity.this, AddMapdustBugActivity_.class);
-                            addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
-                            addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
-                            startActivityForResult(addBugIntent, REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY);
-                        }
-
-                        return true;
+                        Intent addBugIntent = new Intent(BugMapActivity.this, AddOsmNoteActivity_.class);
+                        addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
+                        addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
+                        startActivityForResult(addBugIntent, REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY);
+                    } else if (which == 1)
+                    {
+                        Intent addBugIntent = new Intent(BugMapActivity.this, AddMapdustBugActivity_.class);
+                        addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
+                        addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
+                        startActivityForResult(addBugIntent, REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY);
                     }
+
+                    return true;
                 })
                 .positiveText(R.string.ok)
                 .negativeText(R.string.cancel)
@@ -319,14 +306,7 @@ public class BugMapActivity extends EventBusActionBarActivity
         {
             mRefreshButton.setVisibility(View.GONE);
 
-            mMapScrollWatcher = new MapScrollWatcher(mMap, new MapScrollWatcher.Listener()
-            {
-                @Override
-                public void onScrolled()
-                {
-                    Platforms.ALL_PLATFORMS.loadIfEnabled(mMap.getBoundingBox());
-                }
-            });
+            mMapScrollWatcher = new MapScrollWatcher(mMap, () -> Platforms.ALL_PLATFORMS.loadIfEnabled(mMap.getBoundingBox()));
         }
         else
         {

@@ -1,18 +1,10 @@
 package org.gittner.osmbugs.Helpers;
 
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.widget.Toast;
 
 import org.gittner.osmbugs.R;
-import org.osmdroid.util.GeoPoint;
-
-import java.util.Locale;
-
-import timber.log.Timber;
 
 public class EmailFeedbackStarter
 {

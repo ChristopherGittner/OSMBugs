@@ -4,7 +4,6 @@ import org.gittner.osmbugs.api.BugApi;
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.loader.FixedSizeLoaderQueue;
 import org.gittner.osmbugs.loader.Loader;
-import org.osmdroid.util.BoundingBox;
 
 import java.util.ArrayList;
 
@@ -12,7 +11,7 @@ public abstract class Platform<TBug extends Bug>
 {
     private final ArrayList<TBug> mBugs = new ArrayList<>();
 
-    private final Loader<TBug> mLoader = new Loader<>(new FixedSizeLoaderQueue<BoundingBox>(1), this);
+    private final Loader<TBug> mLoader = new Loader<>(new FixedSizeLoaderQueue<>(1), this);
 
 
     public abstract String getName();

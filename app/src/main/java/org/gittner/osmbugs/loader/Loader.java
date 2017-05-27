@@ -31,14 +31,7 @@ public class Loader<TBug extends Bug>
     {
         mQueue = queue;
 
-        mQueue.setListener(new ObservableLoaderQueue.QueueChangedListener()
-        {
-            @Override
-            public void onChange()
-            {
-                checkQueue();
-            }
-        });
+        mQueue.setListener(this::checkQueue);
 
         mPlatform = platform;
 

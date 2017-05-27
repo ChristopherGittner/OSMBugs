@@ -22,13 +22,18 @@ android {
     lintOptions {
         abortOnError false
     }
-}
 
-apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    annotationProcessor "org.androidannotations:androidannotations:4.3.0"
+    compile "org.androidannotations:androidannotations-api:4.3.0"
 
     compile 'org.osmdroid:osmdroid-android:5.6.4'
 
@@ -39,9 +44,6 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
 
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
-
-    compile "org.androidannotations:androidannotations-api:4.3.0"
-    apt "org.androidannotations:androidannotations:4.3.0"
 
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
 

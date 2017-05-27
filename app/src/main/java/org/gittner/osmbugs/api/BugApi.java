@@ -6,5 +6,5 @@ import java.util.ArrayList;
 
 public interface BugApi<TBug>
 {
-    public ArrayList<TBug> downloadBBox(BoundingBox bBox);
+    ArrayList<TBug> downloadBBox(BoundingBox bBox);
 }

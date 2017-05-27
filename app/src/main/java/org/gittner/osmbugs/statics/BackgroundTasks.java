@@ -16,7 +16,7 @@ public class BackgroundTasks extends ThreadPoolExecutor
                 8,
                 10,
                 TimeUnit.SECONDS,
-                new LinkedBlockingQueue<Runnable>());
+                new LinkedBlockingQueue<>());
     }
 
 

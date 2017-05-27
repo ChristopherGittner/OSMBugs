@@ -142,9 +142,9 @@ public class BugPlatformFragment extends EventBusFragment
 
     public interface OnFragmentInteractionListener
     {
-        public void onBugClicked(Bug bug);
+        void onBugClicked(Bug bug);
 
-        public void onBugMiniMapClicked(Bug bug);
+        void onBugMiniMapClicked(Bug bug);
     }
 
     private abstract class BugAdapter<T extends Bug> extends ArrayAdapter<T>
@@ -177,27 +177,16 @@ public class BugPlatformFragment extends EventBusFragment
             final MapView mapView = (MapView) v.findViewById(R.id.mapview);
             mapView.getController().setZoom(17);
             mapView.getController().setCenter(bug.getPoint());
-            mapView.setOnTouchListener(new View.OnTouchListener()
+            mapView.setOnTouchListener((v12, event) ->
             {
-                @Override
-                public boolean onTouch(View v, MotionEvent event)
+                if (event.getAction() == MotionEvent.ACTION_UP)
                 {
-                    if (event.getAction() == MotionEvent.ACTION_UP)
-                    {
-                        mListener.onBugMiniMapClicked(bug);
-                    }
-                    return true;
+                    mListener.onBugMiniMapClicked(bug);
                 }
+                return true;
             });
             mapView.setTileSource(TileSources.getInstance().getPreferredTileSource());
-            layoutInfo.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    mListener.onBugClicked(bug);
-                }
-            });
+            layoutInfo.setOnClickListener(v1 -> mListener.onBugClicked(bug));
 
             return v;
         }

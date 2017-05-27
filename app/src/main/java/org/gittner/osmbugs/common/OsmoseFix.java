@@ -63,20 +63,20 @@ public class OsmoseFix implements Parcelable
     @Override
     public String toString()
     {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (OsmKeyValuePair tag : mAdd)
         {
-            s += "Add:\n" + tag.toString() + "\n";
+            s.append("Add:\n").append(tag.toString()).append("\n");
         }
         for (OsmKeyValuePair tag : mDelete)
         {
-            s += "Delete:\n" + tag.toString() + "\n";
+            s.append("Delete:\n").append(tag.toString()).append("\n");
         }
         for (OsmKeyValuePair tag : mModify)
         {
-            s += "Modify:\n" + tag.toString() + "\n";
+            s.append("Modify:\n").append(tag.toString()).append("\n");
         }
-        return s;
+        return s.toString();
     }
 
 

@@ -67,13 +67,13 @@ public class OsmoseElementView extends LinearLayout
 
         if (!element.getTags().isEmpty())
         {
-            String textTags = "";
+            StringBuilder textTags = new StringBuilder();
             for (OsmKeyValuePair tag : element.getTags())
             {
-                textTags += tag.toString() + "\n";
+                textTags.append(tag.toString()).append("\n");
             }
-            textTags = textTags.trim();
-            mTags.setText(textTags);
+            textTags = new StringBuilder(textTags.toString().trim());
+            mTags.setText(textTags.toString());
             mTags.setVisibility(View.VISIBLE);
         }
         else

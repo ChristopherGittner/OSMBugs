@@ -214,7 +214,7 @@ public class KeeprightBug extends Bug
     }
 
 
-    public static enum STATE
+    public enum STATE
     {
         OPEN,
         IGNORED,
