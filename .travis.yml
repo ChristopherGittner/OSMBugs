@@ -9,3 +9,6 @@ android:
 
   licenses:
     - android-sdk-license-.+
+
+jdk:
+  - oraclejdk8
