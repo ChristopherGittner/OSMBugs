@@ -42,8 +42,6 @@ Osmdroid ( https://github.com/osmdroid/osmdroid )
 
 Mapdust ( http://www.mapdust.com )
 
-Material ( https://github.com/rey5137/material )
-
 Openstreetmap ( https://www.openstreetmap.org )
 
 Osmose ( http://osmose.openstreetmap.fr )
