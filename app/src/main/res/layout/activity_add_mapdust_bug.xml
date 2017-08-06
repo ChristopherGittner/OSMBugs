@@ -1,6 +1,5 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
@@ -9,20 +8,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.rey.material.widget.Spinner
-            style="@style/Material.Widget.Spinner"
+        <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spnType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:spn_labelEnable="true"
-            app:spn_label="@string/type"
-            app:spn_arrowSwitchMode="true"
-            app:spn_arrowAnimDuration="@android:integer/config_shortAnimTime"
-            app:spn_arrowInterpolator="@android:anim/decelerate_interpolator"/>
+            android:layout_margin="8dp" />
 
-        <com.rey.material.widget.EditText
-            style="@style/Material.Widget.EditText"
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/edttxtDescription"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -30,10 +22,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:inputType="textMultiLine"
             android:hint="@string/description"
-            android:imeOptions="actionNext|flagNoEnterAction|flagNoExtractUi"
-            app:et_inputId="@+id/textfield_et_contact_input"
-            app:et_supportMode="none"
-            app:et_dividerPadding="4dp"/>
+            android:imeOptions="actionNext|flagNoEnterAction|flagNoExtractUi" />
 
     </LinearLayout>
 

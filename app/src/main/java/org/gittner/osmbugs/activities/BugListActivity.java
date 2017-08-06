@@ -4,12 +4,9 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-
-import com.rey.material.widget.TabPageIndicator;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -28,8 +25,7 @@ import java.util.ArrayList;
 @EActivity(R.layout.activity_bug_list)
 public class BugListActivity
         extends AppCompatActivity
-        implements ActionBar.TabListener,
-        BugPlatformFragment.OnFragmentInteractionListener
+        implements BugPlatformFragment.OnFragmentInteractionListener
 {
     public static final int RESULT_BUG_MINI_MAP_CLICKED = 1;
 
@@ -43,7 +39,7 @@ public class BugListActivity
     @ViewById(R.id.pager)
     ViewPager mPager;
     @ViewById(R.id.tabPageIndicator)
-    TabPageIndicator mTabPageIndicator;
+    PagerTabStrip mPagerTabStrip;
 
 
     @AfterViews
@@ -71,9 +67,6 @@ public class BugListActivity
         pagerAdapter.notifyDataSetChanged();
 
         mPager.setAdapter(pagerAdapter);
-
-        mTabPageIndicator.setViewPager(mPager);
-        mTabPageIndicator.setOnPageChangeListener(new TabPageIndicator(this){});
     }
 
 
@@ -114,27 +107,6 @@ public class BugListActivity
         {
             Platforms.OSM_NOTES.getLoader().getQueue().add(Settings.getLastBBox());
         }
-    }
-
-
-    @Override
-    public void onTabSelected(final ActionBar.Tab tab, final FragmentTransaction fragmentTransaction)
-    {
-        mPager.setCurrentItem(tab.getPosition());
-    }
-
-
-    @Override
-    public void onTabUnselected(
-            final ActionBar.Tab tab,
-            final android.support.v4.app.FragmentTransaction fragmentTransaction)
-    {
-    }
-
-
-    @Override
-    public void onTabReselected(final ActionBar.Tab tab, final FragmentTransaction fragmentTransaction)
-    {
     }
 
 

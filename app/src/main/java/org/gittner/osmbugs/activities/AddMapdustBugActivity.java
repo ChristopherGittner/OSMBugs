@@ -3,6 +3,8 @@ package org.gittner.osmbugs.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,9 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.rey.material.widget.EditText;
-import com.rey.material.widget.Spinner;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -45,9 +44,9 @@ public class AddMapdustBugActivity extends AppCompatActivity
     double mLongitude;
 
     @ViewById(R.id.spnType)
-    Spinner mSpnType;
+    AppCompatSpinner mSpnType;
     @ViewById(R.id.edttxtDescription)
-    EditText mDescription;
+    AppCompatEditText mDescription;
 
     @OptionsMenuItem(R.id.action_done)
     MenuItem mMenuDone;

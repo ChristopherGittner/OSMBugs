@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,8 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.rey.material.widget.ProgressView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -53,7 +52,7 @@ public class MapdustEditFragment extends Fragment
     @ViewById(R.id.txtvDescription)
     TextView mDescription;
     @ViewById(R.id.pbarLoadingComments)
-    ProgressView mProgressBarComments;
+    ContentLoadingProgressBar mProgressBarComments;
     @ViewById(R.id.lstvComments)
     ListView mComments;
     @ViewById(R.id.imgbtnAddComment)
@@ -87,6 +86,8 @@ public class MapdustEditFragment extends Fragment
         mSaveDialog.setMessage(getString(R.string.please_wait));
         mSaveDialog.setCancelable(false);
         mSaveDialog.setIndeterminate(true);
+
+        mProgressBarComments.show();
 
         loadComments();
     }

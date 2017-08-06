@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,8 +16,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.greysonparrelli.permiso.Permiso;
-import com.rey.material.widget.FloatingActionButton;
-import com.rey.material.widget.ProgressView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -70,7 +70,7 @@ public class BugMapActivity extends EventBusActionBarActivity
     @ViewById(R.id.mapview)
     MapView mMap;
     @ViewById(R.id.progressBar)
-    ProgressView mProgressBar;
+    ContentLoadingProgressBar mProgressBar;
     @ViewById(R.id.btnRefreshBugs)
     FloatingActionButton mRefreshButton;
     @OptionsMenuItem(R.id.add_bug)
@@ -309,11 +309,11 @@ public class BugMapActivity extends EventBusActionBarActivity
 
         if (Platforms.ALL_PLATFORMS.getLoaderState() == Loader.LOADING)
         {
-            mProgressBar.start();
+            mProgressBar.show();
         }
         else
         {
-            mProgressBar.stop();
+            mProgressBar.hide();
         }
     }
 
@@ -575,11 +575,11 @@ public class BugMapActivity extends EventBusActionBarActivity
 
         if (Platforms.ALL_PLATFORMS.getLoaderState() == Loader.LOADING)
         {
-            mProgressBar.start();
+            mProgressBar.show();
         }
         else
         {
-            mProgressBar.stop();
+            mProgressBar.hide();
         }
     }
 

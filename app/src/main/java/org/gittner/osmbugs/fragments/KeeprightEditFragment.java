@@ -6,6 +6,8 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatSpinner;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
@@ -15,9 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.rey.material.widget.EditText;
-import com.rey.material.widget.Spinner;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -44,9 +43,9 @@ public class KeeprightEditFragment
     @ViewById(R.id.txtvText)
     TextView mText;
     @ViewById(R.id.edttxtComment)
-    EditText mComment;
+    AppCompatEditText mComment;
     @ViewById(R.id.spnState)
-    Spinner mState;
+    AppCompatSpinner mState;
 
     @FragmentArg(ARG_BUG)
     KeeprightBug mBug;
