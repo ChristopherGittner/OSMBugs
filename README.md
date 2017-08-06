@@ -32,9 +32,7 @@ Acknowledgements
 ================
 This Project uses Software / Code / Images from:
 
-Acra ( https://github.com/ACRA/acra )
-
-Androidannotations ( https://github.com/excilys/androidannotations )
+Androidannotations ( https://github.com/androidannotations/androidannotations )
 
 EventBus ( https://github.com/greenrobot/EventBus )
 
@@ -45,8 +43,6 @@ Osmdroid ( https://github.com/osmdroid/osmdroid )
 Mapdust ( http://www.mapdust.com )
 
 Material ( https://github.com/rey5137/material )
-
-Material Dialogs ( https://github.com/afollestad/material-dialogs )
 
 Openstreetmap ( https://www.openstreetmap.org )
 
