@@ -1,8 +1,10 @@
 package org.gittner.osmbugs.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,8 +17,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -56,7 +56,7 @@ public class OsmNoteEditFragment extends Fragment
     @OptionsMenuItem(R.id.action_close)
     MenuItem mMenuClose;
 
-    private MaterialDialog mSaveDialog = null;
+    private ProgressDialog mSaveDialog = null;
 
 
     @AfterViews
@@ -75,12 +75,11 @@ public class OsmNoteEditFragment extends Fragment
             mAddComment.setVisibility(GONE);
         }
 
-        mSaveDialog = new MaterialDialog.Builder(getActivity())
-                .title(R.string.saving)
-                .content(R.string.please_wait)
-                .cancelable(false)
-                .progress(true, 0)
-                .build();
+        mSaveDialog = new ProgressDialog(getActivity());
+        mSaveDialog.setTitle(R.string.saving);
+        mSaveDialog.setMessage(getString(R.string.please_wait));
+        mSaveDialog.setCancelable(false);
+        mSaveDialog.setIndeterminate(true);
     }
 
 
@@ -112,17 +111,17 @@ public class OsmNoteEditFragment extends Fragment
         }
 
         final EditText closeComment = new EditText(getActivity());
-        new MaterialDialog.Builder(getActivity())
-                .customView(closeComment, false)
-                .cancelable(true)
-                .title(R.string.enter_comment)
-                .positiveText(R.string.close)
-                .negativeText(R.string.cancel)
-                .onPositive((materialDialog, dialogAction) -> {
+        new AlertDialog.Builder(getActivity())
+                .setView(closeComment)
+                .setCancelable(true)
+                .setTitle(R.string.enter_comment)
+                .setPositiveButton(R.string.close, (dialogInterface, i) -> {
                     mSaveDialog.show();
 
                     closeBug(closeComment.getText().toString());
-                }).show();
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
 
@@ -151,10 +150,10 @@ public class OsmNoteEditFragment extends Fragment
         }
         else
         {
-            new MaterialDialog.Builder(getActivity())
-                    .title(R.string.error)
-                    .content(R.string.failed_to_save_bug)
-                    .cancelable(true)
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.error)
+                    .setMessage(R.string.failed_to_save_bug)
+                    .setCancelable(true)
                     .show();
         }
     }
@@ -164,17 +163,17 @@ public class OsmNoteEditFragment extends Fragment
     void addComment()
     {
         final EditText newComment = new EditText(getActivity());
-        new MaterialDialog.Builder(getActivity())
-                .customView(newComment, false)
-                .cancelable(true)
-                .title(R.string.enter_comment)
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
-                .onPositive((materialDialog, dialogAction) -> {
+        new AlertDialog.Builder(getActivity())
+                .setView(newComment)
+                .setCancelable(true)
+                .setTitle(R.string.enter_comment)
+                .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
                     mSaveDialog.show();
 
                     uploadComment(newComment.getText().toString());
-                }).show();
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
 
@@ -206,7 +205,7 @@ public class OsmNoteEditFragment extends Fragment
 
             Comment comment = getItem(position);
 
-            TextView username = (TextView) v.findViewById(R.id.username);
+            TextView username = v.findViewById(R.id.username);
             if (!comment.getUsername().equals(""))
             {
                 username.setVisibility(VISIBLE);
@@ -217,7 +216,7 @@ public class OsmNoteEditFragment extends Fragment
                 username.setVisibility(GONE);
             }
 
-            TextView text = (TextView) v.findViewById(R.id.text);
+            TextView text = v.findViewById(R.id.text);
             text.setText(comment.getText());
 
             return v;

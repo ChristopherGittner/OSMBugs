@@ -1,5 +1,6 @@
 package org.gittner.osmbugs.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.rey.material.widget.EditText;
 import com.rey.material.widget.Spinner;
 
@@ -52,7 +52,7 @@ public class AddMapdustBugActivity extends AppCompatActivity
     @OptionsMenuItem(R.id.action_done)
     MenuItem mMenuDone;
 
-    private MaterialDialog mSaveDialog = null;
+    private ProgressDialog mSaveDialog = null;
 
 
     @AfterViews
@@ -66,12 +66,11 @@ public class AddMapdustBugActivity extends AppCompatActivity
         /* Invalidate Options Menu on Text change */
         mDescription.addTextChangedListener(new InvalidateOptionsMenuTextWatcher(this));
 
-        mSaveDialog = new MaterialDialog.Builder(this)
-                .title(R.string.saving)
-                .content(R.string.please_wait)
-                .cancelable(false)
-                .progress(true, 0)
-                .build();
+        mSaveDialog = new ProgressDialog(this);
+        mSaveDialog.setTitle(R.string.saving);
+        mSaveDialog.setMessage(getString(R.string.please_wait));
+        mSaveDialog.setCancelable(false);
+        mSaveDialog.setIndeterminate(true);
     }
 
 
@@ -190,8 +189,8 @@ public class AddMapdustBugActivity extends AppCompatActivity
         {
             View v = convertView != null ? convertView : LayoutInflater.from(getContext()).inflate(R.layout.row_mapdust_bug_type, parent, false);
 
-            ImageView icon = (ImageView) v.findViewById(R.id.imgvIcon);
-            TextView type = (TextView) v.findViewById(R.id.txtvType);
+            ImageView icon = v.findViewById(R.id.imgvIcon);
+            TextView type = v.findViewById(R.id.txtvType);
 
             switch (position)
             {

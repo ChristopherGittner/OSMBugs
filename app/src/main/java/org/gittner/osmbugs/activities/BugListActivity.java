@@ -1,9 +1,9 @@
 package org.gittner.osmbugs.activities;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -49,7 +49,7 @@ public class BugListActivity
     @AfterViews
     void init()
     {
-        PlatformPagerAdapter pagerAdapter = new PlatformPagerAdapter(getFragmentManager());
+        PlatformPagerAdapter pagerAdapter = new PlatformPagerAdapter(getSupportFragmentManager());
 
         if (Settings.Keepright.isEnabled())
         {

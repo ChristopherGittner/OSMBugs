@@ -8,7 +8,6 @@ import java.util.HashMap;
 public class TileSources extends HashMap<Integer, ITileSource>
 {
     public static final int MAPNIK = 1;
-    public static final int CYCLEMAP = 2;
     public static final int PUBLIC_TRANSPORT = 3;
 
     private static final TileSources instance = new TileSources();
@@ -17,7 +16,6 @@ public class TileSources extends HashMap<Integer, ITileSource>
     private TileSources()
     {
         put(MAPNIK, TileSourceFactory.MAPNIK);
-        put(CYCLEMAP, TileSourceFactory.CYCLEMAP);
         put(PUBLIC_TRANSPORT, TileSourceFactory.PUBLIC_TRANSPORT);
     }
 

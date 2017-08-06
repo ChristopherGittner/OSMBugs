@@ -1,9 +1,11 @@
 package org.gittner.osmbugs.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
@@ -14,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.rey.material.widget.EditText;
 import com.rey.material.widget.Spinner;
 
@@ -50,7 +51,7 @@ public class KeeprightEditFragment
     @FragmentArg(ARG_BUG)
     KeeprightBug mBug;
 
-    private MaterialDialog mSaveDialog = null;
+    private ProgressDialog mSaveDialog = null;
 
 
     @AfterViews
@@ -83,12 +84,11 @@ public class KeeprightEditFragment
                 break;
         }
 
-        mSaveDialog = new MaterialDialog.Builder(getActivity())
-                .title(R.string.saving)
-                .content(R.string.please_wait)
-                .cancelable(false)
-                .progress(true, 0)
-                .build();
+        mSaveDialog = new ProgressDialog(getActivity());
+        mSaveDialog.setTitle(R.string.saving);
+        mSaveDialog.setMessage(getString(R.string.please_wait));
+        mSaveDialog.setCancelable(false);
+        mSaveDialog.setIndeterminate(true);
     }
 
 
@@ -142,10 +142,10 @@ public class KeeprightEditFragment
         }
         else
         {
-            new MaterialDialog.Builder(getActivity())
-                    .title(R.string.error)
-                    .content(R.string.failed_to_save_bug)
-                    .cancelable(true)
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.error)
+                    .setMessage(R.string.failed_to_save_bug)
+                    .setCancelable(true)
                     .show();
         }
     }
@@ -187,8 +187,8 @@ public class KeeprightEditFragment
         {
             View v = convertView != null ? convertView : LayoutInflater.from(getContext()).inflate(R.layout.row_keepright_bug_state, parent, false);
 
-            ImageView icon = (ImageView) v.findViewById(R.id.imgvIcon);
-            TextView state = (TextView) v.findViewById(R.id.txtvState);
+            ImageView icon = v.findViewById(R.id.imgvIcon);
+            TextView state = v.findViewById(R.id.txtvState);
 
             switch (position)
             {

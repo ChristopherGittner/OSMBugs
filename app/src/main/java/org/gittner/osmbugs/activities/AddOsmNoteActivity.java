@@ -1,12 +1,11 @@
 package org.gittner.osmbugs.activities;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
@@ -40,18 +39,17 @@ public class AddOsmNoteActivity extends AppCompatActivity
     @OptionsMenuItem(R.id.action_done)
     MenuItem mMenuDone;
 
-    private MaterialDialog mSaveDialog = null;
+    private ProgressDialog mSaveDialog = null;
 
 
     @AfterViews
     void init()
     {
-        mSaveDialog = new MaterialDialog.Builder(this)
-                .title(R.string.saving)
-                .content(R.string.please_wait)
-                .cancelable(false)
-                .progress(true, 0)
-                .build();
+        mSaveDialog = new ProgressDialog(this);
+        mSaveDialog.setTitle(R.string.saving);
+        mSaveDialog.setMessage(getString(R.string.please_wait));
+        mSaveDialog.setCancelable(false);
+        mSaveDialog.setIndeterminate(true);
     }
 
 

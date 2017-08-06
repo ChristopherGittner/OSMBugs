@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/display">
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        <ListPreference
             android:defaultValue="1"
             android:entries="@array/map_styles"
             android:entryValues="@array/map_styles_values"
@@ -300,7 +300,7 @@
                     android:defaultValue="true"
                     android:key="pref_mapdust_enabled"
                     android:title="@string/enabled"/>
-                <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+                <EditTextPreference
                     android:defaultValue="Anonymous"
                     android:key="pref_mapdust_username"
                     android:title="@string/username"/>
@@ -358,14 +358,14 @@
                     android:defaultValue="true"
                     android:key="pref_osmose_enabled"
                     android:title="@string/enabled"/>
-                <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+                <EditTextPreference
                     android:defaultValue="100"
                     android:dialogTitle="@string/enter_new_limit"
                     android:key="pref_osmose_bug_limit"
                     android:maxLength="3"
                     android:numeric="integer"
                     android:title="@string/bug_limit"/>
-                <com.afollestad.materialdialogs.prefs.MaterialListPreference
+                <ListPreference
                     android:defaultValue="0"
                     android:entries="@array/osmose_status_types"
                     android:entryValues="@array/osmose_status_values"
@@ -383,17 +383,17 @@
                     android:defaultValue="true"
                     android:key="pref_openstreetmap_notes_enabled_only_open"
                     android:title="@string/show_only_open_bugs"/>
-                <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+                <EditTextPreference
                     android:defaultValue="200"
                     android:dialogTitle="@string/enter_new_limit"
                     android:key="pref_openstreetmap_notes_bug_limit"
                     android:maxLength="5"
                     android:numeric="integer"
                     android:title="@string/bug_limit"/>
-                <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+                <EditTextPreference
                     android:key="pref_openstreetmap_notes_username"
                     android:title="@string/username"/>
-                <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+                <EditTextPreference
                     android:inputType="textPassword"
                     android:key="pref_openstreetmap_notes_password"
                     android:title="@string/password"/>

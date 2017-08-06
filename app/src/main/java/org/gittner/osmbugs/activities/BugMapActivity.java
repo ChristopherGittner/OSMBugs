@@ -6,13 +6,13 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.greysonparrelli.permiso.Permiso;
 import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ProgressView;
@@ -193,30 +193,24 @@ public class BugMapActivity extends EventBusActionBarActivity
 
     private void showNewBugDialogDialog()
     {
-        new MaterialDialog.Builder(this)
-                .title(getString(R.string.platform))
-                .cancelable(true)
-                .items(R.array.new_bug_platforms)
-                .itemsCallbackSingleChoice(0, (dialog, itemView, which, text) ->
-                {
-                    if (which == 0)
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.platform)
+                .setCancelable(true)
+                .setItems(R.array.new_bug_platforms, (dialogInterface, i) -> {
+                    if (i == 0)
                     {
                         Intent addBugIntent = new Intent(BugMapActivity.this, AddOsmNoteActivity_.class);
                         addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
                         addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
                         startActivityForResult(addBugIntent, REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY);
-                    } else if (which == 1)
+                    } else if (i == 1)
                     {
                         Intent addBugIntent = new Intent(BugMapActivity.this, AddMapdustBugActivity_.class);
                         addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
                         addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
                         startActivityForResult(addBugIntent, REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY);
                     }
-
-                    return true;
                 })
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
                 .show();
     }
 

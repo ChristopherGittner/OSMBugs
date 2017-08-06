@@ -1,6 +1,6 @@
 package org.gittner.osmbugs.fragments;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 import org.greenrobot.eventbus.EventBus;
 
