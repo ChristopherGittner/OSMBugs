@@ -177,5 +177,15 @@
     <string name="message_request_permissions">As of Android 6 ( Marshmallow ) you have to grant Permissions to the App in the now following Dialogs</string>
     <string name="share">Share</string>
     <string name="toast_geo_intent_no_app_found">No App found to share the Bug with</string>
-
+    <string name="cloudmade_standard">Cloudmade Standard</string>
+    <string name="cloudmate_small">Cloudmate Small</string>
+    <string name="road_nl">Road NL</string>
+    <string name="hike_bike_map">Hike Bike Map</string>
+    <string name="open_sea_map">Open Sea Map</string>
+    <string name="ugs_top">UGS Topo</string>
+    <string name="ugs_sat">UGS Sat</string>
+    <string name="chart_bundle_wac">Chart Bundle WAC</string>
+    <string name="chart_bundle_enrh">Chart Bundel ENRH</string>
+    <string name="chart_bundle_enrl">Chart Bundle ENRL</string>
+    <string name="open_topo">Open Topo</string>
 </resources>
