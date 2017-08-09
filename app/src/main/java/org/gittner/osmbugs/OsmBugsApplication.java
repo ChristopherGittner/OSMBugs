@@ -3,6 +3,7 @@ package org.gittner.osmbugs;
 import android.app.Application;
 
 import org.androidannotations.annotations.EApplication;
+import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
@@ -27,5 +28,7 @@ public class OsmBugsApplication extends Application
         Images.init(this);
 
         Platforms.init(this);
+
+        Apis.init(this);
     }
 }

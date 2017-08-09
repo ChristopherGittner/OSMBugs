@@ -1,10 +1,16 @@
 package org.gittner.osmbugs.api;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Build;
+
 import org.gittner.osmbugs.bugs.KeeprightBug;
+import org.gittner.osmbugs.loader.WebViewLoader;
 import org.gittner.osmbugs.parser.KeeprightParser;
 import org.gittner.osmbugs.statics.Settings;
 import org.osmdroid.util.BoundingBox;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -18,6 +24,13 @@ public class KeeprightApi implements BugApi<KeeprightBug>
 {
     public static OkHttpClient mOkHttpClient = new OkHttpClient();
 
+    private static Context sContext;
+
+    public static void init(Context context)
+    {
+        sContext = context;
+    }
+
     @Override
     public ArrayList<KeeprightBug> downloadBBox(BoundingBox bBox)
     {
@@ -29,42 +42,63 @@ public class KeeprightApi implements BugApi<KeeprightBug>
         );
     }
 
-
     private ArrayList<KeeprightBug> downloadBBox(
             BoundingBox bBox,
             boolean showIgnored,
             boolean showTempIgnored,
             boolean langGerman)
     {
-        Request request = new Request.Builder()
-                .url(new HttpUrl.Builder()
-                        .scheme("http")
-                        .host("keepright.ipax.at")
-                        .addPathSegment("points.php")
-                        .addQueryParameter("show_ign", showIgnored ? "1" : "0")
-                        .addQueryParameter("show_tmpign", showTempIgnored ? "1" : "0")
-                        .addQueryParameter("ch", getKeeprightSelectionString())
-                        .addQueryParameter("lat", String.valueOf(bBox.getCenter().getLatitude()))
-                        .addQueryParameter("lon", String.valueOf(bBox.getCenter().getLongitude()))
-                        .addQueryParameter("lang", langGerman ? "de" : "en")
-                        .build())
-                .post(new FormBody.Builder().build())
+        HttpUrl url = new HttpUrl.Builder()
+                .scheme("https")
+                .host("keepright.at")
+                .addPathSegment("points.php")
+                .addQueryParameter("show_ign", showIgnored ? "1" : "0")
+                .addQueryParameter("show_tmpign", showTempIgnored ? "1" : "0")
+                .addQueryParameter("ch", getKeeprightSelectionString())
+                .addQueryParameter("lat", String.valueOf(bBox.getCenter().getLatitude()))
+                .addQueryParameter("lon", String.valueOf(bBox.getCenter().getLongitude()))
+                .addQueryParameter("lang", langGerman ? "de" : "en")
                 .build();
 
-        try
+        if(Build.VERSION.SDK_INT != 24)
         {
-            Response response = mOkHttpClient.newCall(request).execute();
+            /* !Android SDK 24 (Nougat 7.0) */
+            Request request = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .build();
 
-            if (response.code() != 200)
+            try
             {
+                Response response = mOkHttpClient.newCall(request).execute();
+
+                if (response.code() != 200)
+                {
+                    return null;
+                }
+
+                return KeeprightParser.parse(response.body().byteStream());
+            } catch (IOException e)
+            {
+                e.printStackTrace();
                 return null;
             }
+        } else {
+            /* Android SDK 24 (Nougat 7.0) */
+            /* Android 7.0 has problems with the SSL Handshake. Since Keepright is only available through HTTPS, we need to call the API through a WebView,
+            which is working correctly with HTTPS
+             */
+            try
+            {
+                @SuppressLint({"NewApi", "LocalSuppress"}) String data = WebViewLoader.loadUrl(sContext, url.toString());
 
-            return KeeprightParser.parse(response.body().byteStream());
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
+                if (data != null) {
+                    return KeeprightParser.parse(new ByteArrayInputStream(data.getBytes()));
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
             return null;
         }
     }
@@ -72,7 +106,7 @@ public class KeeprightApi implements BugApi<KeeprightBug>
 
     private String getKeeprightSelectionString()
     {
-        /* Unknown what 0 stands for but its for compatibility Reasons */
+        /* Unknown what 0 stands for but it's here for compatibility Reasons */
         String result = "0,";
         if (Settings.Keepright.is20Enabled())
         {
@@ -352,7 +386,7 @@ public class KeeprightApi implements BugApi<KeeprightBug>
         switch (state)
         {
             case OPEN:
-                sState= "open";
+                sState= "";
                 break;
 
             case IGNORED:
@@ -364,31 +398,51 @@ public class KeeprightApi implements BugApi<KeeprightBug>
                 break;
         }
 
-        Request request = new Request.Builder()
-                .url(new HttpUrl.Builder()
-                        .scheme("http")
-                        .host("keepright.ipax.at")
-                        .addPathSegment("comment.php")
-                        .addQueryParameter("state", sState)
-                        .addQueryParameter("co", comment)
-                        .addQueryParameter("schema", String.valueOf(schema))
-                        .addQueryParameter("id", String.valueOf(id))
-                        .build())
-                .post(new FormBody.Builder().build())
+        HttpUrl url = new HttpUrl.Builder()
+                .scheme("https")
+                .host("keepright.at")
+                .addPathSegment("comment.php")
+                .addQueryParameter("st", sState)
+                .addQueryParameter("co", comment)
+                .addQueryParameter("schema", String.valueOf(schema))
+                .addQueryParameter("id", String.valueOf(id))
                 .build();
 
-        try
+        if(Build.VERSION.SDK_INT != 24)
         {
-            if (mOkHttpClient.newCall(request).execute().code() == 200)
-            {
-                return true;
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+            /* !Android SDK 24 (Nougat 7.0) */
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(new FormBody.Builder().build())
+                    .build();
 
-        return false;
+            try
+            {
+                if (mOkHttpClient.newCall(request).execute().code() == 200)
+                {
+                    return true;
+                }
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            return false;
+        }
+        else {
+            /* Android SDK 24 (Nougat 7.0) */
+            /* Android 7.0 has problems with the SSL Handshake. Since Keepright is only available through HTTPS, we need to call the API through a WebView,
+            which is working correctly with HTTPS
+            */
+            try
+            {
+                @SuppressLint({"NewApi", "LocalSuppress"}) String data = WebViewLoader.loadUrl(sContext, url.toString());
+
+                return data != null;
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            return false;
+        }
     }
 }
