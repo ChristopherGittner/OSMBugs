@@ -166,15 +166,15 @@ public class BugPlatformFragment extends EventBusFragment
 
             final Bug bug = getItem(position);
 
-            title = (TextView) v.findViewById(R.id.txtvTitle);
-            description = (TextView) v.findViewById(R.id.txtvDescription);
+            title = v.findViewById(R.id.txtvTitle);
+            description = v.findViewById(R.id.txtvDescription);
 
-            ImageView imgvIcon = (ImageView) v.findViewById(R.id.imgvIcon);
+            ImageView imgvIcon = v.findViewById(R.id.imgvIcon);
             imgvIcon.setImageDrawable(bug.getIcon());
 
             View layoutInfo = v.findViewById(R.id.layoutInfo);
 
-            final MapView mapView = (MapView) v.findViewById(R.id.mapview);
+            final MapView mapView = v.findViewById(R.id.mapview);
             mapView.getController().setZoom(17);
             mapView.getController().setCenter(bug.getPoint());
             mapView.setOnTouchListener((v12, event) ->

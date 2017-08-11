@@ -27,8 +27,8 @@ public class OsmoseElementView extends LinearLayout
     {
         inflate(getContext(), R.layout.osmose_element, this);
 
-        mTitle = (TextView) findViewById(R.id.txtvTitle);
-        mTags = (TextView) findViewById(R.id.txtvTags);
+        mTitle = findViewById(R.id.txtvTitle);
+        mTags = findViewById(R.id.txtvTags);
         mTitle.setVisibility(View.GONE);
         mTags.setVisibility(View.GONE);
     }
@@ -59,11 +59,11 @@ public class OsmoseElementView extends LinearLayout
         {
             OsmoseFixView fixView = new OsmoseFixView(getContext());
             fixView.set(fix);
-            LinearLayout layoutFixes = (LinearLayout) findViewById(R.id.layoutFixes);
+            LinearLayout layoutFixes = findViewById(R.id.layoutFixes);
             layoutFixes.addView(fixView);
         }
 
-        mTags = (TextView) findViewById(R.id.txtvTags);
+        mTags = findViewById(R.id.txtvTags);
 
         if (!element.getTags().isEmpty())
         {
