@@ -9,7 +9,4 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
-    <color name="tpi_checked">#FFFFFFFF</color>
-    <color name="tpi_unchecked">#99FFFFFF</color>
-
 </resources>

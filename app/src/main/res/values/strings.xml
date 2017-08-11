@@ -81,14 +81,14 @@
     <string name="closed">Closed</string>
     <string name="ignored">Ignored</string>
     <string name="password">Password</string>
-    <string name="highway_highway">highway-highway</string>
-    <string name="highway_waterway">highway-waterway</string>
-    <string name="highway_riverbank">highway-riverbank</string>
-    <string name="waterway_waterway">waterway-waterway</string>
-    <string name="cycleway_cycleway">cycleway-cycleway</string>
-    <string name="highway_cycleway">highway-cycleway</string>
-    <string name="cycleway_waterway">cycleway-waterway</string>
-    <string name="cycleway_riverbank">cycleway-riverbank</string>
+    <string name="highway_highway" translatable="false">highway-highway</string>
+    <string name="highway_waterway" translatable="false">highway-waterway</string>
+    <string name="highway_riverbank" translatable="false">highway-riverbank</string>
+    <string name="waterway_waterway" translatable="false">waterway-waterway</string>
+    <string name="cycleway_cycleway" translatable="false">cycleway-cycleway</string>
+    <string name="highway_cycleway" translatable="false">highway-cycleway</string>
+    <string name="cycleway_waterway" translatable="false">cycleway-waterway</string>
+    <string name="cycleway_riverbank" translatable="false">cycleway-riverbank</string>
     <string name="mixed_layers_intersections">Mixed Layers Intersections</string>
     <string name="strange_layers">Strange Layers</string>
     <string name="missing_name">Missing name</string>
@@ -123,9 +123,8 @@
     <string name="notification_osm_notes_no_username">No Username provided.\nSettings -> Openstreetmap Notes -> Username</string>
     <string name="notification_osm_notes_no_password">No Password provided.\nSettings -> Openstreetmap Notes -> Password</string>
     <string name="saving">Saving</string>
-    <string name="developer_mail" tools:ignore="MissingTranslation">christopher@gittner.org</string>
+    <string name="developer_mail" tools:ignore="MissingTranslation" translatable="false">christopher@gittner.org</string>
     <string name="feedback_to_osmbugs">Feedback to OSMBugs</string>
-    <string name="email_feedback">Email Feedback…</string>
     <string name="sending_feedback_failed_title">Sending Feedback failed</string>
     <string name="sending_feedback_failed_message">There seems to be no Email App on your Phone.\n\nHowever, here\'s some good News:\nYou can still send me feedback from somewhere else to:\n\nchristopher@gittner.org\n\nThank you</string>
     <string name="feedback">Feedback</string>
@@ -145,10 +144,6 @@
         <item>1</item>
         <item>2</item>
     </string-array>
-    <string name="crash_dialog_title">Osmbugs crashed</string>
-    <string name="crash_dialog_text">Ooooops!\n\nI crashed,\nbut a report has been created and is ready to be delivered to my developer to help fix the issue!\nAll you have to do is click OK.</string>
-    <string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
-    <string name="crash_dialog_ok_toast">Thank you !</string>
     <string name="done">Done</string>
     <string name="map_style">Map Style</string>
     <string name="display">Display</string>
@@ -157,15 +152,9 @@
     <string name="public_transport">Public Transport</string>
     <string name="mapquest_osm">Mapquest OSM</string>
     <string name="mapquest_aerial">Mapquest Satellit</string>
-    <string name="open_railway_map_infrastructure">Open Railway Map Infrastructure</string>
-    <string name="open_railway_map_maxspeed">Open Railway Map Maxspeeds</string>
-    <string name="open_railway_map_signals">Open Railway Map Signals</string>
     <string name="please_wait">Please Wait</string>
     <string name="error">Error</string>
     <string name="title_activity_keepright_edit">Bug Editor</string>
-    <string name="title_activity_osmose_edit">Bug Editor</string>
-    <string name="title_activity_mapdust_edit">Bug Editor</string>
-    <string name="title_activity_osm_note_edit">Bug Editor</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_bug_list">Bug List</string>
     <string name="platforms">Platforms</string>
@@ -177,15 +166,15 @@
     <string name="message_request_permissions">As of Android 6 ( Marshmallow ) you have to grant Permissions to the App in the now following Dialogs</string>
     <string name="share">Share</string>
     <string name="toast_geo_intent_no_app_found">No App found to share the Bug with</string>
-    <string name="cloudmade_standard">Cloudmade Standard</string>
-    <string name="cloudmate_small">Cloudmate Small</string>
-    <string name="road_nl">Road NL</string>
-    <string name="hike_bike_map">Hike Bike Map</string>
-    <string name="open_sea_map">Open Sea Map</string>
-    <string name="ugs_top">UGS Topo</string>
-    <string name="ugs_sat">UGS Sat</string>
-    <string name="chart_bundle_wac">Chart Bundle WAC</string>
-    <string name="chart_bundle_enrh">Chart Bundel ENRH</string>
-    <string name="chart_bundle_enrl">Chart Bundle ENRL</string>
-    <string name="open_topo">Open Topo</string>
+    <string name="cloudmade_standard" translatable="false">Cloudmade Standard</string>
+    <string name="cloudmate_small" translatable="false">Cloudmate Small</string>
+    <string name="road_nl" translatable="false">Road NL</string>
+    <string name="hike_bike_map" translatable="false">Hike Bike Map</string>
+    <string name="open_sea_map" translatable="false">Open Sea Map</string>
+    <string name="ugs_top" translatable="false">UGS Topo</string>
+    <string name="ugs_sat" translatable="false">UGS Sat</string>
+    <string name="chart_bundle_wac" translatable="false">Chart Bundle WAC</string>
+    <string name="chart_bundle_enrh" translatable="false">Chart Bundel ENRH</string>
+    <string name="chart_bundle_enrl" translatable="false">Chart Bundle ENRL</string>
+    <string name="open_topo" translatable="false">Open Topo</string>
 </resources>

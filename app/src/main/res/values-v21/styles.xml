@@ -11,6 +11,4 @@
         <item name="android:navigationBarColor">@color/primary</item>
     </style>
 
-    <style name="Theme.Dialog" parent="Theme.AppCompat.Dialog"/>
-
 </resources>

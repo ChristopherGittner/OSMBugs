@@ -9,7 +9,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtv1"
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="40dp"

@@ -8,6 +8,4 @@
 
     <style name="AppTheme" parent="AppTheme.Base"/>
 
-    <style name="Theme.Dialog" parent="Theme.AppCompat.Dialog"/>
-
 </resources>

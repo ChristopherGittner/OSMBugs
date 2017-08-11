@@ -1,5 +1,6 @@
 package org.gittner.osmbugs.loader;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.http.SslError;
 import android.os.Build;
@@ -27,9 +28,8 @@ public class WebViewLoader
      * @param context The Context used by the WebView
      * @param url The Url to load
      * @return The loaded Data
-     * @throws ExecutionException
-     * @throws InterruptedException
      */
+    @SuppressLint("SetJavaScriptEnabled")
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static String loadUrl(Context context, String url) throws ExecutionException, InterruptedException
     {
