@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.greysonparrelli.permiso.Permiso;
+import com.tmtron.greenannotations.EventBusGreenRobot;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -42,6 +44,7 @@ import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
 import org.gittner.osmbugs.statics.TileSources;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.osmdroid.util.GeoPoint;
@@ -53,7 +56,7 @@ import java.util.ArrayList;
 
 @EActivity(R.layout.activity_bug_map)
 @OptionsMenu(R.menu.bug_map)
-public class BugMapActivity extends EventBusActionBarActivity
+public class BugMapActivity extends AppCompatActivity
 {
     private static final String TAG = "OsmBugsActivity";
 
@@ -81,6 +84,9 @@ public class BugMapActivity extends EventBusActionBarActivity
     MenuItem mMenuFollowGps;
     @OptionsMenuItem(R.id.list)
     MenuItem mMenuList;
+
+    @EventBusGreenRobot
+    EventBus mEventBus;
 
     /* The next touch event on the map opens the add Bug Prompt */
     private boolean mAddNewBugOnNextClick = false;

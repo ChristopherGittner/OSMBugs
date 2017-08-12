@@ -2,6 +2,7 @@ package org.gittner.osmbugs.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.tmtron.greenannotations.EventBusGreenRobot;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -28,12 +31,13 @@ import org.gittner.osmbugs.loader.Loader;
 import org.gittner.osmbugs.platforms.Platform;
 import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.TileSources;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.osmdroid.views.MapView;
 
 @EFragment(R.layout.fragment_bug_list)
-public class BugPlatformFragment extends EventBusFragment
+public class BugPlatformFragment extends Fragment
 {
     private static final String ARG_PLATFORM = "ARG_PLATFORM";
 
@@ -46,6 +50,9 @@ public class BugPlatformFragment extends EventBusFragment
     ProgressBar mProgressBar;
     @ViewById(R.id.list)
     ListView mList;
+
+    @EventBusGreenRobot
+    EventBus mEventBus;
 
     private BugAdapter mAdapter = null;
 

@@ -36,6 +36,9 @@ dependencies {
     annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
 
+    annotationProcessor 'com.tmtron:green-annotations:1.0.1'
+    compile 'com.tmtron:green-annotations-api:1.0.1'
+
     compile 'org.osmdroid:osmdroid-android:5.6.5'
 
     compile 'com.android.support:appcompat-v7:26.0.1'

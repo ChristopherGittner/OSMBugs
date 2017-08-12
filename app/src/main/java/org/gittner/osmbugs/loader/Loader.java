@@ -2,6 +2,8 @@ package org.gittner.osmbugs.loader;
 
 import android.os.AsyncTask;
 
+import com.tmtron.greenannotations.EventBusGreenRobot;
+
 import org.gittner.osmbugs.bugs.Bug;
 import org.gittner.osmbugs.events.BugsChangedEvent;
 import org.gittner.osmbugs.platforms.Platform;
@@ -26,6 +28,8 @@ public class Loader<TBug extends Bug>
 
     private LoaderAsyncTask mTask = null;
 
+    EventBus mEventBus = EventBus.getDefault();
+
 
     public Loader(final ObservableLoaderQueue<BoundingBox> queue, final Platform<TBug> platform)
     {
@@ -37,7 +41,7 @@ public class Loader<TBug extends Bug>
 
         mBugs = platform.getBugs();
 
-        EventBus.getDefault().postSticky(new StateChangedEvent<>(mPlatform, STOPPED));
+        mEventBus.postSticky(new StateChangedEvent<>(mPlatform, STOPPED));
     }
 
 
@@ -69,7 +73,7 @@ public class Loader<TBug extends Bug>
         {
             mState = newState;
 
-            EventBus.getDefault().post(new StateChangedEvent<>(mPlatform, newState));
+            mEventBus.post(new StateChangedEvent<>(mPlatform, newState));
         }
     }
 
@@ -108,7 +112,7 @@ public class Loader<TBug extends Bug>
                 mBugs.clear();
                 mBugs.addAll(bugs);
 
-                EventBus.getDefault().post(new BugsChangedEvent<>(mPlatform));
+                mEventBus.post(new BugsChangedEvent<>(mPlatform));
             }
             else
             {
