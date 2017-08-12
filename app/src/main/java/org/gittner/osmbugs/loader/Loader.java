@@ -96,7 +96,14 @@ public class Loader<TBug extends Bug>
         @Override
         protected ArrayList<TBug> doInBackground(final BoundingBox... bBox)
         {
-            return mPlatform.getApi().downloadBBox(bBox[0]);
+            try
+            {
+                return mPlatform.getApi().downloadBBox(bBox[0]);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
 

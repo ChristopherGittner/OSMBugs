@@ -16,7 +16,7 @@ public class FixedSizeLoaderQueue<T> extends ObservableLoaderQueue<T>
 
     public FixedSizeLoaderQueue(final int maxSize)
     {
-        if (maxSize == 0)
+        if (maxSize <= 0)
         {
             throw new IllegalArgumentException("Illegal Max Size: " + maxSize);
         }

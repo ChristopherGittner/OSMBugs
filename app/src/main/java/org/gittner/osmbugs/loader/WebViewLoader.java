@@ -22,6 +22,8 @@ import java.util.concurrent.ExecutionException;
 
 public class WebViewLoader
 {
+    private static final long LOAD_TIMEOUT = 20 * 1000;
+
     /**
      * Loads a URL by using a webview. This function is only a workaround for a SSL Handshake Problem on Android 7.0 Devices.
      * See: https://stackoverflow.com/questions/39133437/sslhandshakeexception-handshake-failed-on-android-n-7-0
@@ -43,27 +45,21 @@ public class WebViewLoader
                 @Override
                 public void onPageFinished(WebView view, String url)
                 {
+                    /* Grab the result data from the web page through javascript */
                     webView.evaluateJavascript("(function(){return document.getElementsByTagName('body')[0].innerHTML})();", s -> future.complete(StringEscapeUtils.unescapeJava(s)));
                 }
 
                 @Override
                 public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error)
                 {
-                    future.complete(null);
-                }
-
-                @Override
-                public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse)
-                {
-                    future.complete(null);
-                }
-
-                @Override
-                public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error)
-                {
+                    /* Catch errors while loading */
                     future.complete(null);
                 }
             });
+
+            /* Timeout after which we return a null value */
+            new Handler(Looper.getMainLooper()).postDelayed(() -> future.complete(null), LOAD_TIMEOUT);
+
             webView.loadUrl(url);
         });
 
