@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;

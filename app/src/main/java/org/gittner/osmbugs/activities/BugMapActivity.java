@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -76,12 +77,16 @@ public class BugMapActivity extends AppCompatActivity
     ContentLoadingProgressBar mProgressBar;
     @ViewById(R.id.btnRefreshBugs)
     FloatingActionButton mRefreshButton;
+    @ViewById(R.id.toolbar)
+    Toolbar mActionBar;
+
     @OptionsMenuItem(R.id.add_bug)
     MenuItem mMenuAddBug;
     @OptionsMenuItem(R.id.enable_gps)
     MenuItem mMenuEnableGps;
     @OptionsMenuItem(R.id.follow_gps)
     MenuItem mMenuFollowGps;
+
     @OptionsMenuItem(R.id.list)
     MenuItem mMenuList;
 
@@ -90,11 +95,11 @@ public class BugMapActivity extends AppCompatActivity
 
     /* The next touch event on the map opens the add Bug Prompt */
     private boolean mAddNewBugOnNextClick = false;
-
     /* The Overlay for Bugs displayed on the map */
     private ItemizedIconOverlay<BugOverlayItem> mKeeprightOverlay;
     private ItemizedIconOverlay<BugOverlayItem> mOsmoseOverlay;
     private ItemizedIconOverlay<BugOverlayItem> mMapdustOverlay;
+
     private ItemizedIconOverlay<BugOverlayItem> mOsmNotesOverlay;
 
     /* The Location Marker Overlay */
@@ -110,13 +115,10 @@ public class BugMapActivity extends AppCompatActivity
         invalidateOptionsMenu();
     };
 
-
     @AfterViews
     void init()
     {
-        setSupportProgressBarIndeterminate(true);
-        setSupportProgressBarVisibility(true);
-        setSupportProgressBarIndeterminateVisibility(true);
+        setSupportActionBar(mActionBar);
 
         /* Create Bug Overlays */
         mKeeprightOverlay = new ItemizedIconOverlay<>(

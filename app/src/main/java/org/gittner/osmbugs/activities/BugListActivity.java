@@ -7,10 +7,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
@@ -40,11 +42,14 @@ public class BugListActivity
     ViewPager mPager;
     @ViewById(R.id.tabPageIndicator)
     PagerTabStrip mPagerTabStrip;
-
+    @ViewById(R.id.toolbar)
+    Toolbar mToolbar;
 
     @AfterViews
     void init()
     {
+        setSupportActionBar(mToolbar);
+
         PlatformPagerAdapter pagerAdapter = new PlatformPagerAdapter(getSupportFragmentManager());
 
         if (Settings.Keepright.isEnabled())
@@ -167,5 +172,12 @@ public class BugListActivity
         {
             mPlatforms.add(platform);
         }
+    }
+
+    @OptionsItem(android.R.id.home)
+    void onHomeBtn()
+    {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }

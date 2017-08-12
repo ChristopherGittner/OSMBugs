@@ -2,12 +2,14 @@ package org.gittner.osmbugs.activities;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.Helpers.GeoIntentStarter;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.bugs.Bug;
@@ -30,12 +32,14 @@ public class BugEditActivity extends AppCompatActivity
     @Extra(EXTRA_BUG)
     Bug mBug;
 
+    @ViewById(R.id.toolbar)
+    Toolbar mToolbar;
 
     @AfterViews
     void init()
     {
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(mBug.getIcon());
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationIcon(mBug.getIcon());
 
         Fragment fragment = null;
 
@@ -74,5 +78,12 @@ public class BugEditActivity extends AppCompatActivity
     void shareBug()
     {
         GeoIntentStarter.start(this, mBug.getPoint());
+    }
+
+    @OptionsItem(android.R.id.home)
+    void onHomeBtn()
+    {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }

@@ -2,6 +2,7 @@ package org.gittner.osmbugs.activities;
 
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -35,23 +36,25 @@ public class AddOsmNoteActivity extends AppCompatActivity
 
     @ViewById(R.id.edttxtDescription)
     EditText mDescription;
+    @ViewById(R.id.toolbar)
+    Toolbar mToolbar;
 
     @OptionsMenuItem(R.id.action_done)
     MenuItem mMenuDone;
 
     private ProgressDialog mSaveDialog = null;
 
-
     @AfterViews
     void init()
     {
+        setSupportActionBar(mToolbar);
+
         mSaveDialog = new ProgressDialog(this);
         mSaveDialog.setTitle(R.string.saving);
         mSaveDialog.setMessage(getString(R.string.please_wait));
         mSaveDialog.setCancelable(false);
         mSaveDialog.setIndeterminate(true);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -60,7 +63,6 @@ public class AddOsmNoteActivity extends AppCompatActivity
 
         return true;
     }
-
 
     @OptionsItem(R.id.action_done)
     void menuDoneClicked()
@@ -73,7 +75,6 @@ public class AddOsmNoteActivity extends AppCompatActivity
         );
     }
 
-
     @Background
     void addBug(GeoPoint geoPoint, String description)
     {
@@ -81,7 +82,6 @@ public class AddOsmNoteActivity extends AppCompatActivity
 
         addBugDone(result);
     }
-
 
     @UiThread
     void addBugDone(boolean result)
@@ -99,10 +99,16 @@ public class AddOsmNoteActivity extends AppCompatActivity
         }
     }
 
-
     @AfterTextChange(R.id.edttxtDescription)
     void descriptionChanged()
     {
         invalidateOptionsMenu();
+    }
+
+    @OptionsItem(android.R.id.home)
+    void onHomeBtn()
+    {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }

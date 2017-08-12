@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatSpinner;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,6 +48,8 @@ public class AddMapdustBugActivity extends AppCompatActivity
     AppCompatSpinner mSpnType;
     @ViewById(R.id.edttxtDescription)
     AppCompatEditText mDescription;
+    @ViewById(R.id.toolbar)
+    Toolbar mToolbar;
 
     @OptionsMenuItem(R.id.action_done)
     MenuItem mMenuDone;
@@ -57,6 +60,8 @@ public class AddMapdustBugActivity extends AppCompatActivity
     @AfterViews
     void init()
     {
+        setSupportActionBar(mToolbar);
+
         /* Setup the Type Adapter */
         MapdustBugTypeAdapter typeAdapter = new MapdustBugTypeAdapter(this);
 
@@ -236,5 +241,12 @@ public class AddMapdustBugActivity extends AppCompatActivity
 
             return v;
         }
+    }
+
+    @OptionsItem(android.R.id.home)
+    void onHomeBtn()
+    {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }

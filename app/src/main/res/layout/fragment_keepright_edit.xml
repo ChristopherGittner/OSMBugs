@@ -47,7 +47,7 @@
             android:id="@+id/spnState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp" />
+            android:layout_margin="8dp"/>
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/edttxtComment"
@@ -57,7 +57,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:inputType="textMultiLine"
             android:hint="@string/comment"
-            android:imeOptions="actionNext|flagNoEnterAction|flagNoExtractUi" />
+            android:imeOptions="actionNext|flagNoEnterAction|flagNoExtractUi"/>
 
     </LinearLayout>
 </ScrollView>
