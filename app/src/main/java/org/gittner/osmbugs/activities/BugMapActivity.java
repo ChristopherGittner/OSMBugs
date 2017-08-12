@@ -166,6 +166,7 @@ public class BugMapActivity extends AppCompatActivity
         /* Setup Main MapView */
         mMap.setMultiTouchControls(true);
         mMap.setBuiltInZoomControls(true);
+        mMap.setMaxZoomLevel(21);
         /*
          * This adds an empty Overlay to retrieve the Touch Events. This is some sort of Hack, since
          * the OnTouchListener will fire only once if the Built in Zoom Controls are enabled
@@ -193,8 +194,7 @@ public class BugMapActivity extends AppCompatActivity
                 return super.onTouchEvent(event, mapView);
             }
         });
-
-        mMap.getController().setZoom(Settings.getLastZoom());
+        mMap.getController().setZoom(Math.min(Settings.getLastZoom(), mMap.getTileProvider().getMaximumZoomLevel()));
         mMap.getController().setCenter(Settings.getLastMapCenter());
     }
 
