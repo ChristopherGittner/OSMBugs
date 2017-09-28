@@ -141,11 +141,12 @@
     <string name="enabled">Aktiv</string>
     <string name="failed_to_download_from">Fehler beim laden von</string>
     <string name="ignore">Ignorieren</string>
-    <string name="auto_load">Automatisch Laden</string>
+    <string name="auto_load">Fehler automatisch laden</string>
     <string name="title_request_permissions">Benötige Berechtigungen</string>
     <string name="message_request_permissions">Ab Android 6 ( Marshmallow ) müssen Berechtigungen in den nachfolgenden Dialogen gewährt werden</string>
     <string name="share">Teilen</string>
     <string name="toast_geo_intent_no_app_found">Keine App gefunden, an die der Fehler gesendet werden kann</string>
-
-
+    <string name="override_zoom_level">Erweiterter Zoom</string>
+    <string name="override_zoom_level_summary">Erhöht die maximale Zoomstufe.\nWarnung: Tiles werden auf Zoomstufen größer der Maximalen Stufe nicht nachgeladen!</string>
+    <string name="preference_screen_map_title">Karte</string>
 </resources>

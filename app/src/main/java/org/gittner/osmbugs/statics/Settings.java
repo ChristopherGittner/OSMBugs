@@ -105,6 +105,17 @@ public class Settings
         mPrefs.edit().putInt("pref_last_zoom", zoom).apply();
     }
 
+    public static boolean getOverrideZoomlevel()
+    {
+        return mPrefs.getBoolean("pref_override_zoomlevel", false);
+    }
+
+
+    public static void setOverrideZoomlevel(int override)
+    {
+        mPrefs.edit().putInt("pref_override_zoomlevel", override).apply();
+    }
+
 
     public static boolean isDebugEnabled()
     {

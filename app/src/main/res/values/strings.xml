@@ -161,7 +161,7 @@
     <string name="enabled">Enabled</string>
     <string name="failed_to_download_from">Failed to Download from</string>
     <string name="ignore">Ignore</string>
-    <string name="auto_load">Auto Load</string>
+    <string name="auto_load">Auto Load Bugs</string>
     <string name="title_request_permissions">Requesting Permissions</string>
     <string name="message_request_permissions">As of Android 6 ( Marshmallow ) you have to grant Permissions to the App in the now following Dialogs</string>
     <string name="share">Share</string>
@@ -177,4 +177,7 @@
     <string name="chart_bundle_enrh" translatable="false">Chart Bundel ENRH</string>
     <string name="chart_bundle_enrl" translatable="false">Chart Bundle ENRL</string>
     <string name="open_topo" translatable="false">Open Topo</string>
+    <string name="override_zoom_level">Override Zoomlevel</string>
+    <string name="override_zoom_level_summary">Overrides the maximum Zoom level to allow deeper zooming.\nWarning: Tiles will not be loaded at zoom levels greater than the default max zoom level!</string>
+    <string name="preference_screen_map_title">Map</string>
 </resources>

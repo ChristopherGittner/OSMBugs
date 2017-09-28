@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/display">
-        <ListPreference
-            android:defaultValue="1"
-            android:entries="@array/map_styles"
-            android:entryValues="@array/map_styles_values"
-            android:key="pref_map_style"
-            android:title="@string/map_style"/>
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_auto_load"
             android:title="@string/auto_load"/>
+        <PreferenceScreen android:title="@string/preference_screen_map_title">
+            <ListPreference
+                android:defaultValue="1"
+                android:entries="@array/map_styles"
+                android:entryValues="@array/map_styles_values"
+                android:key="pref_map_style"
+                android:title="@string/map_style"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="pref_override_zoomlevel"
+                android:title="@string/override_zoom_level"
+                android:summary="@string/override_zoom_level_summary"/>
+        </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/platforms">
         <PreferenceScreen android:title="@string/keepright">
