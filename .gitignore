@@ -5,3 +5,4 @@ gradle.properties
 /build
 .idea
 *.iml
+app/release
