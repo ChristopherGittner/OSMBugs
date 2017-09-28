@@ -17,6 +17,9 @@
                 android:key="pref_override_zoomlevel"
                 android:title="@string/override_zoom_level"
                 android:summary="@string/override_zoom_level_summary"/>
+            <Preference
+                android:title="@string/clear_tile_cache"
+                android:key="pref_clear_tile_cache"/>
         </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/platforms">

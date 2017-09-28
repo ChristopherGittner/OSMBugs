@@ -149,4 +149,7 @@
     <string name="override_zoom_level">Erweiterter Zoom</string>
     <string name="override_zoom_level_summary">Erhöht die maximale Zoomstufe.\nWarnung: Tiles werden auf Zoomstufen größer der Maximalen Stufe nicht nachgeladen!</string>
     <string name="preference_screen_map_title">Karte</string>
+    <string name="clear_tile_cache">Tile cache löschen</string>
+    <string name="tile_cache_cleared">Tile cache gelöscht</string>
+    <string name="tile_cache_cleared_failed">Fehler beim löschen des Tile caches</string>
 </resources>

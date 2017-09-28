@@ -180,4 +180,7 @@
     <string name="override_zoom_level">Override Zoomlevel</string>
     <string name="override_zoom_level_summary">Overrides the maximum Zoom level to allow deeper zooming.\nWarning: Tiles will not be loaded at zoom levels greater than the default max zoom level!</string>
     <string name="preference_screen_map_title">Map</string>
+    <string name="clear_tile_cache">Clear Tile cache</string>
+    <string name="tile_cache_cleared">Tile cache cleared</string>
+    <string name="tile_cache_cleared_failed">Failed to clear Tile cache</string>
 </resources>

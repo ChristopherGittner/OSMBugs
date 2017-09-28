@@ -4,10 +4,12 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.gittner.osmbugs.R;
+import org.osmdroid.tileprovider.modules.SqlTileWriter;
 
 @EFragment
 public class SettingsFragment
@@ -20,6 +22,7 @@ public class SettingsFragment
     {
         addPreferencesFromResource(R.xml.preferences);
 
+        findPreference("pref_clear_tile_cache").setOnPreferenceClickListener(this);
         findPreference("pref_keepright_reset").setOnPreferenceClickListener(this);
     }
 
@@ -27,7 +30,14 @@ public class SettingsFragment
     @Override
     public boolean onPreferenceClick(Preference preference)
     {
-        if (preference.getKey().equals("pref_keepright_reset"))
+        if (preference.getKey().equals("pref_clear_tile_cache")) {
+            SqlTileWriter sqlTileWriter = new SqlTileWriter();
+            if(sqlTileWriter.purgeCache()) {
+                Toast.makeText(getActivity(), R.string.tile_cache_cleared, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), R.string.tile_cache_cleared_failed, Toast.LENGTH_LONG).show();
+            }
+        } else if (preference.getKey().equals("pref_keepright_reset"))
         {
             /* Reset all Keepright Preferences to their Original State */
             ((CheckBoxPreference) findPreference("pref_keepright_enabled_20")).setChecked(false);
