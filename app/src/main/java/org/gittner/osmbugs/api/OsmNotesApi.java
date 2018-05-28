@@ -19,7 +19,17 @@ import okhttp3.Response;
 
 public class OsmNotesApi implements BugApi<OsmNote>
 {
-    public static OkHttpClient mOkHttpClient = new OkHttpClient();
+    private static final String API_SCHEME = "https";
+    private static final String DEFAULT_SERVER = "api.openstreetmap.org";
+    private static final String DEBUG_SERVER = "api06.dev.openstreetmap.org";
+    
+    private static final String PATH_SEGMENT_API = "api";
+    private static final String PATH_SEGMENT_VERSION = "0.6";
+    private static final String PATH_SEGMENT_NOTES = "notes";
+
+    private static final String HEADER_AUTHORIZATION = "Authorization";
+    
+    private static OkHttpClient mOkHttpClient = new OkHttpClient();
 
     @Override
     public ArrayList<OsmNote> downloadBBox(BoundingBox bBox)
@@ -36,11 +46,11 @@ public class OsmNotesApi implements BugApi<OsmNote>
     {
         Request request = new Request.Builder()
                 .url(new HttpUrl.Builder()
-                        .scheme("http")
-                        .host(!Settings.isDebugEnabled() ? "api.openstreetmap.org" : "api06.dev.openstreetmap.org")
-                        .addPathSegment("api")
-                        .addPathSegment("0.6")
-                        .addPathSegment("notes")
+                        .scheme(API_SCHEME)
+                        .host(!Settings.isDebugEnabled() ? DEFAULT_SERVER : DEBUG_SERVER)
+                        .addPathSegment(PATH_SEGMENT_API)
+                        .addPathSegment(PATH_SEGMENT_VERSION)
+                        .addPathSegment(PATH_SEGMENT_NOTES)
                         .addQueryParameter("bbox", String.format(
                                 Locale.US,
                                 "%f,%f,%f,%f",
@@ -76,17 +86,17 @@ public class OsmNotesApi implements BugApi<OsmNote>
     {
         Request request = new Request.Builder()
                 .url(new HttpUrl.Builder()
-                        .scheme("http")
-                        .host(!Settings.isDebugEnabled() ? "api.openstreetmap.org" : "api06.dev.openstreetmap.org")
-                        .addPathSegment("api")
-                        .addPathSegment("0.6")
-                        .addPathSegment("notes")
+                        .scheme(API_SCHEME)
+                        .host(!Settings.isDebugEnabled() ? DEFAULT_SERVER : DEBUG_SERVER)
+                        .addPathSegment(PATH_SEGMENT_API)
+                        .addPathSegment(PATH_SEGMENT_VERSION)
+                        .addPathSegment(PATH_SEGMENT_NOTES)
                         .addPathSegment(String.valueOf(id))
                         .addPathSegment("comment")
                         .addQueryParameter("text", comment)
                         .build())
                 .post(new FormBody.Builder().build())
-                .addHeader("Authorization", Credentials.basic(username, password))
+                .addHeader(HEADER_AUTHORIZATION, Credentials.basic(username, password))
                 .build();
 
         try
@@ -103,26 +113,30 @@ public class OsmNotesApi implements BugApi<OsmNote>
     }
 
 
-    public boolean closeBug(long id, String username, String password, String comment)
+    public boolean closeBug(long id, String username, String password, String comment) throws AuthenticationRequiredException
     {
         Request request = new Request.Builder()
                 .url(new HttpUrl.Builder()
-                        .scheme("http")
-                        .host(!Settings.isDebugEnabled() ? "api.openstreetmap.org" : "api06.dev.openstreetmap.org")
-                        .addPathSegment("api")
-                        .addPathSegment("0.6")
-                        .addPathSegment("notes")
+                        .scheme(API_SCHEME)
+                        .host(!Settings.isDebugEnabled() ? DEFAULT_SERVER : DEBUG_SERVER)
+                        .addPathSegment(PATH_SEGMENT_API)
+                        .addPathSegment(PATH_SEGMENT_VERSION)
+                        .addPathSegment(PATH_SEGMENT_NOTES)
                         .addPathSegment(String.valueOf(id))
                         .addPathSegment("close")
                         .addQueryParameter("text", comment)
                         .build())
                 .post(new FormBody.Builder().build())
-                .addHeader("Authorization", Credentials.basic(username, password))
+                .addHeader(HEADER_AUTHORIZATION, Credentials.basic(username, password))
                 .build();
 
         try
         {
             Response response = mOkHttpClient.newCall(request).execute();
+
+            if(response.code() == 401) {
+                throw new AuthenticationRequiredException();
+            }
 
             return response.code() == 200;
         }
@@ -138,17 +152,17 @@ public class OsmNotesApi implements BugApi<OsmNote>
     {
         Request request = new Request.Builder()
                 .url(new HttpUrl.Builder()
-                        .scheme("http")
-                        .host(!Settings.isDebugEnabled() ? "api.openstreetmap.org" : "api06.dev.openstreetmap.org")
-                        .addPathSegment("api")
-                        .addPathSegment("0.6")
-                        .addPathSegment("notes")
+                        .scheme(API_SCHEME)
+                        .host(!Settings.isDebugEnabled() ? DEFAULT_SERVER : DEBUG_SERVER)
+                        .addPathSegment(PATH_SEGMENT_API)
+                        .addPathSegment(PATH_SEGMENT_VERSION)
+                        .addPathSegment(PATH_SEGMENT_NOTES)
                         .addQueryParameter("lat", String.valueOf(position.getLatitude()) )
                         .addQueryParameter("lon", String.valueOf(position.getLongitude()))
                         .addQueryParameter("text", text)
                         .build())
                 .post(new FormBody.Builder().build())
-                .addHeader("Authorization", Credentials.basic(Settings.OsmNotes.getUsername(), Settings.OsmNotes.getPassword()))
+                .addHeader(HEADER_AUTHORIZATION, Credentials.basic(Settings.OsmNotes.getUsername(), Settings.OsmNotes.getPassword()))
                 .build();
 
         try
@@ -162,5 +176,9 @@ public class OsmNotesApi implements BugApi<OsmNote>
             e.printStackTrace();
             return false;
         }
+    }
+
+    public class AuthenticationRequiredException extends Throwable
+    {
     }
 }

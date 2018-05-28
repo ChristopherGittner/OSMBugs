@@ -30,6 +30,7 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
+import org.gittner.osmbugs.api.OsmNotesApi;
 import org.gittner.osmbugs.bugs.OsmNote;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.statics.Settings;
@@ -128,18 +129,30 @@ public class OsmNoteEditFragment extends Fragment
     @Background
     void closeBug(String message)
     {
-        boolean result = Apis.OSM_NOTES.closeBug(
-                mBug.getId(),
-                Settings.OsmNotes.getUsername(),
-                Settings.OsmNotes.getPassword(),
-                message);
+        boolean result = false;
+        try
+        {
+            result = Apis.OSM_NOTES.closeBug(
+                    mBug.getId(),
+                    Settings.OsmNotes.getUsername(),
+                    Settings.OsmNotes.getPassword(),
+                    message);
 
-        uploadDone(result);
+            uploadDone(result);
+        } catch (OsmNotesApi.AuthenticationRequiredException e)
+        {
+            uploadDone(false, getString(R.string.failed_to_close_bug_invalid_username_or_password));
+        }
     }
-
 
     @UiThread
     void uploadDone(boolean result)
+    {
+        uploadDone(result, getString(R.string.failed_to_save_bug));
+    }
+
+    @UiThread
+    void uploadDone(boolean result, String message)
     {
         mSaveDialog.dismiss();
 
@@ -152,7 +165,7 @@ public class OsmNoteEditFragment extends Fragment
         {
             new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.error)
-                    .setMessage(R.string.failed_to_save_bug)
+                    .setMessage(message)
                     .setCancelable(true)
                     .show();
         }
@@ -196,7 +209,6 @@ public class OsmNoteEditFragment extends Fragment
         {
             super(context, R.layout.row_comment);
         }
-
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent)

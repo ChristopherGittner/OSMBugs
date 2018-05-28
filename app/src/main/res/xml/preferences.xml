@@ -12,11 +12,6 @@
                 android:entryValues="@array/map_styles_values"
                 android:key="pref_map_style"
                 android:title="@string/map_style"/>
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="pref_override_zoomlevel"
-                android:title="@string/override_zoom_level"
-                android:summary="@string/override_zoom_level_summary"/>
             <Preference
                 android:title="@string/clear_tile_cache"
                 android:key="pref_clear_tile_cache"/>

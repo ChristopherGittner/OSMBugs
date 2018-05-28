@@ -177,10 +177,9 @@
     <string name="chart_bundle_enrh" translatable="false">Chart Bundel ENRH</string>
     <string name="chart_bundle_enrl" translatable="false">Chart Bundle ENRL</string>
     <string name="open_topo" translatable="false">Open Topo</string>
-    <string name="override_zoom_level">Override Zoomlevel</string>
-    <string name="override_zoom_level_summary">Overrides the maximum Zoom level to allow deeper zooming.\nWarning: Tiles will not be loaded at zoom levels greater than the default max zoom level!</string>
     <string name="preference_screen_map_title">Map</string>
     <string name="clear_tile_cache">Clear Tile cache</string>
     <string name="tile_cache_cleared">Tile cache cleared</string>
     <string name="tile_cache_cleared_failed">Failed to clear Tile cache</string>
+    <string name="failed_to_close_bug_invalid_username_or_password">Failed to close Bug:\n\nInvalid Username and/or Password</string>
 </resources>

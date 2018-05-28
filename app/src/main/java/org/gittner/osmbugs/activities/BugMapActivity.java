@@ -299,13 +299,6 @@ public class BugMapActivity extends AppCompatActivity
         }
 
         mMap.setTileSource(TileSources.getInstance().getPreferredTileSource());
-        if(Settings.getOverrideZoomlevel()) {
-            mMap.setMaxZoomLevel(mMap.getTileProvider().getMaximumZoomLevel() + 3);
-        } else {
-            int maxZoom = mMap.getTileProvider().getMaximumZoomLevel();
-            mMap.setMaxZoomLevel(maxZoom);
-            mMap.getController().setZoom(Math.min(mMap.getZoomLevel(), maxZoom));
-        }
 
         setupLocationOverlay();
 

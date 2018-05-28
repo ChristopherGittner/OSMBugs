@@ -20,6 +20,7 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
+import org.gittner.osmbugs.api.OsmNotesApi;
 import org.osmdroid.util.GeoPoint;
 
 @EActivity(R.layout.activity_add_osm_note)
@@ -86,11 +87,17 @@ public class AddOsmNoteActivity extends AppCompatActivity
     @UiThread
     void addBugDone(boolean result)
     {
+        addBugDone(result, getString(R.string.error));
+    }
+
+    @UiThread
+    void addBugDone(boolean result, String message)
+    {
         mSaveDialog.dismiss();
 
         if (!result)
         {
-            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
         else
         {
