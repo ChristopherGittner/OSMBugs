@@ -99,7 +99,6 @@ public class BugMapActivity extends AppCompatActivity
     private ItemizedIconOverlay<BugOverlayItem> mKeeprightOverlay;
     private ItemizedIconOverlay<BugOverlayItem> mOsmoseOverlay;
     private ItemizedIconOverlay<BugOverlayItem> mMapdustOverlay;
-
     private ItemizedIconOverlay<BugOverlayItem> mOsmNotesOverlay;
 
     /* The Location Marker Overlay */
@@ -167,10 +166,7 @@ public class BugMapActivity extends AppCompatActivity
         mMap.setMultiTouchControls(true);
         mMap.setBuiltInZoomControls(true);
 
-        /*
-         * This adds an empty Overlay to retrieve the Touch Events. This is some sort of Hack, since
-         * the OnTouchListener will fire only once if the Built in Zoom Controls are enabled
-         */
+        /* This adds an empty Overlay to retrieve the Touch Events. */
         mMap.getOverlays().add(new Overlay(this)
         {
             @Override
@@ -193,6 +189,16 @@ public class BugMapActivity extends AppCompatActivity
                 }
                 return super.onTouchEvent(event, mapView);
             }
+
+            @Override
+            public boolean onLongPress(MotionEvent e, MapView mapView)
+            {
+                mNewBugLocation = (GeoPoint) mMap.getProjection().fromPixels((int) e.getX(), (int) e.getY());
+                showNewBugDialogDialog();
+                mAddNewBugOnNextClick = false;
+                invalidateOptionsMenu();
+                return false;
+            }
         });
         mMap.getController().setZoom(Math.min(Settings.getLastZoom(), mMap.getTileProvider().getMaximumZoomLevel()));
         mMap.getController().setCenter(Settings.getLastMapCenter());
@@ -202,7 +208,7 @@ public class BugMapActivity extends AppCompatActivity
     private void showNewBugDialogDialog()
     {
         new AlertDialog.Builder(this)
-                .setTitle(R.string.platform)
+                .setTitle(R.string.create_bug)
                 .setCancelable(true)
                 .setItems(R.array.new_bug_platforms, (dialogInterface, i) -> {
                     if (i == 0)
