@@ -105,11 +105,6 @@ public class Settings
         mPrefs.edit().putInt("pref_last_zoom", zoom).apply();
     }
 
-    public static boolean isDebugEnabled()
-    {
-        return mPrefs.getBoolean("pref_debug", false);
-    }
-
 
     public static Integer getMapStyle()
     {
