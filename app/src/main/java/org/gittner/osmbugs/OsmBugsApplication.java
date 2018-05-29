@@ -30,5 +30,17 @@ public class OsmBugsApplication extends Application
         Platforms.init(this);
 
         Apis.init(this);
+
+        /* Check for App Version updates */
+        int versionCode = Settings.getLastVersionCode();
+        while (versionCode < BuildConfig.VERSION_CODE) {
+            ++versionCode;
+
+            if (versionCode == 28) {
+                /* Available Tiles changed. So we reset to the default Tile */
+                Settings.setMapStyle(1);
+            }
+            Settings.setLastVersionCode(versionCode);
+        }
     }
 }

@@ -22,6 +22,18 @@ public class Settings
     }
 
 
+    public static int getLastVersionCode()
+    {
+        return mPrefs.getInt("pref_last_version_code", 0);
+    }
+
+
+    public static void setLastVersionCode(int lastVersionCode)
+    {
+        mPrefs.edit().putInt("pref_last_version_code", lastVersionCode).apply();
+    }
+
+
     public static boolean getEnableGps()
     {
         return mPrefs.getBoolean("pref_enable_gps", true);
@@ -109,6 +121,12 @@ public class Settings
     public static Integer getMapStyle()
     {
         return Integer.valueOf(mPrefs.getString("pref_map_style", "1"));
+    }
+
+
+    public static void setMapStyle(int mapStyle)
+    {
+        mPrefs.edit().putString("pref_map_style", String.valueOf(mapStyle)).apply();
     }
 
 

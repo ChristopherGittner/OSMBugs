@@ -9,12 +9,12 @@ public class TileSources extends HashMap<Integer, ITileSource>
 {
     private static final int MAPNIK = 1;
     private static final int PUBLIC_TRANSPORT = 2;
-    private static final int FIETS_NL = 5;
-    private static final int BASE_NL = 6;
-    private static final int ROAD_NL = 7;
-    private static final int HIKE_BIKE = 8;
-    private static final int OPEN_SEA = 9;
-    private static final int OPEN_TOPO = 15;
+    private static final int FIETS_NL = 3;
+    private static final int BASE_NL = 4;
+    private static final int ROAD_NL = 5;
+    private static final int HIKE_BIKE = 6;
+    private static final int OPEN_SEA = 7;
+    private static final int OPEN_TOPO = 8;
 
     private static final TileSources instance = new TileSources();
 
