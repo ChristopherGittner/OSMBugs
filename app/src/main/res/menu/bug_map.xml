@@ -8,6 +8,12 @@
         android:title="@string/add_bug"
         app:showAsAction="ifRoom"/>
     <item
+        android:id="@+id/center_on_gps"
+        android:icon="@drawable/ic_crosshairs_gps"
+        android:orderInCategory="10"
+        android:title="@string/center_on_gps"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/list"
         android:icon="@drawable/ic_view_list_white"
         android:orderInCategory="90"

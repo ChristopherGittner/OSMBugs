@@ -84,14 +84,18 @@ public class BugMapActivity extends AppCompatActivity
     MenuItem mMenuAddBug;
     @OptionsMenuItem(R.id.enable_gps)
     MenuItem mMenuEnableGps;
+    @OptionsMenuItem(R.id.center_on_gps)
+    MenuItem mMenuCenterOnGps;
     @OptionsMenuItem(R.id.follow_gps)
     MenuItem mMenuFollowGps;
-
     @OptionsMenuItem(R.id.list)
     MenuItem mMenuList;
 
     @EventBusGreenRobot
     EventBus mEventBus;
+
+    /* True if there has been at least one location fix */
+    private boolean mHasFix = false;
 
     /* The next touch event on the map opens the add Bug Prompt */
     private boolean mAddNewBugOnNextClick = false;
@@ -352,6 +356,10 @@ public class BugMapActivity extends AppCompatActivity
         if (mLocationOverlay == null)
         {
             mLocationOverlay = new MyLocationOverlay(mMap, mFollowModeListener);
+            mLocationOverlay.runOnFirstFix(() -> {
+                mHasFix = true;
+                invalidateOptionsMenu();
+            });
         }
 
         if (Settings.getEnableGps())
@@ -472,9 +480,11 @@ public class BugMapActivity extends AppCompatActivity
 
         mMenuList.setVisible(
                 Settings.Keepright.isEnabled()
-                        || Settings.Osmose.isEnabled()
-                        || Settings.Mapdust.isEnabled()
-                        || Settings.OsmNotes.isEnabled());
+                || Settings.Osmose.isEnabled()
+                || Settings.Mapdust.isEnabled()
+                || Settings.OsmNotes.isEnabled());
+
+        mMenuCenterOnGps.setVisible(mHasFix);
 
         return true;
     }
@@ -492,6 +502,13 @@ public class BugMapActivity extends AppCompatActivity
     void menuListClicked()
     {
         BugListActivity_.intent(this).startForResult(REQUEST_CODE_BUG_LIST_ACTIVITY);
+    }
+
+
+    @OptionsItem(R.id.center_on_gps)
+    void menuCenterOnGpsClicked()
+    {
+        mMap.getController().animateTo(mLocationOverlay.getMyLocation());
     }
 
 
