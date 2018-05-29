@@ -3,35 +3,21 @@
     <string-array name="map_styles">
         <item>@string/mapnik</item>
         <item>@string/public_transport</item>
-        <item>@string/cloudmade_standard</item>
-        <item>@string/cloudmate_small</item>
         <item>@string/fiets_nl</item>
         <item>@string/base_nl</item>
         <item>@string/road_nl</item>
         <item>@string/hike_bike_map</item>
         <item>@string/open_sea_map</item>
-        <item>@string/ugs_top</item>
-        <item>@string/ugs_sat</item>
-        <item>@string/chart_bundle_wac</item>
-        <item>@string/chart_bundle_enrh</item>
-        <item>@string/chart_bundle_enrl</item>
         <item>@string/open_topo</item>
     </string-array>
     <string-array name="map_styles_values" tools:ignore="MissingTranslation">
         <item>1</item>
         <item>2</item>
-        <item>3</item>
-        <item>4</item>
         <item>5</item>
         <item>6</item>
         <item>7</item>
         <item>8</item>
         <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
         <item>15</item>
     </string-array>
 </resources>
