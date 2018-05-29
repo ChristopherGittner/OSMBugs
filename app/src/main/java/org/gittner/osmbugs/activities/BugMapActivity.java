@@ -84,18 +84,11 @@ public class BugMapActivity extends AppCompatActivity
     MenuItem mMenuAddBug;
     @OptionsMenuItem(R.id.enable_gps)
     MenuItem mMenuEnableGps;
-    @OptionsMenuItem(R.id.center_on_gps)
-    MenuItem mMenuCenterOnGps;
-    @OptionsMenuItem(R.id.follow_gps)
-    MenuItem mMenuFollowGps;
     @OptionsMenuItem(R.id.list)
     MenuItem mMenuList;
 
     @EventBusGreenRobot
     EventBus mEventBus;
-
-    /* True if there has been at least one location fix */
-    private boolean mHasFix = false;
 
     /* The next touch event on the map opens the add Bug Prompt */
     private boolean mAddNewBugOnNextClick = false;
@@ -356,10 +349,6 @@ public class BugMapActivity extends AppCompatActivity
         if (mLocationOverlay == null)
         {
             mLocationOverlay = new MyLocationOverlay(mMap, mFollowModeListener);
-            mLocationOverlay.runOnFirstFix(() -> {
-                mHasFix = true;
-                invalidateOptionsMenu();
-            });
         }
 
         if (Settings.getEnableGps())
@@ -466,8 +455,6 @@ public class BugMapActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         mMenuEnableGps.setChecked(Settings.getEnableGps());
-        mMenuFollowGps.setChecked(Settings.getFollowGps());
-        mMenuFollowGps.setEnabled(Settings.getEnableGps());
 
         if (mAddNewBugOnNextClick)
         {
@@ -483,8 +470,6 @@ public class BugMapActivity extends AppCompatActivity
                 || Settings.Osmose.isEnabled()
                 || Settings.Mapdust.isEnabled()
                 || Settings.OsmNotes.isEnabled());
-
-        mMenuCenterOnGps.setVisible(mHasFix);
 
         return true;
     }
@@ -508,7 +493,11 @@ public class BugMapActivity extends AppCompatActivity
     @OptionsItem(R.id.center_on_gps)
     void menuCenterOnGpsClicked()
     {
-        mMap.getController().animateTo(mLocationOverlay.getMyLocation());
+        Settings.setFollowGps(true);
+
+        setupLocationOverlay();
+
+        //mMap.getController().animateTo(mLocationOverlay.getMyLocation());
     }
 
 
@@ -516,17 +505,6 @@ public class BugMapActivity extends AppCompatActivity
     void onFeedbackClicked()
     {
         EmailFeedbackStarter.start(this);
-    }
-
-
-    @OptionsItem(R.id.follow_gps)
-    void menuFollowGpsClicked()
-    {
-        Settings.setFollowGps(!Settings.getFollowGps());
-
-        invalidateOptionsMenu();
-
-        setupLocationOverlay();
     }
 
 
