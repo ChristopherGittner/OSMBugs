@@ -496,8 +496,6 @@ public class BugMapActivity extends AppCompatActivity
         Settings.setFollowGps(true);
 
         setupLocationOverlay();
-
-        //mMap.getController().animateTo(mLocationOverlay.getMyLocation());
     }
 
 
