@@ -52,6 +52,10 @@ public class BugListActivity
 
         PlatformPagerAdapter pagerAdapter = new PlatformPagerAdapter(getSupportFragmentManager());
 
+        if (Settings.OsmNotes.isEnabled())
+        {
+            pagerAdapter.add(Platforms.OSM_NOTES);
+        }
         if (Settings.Keepright.isEnabled())
         {
             pagerAdapter.add(Platforms.KEEPRIGHT);
@@ -63,10 +67,6 @@ public class BugListActivity
         if (Settings.Mapdust.isEnabled())
         {
             pagerAdapter.add(Platforms.MAPDUST);
-        }
-        if (Settings.OsmNotes.isEnabled())
-        {
-            pagerAdapter.add(Platforms.OSM_NOTES);
         }
 
         pagerAdapter.notifyDataSetChanged();
