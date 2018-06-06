@@ -2,12 +2,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/add_bug"
-        android:icon="@drawable/ic_menu_add_bug"
-        android:orderInCategory="20"
-        android:title="@string/add_bug"
-        app:showAsAction="ifRoom"/>
-    <item
         android:id="@+id/center_on_gps"
         android:icon="@drawable/ic_crosshairs_gps"
         android:orderInCategory="10"
@@ -16,8 +10,14 @@
     <item
         android:id="@+id/list"
         android:icon="@drawable/ic_view_list_white"
-        android:orderInCategory="90"
+        android:orderInCategory="20"
         android:title="@string/list"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/add_bug"
+        android:icon="@drawable/ic_menu_add_bug"
+        android:orderInCategory="30"
+        android:title="@string/add_bug"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/enable_gps"
