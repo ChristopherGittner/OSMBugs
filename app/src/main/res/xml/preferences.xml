@@ -18,6 +18,32 @@
         </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/platforms">
+        <PreferenceScreen android:title="@string/openstreetmap_notes">
+            <PreferenceCategory android:title="@string/openstreetmap_notes">
+                <CheckBoxPreference
+                    android:defaultValue="true"
+                    android:key="pref_openstreetmap_notes_enabled"
+                    android:title="@string/enabled"/>
+                <CheckBoxPreference
+                    android:defaultValue="true"
+                    android:key="pref_openstreetmap_notes_enabled_only_open"
+                    android:title="@string/show_only_open_bugs"/>
+                <EditTextPreference
+                    android:defaultValue="200"
+                    android:dialogTitle="@string/enter_new_limit"
+                    android:key="pref_openstreetmap_notes_bug_limit"
+                    android:maxLength="5"
+                    android:numeric="integer"
+                    android:title="@string/bug_limit"/>
+                <EditTextPreference
+                    android:key="pref_openstreetmap_notes_username"
+                    android:title="@string/username"/>
+                <EditTextPreference
+                    android:inputType="textPassword"
+                    android:key="pref_openstreetmap_notes_password"
+                    android:title="@string/password"/>
+            </PreferenceCategory>
+        </PreferenceScreen>
         <PreferenceScreen android:title="@string/keepright">
             <PreferenceCategory android:title="@string/keepright">
                 <CheckBoxPreference
@@ -376,32 +402,6 @@
                     android:entryValues="@array/osmose_status_values"
                     android:key="pref_osmose_bugs_to_display"
                     android:title="@string/bugs_to_display"/>
-            </PreferenceCategory>
-        </PreferenceScreen>
-        <PreferenceScreen android:title="@string/openstreetmap_notes">
-            <PreferenceCategory android:title="@string/openstreetmap_notes">
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_openstreetmap_notes_enabled"
-                    android:title="@string/enabled"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_openstreetmap_notes_enabled_only_open"
-                    android:title="@string/show_only_open_bugs"/>
-                <EditTextPreference
-                    android:defaultValue="200"
-                    android:dialogTitle="@string/enter_new_limit"
-                    android:key="pref_openstreetmap_notes_bug_limit"
-                    android:maxLength="5"
-                    android:numeric="integer"
-                    android:title="@string/bug_limit"/>
-                <EditTextPreference
-                    android:key="pref_openstreetmap_notes_username"
-                    android:title="@string/username"/>
-                <EditTextPreference
-                    android:inputType="textPassword"
-                    android:key="pref_openstreetmap_notes_password"
-                    android:title="@string/password"/>
             </PreferenceCategory>
         </PreferenceScreen>
     </PreferenceCategory>
