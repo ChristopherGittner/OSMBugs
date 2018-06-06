@@ -2,6 +2,8 @@ CHANGELOG
 =========
 V 0-9-8
 
+- Osm Notes is now the default Platformin the Bug list view
+- Added a "Default Bug Platform" for new bug creation
 - In the Bug List View, Osm Notes is now the default (first) tab
 - Modified the behaviour of the Follow GPS option. (Activating it now centers on the last fix, and follows the GPS position until the map is moved)
 - Bugs can now be added by long-clicking on the map
