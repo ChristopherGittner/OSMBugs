@@ -32,7 +32,7 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.api.OsmNotesApi;
 import org.gittner.osmbugs.bugs.OsmNote;
-import org.gittner.osmbugs.common.Comment;
+import org.gittner.osmbugs.common.OsmNoteComment;
 import org.gittner.osmbugs.statics.Settings;
 
 import static android.view.View.GONE;
@@ -47,6 +47,10 @@ public class OsmNoteEditFragment extends Fragment
     @FragmentArg(ARG_BUG)
     OsmNote mBug;
 
+    @ViewById(R.id.username)
+    TextView mUsername;
+    @ViewById(R.id.mCreationDate)
+    TextView mCreationDate;
     @ViewById(R.id.txtvDescription)
     TextView mDescription;
     @ViewById(R.id.imgbtnAddComment)
@@ -63,6 +67,8 @@ public class OsmNoteEditFragment extends Fragment
     @AfterViews
     void init()
     {
+        mUsername.setText(mBug.getUser());
+        mCreationDate.setText(mBug.getCreationDate());
         mDescription.setText(mBug.getDescription());
 
         CommentAdapter adapter = new CommentAdapter(getActivity());
@@ -203,19 +209,19 @@ public class OsmNoteEditFragment extends Fragment
     }
 
 
-    public class CommentAdapter extends ArrayAdapter<Comment>
+    public class CommentAdapter extends ArrayAdapter<OsmNoteComment>
     {
         public CommentAdapter(Context context)
         {
-            super(context, R.layout.row_comment);
+            super(context, R.layout.row_osm_note_comment);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
-            View v = convertView != null ? convertView : LayoutInflater.from(getContext()).inflate(R.layout.row_comment, parent, false);
+            View v = convertView != null ? convertView : LayoutInflater.from(getContext()).inflate(R.layout.row_osm_note_comment, parent, false);
 
-            Comment comment = getItem(position);
+            OsmNoteComment comment = getItem(position);
 
             TextView username = v.findViewById(R.id.username);
             if (!comment.getUsername().equals(""))
@@ -227,6 +233,9 @@ public class OsmNoteEditFragment extends Fragment
             {
                 username.setVisibility(GONE);
             }
+
+            TextView date = v.findViewById(R.id.mCreationDate);
+            date.setText(comment.getDate());
 
             TextView text = v.findViewById(R.id.text);
             text.setText(comment.getText());

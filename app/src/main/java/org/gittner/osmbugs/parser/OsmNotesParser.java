@@ -1,7 +1,7 @@
 package org.gittner.osmbugs.parser;
 
 import org.gittner.osmbugs.bugs.OsmNote;
-import org.gittner.osmbugs.common.Comment;
+import org.gittner.osmbugs.common.OsmNoteComment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -41,10 +41,10 @@ public class OsmNotesParser
                 long id = Long.parseLong(wpt.getElementsByTagName("id").item(0).getTextContent());
 
                 NodeList nListComments = wpt.getElementsByTagName("comment");
-                ArrayList<Comment> comments = new ArrayList<>();
+                ArrayList<OsmNoteComment> comments = new ArrayList<>();
                 for (int n = 0; n != nListComments.getLength(); ++n)
                 {
-                    Comment comment = new Comment();
+                    OsmNoteComment comment = new OsmNoteComment();
                     comment.setText(((Element) nListComments.item(n)).getElementsByTagName("text").item(0).getTextContent());
 
                     NodeList element = ((Element) nListComments.item(n)).getElementsByTagName("user");
@@ -53,17 +53,25 @@ public class OsmNotesParser
                         comment.setUsername(element.item(0).getTextContent());
                     }
 
+                    comment.setDate(((Element) nListComments.item(n)).getElementsByTagName("date").item(0).getTextContent());
+
                     comments.add(comment);
                 }
 
                 String text = "";
+                String username = "";
+                String creationDate = "";
+
+                /* The first comment is the Bugs main Info (Description, date and user */
                 if (comments.size() > 0)
                 {
+                    username = comments.get(0).getUsername();
+                    creationDate = comments.get(0).getDate();
                     text = comments.get(0).getText();
                     comments.remove(0);
                 }
 
-                bugs.add(new OsmNote(lat, lon, id, text, comments, state));
+                bugs.add(new OsmNote(lat, lon, id, text, username, creationDate, comments, state));
             }
         }
         catch (ParserConfigurationException | IOException | SAXException e)

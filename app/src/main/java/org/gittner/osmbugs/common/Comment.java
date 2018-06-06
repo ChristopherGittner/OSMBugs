@@ -22,10 +22,10 @@ public class Comment implements Parcelable
     };
 
     /* Holds the Text of the Comment */
-    private String mText;
+    private String mText = "";
 
     /* Holds the Username of the Creator */
-    private String mUsername;
+    private String mUsername = "";
 
 
     public Comment()

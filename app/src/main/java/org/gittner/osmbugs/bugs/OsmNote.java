@@ -5,7 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.gittner.osmbugs.R;
-import org.gittner.osmbugs.common.Comment;
+import org.gittner.osmbugs.common.OsmNoteComment;
 import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.osmdroid.util.GeoPoint;
@@ -35,7 +35,11 @@ public class OsmNote extends Bug
 
     private final String mDescription;
 
-    private final List<Comment> mComments;
+    private final String mCreationDate;
+
+    private final String mUser;
+
+    private final List<OsmNoteComment> mComments;
 
     private STATE mState = STATE.OPEN;
 
@@ -45,13 +49,17 @@ public class OsmNote extends Bug
             double lon,
             long id,
             String description,
-            List<Comment> comments,
+            String user,
+            String creationDate,
+            List<OsmNoteComment> comments,
             STATE state)
     {
         super(new GeoPoint(lat, lon), Platforms.OSM_NOTES);
         mId = id;
         mState = state;
         mDescription = description;
+        mUser = user;
+        mCreationDate = creationDate;
         mComments = comments;
     }
 
@@ -61,12 +69,14 @@ public class OsmNote extends Bug
         super(parcel);
         mId = parcel.readLong();
         mDescription = parcel.readString();
+        mUser = parcel.readString();
+        mCreationDate = parcel.readString();
         mComments = new ArrayList<>();
         int size = parcel.readInt();
 
         for (int i = 0; i != size; ++i)
         {
-            Comment comment = new Comment(parcel);
+            OsmNoteComment comment = new OsmNoteComment(parcel);
             mComments.add(comment);
         }
 
@@ -95,7 +105,19 @@ public class OsmNote extends Bug
     }
 
 
-    public List<Comment> getComments()
+    public String getUser()
+    {
+        return mUser;
+    }
+
+
+    public String getCreationDate()
+    {
+        return mCreationDate;
+    }
+
+
+    public List<OsmNoteComment> getComments()
     {
         return mComments;
     }
@@ -113,6 +135,8 @@ public class OsmNote extends Bug
         super.writeToParcel(parcel, flags);
         parcel.writeLong(mId);
         parcel.writeString(mDescription);
+        parcel.writeString(mUser);
+        parcel.writeString(mCreationDate);
         parcel.writeInt(mComments.size());
 
         for (int i = 0; i != mComments.size(); ++i)
