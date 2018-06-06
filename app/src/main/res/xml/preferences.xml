@@ -405,4 +405,12 @@
             </PreferenceCategory>
         </PreferenceScreen>
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/new_bugs">
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/default_new_bug_platforms"
+            android:entryValues="@array/default_new_bug_platforms_values"
+            android:key="pref_default_new_bug_platform"
+            android:title="@string/default_new_bug_platform"/>
+    </PreferenceCategory>
 </PreferenceScreen>

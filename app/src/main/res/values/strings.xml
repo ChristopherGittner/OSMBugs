@@ -184,4 +184,7 @@
     <string name="failed_to_close_bug_invalid_username_or_password">Failed to close Bug:\n\nInvalid Username and/or Password</string>
     <string name="create_bug">Create Bug</string>
     <string name="center_on_gps">Center on GPS</string>
+    <string name="new_bugs">New Bugs</string>
+    <string name="default_new_bug_platform">Default Bug Platform</string>
+    <string name="selection">Select</string>
 </resources>

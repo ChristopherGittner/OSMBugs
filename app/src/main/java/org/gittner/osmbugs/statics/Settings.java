@@ -697,4 +697,15 @@ public class Settings
             return mPrefs.getString("pref_openstreetmap_notes_password", "");
         }
     }
+
+    public static Integer getDefaultNewBugPlatform()
+    {
+        return Integer.valueOf(mPrefs.getString("pref_default_new_bug_platform", "1"));
+    }
+
+
+    public static void setDefaultNewBugPlatform(int mapStyle)
+    {
+        mPrefs.edit().putString("pref_default_new_bug_platform", String.valueOf(mapStyle)).apply();
+    }
 }

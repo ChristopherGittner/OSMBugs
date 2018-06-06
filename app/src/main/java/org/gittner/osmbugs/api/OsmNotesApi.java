@@ -21,7 +21,7 @@ public class OsmNotesApi implements BugApi<OsmNote>
 {
     private static final String API_SCHEME = "https";
     private static final String DEFAULT_SERVER = "api.openstreetmap.org";
-    private static final String DEBUG_SERVER = "api06.dev.openstreetmap.org";
+    //private static final String DEFAULT_SERVER = "api06.dev.openstreetmap.org"; //Debug Server
     
     private static final String PATH_SEGMENT_API = "api";
     private static final String PATH_SEGMENT_VERSION = "0.6";

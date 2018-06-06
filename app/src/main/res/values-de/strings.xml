@@ -153,4 +153,7 @@
     <string name="failed_to_close_bug_invalid_username_or_password">Fehler konnte nicht geschlossen werden:\n\nUngültiger Benutzername und/oder Passwort</string>
     <string name="create_bug">Neuer Fehler</string>
     <string name="center_on_gps">Auf GPS Zentrieren</string>
+    <string name="new_bugs">Neue Fehler</string>
+    <string name="default_new_bug_platform">Standard Platform</string>
+    <string name="selection">Auswahl</string>
 </resources>

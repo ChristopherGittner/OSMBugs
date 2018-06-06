@@ -179,7 +179,7 @@ public class BugMapActivity extends AppCompatActivity
                 if (event.getAction() == MotionEvent.ACTION_DOWN && mAddNewBugOnNextClick)
                 {
                     mNewBugLocation = (GeoPoint) mMap.getProjection().fromPixels((int) event.getX(), (int) event.getY());
-                    showNewBugDialogDialog();
+                    startCreateBug();
                     mAddNewBugOnNextClick = false;
                     invalidateOptionsMenu();
                     return false;
@@ -191,7 +191,7 @@ public class BugMapActivity extends AppCompatActivity
             public boolean onLongPress(MotionEvent e, MapView mapView)
             {
                 mNewBugLocation = (GeoPoint) mMap.getProjection().fromPixels((int) e.getX(), (int) e.getY());
-                showNewBugDialogDialog();
+                startCreateBug();
                 mAddNewBugOnNextClick = false;
                 invalidateOptionsMenu();
                 return false;
@@ -202,27 +202,48 @@ public class BugMapActivity extends AppCompatActivity
     }
 
 
-    private void showNewBugDialogDialog()
+    private void startCreateBug()
     {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.create_bug)
-                .setCancelable(true)
-                .setItems(R.array.new_bug_platforms, (dialogInterface, i) -> {
-                    if (i == 0)
-                    {
-                        Intent addBugIntent = new Intent(BugMapActivity.this, AddOsmNoteActivity_.class);
-                        addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
-                        addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
-                        startActivityForResult(addBugIntent, REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY);
-                    } else if (i == 1)
-                    {
-                        Intent addBugIntent = new Intent(BugMapActivity.this, AddMapdustBugActivity_.class);
-                        addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
-                        addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
-                        startActivityForResult(addBugIntent, REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY);
-                    }
-                })
-                .show();
+        /* If a default bug creation platform is selected, we start the Activity directly.
+         *  Otherwise we ask the user on which platform we should create the bug */
+        if(Settings.getDefaultNewBugPlatform() == 2) {
+            launchCreateOsmNoteActivity();
+        } else if(Settings.getDefaultNewBugPlatform() == 3) {
+            launchCreateMapdustBugActivity();
+        } else
+        {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.create_bug)
+                    .setCancelable(true)
+                    .setItems(R.array.new_bug_platforms, (dialogInterface, i) -> {
+                        if (i == 0)
+                        {
+                            launchCreateOsmNoteActivity();
+                        } else if (i == 1)
+                        {
+                            launchCreateMapdustBugActivity();
+                        }
+                    })
+                    .show();
+        }
+    }
+
+
+    private void launchCreateOsmNoteActivity()
+    {
+        Intent addBugIntent = new Intent(BugMapActivity.this, AddOsmNoteActivity_.class);
+        addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
+        addBugIntent.putExtra(AddOsmNoteActivity.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
+        startActivityForResult(addBugIntent, REQUEST_CODE_ADD_OSM_NOTE_BUG_ACTIVITY);
+    }
+
+
+    private void launchCreateMapdustBugActivity()
+    {
+        Intent addBugIntent = new Intent(BugMapActivity.this, AddMapdustBugActivity_.class);
+        addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LATITUDE, mNewBugLocation.getLatitude());
+        addBugIntent.putExtra(AddMapdustBugActivity_.EXTRA_LONGITUDE, mNewBugLocation.getLongitude());
+        startActivityForResult(addBugIntent, REQUEST_CODE_ADD_MAPDUST_BUG_ACTIVITY);
     }
 
 
