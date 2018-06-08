@@ -2,6 +2,9 @@ package org.gittner.osmbugs.parser;
 
 import org.gittner.osmbugs.bugs.MapdustBug;
 import org.gittner.osmbugs.common.Comment;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +19,8 @@ public class MapdustParser
 {
     public static ArrayList<MapdustBug> parse(InputStream stream)
     {
+        DateTimeFormatter formatter = ISODateTimeFormat.dateTimeParser();
+
         ArrayList<MapdustBug> bugs = new ArrayList<>();
         BufferedReader reader;
         try
@@ -64,6 +69,7 @@ public class MapdustParser
 
                 String description = property.getString("description");
                 String type_const = property.getString("type");
+                DateTime creationDate = formatter.parseDateTime(property.getString("date_created"));
 
                 int typeInt;
                 switch (type_const)
@@ -94,7 +100,7 @@ public class MapdustParser
                         break;
                 }
 
-                bugs.add(new MapdustBug(lat, lon, id, typeInt, description, comments, state));
+                bugs.add(new MapdustBug(lat, lon, creationDate, id, typeInt, description, comments, state));
             }
         }
         catch (IOException e)

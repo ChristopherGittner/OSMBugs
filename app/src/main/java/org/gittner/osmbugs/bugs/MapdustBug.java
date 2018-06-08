@@ -8,6 +8,7 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.common.Comment;
 import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
+import org.joda.time.DateTime;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
@@ -55,13 +56,14 @@ public class MapdustBug extends Bug
     public MapdustBug(
             double lat,
             double lon,
+            DateTime creationDate,
             long id,
             int type,
             String description,
             ArrayList<Comment> comments,
             STATE state)
     {
-        super(new GeoPoint(lat, lon), Platforms.MAPDUST);
+        super(new GeoPoint(lat, lon), Platforms.MAPDUST, creationDate);
         mId = id;
         mType = type;
         mComments = comments;

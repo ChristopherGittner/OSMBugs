@@ -38,6 +38,8 @@ public class KeeprightEditFragment
 {
     public static final String ARG_BUG = "ARG_BUG";
 
+    @ViewById(R.id.creationDate)
+    TextView mCreationDate;
     @ViewById(R.id.txtvTitle)
     TextView mTitle;
     @ViewById(R.id.txtvText)
@@ -56,6 +58,8 @@ public class KeeprightEditFragment
     @AfterViews
     void init()
     {
+        mCreationDate.setText(mBug.getCreationDate().toString(getString(R.string.date_time_format)));
+
         mTitle.setText(mBug.getTitle());
         Linkify.addLinks(mTitle, Linkify.WEB_URLS);
         mTitle.setText(Html.fromHtml(mTitle.getText().toString()));

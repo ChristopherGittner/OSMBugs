@@ -18,7 +18,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"/>
         <TextView
-            android:id="@+id/mCreationDate"
+            android:id="@+id/creationDate"
             android:text="date"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"

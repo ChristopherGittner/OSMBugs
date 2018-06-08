@@ -8,6 +8,7 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Openstreetmap;
+import org.joda.time.DateTime;
 import org.osmdroid.util.GeoPoint;
 
 public class KeeprightBug extends Bug
@@ -47,6 +48,7 @@ public class KeeprightBug extends Bug
     public KeeprightBug(
             double lat,
             double lon,
+            DateTime creationDate,
             int id,
             int object_type,
             int schema,
@@ -57,7 +59,7 @@ public class KeeprightBug extends Bug
             String comment,
             long way)
     {
-        super(new GeoPoint(lat, lon), Platforms.KEEPRIGHT);
+        super(new GeoPoint(lat, lon), Platforms.KEEPRIGHT, creationDate);
         mId = id;
         mSchema = schema;
         mType = type;

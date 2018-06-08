@@ -5,6 +5,9 @@ import org.gittner.osmbugs.common.OsmKeyValuePair;
 import org.gittner.osmbugs.common.OsmoseElement;
 import org.gittner.osmbugs.common.OsmoseFix;
 import org.gittner.osmbugs.statics.Openstreetmap;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +22,8 @@ public class OsmoseParser
 {
     public static ArrayList<OsmoseBug> parseBugList(InputStream stream)
     {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ssZZ");
+
         ArrayList<OsmoseBug> bugs = new ArrayList<>();
 
         BufferedReader reader;
@@ -39,8 +44,9 @@ public class OsmoseParser
                 long id = Long.valueOf(bug.getString(2));
                 int item = Integer.valueOf(bug.getString(3));
                 String title = bug.getString(9);
+                DateTime creationDate = formatter.parseDateTime(bug.getString(11));
 
-                bugs.add(new OsmoseBug(lat, lon, id, item, title));
+                bugs.add(new OsmoseBug(lat, lon, creationDate, id, item, title));
             }
         }
         catch (IOException e)

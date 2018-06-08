@@ -49,7 +49,7 @@ public class OsmNoteEditFragment extends Fragment
 
     @ViewById(R.id.username)
     TextView mUsername;
-    @ViewById(R.id.mCreationDate)
+    @ViewById(R.id.creationDate)
     TextView mCreationDate;
     @ViewById(R.id.txtvDescription)
     TextView mDescription;
@@ -68,7 +68,7 @@ public class OsmNoteEditFragment extends Fragment
     void init()
     {
         mUsername.setText(mBug.getUser());
-        mCreationDate.setText(mBug.getCreationDate());
+        mCreationDate.setText(mBug.getCreationDate().toString(getString(R.string.date_time_format)));
         mDescription.setText(mBug.getDescription());
 
         CommentAdapter adapter = new CommentAdapter(getActivity());
@@ -234,8 +234,8 @@ public class OsmNoteEditFragment extends Fragment
                 username.setVisibility(GONE);
             }
 
-            TextView date = v.findViewById(R.id.mCreationDate);
-            date.setText(comment.getDate());
+            TextView date = v.findViewById(R.id.creationDate);
+            date.setText(comment.getCreationDate().toString(getString(R.string.date_time_format)));
 
             TextView text = v.findViewById(R.id.text);
             text.setText(comment.getText());

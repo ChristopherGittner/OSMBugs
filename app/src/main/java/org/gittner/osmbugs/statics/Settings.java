@@ -134,7 +134,7 @@ public class Settings
     {
         public static boolean isEnabled()
         {
-            return mPrefs.getBoolean("pref_keepright_enabled", true);
+            return mPrefs.getBoolean("pref_keepright_enabled", false);
         }
 
 
@@ -565,7 +565,7 @@ public class Settings
     {
         public static boolean isEnabled()
         {
-            return mPrefs.getBoolean("pref_osmose_enabled", true);
+            return mPrefs.getBoolean("pref_osmose_enabled", false);
         }
 
 
@@ -596,7 +596,7 @@ public class Settings
 
         public static boolean isEnabled()
         {
-            return mPrefs.getBoolean("pref_mapdust_enabled", true);
+            return mPrefs.getBoolean("pref_mapdust_enabled", false);
         }
 
 

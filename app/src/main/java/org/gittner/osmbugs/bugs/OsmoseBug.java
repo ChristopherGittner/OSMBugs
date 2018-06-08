@@ -6,6 +6,7 @@ import android.os.Parcel;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
+import org.joda.time.DateTime;
 import org.osmdroid.util.GeoPoint;
 
 public class OsmoseBug extends Bug
@@ -44,11 +45,12 @@ public class OsmoseBug extends Bug
     public OsmoseBug(
             double lat,
             double lon,
+            DateTime creationDate,
             long id,
             int item,
             String title)
     {
-        super(new GeoPoint(lat, lon), Platforms.OSMOSE);
+        super(new GeoPoint(lat, lon), Platforms.OSMOSE, creationDate);
         mId = id;
         mItem = item;
         mTitle = title;

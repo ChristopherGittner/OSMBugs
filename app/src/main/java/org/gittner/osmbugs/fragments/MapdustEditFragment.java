@@ -49,6 +49,8 @@ public class MapdustEditFragment extends Fragment
     @FragmentArg(ARG_BUG)
     MapdustBug mBug;
 
+    @ViewById(R.id.creationDate)
+    TextView mCreationDate;
     @ViewById(R.id.txtvDescription)
     TextView mDescription;
     @ViewById(R.id.pbarLoadingComments)
@@ -71,6 +73,8 @@ public class MapdustEditFragment extends Fragment
     @AfterViews
     void init()
     {
+        mCreationDate.setText(mBug.getCreationDate().toString(getString(R.string.date_time_format)));
+
         mDescription.setText(mBug.getDescription());
 
         mAdapter = new CommentAdapter(getActivity());

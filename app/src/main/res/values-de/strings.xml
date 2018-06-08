@@ -156,4 +156,5 @@
     <string name="new_bugs">Neue Fehler</string>
     <string name="default_new_bug_platform">Standard Platform</string>
     <string name="selection">Auswahl</string>
+    <string name="date_time_format">dd.MM.YYYY HH:mm:ss</string>
 </resources>

@@ -3,6 +3,8 @@ package org.gittner.osmbugs.common;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.joda.time.DateTime;
+
 public class OsmNoteComment extends Comment implements Parcelable
 {
     public static final Creator<OsmNoteComment> CREATOR = new Creator<OsmNoteComment>()
@@ -22,38 +24,38 @@ public class OsmNoteComment extends Comment implements Parcelable
     };
 
     /* Holds the creation date */
-    private String mDate = "";
+    private DateTime mCreationDate;
 
 
     public OsmNoteComment()
     {
-        this("", "", "");
+        this("", "", DateTime.now());
     }
 
 
-    public OsmNoteComment(String text, String username, String date)
+    public OsmNoteComment(String text, String username, DateTime date)
     {
         super(text, username);
-        mDate = date;
+        mCreationDate = date;
     }
 
 
     public OsmNoteComment(Parcel parcel)
     {
         super(parcel);
-        mDate = parcel.readString();
+        mCreationDate = DateTime.parse(parcel.readString());
     }
 
 
-    public String getDate()
+    public DateTime getCreationDate()
     {
-        return mDate;
+        return mCreationDate;
     }
 
 
-    public void setDate(String date)
+    public void setCreationDate(DateTime date)
     {
-        mDate = date;
+        mCreationDate = date;
     }
 
 
@@ -68,6 +70,6 @@ public class OsmNoteComment extends Comment implements Parcelable
     public void writeToParcel(Parcel parcel, int flags)
     {
         super.writeToParcel(parcel, flags);
-        parcel.writeString(mDate);
+        parcel.writeString(mCreationDate.toString());
     }
 }

@@ -8,6 +8,7 @@ import org.osmdroid.util.BoundingBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -28,8 +29,13 @@ public class OsmoseApi implements BugApi<OsmoseBug>
                         .addPathSegment("api")
                         .addPathSegment("0.2")
                         .addPathSegment("errors")
-                        .addQueryParameter("lat", String.valueOf(bBox.getCenter().getLatitude()))
-                        .addQueryParameter("lon", String.valueOf(bBox.getCenter().getLongitude()))
+                        .addQueryParameter("bbox", String.format(
+                                Locale.US,
+                                "%f,%f,%f,%f",
+                                bBox.getLonWest(),
+                                bBox.getLatSouth(),
+                                bBox.getLonEast(),
+                                bBox.getLatNorth()))
                         .addQueryParameter("limit", String.valueOf(Settings.Osmose.getBugLimit()))
                         .addQueryParameter("full", "true")
                         .addQueryParameter("comment", Settings.Osmose.getBugsToDisplay() == 1 ? "done" : "false")

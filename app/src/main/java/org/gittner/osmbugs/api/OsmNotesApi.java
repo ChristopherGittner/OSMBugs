@@ -74,7 +74,7 @@ public class OsmNotesApi implements BugApi<OsmNote>
 
             return OsmNotesParser.parse(response.body().byteStream());
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             e.printStackTrace();
             return null;

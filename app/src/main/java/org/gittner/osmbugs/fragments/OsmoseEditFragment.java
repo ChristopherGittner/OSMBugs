@@ -28,6 +28,8 @@ public class OsmoseEditFragment extends Fragment
     @FragmentArg(ARG_BUG)
     OsmoseBug mBug;
 
+    @ViewById(R.id.creationDate)
+    TextView mCreationDate;
     @ViewById(R.id.txtvTitle)
     TextView mTitle;
     @ViewById(R.id.imgvIcon)
@@ -41,6 +43,8 @@ public class OsmoseEditFragment extends Fragment
     @AfterViews
     void init()
     {
+        mCreationDate.setText(mBug.getCreationDate().toString(getString(R.string.date_time_format)));
+
         mTitle.setText(mBug.getTitle());
 
         mIcon.setImageDrawable(mBug.getIcon());

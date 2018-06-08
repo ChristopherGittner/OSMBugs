@@ -20,6 +20,15 @@
             tools:ignore="UselessLeaf"/>
 
         <TextView
+            android:id="@+id/creationDate"
+            android:text="date"
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"/>
+
+        <TextView
             android:id="@+id/txtvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

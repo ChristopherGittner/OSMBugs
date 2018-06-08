@@ -187,4 +187,5 @@
     <string name="new_bugs">New Bugs</string>
     <string name="default_new_bug_platform">Default Bug Platform</string>
     <string name="selection">Select</string>
+    <string name="date_time_format">YYYY-MM-dd hh:mm:ss aa</string>
 </resources>

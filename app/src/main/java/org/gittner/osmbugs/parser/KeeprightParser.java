@@ -2,6 +2,9 @@ package org.gittner.osmbugs.parser;
 
 import org.gittner.osmbugs.bugs.KeeprightBug;
 import org.gittner.osmbugs.statics.Openstreetmap;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +18,8 @@ public class KeeprightParser
 {
     public static ArrayList<KeeprightBug> parse(InputStream stream)
     {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss");
+
         ArrayList<KeeprightBug> bugs = new ArrayList<>();
         try
         {
@@ -75,11 +80,13 @@ public class KeeprightParser
                     long way = Long.parseLong(token.nextToken());
                     token.nextToken();
 
-                    /* 2 Unused token */
-                    for (int i = 0; i != 4; ++i)
-                    {
-                        token.nextToken();
-                    }
+                    /* Timestamp */
+                    DateTime creationDate = formatter.parseDateTime(token.nextToken());
+                    token.nextToken();
+
+                    /* Username */
+                    token.nextToken();
+                    token.nextToken();
 
                     /* Schema */
                     int schema = Integer.parseInt(token.nextToken());
@@ -126,7 +133,7 @@ public class KeeprightParser
                     }
 
                     /* Finally add our Bug to the results */
-                    bugs.add(new KeeprightBug(lat, lon, id, object_type, schema, type, state, title, text, comment, way));
+                    bugs.add(new KeeprightBug(lat, lon, creationDate, id, object_type, schema, type, state, title, text, comment, way));
                 }
                 catch (Exception e)
                 {

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import org.gittner.osmbugs.platforms.Platform;
 import org.gittner.osmbugs.platforms.Platforms;
+import org.joda.time.DateTime;
 import org.osmdroid.util.GeoPoint;
 
 public abstract class Bug implements Parcelable
@@ -14,11 +15,14 @@ public abstract class Bug implements Parcelable
 
     private final Platform mPlatform;
 
+    private final DateTime mCreationDate;
 
-    Bug(final GeoPoint point, final Platform platform)
+
+    Bug(final GeoPoint point, final Platform platform, final DateTime creationDate)
     {
         mPoint = point;
         mPlatform = platform;
+        mCreationDate = creationDate;
     }
 
 
@@ -26,6 +30,7 @@ public abstract class Bug implements Parcelable
     {
         mPlatform = Platforms.byName(parcel.readString());
         mPoint = new GeoPoint(parcel.readDouble(), parcel.readDouble());
+        mCreationDate = DateTime.parse(parcel.readString());
     }
 
 
@@ -36,6 +41,7 @@ public abstract class Bug implements Parcelable
 
         parcel.writeDouble(mPoint.getLatitude());
         parcel.writeDouble(mPoint.getLongitude());
+        parcel.writeString(mCreationDate.toString());
     }
 
 
@@ -48,6 +54,12 @@ public abstract class Bug implements Parcelable
     public GeoPoint getPoint()
     {
         return mPoint;
+    }
+
+
+    public DateTime getCreationDate()
+    {
+        return mCreationDate;
     }
 
 

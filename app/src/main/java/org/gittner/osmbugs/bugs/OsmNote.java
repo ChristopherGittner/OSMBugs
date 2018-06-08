@@ -8,6 +8,7 @@ import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.common.OsmNoteComment;
 import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
+import org.joda.time.DateTime;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
@@ -35,8 +36,6 @@ public class OsmNote extends Bug
 
     private final String mDescription;
 
-    private final String mCreationDate;
-
     private final String mUser;
 
     private final List<OsmNoteComment> mComments;
@@ -47,19 +46,18 @@ public class OsmNote extends Bug
     public OsmNote(
             double lat,
             double lon,
+            DateTime creationDate,
             long id,
             String description,
             String user,
-            String creationDate,
             List<OsmNoteComment> comments,
             STATE state)
     {
-        super(new GeoPoint(lat, lon), Platforms.OSM_NOTES);
+        super(new GeoPoint(lat, lon), Platforms.OSM_NOTES, creationDate);
         mId = id;
         mState = state;
         mDescription = description;
         mUser = user;
-        mCreationDate = creationDate;
         mComments = comments;
     }
 
@@ -70,7 +68,6 @@ public class OsmNote extends Bug
         mId = parcel.readLong();
         mDescription = parcel.readString();
         mUser = parcel.readString();
-        mCreationDate = parcel.readString();
         mComments = new ArrayList<>();
         int size = parcel.readInt();
 
@@ -111,12 +108,6 @@ public class OsmNote extends Bug
     }
 
 
-    public String getCreationDate()
-    {
-        return mCreationDate;
-    }
-
-
     public List<OsmNoteComment> getComments()
     {
         return mComments;
@@ -136,7 +127,6 @@ public class OsmNote extends Bug
         parcel.writeLong(mId);
         parcel.writeString(mDescription);
         parcel.writeString(mUser);
-        parcel.writeString(mCreationDate);
         parcel.writeInt(mComments.size());
 
         for (int i = 0; i != mComments.size(); ++i)
