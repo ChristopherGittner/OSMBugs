@@ -7,9 +7,9 @@ android {
     defaultConfig {
         applicationId "org.gittner.osmbugs"
         minSdkVersion 15
-        targetSdkVersion 26
-        versionCode 28
-        versionName "1-0-0"
+        targetSdkVersion 27
+        versionCode 29
+        versionName "1-1-0"
     }
 
     buildTypes {

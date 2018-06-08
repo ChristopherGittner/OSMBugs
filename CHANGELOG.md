@@ -1,6 +1,10 @@
 CHANGELOG
 =========
-V 0-9-8
+V 1-1-0
+
+- Added creation date to all Bug types
+
+V 1-0-0
 
 - Osm Notes is now the default Platformin the Bug list view
 - Added a "Default Bug Platform" for new bug creation
