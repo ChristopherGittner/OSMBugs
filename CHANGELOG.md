@@ -1,5 +1,9 @@
 CHANGELOG
 =========
+V 1-1-1
+
+- Tiles would not load if the default tile cache (external storage) was not writable. Changed the tile cache location to a internal folder.
+
 V 1-1-0
 
 - Added creation date to all Bug types
