@@ -8,8 +8,8 @@ android {
         applicationId "org.gittner.osmbugs"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 29
-        versionName "1-1-0"
+        versionCode 30
+        versionName "1-1-1"
     }
 
     buildTypes {

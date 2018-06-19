@@ -7,6 +7,7 @@ import org.gittner.osmbugs.api.Apis;
 import org.gittner.osmbugs.platforms.Platforms;
 import org.gittner.osmbugs.statics.Images;
 import org.gittner.osmbugs.statics.Settings;
+import org.osmdroid.config.Configuration;
 
 import timber.log.Timber;
 
@@ -30,6 +31,10 @@ public class OsmBugsApplication extends Application
         Platforms.init(this);
 
         Apis.init(this);
+
+        /* Initialize Osmdroid */
+        /* Set the Tile cache to an internal location that is available on all Devices */
+        Configuration.getInstance().setOsmdroidTileCache(getFilesDir());
 
         /* Check for App Version updates */
         int versionCode = Settings.getLastVersionCode();

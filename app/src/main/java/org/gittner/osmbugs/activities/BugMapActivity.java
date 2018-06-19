@@ -294,6 +294,8 @@ public class BugMapActivity extends AppCompatActivity
         {
             mMapScrollWatcher.cancel();
         }
+
+        mMap.onPause();
     }
 
 
@@ -303,6 +305,8 @@ public class BugMapActivity extends AppCompatActivity
         super.onResume();
 
         Permiso.getInstance().setActivity(this);
+
+        mMap.onResume();
 
 		/* Display enabled Bug platforms */
         if (Settings.Keepright.isEnabled())
