@@ -1,5 +1,9 @@
 CHANGELOG
 =========
+V 1-1-2
+
+- Fixed Bug: Calls to the Mapdust API with no results falsely showed the Message: "Failed to load from Mapdust"
+
 V 1-1-1
 
 - Tiles would not load if the default tile cache (external storage) was not writable. Changed the tile cache location to a internal folder.

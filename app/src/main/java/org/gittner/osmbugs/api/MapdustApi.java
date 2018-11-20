@@ -50,6 +50,11 @@ public class MapdustApi implements BugApi<MapdustBug>
         {
             Response response = mOkHttpClient.newCall(request).execute();
 
+            /* No content */
+            if(response.code() == 204) {
+                return new ArrayList<>();
+            }
+
             if (response.code() != 200)
             {
                 return null;
@@ -61,7 +66,7 @@ public class MapdustApi implements BugApi<MapdustBug>
         {
             if (e.getMessage().startsWith("HTTP 204"))
             {
-                return new ArrayList<>();
+
             }
         }
         catch (IOException e)
