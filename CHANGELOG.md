@@ -2,7 +2,7 @@ CHANGELOG
 =========
 V 1-1-2
 
-- Fixed Bug: Calls to the Mapdust API with no results falsely showed the Message: "Failed to load from Mapdust"
+- Fixed Bug: Calls to the Mapdust API with no results falsely showed the Message: "Failed to load from Mapdust"git 
 
 V 1-1-1
 
