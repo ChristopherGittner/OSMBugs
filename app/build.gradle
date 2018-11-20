@@ -29,7 +29,7 @@ android {
     }
 }
 
-def AAVersion = "4.4.0"
+def AAVersion = "4.5.2"
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
