@@ -1,5 +1,9 @@
 CHANGELOG
 =========
+V 1-1-3
+
+- Updated Android Annotations Library
+
 V 1-1-2
 
 - Fixed Bug: Calls to the Mapdust API with no results falsely showed the Message: "Failed to load from Mapdust"git 
