@@ -139,7 +139,7 @@
     <string name="title_activity_bug_list">Fehlerliste</string>
     <string name="platforms">Platformen</string>
     <string name="enabled">Aktiv</string>
-    <string name="failed_to_download_from">Fehler beim laden von</string>
+    <string name="failed_to_download_from">Fehler beim Laden von</string>
     <string name="ignore">Ignorieren</string>
     <string name="auto_load">Fehler automatisch laden</string>
     <string name="title_request_permissions">Benötige Berechtigungen</string>

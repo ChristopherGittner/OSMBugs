@@ -1,5 +1,9 @@
 CHANGELOG
 =========
+V 1-1-4
+
+- Fixed a translation Error
+
 V 1-1-3
 
 - Updated Android Annotations Library
