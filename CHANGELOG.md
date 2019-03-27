@@ -1,5 +1,10 @@
 CHANGELOG
 =========
+V 1-1-5
+
+- Fixed a Bug: Mapnik tiles did not load, because the correct User-Agent was not set.
+- Update Osmdroid to 6.1.0
+
 V 1-1-4
 
 - Fixed a translation Error

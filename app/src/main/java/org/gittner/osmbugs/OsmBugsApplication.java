@@ -33,6 +33,9 @@ public class OsmBugsApplication extends Application
         Apis.init(this);
 
         /* Initialize Osmdroid */
+        /* Set the correct User Agent */
+        Configuration.getInstance().setUserAgentValue(getPackageName());
+
         /* Set the Tile cache to an internal location that is available on all Devices */
         Configuration.getInstance().setOsmdroidTileCache(getFilesDir());
 
