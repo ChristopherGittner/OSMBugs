@@ -1,5 +1,7 @@
 package org.gittner.osmbugs.api;
 
+import android.content.Context;
+
 import org.gittner.osmbugs.bugs.OsmoseBug;
 import org.gittner.osmbugs.common.OsmoseElement;
 import org.gittner.osmbugs.parser.OsmoseParser;
@@ -9,6 +11,7 @@ import org.osmdroid.util.BoundingBox;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -17,7 +20,15 @@ import okhttp3.Response;
 
 public class OsmoseApi implements BugApi<OsmoseBug>
 {
-    public static OkHttpClient mOkHttpClient = new OkHttpClient();
+    private static OkHttpClient mOkHttpClient;
+
+    public static void init(Context context)
+    {
+        mOkHttpClient = new OkHttpClient
+                .Builder()
+                .readTimeout(40, TimeUnit.SECONDS)
+                .build();
+    }
 
     public ArrayList<OsmoseBug> downloadBBox(BoundingBox bBox)
     {

@@ -12,5 +12,6 @@ public class Apis
     public static void init(Context context)
     {
         KeeprightApi.init(context);
+        OsmoseApi.init(context);
     }
 }
