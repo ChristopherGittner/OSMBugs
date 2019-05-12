@@ -1,5 +1,10 @@
 CHANGELOG
 =========
+V 1-1-6
+
+- Increased the read Timeout for Osmose to 40 seconds, since some requests do take a long time to be processed
+- Update AndroidAnnotations to 4.6.0
+
 V 1-1-5
 
 - Fixed a Bug: Mapnik tiles did not load, because the correct User-Agent was not set.
