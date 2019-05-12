@@ -1,11 +1,11 @@
 OSMBugs
 =======
 An Android App to view and edit the various Bug report platforms of 
-the Openstreetmap project.
+the OpenStreetMap project.
 
 Currently supported Platforms are:
 
-- Openstreetmap Notes
+- OpenStreetMap Notes
 
 - Keepright
 
