@@ -157,4 +157,6 @@
     <string name="default_new_bug_platform">Standard Platform</string>
     <string name="selection">Auswahl</string>
     <string name="date_time_format">dd.MM.YYYY HH:mm:ss</string>
+    <string name="max_cache_size">Cache Größe</string>
+    <string name="enter_new_cache_size">Maximale Cache Größe eingeben (MB)</string>
 </resources>

@@ -39,15 +39,26 @@ public class OsmBugsApplication extends Application
         /* Set the Tile cache to an internal location that is available on all Devices */
         Configuration.getInstance().setOsmdroidTileCache(getFilesDir());
 
+        /* Setup cache Sizes */
+        long cacheSize = Settings.getCacheSizeMb();
+        Configuration.getInstance().setTileFileSystemCacheMaxBytes((cacheSize + 20L)* 1024L * 1024L); // Remove tiles only, when above 20 MB of the max cache size
+        Configuration.getInstance().setTileFileSystemCacheTrimBytes(Settings.getCacheSizeMb() * 1024 * 1024);
+
         /* Check for App Version updates */
         int versionCode = Settings.getLastVersionCode();
         while (versionCode < BuildConfig.VERSION_CODE) {
             ++versionCode;
 
-            if (versionCode == 28) {
-                /* Available Tiles changed. So we reset to the default Tile */
-                Settings.setMapStyle(1);
+            switch (versionCode) {
+                case 28:
+                    /* Available Tiles changed. So we reset to the default Tile */
+                    Settings.setMapStyle(1);
+
+                case 36:
+                    /* Max cache size preference has been introduced */
+                    Settings.setCacheSizeMb(Configuration.getInstance().getTileFileSystemCacheMaxBytes() / 1024L / 1024L);
             }
+
             Settings.setLastVersionCode(versionCode);
         }
     }

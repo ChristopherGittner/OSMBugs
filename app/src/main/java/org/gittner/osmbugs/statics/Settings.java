@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import org.osmdroid.api.IGeoPoint;
+import org.osmdroid.config.Configuration;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 
@@ -22,6 +23,11 @@ public class Settings
     }
 
 
+    public static SharedPreferences getPrefs() {
+        return mPrefs;
+    }
+
+
     public static int getLastVersionCode()
     {
         return mPrefs.getInt("pref_last_version_code", 0);
@@ -31,6 +37,16 @@ public class Settings
     public static void setLastVersionCode(int lastVersionCode)
     {
         mPrefs.edit().putInt("pref_last_version_code", lastVersionCode).apply();
+    }
+
+
+    public static long getCacheSizeMb() {
+        return Long.parseLong(mPrefs.getString("pref_cache_size", String.valueOf(Configuration.getInstance().getTileFileSystemCacheMaxBytes() / 1024L / 1024L)));
+    }
+
+
+    public static void setCacheSizeMb(long size) {
+        mPrefs.edit().putString("pref_cache_size", String.valueOf(size)).commit();
     }
 
 

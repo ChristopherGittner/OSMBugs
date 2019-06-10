@@ -1,5 +1,6 @@
 package org.gittner.osmbugs.fragments;
 
+import android.content.SharedPreferences;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -9,13 +10,15 @@ import android.widget.Toast;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.gittner.osmbugs.R;
+import org.gittner.osmbugs.statics.Settings;
+import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.modules.SqlTileWriter;
 
 @EFragment
 public class SettingsFragment
         extends PreferenceFragment
         implements
-        OnPreferenceClickListener
+        OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener
 {
     @AfterViews
     void init()
@@ -24,6 +27,8 @@ public class SettingsFragment
 
         findPreference("pref_clear_tile_cache").setOnPreferenceClickListener(this);
         findPreference("pref_keepright_reset").setOnPreferenceClickListener(this);
+
+        Settings.getPrefs().registerOnSharedPreferenceChangeListener(this);
     }
 
 
@@ -105,5 +110,14 @@ public class SettingsFragment
             return true;
         }
         return false;
+    }
+
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s)
+    {
+        if (s.equals("pref_cache_size")) {
+            Configuration.getInstance().setTileFileSystemCacheMaxBytes(Settings.getCacheSizeMb());
+        }
     }
 }
