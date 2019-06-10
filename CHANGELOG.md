@@ -1,5 +1,9 @@
 CHANGELOG
 =========
+V 1-2-0
+
+- Added an Option to set the maximum cache size of the tile cache. A 20 MB tolerance is set as a threshold 
+
 V 1-1-6
 
 - Increased the read Timeout for Osmose to 40 seconds, since some requests do take a long time to be processed
