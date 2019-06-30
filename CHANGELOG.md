@@ -1,5 +1,9 @@
 CHANGELOG
 =========
+V 1-2-1
+
+- Enable Cleartext communication for http on Devices with Android 9 and above. See GitHub issue #22  
+
 V 1-2-0
 
 - Added an Option to set the maximum cache size of the tile cache. A 20 MB tolerance is set as a threshold 
