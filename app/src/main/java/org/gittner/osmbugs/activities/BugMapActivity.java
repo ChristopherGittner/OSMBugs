@@ -547,6 +547,10 @@ public class BugMapActivity extends AppCompatActivity
     {
         mAddNewBugOnNextClick = !mAddNewBugOnNextClick;
 
+        if (mAddNewBugOnNextClick) {
+            Toast.makeText(getApplicationContext(), R.string.click_map_to_add_bug, Toast.LENGTH_LONG).show();
+        }
+
         invalidateOptionsMenu();
     }
 

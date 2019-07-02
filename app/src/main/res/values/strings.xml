@@ -190,4 +190,5 @@
     <string name="date_time_format">YYYY-MM-dd hh:mm:ss aa</string>
     <string name="max_cache_size">Cache size limit</string>
     <string name="enter_new_cache_size">Enter Cache size limit (MB)</string>
+    <string name="click_map_to_add_bug">Click the Map where to add the new Error/Note</string>
 </resources>

@@ -159,4 +159,5 @@
     <string name="date_time_format">dd.MM.YYYY HH:mm:ss</string>
     <string name="max_cache_size">Cache Größe</string>
     <string name="enter_new_cache_size">Maximale Cache Größe eingeben (MB)</string>
+    <string name="click_map_to_add_bug">Neuen Fehler durch klicken auf die Karte hinzufügen</string>
 </resources>

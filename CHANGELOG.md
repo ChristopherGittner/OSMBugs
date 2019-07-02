@@ -1,5 +1,9 @@
 CHANGELOG
 =========
+V 1-2-2
+
+- Show a Message when adding a new Bug as a hint how to add new Bugs  
+
 V 1-2-1
 
 - Enable Cleartext communication for http on Devices with Android 9 and above. See GitHub issue #22  
