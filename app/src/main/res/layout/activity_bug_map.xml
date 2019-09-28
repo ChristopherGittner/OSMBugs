@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,16 +23,15 @@
             android:layout_height="match_parent"
             android:clickable="true"/>
 
-        <android.support.v4.widget.ContentLoadingProgressBar
+        <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/progressBar"
-            style="?android:attr/android:progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:layout_margin="8dp"
             android:layout_gravity="center"/>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnRefreshBugs"
             android:src="@drawable/ic_reload"
             android:layout_width="wrap_content"

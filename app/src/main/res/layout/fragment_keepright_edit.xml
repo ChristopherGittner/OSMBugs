@@ -52,13 +52,13 @@
             android:text="@string/description"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-        <android.support.v7.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spnState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"/>
 
-        <android.support.v7.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edttxtComment"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

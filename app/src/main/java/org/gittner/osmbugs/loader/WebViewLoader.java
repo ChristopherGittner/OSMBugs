@@ -2,16 +2,13 @@ package org.gittner.osmbugs.loader;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.http.SslError;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.RequiresApi;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebChromeClient;
+import androidx.annotation.RequiresApi;
+
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 

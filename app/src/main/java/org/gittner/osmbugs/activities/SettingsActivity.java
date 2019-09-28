@@ -1,7 +1,7 @@
 package org.gittner.osmbugs.activities;
 
 import android.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;

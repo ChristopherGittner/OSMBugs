@@ -1,8 +1,8 @@
 package org.gittner.osmbugs.activities;
 
 import android.app.ProgressDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -20,7 +20,6 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.gittner.osmbugs.R;
 import org.gittner.osmbugs.api.Apis;
-import org.gittner.osmbugs.api.OsmNotesApi;
 import org.osmdroid.util.GeoPoint;
 
 @EActivity(R.layout.activity_add_osm_note)

@@ -2,7 +2,7 @@ package org.gittner.osmbugs.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;

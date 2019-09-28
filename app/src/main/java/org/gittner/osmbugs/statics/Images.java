@@ -3,7 +3,7 @@ package org.gittner.osmbugs.statics;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 public class Images
 {
