@@ -1,8 +1,13 @@
 CHANGELOG
 =========
+V 1-2-3
+
+- Libraries Updated
+- Bug Fixed: Using the Zoom Buttons while the map is following the GPS position lead to a crash
+
 V 1-2-2
 
-- Show a Message when adding a new Bug as a hint how to add new Bugs  
+- Show a Message when adding a new Bug as a hint how to add new Bugs
 
 V 1-2-1
 
