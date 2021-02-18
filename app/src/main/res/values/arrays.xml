@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string-array name="map_styles">
         <item>@string/mapnik</item>
         <item>@string/public_transport</item>
         <item>@string/fiets_nl</item>
         <item>@string/base_nl</item>
         <item>@string/road_nl</item>
-        <item>@string/hike_bike_map</item>
         <item>@string/open_sea_map</item>
         <item>@string/open_topo</item>
     </string-array>
-    <string-array name="map_styles_values" tools:ignore="MissingTranslation">
+    <string-array name="map_styles_id">
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -18,14 +17,14 @@
         <item>5</item>
         <item>6</item>
         <item>7</item>
-        <item>8</item>
     </string-array>
-    <string-array name="default_new_bug_platforms">
-        <item>@string/selection</item>
-        <item>@string/openstreetmap_notes</item>
-        <item>@string/mapdust</item>
-</string-array>
-    <string-array name="default_new_bug_platforms_values" tools:ignore="MissingTranslation">
+
+    <string-array name="osmose_error_level">
+        <item>@string/osmose_error_level_1</item>
+        <item>@string/osmose_error_level_2</item>
+        <item>@string/osmose_error_level_3</item>
+    </string-array>
+    <string-array name="osmose_error_level_id">
         <item>1</item>
         <item>2</item>
         <item>3</item>

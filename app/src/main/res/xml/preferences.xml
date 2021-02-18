@@ -1,422 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/display">
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pref_auto_load"
-            android:title="@string/auto_load"/>
-        <PreferenceScreen android:title="@string/preference_screen_map_title">
-            <ListPreference
-                android:defaultValue="1"
-                android:entries="@array/map_styles"
-                android:entryValues="@array/map_styles_values"
-                android:key="pref_map_style"
-                android:title="@string/map_style"/>
-            <Preference
-                android:title="@string/clear_tile_cache"
-                android:key="pref_clear_tile_cache"/>
-            <EditTextPreference
-                android:dialogTitle="@string/enter_new_cache_size"
-                android:key="pref_cache_size"
-                android:maxLength="5"
-                android:numeric="integer"
-                android:title="@string/max_cache_size"/>
-        </PreferenceScreen>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/platforms">
-        <PreferenceScreen android:title="@string/openstreetmap_notes">
-            <PreferenceCategory android:title="@string/openstreetmap_notes">
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_openstreetmap_notes_enabled"
-                    android:title="@string/enabled"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_openstreetmap_notes_enabled_only_open"
-                    android:title="@string/show_only_open_bugs"/>
-                <EditTextPreference
-                    android:defaultValue="200"
-                    android:dialogTitle="@string/enter_new_limit"
-                    android:key="pref_openstreetmap_notes_bug_limit"
-                    android:maxLength="5"
-                    android:numeric="integer"
-                    android:title="@string/bug_limit"/>
-                <EditTextPreference
-                    android:key="pref_openstreetmap_notes_username"
-                    android:title="@string/username"/>
-                <EditTextPreference
-                    android:inputType="textPassword"
-                    android:key="pref_openstreetmap_notes_password"
-                    android:title="@string/password"/>
-            </PreferenceCategory>
-        </PreferenceScreen>
-        <PreferenceScreen android:title="@string/keepright">
-            <PreferenceCategory android:title="@string/keepright">
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="pref_keepright_enabled"
-                    android:title="@string/enabled"/>
-            </PreferenceCategory>
-            <PreferenceCategory android:title="@string/visible_bugs">
-                <Preference
-                    android:key="pref_keepright_reset"
-                    android:title="@string/reset"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_30"
-                    android:title="@string/non_closed_areas"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_40"
-                    android:title="@string/dead_ended_oneways"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_50"
-                    android:title="@string/almost_junction"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_70"
-                    android:title="@string/missing_tags"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_90"
-                    android:title="@string/motorways_without_ref"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_100"
-                    android:title="@string/places_of_worship_without_religion"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_110"
-                    android:title="@string/point_of_interest_without_name"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_120"
-                    android:title="@string/ways_without_nodes"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_130"
-                    android:title="@string/floating_islands"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_150"
-                    android:title="@string/railway_crossing_without_tag"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_160"
-                    android:title="@string/wrongly_used_railway_crossing_tag"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_170"
-                    android:title="@string/fixme_tagged_items"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_180"
-                    android:title="@string/relations_without_type"/>
-                <PreferenceScreen android:title="@string/intersection_without_junction">
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_191"
-                        android:title="@string/highway_highway"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_192"
-                        android:title="@string/highway_waterway"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_193"
-                        android:title="@string/highway_riverbank"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_194"
-                        android:title="@string/waterway_waterway"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_195"
-                        android:title="@string/cycleway_cycleway"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_196"
-                        android:title="@string/highway_cycleway"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_197"
-                        android:title="@string/cycleway_waterway"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_198"
-                        android:title="@string/cycleway_riverbank"/>
-                </PreferenceScreen>
-                <PreferenceScreen android:title="@string/overlapping_ways">
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_201"
-                        android:title="@string/highway_highway"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_202"
-                        android:title="@string/highway_waterway"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_203"
-                        android:title="@string/highway_riverbank"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_204"
-                        android:title="@string/waterway_waterway"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_205"
-                        android:title="@string/cycleway_cycleway"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_206"
-                        android:title="@string/highway_cycleway"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_207"
-                        android:title="@string/cycleway_waterway"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_208"
-                        android:title="@string/cycleway_riverbank"/>
-                </PreferenceScreen>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_210"
-                    android:title="@string/loopings"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_220"
-                    android:title="@string/misspelled_tags"/>
-                <PreferenceScreen android:title="@string/layer_conflicts">
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_231"
-                        android:title="@string/mixed_layers_intersections"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_232"
-                        android:title="@string/strange_layers"/>
-                </PreferenceScreen>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_270"
-                    android:title="@string/motorways_connected_directly"/>
-                <PreferenceScreen android:title="@string/boundaries">
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_281"
-                        android:title="@string/missing_name"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_282"
-                        android:title="@string/missing_admin_level"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_283"
-                        android:title="@string/not_closed_loop"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_284"
-                        android:title="@string/splitting_boundary"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_285"
-                        android:title="@string/admin_level_too_high"/>
-                </PreferenceScreen>
-                <PreferenceScreen android:title="@string/restrictions">
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_291"
-                        android:title="@string/missing_type"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_292"
-                        android:title="@string/missing_from_way"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_293"
-                        android:title="@string/missing_to_way"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_294"
-                        android:title="@string/from_or_to_not_a_way"/>
-                </PreferenceScreen>
-                <PreferenceScreen android:title="@string/roundabout">
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_311"
-                        android:title="@string/not_closed_loop"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_312"
-                        android:title="@string/wrong_direction"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_313"
-                        android:title="@string/faintly_connected"/>
-                </PreferenceScreen>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_320"
-                    android:title="@string/link_connections"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_350"
-                    android:title="@string/bridge_tags"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_370"
-                    android:title="@string/doubled_places"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_380"
-                    android:title="@string/non_physical_use_of_sport_tag"/>
-                <PreferenceScreen android:title="@string/geometry_glitches">
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_401"
-                        android:title="@string/missing_turn_restrictions"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_402"
-                        android:title="@string/impossible_angles"/>
-                </PreferenceScreen>
-                <PreferenceScreen android:title="@string/website">
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_411"
-                        android:title="@string/http_error"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_412"
-                        android:title="@string/domain_hijacking"/>
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="pref_keepright_enabled_413"
-                        android:title="@string/non_match"/>
-                </PreferenceScreen>
-            </PreferenceCategory>
-            <PreferenceCategory android:title="@string/visible_warnings">
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="pref_keepright_enabled_20"
-                    android:title="@string/multiple_nodes_on_the_same_spot"/>
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="pref_keepright_enabled_60"
-                    android:title="@string/deprecated_tags"/>
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="pref_keepright_enabled_300"
-                    android:title="@string/missing_maxspeed"/>
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="pref_keepright_enabled_360"
-                    android:title="@string/language_unknown"/>
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="pref_keepright_enabled_390"
-                    android:title="@string/missing_tracktype"/>
-            </PreferenceCategory>
-            <PreferenceCategory android:title="@string/ignored_errors">
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_show_tmpign"
-                    android:title="@string/show_temporary_ignored"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_keepright_enabled_show_ign"
-                    android:title="@string/show_ignored"/>
-            </PreferenceCategory>
-        </PreferenceScreen>
-        <PreferenceScreen android:title="@string/mapdust">
-            <PreferenceCategory android:title="@string/mapdust">
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="pref_mapdust_enabled"
-                    android:title="@string/enabled"/>
-                <EditTextPreference
-                    android:defaultValue="Anonymous"
-                    android:key="pref_mapdust_username"
-                    android:title="@string/username"/>
-            </PreferenceCategory>
-            <PreferenceCategory android:title="@string/visible_bugs">
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_mapdust_enabled_open"
-                    android:title="@string/show_open_bugs"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_mapdust_enabled_closed"
-                    android:title="@string/show_fixed_bugs"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_mapdust_enabled_ignored"
-                    android:title="@string/show_invalid_bugs"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_mapdust_enabled_wrong_turn"
-                    android:title="@string/wrong_turn"/>
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="pref_mapdust_enabled_bad_routing"
-                    android:title="@string/bad_routing"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_mapdust_enabled_oneway_road"
-                    android:title="@string/oneway_road"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_mapdust_enabled_blocked_street"
-                    android:title="@string/blocked_street"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_mapdust_enabled_missing_street"
-                    android:title="@string/missing_street"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_mapdust_enabled_roundabout_issue"
-                    android:title="@string/roundabout_issue"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_mapdust_enabled_missing_speed_info"
-                    android:title="@string/missing_speed_info"/>
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="pref_mapdust_enabled_other"
-                    android:title="@string/other"/>
-            </PreferenceCategory>
-        </PreferenceScreen>
-        <PreferenceScreen android:title="@string/osmose">
-            <PreferenceCategory android:title="@string/osmose">
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="pref_osmose_enabled"
-                    android:title="@string/enabled"/>
-                <EditTextPreference
-                    android:defaultValue="500"
-                    android:dialogTitle="@string/enter_new_limit"
-                    android:key="pref_osmose_bug_limit"
-                    android:maxLength="3"
-                    android:numeric="integer"
-                    android:title="@string/bug_limit"/>
-                <ListPreference
-                    android:defaultValue="0"
-                    android:entries="@array/osmose_status_types"
-                    android:entryValues="@array/osmose_status_values"
-                    android:key="pref_osmose_bugs_to_display"
-                    android:title="@string/bugs_to_display"/>
-            </PreferenceCategory>
-        </PreferenceScreen>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/new_bugs">
+    <PreferenceCategory android:title="@string/map">
         <ListPreference
             android:defaultValue="1"
-            android:entries="@array/default_new_bug_platforms"
-            android:entryValues="@array/default_new_bug_platforms_values"
-            android:key="pref_default_new_bug_platform"
-            android:title="@string/default_new_bug_platform"/>
+            android:entries="@array/map_styles"
+            android:entryValues="@array/map_styles_id"
+            android:key="@string/pref_map_style"
+            android:title="@string/map_style" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/openstreetmap_notes">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_openstreetmap_notes_show_closed"
+            android:title="@string/show_closed_notes" />
+        <EditTextPreference
+            android:defaultValue="200"
+            android:dialogTitle="@string/enter_new_limit"
+            android:key="@string/pref_openstreetmap_notes_bug_limit"
+            android:maxLength="5"
+            android:inputType="number"
+            android:title="@string/bug_limit" />
+        <Preference
+            android:key="@string/pref_openstreetmap_notes_log_in"
+            android:title="@string/log_in" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/keepright">
+        <Preference
+            android:key="@string/pref_keepright_enabled_types"
+            android:title="@string/enabled_error" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/mapdust">
+        <EditTextPreference
+            android:defaultValue="Anonymous"
+            android:key="@string/pref_mapdust_username"
+            android:title="@string/username" />
+        <Preference
+            android:key="@string/pref_mapdust_enabled_types"
+            android:title="@string/enabled_error" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/osmose">
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/osmose_error_level"
+            android:entryValues="@array/osmose_error_level_id"
+            android:key="@string/pref_osmose_error_level"
+            android:title="@string/level" />
+        <Preference
+            android:key="@string/pref_osmose_enabled_types"
+            android:title="@string/enabled_error" />
+        <EditTextPreference
+            android:defaultValue="500"
+            android:dialogTitle="@string/enter_new_limit"
+            android:key="@string/pref_osmose_bug_limit"
+            android:maxLength="3"
+            android:inputType="number"
+            android:title="@string/bug_limit" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/storage">
+        <EditTextPreference
+            android:key="@string/pref_tile_cache_ttl_override"
+            android:title="@string/tile_cache_lifetime_override"
+            android:dialogMessage="@string/pref_tile_cache_ttl_override_dialog_message"
+            android:inputType="number"
+            android:defaultValue="0" />
+        <EditTextPreference
+            android:dialogTitle="@string/enter_new_cache_size"
+            android:key="@string/pref_cache_size"
+            android:maxLength="5"
+            android:inputType="number"
+            android:title="@string/max_cache_size" />
+        <Preference
+            android:key="@string/pref_clear_tile_cache"
+            android:title="@string/clear_tile_cache" />
     </PreferenceCategory>
 </PreferenceScreen>

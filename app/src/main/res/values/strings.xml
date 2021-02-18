@@ -1,67 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-
-    <string name="app_name">OSMBugs</string>
-    <string name="action_settings">Settings</string>
-    <string name="go_to_gps">Enable GPS</string>
-    <string name="follow_gps">Follow GPS</string>
-    <string name="save">Save</string>
+<resources>
+    <string name="app_name">OsmBugs</string>
+    <string name="pref_clear_tile_cache" translatable="false">pref_clear_tile_cache</string>
+    <string name="pref_cache_size" translatable="false">pref_cache_size</string>
+    <string name="pref_last_version_code" translatable="false">pref_last_version_code</string>
+    <string name="pref_map_style" translatable="false">pref_map_style</string>
+    <string name="pref_keepright_enabled_show_tmp_ign" translatable="false">pref_keepright_enabled_show_tmp_ign</string>
+    <string name="pref_keepright_enabled_show_ign" translatable="false">pref_keepright_enabled_show_ign</string>
+    <string name="pref_keepright_enabled_20" translatable="false">pref_keepright_enabled_20</string>
+    <string name="pref_keepright_enabled_30" translatable="false">pref_keepright_enabled_30</string>
+    <string name="pref_keepright_enabled_40" translatable="false">pref_keepright_enabled_40</string>
+    <string name="pref_keepright_enabled_50" translatable="false">pref_keepright_enabled_50</string>
+    <string name="pref_keepright_enabled_60" translatable="false">pref_keepright_enabled_60</string>
+    <string name="pref_keepright_enabled_70" translatable="false">pref_keepright_enabled_71</string>
+    <string name="pref_keepright_enabled_90" translatable="false">pref_keepright_enabled_90</string>
+    <string name="pref_keepright_enabled_100" translatable="false">pref_keepright_enabled_100</string>
+    <string name="pref_keepright_enabled_110" translatable="false">pref_keepright_enabled_110</string>
+    <string name="pref_keepright_enabled_120" translatable="false">pref_keepright_enabled_120</string>
+    <string name="pref_keepright_enabled_130" translatable="false">pref_keepright_enabled_130</string>
+    <string name="pref_keepright_enabled_150" translatable="false">pref_keepright_enabled_150</string>
+    <string name="pref_keepright_enabled_160" translatable="false">pref_keepright_enabled_160</string>
+    <string name="pref_keepright_enabled_170" translatable="false">pref_keepright_enabled_170</string>
+    <string name="pref_keepright_enabled_180" translatable="false">pref_keepright_enabled_180</string>
+    <string name="pref_keepright_enabled_191" translatable="false">pref_keepright_enabled_191</string>
+    <string name="pref_keepright_enabled_192" translatable="false">pref_keepright_enabled_192</string>
+    <string name="pref_keepright_enabled_193" translatable="false">pref_keepright_enabled_193</string>
+    <string name="pref_keepright_enabled_194" translatable="false">pref_keepright_enabled_194</string>
+    <string name="pref_keepright_enabled_195" translatable="false">pref_keepright_enabled_195</string>
+    <string name="pref_keepright_enabled_196" translatable="false">pref_keepright_enabled_196</string>
+    <string name="pref_keepright_enabled_197" translatable="false">pref_keepright_enabled_197</string>
+    <string name="pref_keepright_enabled_198" translatable="false">pref_keepright_enabled_198</string>
+    <string name="pref_keepright_enabled_201" translatable="false">pref_keepright_enabled_201</string>
+    <string name="pref_keepright_enabled_202" translatable="false">pref_keepright_enabled_202</string>
+    <string name="pref_keepright_enabled_203" translatable="false">pref_keepright_enabled_203</string>
+    <string name="pref_keepright_enabled_204" translatable="false">pref_keepright_enabled_204</string>
+    <string name="pref_keepright_enabled_205" translatable="false">pref_keepright_enabled_205</string>
+    <string name="pref_keepright_enabled_206" translatable="false">pref_keepright_enabled_206</string>
+    <string name="pref_keepright_enabled_207" translatable="false">pref_keepright_enabled_207</string>
+    <string name="pref_keepright_enabled_208" translatable="false">pref_keepright_enabled_208</string>
+    <string name="pref_keepright_enabled_210" translatable="false">pref_keepright_enabled_210</string>
+    <string name="pref_keepright_enabled_220" translatable="false">pref_keepright_enabled_220</string>
+    <string name="pref_keepright_enabled_231" translatable="false">pref_keepright_enabled_231</string>
+    <string name="pref_keepright_enabled_232" translatable="false">pref_keepright_enabled_232</string>
+    <string name="pref_keepright_enabled_270" translatable="false">pref_keepright_enabled_270</string>
+    <string name="pref_keepright_enabled_281" translatable="false">pref_keepright_enabled_281</string>
+    <string name="pref_keepright_enabled_282" translatable="false">pref_keepright_enabled_282</string>
+    <string name="pref_keepright_enabled_283" translatable="false">pref_keepright_enabled_283</string>
+    <string name="pref_keepright_enabled_284" translatable="false">pref_keepright_enabled_284</string>
+    <string name="pref_keepright_enabled_285" translatable="false">pref_keepright_enabled_285</string>
+    <string name="pref_keepright_enabled_291" translatable="false">pref_keepright_enabled_291</string>
+    <string name="pref_keepright_enabled_292" translatable="false">pref_keepright_enabled_292</string>
+    <string name="pref_keepright_enabled_293" translatable="false">pref_keepright_enabled_293</string>
+    <string name="pref_keepright_enabled_294" translatable="false">pref_keepright_enabled_294</string>
+    <string name="pref_keepright_enabled_300" translatable="false">pref_keepright_enabled_300</string>
+    <string name="pref_keepright_enabled_311" translatable="false">pref_keepright_enabled_311</string>
+    <string name="pref_keepright_enabled_312" translatable="false">pref_keepright_enabled_312</string>
+    <string name="pref_keepright_enabled_313" translatable="false">pref_keepright_enabled_313</string>
+    <string name="pref_keepright_enabled_320" translatable="false">pref_keepright_enabled_320</string>
+    <string name="pref_keepright_enabled_350" translatable="false">pref_keepright_enabled_350</string>
+    <string name="pref_keepright_enabled_360" translatable="false">pref_keepright_enabled_360</string>
+    <string name="pref_keepright_enabled_370" translatable="false">pref_keepright_enabled_370</string>
+    <string name="pref_keepright_enabled_380" translatable="false">pref_keepright_enabled_380</string>
+    <string name="pref_keepright_enabled_390" translatable="false">pref_keepright_enabled_390</string>
+    <string name="pref_keepright_enabled_401" translatable="false">pref_keepright_enabled_401</string>
+    <string name="pref_keepright_enabled_402" translatable="false">pref_keepright_enabled_402</string>
+    <string name="pref_keepright_enabled_411" translatable="false">pref_keepright_enabled_411</string>
+    <string name="pref_keepright_enabled_412" translatable="false">pref_keepright_enabled_412</string>
+    <string name="pref_keepright_enabled_413" translatable="false">pref_keepright_enabled_413</string>
+    <string name="pref_keepright_enabled" translatable="false">pref_keepright_enabled</string>
     <string name="comment">Comment</string>
-    <string name="title">Title</string>
-    <string name="cancel">Cancel</string>
-    <string name="description">Description</string>
-    <string name="state">State</string>
+    <string name="err_failed_to_update_error">Failed to update Error: %s</string>
+    <string name="err_failed_to_download_errors">Failed to download Errors:\n%s</string>
+
+
+    <string name="action_settings">Settings</string>
     <string name="keepright">Keepright</string>
-    <string name="visible_bugs">Visible Bugs</string>
-    <string name="visible_warnings">Visible Warnings</string>
-    <string name="ignored_errors">Ignore Errors</string>
     <string name="ok">OK</string>
-    <string name="failed_to_save_bug">Failed to save Bug</string>
-    <string name="non_closed_areas">Non-closed Areas</string>
-    <string name="dead_ended_oneways">Dead-ended Oneways</string>
-    <string name="almost_junction">Almost Junctions</string>
-    <string name="missing_tags">Missing Tags</string>
-    <string name="motorways_without_ref">Motorways without Ref</string>
-    <string name="places_of_worship_without_religion">Places of Worship without Religion</string>
-    <string name="point_of_interest_without_name">Point of Interest without Name</string>
-    <string name="ways_without_nodes">Ways without Nodes</string>
-    <string name="floating_islands">Floating Islands</string>
-    <string name="railway_crossing_without_tag">Railway Crossing without Tag</string>
-    <string name="wrongly_used_railway_crossing_tag">Wrongly used Railway Crossing Tag</string>
-    <string name="fixme_tagged_items">FIXME Tagged Items</string>
-    <string name="relations_without_type">Relations without Type</string>
-    <string name="intersection_without_junction">Intersection without Junction</string>
-    <string name="overlapping_ways">Overlapping Ways</string>
-    <string name="loopings">Loopings</string>
-    <string name="misspelled_tags">Misspelled Tags</string>
-    <string name="layer_conflicts">Layer Conflicts</string>
-    <string name="motorways_connected_directly">Motorways connected directly</string>
-    <string name="boundaries">Boundaries</string>
-    <string name="restrictions">Restrictions</string>
-    <string name="roundabout">Roundabout</string>
-    <string name="link_connections">*_link_connections</string>
-    <string name="bridge_tags">Bridge Tags</string>
-    <string name="doubled_places">Doubled Places</string>
-    <string name="non_physical_use_of_sport_tag">Non-Physical use of Sport-Tag</string>
-    <string name="geometry_glitches">Geometry Glitches</string>
-    <string name="website">Website</string>
-    <string name="multiple_nodes_on_the_same_spot">Multiple Nodes on the same Spot</string>
-    <string name="deprecated_tags">Deprecated Tags</string>
-    <string name="missing_maxspeed">Missing Maxspeed</string>
-    <string name="language_unknown">Language Unknown</string>
-    <string name="missing_tracktype">Missing Tracktype</string>
     <string name="show_temporary_ignored">Show Temporary Ignored</string>
     <string name="show_ignored">Show Ignored</string>
-    <string name="show_only_open_bugs">Show only open Bugs</string>
     <string name="bug_limit">Bug Limit</string>
     <string name="enter_new_limit">Enter new Limit</string>
     <string name="username">Username</string>
-    <string name="platform">Platform</string>
-
-    <string-array name="new_bug_platforms">
-        <item>Openstreetmap Notes</item>
-        <item>Mapdust</item>
-    </string-array>
 
     <string name="mapdust">Mapdust</string>
     <string name="wrong_turn">Wrong Turn</string>
@@ -72,123 +90,377 @@
     <string name="roundabout_issue">Roundabout Issue</string>
     <string name="missing_speed_info">Missing Speed Info</string>
     <string name="other">Other</string>
-    <string name="show_open_bugs">Show Open Bugs</string>
-    <string name="show_fixed_bugs">Show Closed Bugs</string>
-    <string name="show_invalid_bugs">Show Invalid Bugs</string>
-    <string name="openstreetmap_notes">Openstreetmap Notes</string>
-    <string name="comments">Comments</string>
-    <string name="open">Open</string>
-    <string name="closed">Closed</string>
-    <string name="ignored">Ignored</string>
-    <string name="password">Password</string>
-    <string name="highway_highway" translatable="false">highway-highway</string>
-    <string name="highway_waterway" translatable="false">highway-waterway</string>
-    <string name="highway_riverbank" translatable="false">highway-riverbank</string>
-    <string name="waterway_waterway" translatable="false">waterway-waterway</string>
-    <string name="cycleway_cycleway" translatable="false">cycleway-cycleway</string>
-    <string name="highway_cycleway" translatable="false">highway-cycleway</string>
-    <string name="cycleway_waterway" translatable="false">cycleway-waterway</string>
-    <string name="cycleway_riverbank" translatable="false">cycleway-riverbank</string>
-    <string name="mixed_layers_intersections">Mixed Layers Intersections</string>
-    <string name="strange_layers">Strange Layers</string>
-    <string name="missing_name">Missing name</string>
-    <string name="missing_admin_level">Missing admin_level</string>
-    <string name="not_closed_loop">Not closed Loop</string>
-    <string name="splitting_boundary">Splitting Boundary</string>
-    <string name="admin_level_too_high">admin_level too high</string>
-    <string name="missing_type">Missing type</string>
-    <string name="missing_from_way">Missing from way</string>
-    <string name="missing_to_way">Missing to way</string>
-    <string name="from_or_to_not_a_way">from or to no a way</string>
-    <string name="wrong_direction">Wrong Direction</string>
-    <string name="faintly_connected">Faintly connected</string>
-    <string name="missing_turn_restrictions">Missing turn restrictions</string>
-    <string name="impossible_angles">Impossible Angles</string>
-    <string name="http_error">HTTP Error</string>
-    <string name="domain_hijacking">Domain Hijacking</string>
-    <string name="non_match">Non-Match</string>
-    <string name="reset">Reset</string>
-    <string name="add_bug">Add Bug</string>
-    <string name="debug">Debug</string>
-    <string name="use_debug_server">Use Debug Server</string>
-    <string name="title_activity_add_mapdust_bug">Add Mapdust Bug</string>
-    <string name="type">Type</string>
-    <string name="title_activity_add_openstreetmap_note">Add Openstreetmap Note</string>
-    <string name="list">List</string>
+    <string name="show_open_errors">Show Open Bugs</string>
+    <string name="openstreetmap_notes">OpenStreetMap Notes</string>
     <string name="osmose">Osmose</string>
-    <string name="bugs_to_display">Bugs to display</string>
-    <string name="false_positive">False Positive</string>
-    <string name="enter_comment">Enter Comment</string>
-    <string name="close">Close</string>
-    <string name="notification_osm_notes_no_username">No Username provided.\nSettings -> Openstreetmap Notes -> Username</string>
-    <string name="notification_osm_notes_no_password">No Password provided.\nSettings -> Openstreetmap Notes -> Password</string>
-    <string name="saving">Saving</string>
-    <string name="developer_mail" tools:ignore="MissingTranslation" translatable="false">christopher@gittner.org</string>
-    <string name="feedback_to_osmbugs">Feedback to OSMBugs</string>
-    <string name="sending_feedback_failed_title">Sending Feedback failed</string>
-    <string name="sending_feedback_failed_message">There seems to be no Email App on your Phone.\n\nHowever, here\'s some good News:\nYou can still send me feedback from somewhere else to:\n\nchristopher@gittner.org\n\nThank you</string>
-    <string name="feedback">Feedback</string>
-    <string name="loading_details">Loading Details</string>
-    <string name="details">Details</string>
-    <string name="tags">Tags</string>
-    <string name="add">Add</string>
-    <string name="modify">Modify</string>
-    <string name="delete">Delete</string>
-    <string-array name="osmose_status_types">
-        <item>@string/open</item>
-        <item>@string/closed</item>
-        <item>@string/false_positive</item>
-    </string-array>
-    <string-array name="osmose_status_values" tools:ignore="MissingTranslation">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
     <string name="done">Done</string>
     <string name="map_style">Map Style</string>
-    <string name="display">Display</string>
     <string name="mapnik">Mapnik</string>
     <string name="cyclemap">Cycle Map</string>
     <string name="public_transport">Public Transport</string>
     <string name="mapquest_osm">Mapquest OSM</string>
     <string name="mapquest_aerial">Mapquest Satellit</string>
-    <string name="please_wait">Please Wait</string>
-    <string name="error">Error</string>
-    <string name="title_activity_keepright_edit">Bug Editor</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_bug_list">Bug List</string>
-    <string name="platforms">Platforms</string>
     <string name="enabled">Enabled</string>
-    <string name="failed_to_download_from">Failed to Download from</string>
-    <string name="ignore">Ignore</string>
-    <string name="auto_load">Auto Load Bugs</string>
-    <string name="title_request_permissions">Requesting Permissions</string>
-    <string name="message_request_permissions">As of Android 6 ( Marshmallow ) you have to grant Permissions to the App in the now following Dialogs</string>
-    <string name="share">Share</string>
     <string name="toast_geo_intent_no_app_found">No App found to share the Bug with</string>
-    <string name="cloudmade_standard" translatable="false">Cloudmade Standard</string>
-    <string name="cloudmate_small" translatable="false">Cloudmate Small</string>
     <string name="road_nl" translatable="false">Road NL</string>
-    <string name="hike_bike_map" translatable="false">Hike Bike Map</string>
     <string name="open_sea_map" translatable="false">Open Sea Map</string>
-    <string name="ugs_top" translatable="false">UGS Topo</string>
-    <string name="ugs_sat" translatable="false">UGS Sat</string>
-    <string name="chart_bundle_wac" translatable="false">Chart Bundle WAC</string>
-    <string name="chart_bundle_enrh" translatable="false">Chart Bundel ENRH</string>
-    <string name="chart_bundle_enrl" translatable="false">Chart Bundle ENRL</string>
     <string name="open_topo" translatable="false">Open Topo</string>
-    <string name="preference_screen_map_title">Map</string>
     <string name="clear_tile_cache">Clear Tile cache</string>
     <string name="tile_cache_cleared">Tile cache cleared</string>
     <string name="tile_cache_cleared_failed">Failed to clear Tile cache</string>
-    <string name="failed_to_close_bug_invalid_username_or_password">Failed to close Bug:\n\nInvalid Username and/or Password</string>
-    <string name="create_bug">Create Bug</string>
-    <string name="center_on_gps">Center on GPS</string>
-    <string name="new_bugs">New Bugs</string>
-    <string name="default_new_bug_platform">Default Bug Platform</string>
-    <string name="selection">Select</string>
-    <string name="date_time_format">YYYY-MM-dd hh:mm:ss aa</string>
+    <string name="create_error">Create Error</string>
     <string name="max_cache_size">Cache size limit</string>
     <string name="enter_new_cache_size">Enter Cache size limit (MB)</string>
-    <string name="click_map_to_add_bug">Click the Map where to add the new Error/Note</string>
+    <string name="pref_openstreetmap_notes_enabled" translatable="false">pref_openstreetmap_notes_enabled</string>
+    <string name="pref_openstreetmap_notes_show_closed" translatable="false">pref_openstreetmap_notes_show_closed</string>
+    <string name="pref_openstreetmap_notes_bug_limit" translatable="false">pref_openstreetmap_notes_bug_limit</string>
+    <string name="pref_mapdust_enabled" translatable="false">pref_mapdust_enabled</string>
+    <string name="pref_mapdust_username" translatable="false">pref_mapdust_username</string>
+    <string name="pref_mapdust_enabled_open" translatable="false">pref_mapdust_enabled_open</string>
+    <string name="pref_mapdust_enabled_closed" translatable="false">pref_mapdust_enabled_closed</string>
+    <string name="pref_mapdust_enabled_ignored" translatable="false">pref_mapdust_enabled_ignored</string>
+    <string name="pref_mapdust_enabled_wrong_turn" translatable="false">pref_mapdust_enabled_wrong_turn</string>
+    <string name="pref_mapdust_enabled_bad_routing" translatable="false">pref_mapdust_enabled_bad_routing</string>
+    <string name="pref_mapdust_enabled_oneway_road" translatable="false">pref_mapdust_enabled_oneway_road</string>
+    <string name="pref_mapdust_enabled_blocked_street" translatable="false">pref_mapdust_enabled_blocked_street</string>
+    <string name="pref_mapdust_enabled_missing_street" translatable="false">pref_mapdust_enabled_missing_street</string>
+    <string name="pref_mapdust_enabled_roundabout_issue" translatable="false">pref_mapdust_enabled_roundabout_issue</string>
+    <string name="pref_mapdust_enabled_missing_speed_info" translatable="false">pref_mapdust_enabled_missing_speed_info</string>
+    <string name="pref_mapdust_enabled_other" translatable="false">pref_mapdust_enabled_other</string>
+    <string name="pref_osmose_enabled" translatable="false">pref_osmose_enabled</string>
+    <string name="pref_osmose_bug_limit" translatable="false">pref_osmose_bug_limit</string>
+    <string name="pref_keepright_enabled_295" translatable="false">pref_keepright_enabled_295</string>
+    <string name="pref_keepright_enabled_296" translatable="false">pref_keepright_enabled_296</string>
+    <string name="pref_keepright_enabled_297" translatable="false">pref_keepright_enabled_297</string>
+    <string name="pref_keepright_enabled_298" translatable="false">pref_keepright_enabled_298</string>
+    <string name="pref_keepright_enabled_types" translatable="false">pref_keepright_enables_types</string>
+    <string name="enabled_error">Enabled Errors</string>
+    <string name="new_comment">New Comment</string>
+    <string name="pref_openstreetmap_notes_note_limit" translatable="false">pref_openstreetmap_notes_note_limit</string>
+    <string name="comment_required">Comment - Required</string>
+    <string name="failed_to_add_error">Failed to add Error: %s</string>
+    <string name="dialog_add_mapdust_error_title">Add Mapdust Error</string>
+    <string name="dialog_add_osm_note_title">Add OSM Note</string>
+    <string name="pref_mapdust_enabled_types" translatable="false">pref_mapdust_enabled_types</string>
+    <string name="show_closed_notes">Show closed Errors</string>
+    <string name="show_ignored_errors">Show Ignored Errors</string>
+    <string name="node">Node</string>
+    <string name="way">Way</string>
+    <string name="relation">Relation</string>
+    <string name="pref_osmose_enabled_types" translatable="false">pref_osmose_enabled_types</string>
+    <string name="pref_last_map_center_lat" translatable="false">last_map_center_lat</string>
+    <string name="pref_last_map_center_lon" translatable="false">last_map_center_lon</string>
+    <string name="pref_last_map_zoom" translatable="false">last_map_zoom</string>
+
+
+    <string name="keepright_error_title_30">non-closed areas</string>
+    <string name="keepright_error_title_40">dead-ended one-ways</string>
+    <string name="keepright_error_title_50">almost-junctions</string>
+    <string name="keepright_error_title_70">missing tags</string>
+    <string name="keepright_error_title_90">motorways without ref</string>
+    <string name="keepright_error_title_100">places of worship without religion</string>
+    <string name="keepright_error_title_110">point of interest without name</string>
+    <string name="keepright_error_title_120">ways without nodes</string>
+    <string name="keepright_error_title_130">floating islands</string>
+    <string name="keepright_error_title_150">railway crossings without tag</string>
+    <string name="keepright_error_title_160">wrongly used railway crossing tag</string>
+    <string name="keepright_error_title_170">fixme-tagged items</string>
+    <string name="keepright_error_title_180">relations without type</string>
+    <string name="keepright_error_title_191">highway-highway</string>
+    <string name="keepright_error_title_192">highway-waterway</string>
+    <string name="keepright_error_title_193">highway-riverbank</string>
+    <string name="keepright_error_title_194">waterway-waterway</string>
+    <string name="keepright_error_title_195">cycleway-cycleway</string>
+    <string name="keepright_error_title_196">highway-cycleway</string>
+    <string name="keepright_error_title_197">cycleway-waterway</string>
+    <string name="keepright_error_title_198">cycleway-riverbank</string>
+    <string name="keepright_error_title_201">highway-highway</string>
+    <string name="keepright_error_title_202">highway-waterway</string>
+    <string name="keepright_error_title_203">highway-riverbank</string>
+    <string name="keepright_error_title_204">waterway-waterway</string>
+    <string name="keepright_error_title_205">cycleway-cycleway</string>
+    <string name="keepright_error_title_206">highway-cycleway</string>
+    <string name="keepright_error_title_207">cycleway-waterway</string>
+    <string name="keepright_error_title_208">cycleway-riverbank</string>
+    <string name="keepright_error_title_210">loopings</string>
+    <string name="keepright_error_title_220">misspelled tags</string>
+    <string name="keepright_error_title_231">mixed layers intersections</string>
+    <string name="keepright_error_title_232">strange layers</string>
+    <string name="keepright_error_title_270">motorways connected directly</string>
+    <string name="keepright_error_title_281">missing name</string>
+    <string name="keepright_error_title_282">missing admin_level</string>
+    <string name="keepright_error_title_283">not closed loop</string>
+    <string name="keepright_error_title_284">splitting boundary</string>
+    <string name="keepright_error_title_285">admin_level too high</string>
+    <string name="keepright_error_title_291">missing type</string>
+    <string name="keepright_error_title_292">missing from way</string>
+    <string name="keepright_error_title_293">missing to way</string>
+    <string name="keepright_error_title_294">from or to not a way</string>
+    <string name="keepright_error_title_295">via is not on the way ends</string>
+    <string name="keepright_error_title_296">wrong restriction angle</string>
+    <string name="keepright_error_title_297">wrong direction of to member</string>
+    <string name="keepright_error_title_298">already restricted by oneway</string>
+    <string name="keepright_error_title_311">not closed loop</string>
+    <string name="keepright_error_title_312">wrong direction</string>
+    <string name="keepright_error_title_313">faintly connected</string>
+    <string name="keepright_error_title_320">*_link-connections</string>
+    <string name="keepright_error_title_350">bridge-tags</string>
+    <string name="keepright_error_title_370">doubled places</string>
+    <string name="keepright_error_title_380">non-physical use of sport-tag</string>
+    <string name="keepright_error_title_401">missing turn restriction</string>
+    <string name="keepright_error_title_402">impossible angles</string>
+    <string name="keepright_error_title_411">http error</string>
+    <string name="keepright_error_title_412">domain hijacking</string>
+    <string name="keepright_error_title_413">non-match</string>
+    <string name="keepright_error_title_20">multiple nodes on the same spot</string>
+    <string name="keepright_error_title_60">deprecated tags</string>
+    <string name="keepright_error_title_300">missing maxspeed</string>
+    <string name="keepright_error_title_360">language unknown</string>
+    <string name="keepright_error_title_390">missing tracktype</string>
+
+
+    <string name="osmose_error_description_0">overlapping building</string>
+    <string name="osmose_error_description_1">split building</string>
+    <string name="osmose_error_description_1010">duplicated node</string>
+    <string name="osmose_error_description_1040">invalid polygon</string>
+    <string name="osmose_error_description_1050">reverse roundabout</string>
+    <string name="osmose_error_description_1060">boundary intersect</string>
+    <string name="osmose_error_description_1070">objects overlap</string>
+    <string name="osmose_error_description_1080">orphan nodes</string>
+    <string name="osmose_error_description_1090">sudden highway type change</string>
+    <string name="osmose_error_description_1100">unclosed area</string>
+    <string name="osmose_error_description_1110">bad *_link highway</string>
+    <string name="osmose_error_description_1120">broken highway continuity</string>
+    <string name="osmose_error_description_1140">missing tag or role</string>
+    <string name="osmose_error_description_1150">surface intersection</string>
+    <string name="osmose_error_description_1160">big relation</string>
+    <string name="osmose_error_description_1170">multipolygon</string>
+    <string name="osmose_error_description_1180">double cycleway</string>
+    <string name="osmose_error_description_1190">approximate way</string>
+    <string name="osmose_error_description_1200">1-member relation</string>
+    <string name="osmose_error_description_1210">not-connected highway/cycleway</string>
+    <string name="osmose_error_description_1220">waterway</string>
+    <string name="osmose_error_description_1221">far from water</string>
+    <string name="osmose_error_description_1230">duplicate geometry</string>
+    <string name="osmose_error_description_1240">one-node way</string>
+    <string name="osmose_error_description_1250">objects intersection</string>
+    <string name="osmose_error_description_1260">public transport</string>
+    <string name="osmose_error_description_1270">almost junction</string>
+    <string name="osmose_error_description_1280">enforcement</string>
+    <string name="osmose_error_description_1290">related objects</string>
+    <string name="osmose_error_description_2010">junction=roundabout</string>
+    <string name="osmose_error_description_2020">elevation</string>
+    <string name="osmose_error_description_2030">oneway</string>
+    <string name="osmose_error_description_2040">source</string>
+    <string name="osmose_error_description_2060">street numbers</string>
+    <string name="osmose_error_description_2080">highway</string>
+    <string name="osmose_error_description_2090">highway crossing</string>
+    <string name="osmose_error_description_2100">pharmacy</string>
+    <string name="osmose_error_description_2110">missing object kind</string>
+    <string name="osmose_error_description_2120">indoor</string>
+    <string name="osmose_error_description_2130">access</string>
+    <string name="osmose_error_description_2140">public_transport route</string>
+    <string name="osmose_error_description_2150">zone:maxspeed</string>
+    <string name="osmose_error_description_2160">railways</string>
+    <string name="osmose_error_description_3010">highway roundabout</string>
+    <string name="osmose_error_description_3020">bad source tag</string>
+    <string name="osmose_error_description_3030">tagwatch cleaner</string>
+    <string name="osmose_error_description_3031">wikipedia</string>
+    <string name="osmose_error_description_3032">multiple tags</string>
+    <string name="osmose_error_description_3033">saint hyphen</string>
+    <string name="osmose_error_description_3040">incorrect tag</string>
+    <string name="osmose_error_description_3050">bad tag key</string>
+    <string name="osmose_error_description_3060">similar values</string>
+    <string name="osmose_error_description_3070">multiple values</string>
+    <string name="osmose_error_description_3080">swimming pool</string>
+    <string name="osmose_error_description_3090">date</string>
+    <string name="osmose_error_description_3091">numeric value</string>
+    <string name="osmose_error_description_3092">phone number</string>
+    <string name="osmose_error_description_3093">URL</string>
+    <string name="osmose_error_description_3110">note</string>
+    <string name="osmose_error_description_3120">tree</string>
+    <string name="osmose_error_description_3150">typo in tag</string>
+    <string name="osmose_error_description_3160">incorrect &quot;lanes&quot;</string>
+    <string name="osmose_error_description_3161">parking lane</string>
+    <string name="osmose_error_description_3170">relation role</string>
+    <string name="osmose_error_description_3180">relation type=restriction</string>
+    <string name="osmose_error_description_3190">postcode</string>
+    <string name="osmose_error_description_3200">area</string>
+    <string name="osmose_error_description_3210">noexit</string>
+    <string name="osmose_error_description_3220">access</string>
+    <string name="osmose_error_description_3230">recycling container</string>
+    <string name="osmose_error_description_3240">route access mismatch</string>
+    <string name="osmose_error_description_3250">opening hours</string>
+    <string name="osmose_error_description_3260">VAT</string>
+    <string name="osmose_error_description_4010">disused</string>
+    <string name="osmose_error_description_4020">on junction=roundabout</string>
+    <string name="osmose_error_description_4030">incompatible tags</string>
+    <string name="osmose_error_description_4040">ref in name</string>
+    <string name="osmose_error_description_4060">fixme import</string>
+    <string name="osmose_error_description_4061">fixme review</string>
+    <string name="osmose_error_description_4070">construction</string>
+    <string name="osmose_error_description_4080">duplicate object</string>
+    <string name="osmose_error_description_4090">unwanted tag on node</string>
+    <string name="osmose_error_description_4100">bad usage</string>
+    <string name="osmose_error_description_4110">incorrect layer</string>
+    <string name="osmose_error_description_4130">duplicate wikipedia</string>
+    <string name="osmose_error_description_5010">orthograph</string>
+    <string name="osmose_error_description_5020">way type</string>
+    <string name="osmose_error_description_5030">two names</string>
+    <string name="osmose_error_description_5040">toponymy</string>
+    <string name="osmose_error_description_5050">potential misspelling</string>
+    <string name="osmose_error_description_5060">local language</string>
+    <string name="osmose_error_description_5070">invalid character</string>
+    <string name="osmose_error_description_5080">similar name</string>
+    <string name="osmose_error_description_6010">open polygon</string>
+    <string name="osmose_error_description_6020">duplicated way</string>
+    <string name="osmose_error_description_6030">place without name</string>
+    <string name="osmose_error_description_6040">INSEE code</string>
+    <string name="osmose_error_description_6060">erroneous boundary</string>
+    <string name="osmose_error_description_6070">out of boundary</string>
+    <string name="osmose_error_description_7010">geodesic building</string>
+    <string name="osmose_error_description_7011">building shape</string>
+    <string name="osmose_error_description_7012">bridge to tag</string>
+    <string name="osmose_error_description_7020">admin boundary</string>
+    <string name="osmose_error_description_7040">power lines</string>
+    <string name="osmose_error_description_7050">post office</string>
+    <string name="osmose_error_description_7051">post box</string>
+    <string name="osmose_error_description_7060">ODbL migration change</string>
+    <string name="osmose_error_description_7070">school, not integrated</string>
+    <string name="osmose_error_description_7080">monument</string>
+    <string name="osmose_error_description_7090">node on ways</string>
+    <string name="osmose_error_description_7100">train station</string>
+    <string name="osmose_error_description_7110">TMC</string>
+    <string name="osmose_error_description_7120">relation type=boundary</string>
+    <string name="osmose_error_description_7130">tunnel/bridge</string>
+    <string name="osmose_error_description_7140">transport sharing, not integrated</string>
+    <string name="osmose_error_description_7150">pharmacy, not integrated </string>
+    <string name="osmose_error_description_7160">postal code, not integrated </string>
+    <string name="osmose_error_description_7170">road</string>
+    <string name="osmose_error_description_7190">power substation</string>
+    <string name="osmose_error_description_7220">hospital</string>
+    <string name="osmose_error_description_7240">medical lab</string>
+    <string name="osmose_error_description_7250">gas station, not integrated</string>
+    <string name="osmose_error_description_8010">monument, museum</string>
+    <string name="osmose_error_description_8011">monument, museum, could be integrated</string>
+    <string name="osmose_error_description_8012">monument, museum, need update</string>
+    <string name="osmose_error_description_8020">post office</string>
+    <string name="osmose_error_description_8021">post office, could be integrated</string>
+    <string name="osmose_error_description_8022">post office, need update</string>
+    <string name="osmose_error_description_8025">post box</string>
+    <string name="osmose_error_description_8026">post box, could be integrated</string>
+    <string name="osmose_error_description_8030">school</string>
+    <string name="osmose_error_description_8031">school, could be integrated</string>
+    <string name="osmose_error_description_8032">school, need update</string>
+    <string name="osmose_error_description_8040">public transport</string>
+    <string name="osmose_error_description_8041">public transport, could be integrated</string>
+    <string name="osmose_error_description_8042">public transport, need update</string>
+    <string name="osmose_error_description_8050">train station</string>
+    <string name="osmose_error_description_8051">train station, could be integrated</string>
+    <string name="osmose_error_description_8060">level crossing</string>
+    <string name="osmose_error_description_8070">geodesic point</string>
+    <string name="osmose_error_description_8080">postal address</string>
+    <string name="osmose_error_description_8110">public service</string>
+    <string name="osmose_error_description_8120">recycling</string>
+    <string name="osmose_error_description_8121">recycling, could be integrated</string>
+    <string name="osmose_error_description_8122">recycling, need update</string>
+    <string name="osmose_error_description_8130">parking</string>
+    <string name="osmose_error_description_8131">parking, could be integrated</string>
+    <string name="osmose_error_description_8132">parking, need update</string>
+    <string name="osmose_error_description_8140">accommodation</string>
+    <string name="osmose_error_description_8150">cycle parking</string>
+    <string name="osmose_error_description_8160">transport sharing</string>
+    <string name="osmose_error_description_8161">transport sharing, could be integrated</string>
+    <string name="osmose_error_description_8162">transport sharing, need update</string>
+    <string name="osmose_error_description_8170">sport</string>
+    <string name="osmose_error_description_8180">toilets</string>
+    <string name="osmose_error_description_8190">police</string>
+    <string name="osmose_error_description_8191">police, could be integrated</string>
+    <string name="osmose_error_description_8192">police, need update</string>
+    <string name="osmose_error_description_8210">gas station</string>
+    <string name="osmose_error_description_8200">gas station, could be integrated</string>
+    <string name="osmose_error_description_8201">gas station, need update</string>
+    <string name="osmose_error_description_8202">pharmacy</string>
+    <string name="osmose_error_description_8211">pharmacy, could be integrated</string>
+    <string name="osmose_error_description_8212">pharmacy, need update</string>
+    <string name="osmose_error_description_8221">postal code, could be integrated</string>
+    <string name="osmose_error_description_8230">library</string>
+    <string name="osmose_error_description_8240">restaurant</string>
+    <string name="osmose_error_description_8250">winery</string>
+    <string name="osmose_error_description_8260">geodesic</string>
+    <string name="osmose_error_description_8270">power plant</string>
+    <string name="osmose_error_description_8280">power substation</string>
+    <string name="osmose_error_description_8281">power substation, could be integrated</string>
+    <string name="osmose_error_description_8282">power substation, need update</string>
+    <string name="osmose_error_description_8290">power support</string>
+    <string name="osmose_error_description_8300">traffic signs</string>
+    <string name="osmose_error_description_8310">shop</string>
+    <string name="osmose_error_description_8320">traffic sign limitation</string>
+    <string name="osmose_error_description_8330">hospital</string>
+    <string name="osmose_error_description_8331">hospital, could be integrated</string>
+    <string name="osmose_error_description_8340">social facility</string>
+    <string name="osmose_error_description_8341">social facility, could be integrated</string>
+    <string name="osmose_error_description_8350">medical lab</string>
+    <string name="osmose_error_description_8351">medical lab, could be integrated</string>
+    <string name="osmose_error_description_8360">street objects</string>
+    <string name="osmose_error_description_8370">defibrillator</string>
+    <string name="osmose_error_description_8380">wastewater</string>
+    <string name="osmose_error_description_8381">wastewater, could be integrated</string>
+    <string name="osmose_error_description_8382">wastewater, need update</string>
+    <string name="osmose_error_description_8390">radio support</string>
+    <string name="osmose_error_description_8391">radio support, could be integrated</string>
+    <string name="osmose_error_description_8392">radio support, need update</string>
+    <string name="osmose_error_description_8410">charging station</string>
+    <string name="osmose_error_description_8411">charging station, could be integrated</string>
+    <string name="osmose_error_description_8412">charging station, need update</string>
+    <string name="osmose_error_description_9000">addresses</string>
+    <string name="osmose_error_description_9001">combinations</string>
+    <string name="osmose_error_description_9002">deprecated</string>
+    <string name="osmose_error_description_9003">geometry</string>
+    <string name="osmose_error_description_9004">highway</string>
+    <string name="osmose_error_description_9005">multiple</string>
+    <string name="osmose_error_description_9006">numeric</string>
+    <string name="osmose_error_description_9007">relation</string>
+    <string name="osmose_error_description_9009">territories</string>
+    <string name="osmose_error_description_9010">unnecessary</string>
+    <string name="osmose_error_description_9011">wikipedia</string>
+    <string name="osmose_error_description_9014">public transport</string>
+    <string name="osmose_error_description_9015">openrailwaymap</string>
+    <string name="osmose_error_description_9016">openrailwaymap in germany</string>
+    <string name="osmose_error_description_9017">specific russia</string>
+    <string name="osmose_error_description_9018">specific brazil</string>
+    <string name="osmose_error_description_9019">specific france</string>
+    <string name="osmose_error_description_9100">power transformer</string>
+    <string name="pref_openstreetmap_notes_token" translatable="false">pref_openstreetmap_notes_token</string>
+    <string name="pref_openstreetmap_notes_consumer_secret" translatable="false">pref_openstreetmap_notes_consumer_secret</string>
+    <string name="logging_in">Logging in…</string>
+    <string name="pref_openstreetmap_notes_log_in" translatable="false">pref_openstreetmap_notes_log_in</string>
+    <string name="log_in">Login</string>
+    <string name="tile_cache_lifetime_override">Tile cache Lifetime override</string>
+    <string name="pref_tile_cache_ttl_override" translatable="false">pref_tile_cache_ttl_override</string>
+    <string name="pref_tile_cache_ttl_override_dialog_message">Lifetime for each Tile in seconds. 0 = Default Lifetime</string>
+    <string name="map">Map</string>
+    <string name="storage">Storage</string>
+    <string name="osmose_error_level_1">High</string>
+    <string name="osmose_error_level_2">Normal or Higher</string>
+    <string name="osmose_error_level_3">All</string>
+    <string name="pref_osmose_error_level" translatable="false">pref_osmose_error_level</string>
+    <string name="level">Level</string>
+    <string name="menu_item_feedback_title">Feedback</string>
+    <string name="developer_mail" translatable="false">christopher@gittner.org</string>
+    <string name="feedback_mail_subject">Feedback to OSMBugs</string>
+    <string name="dialog_feedback_failed_title">Failed to send Feedback</string>
+    <string name="dialog_feedback_failed_message">No App found to write an E-Mail. Please send your feedback to christopher@gittner.org</string>
+    <string name="datetime_format">MM/dd/yyyy kk:mm a</string>
+    <string name="login_failed_no_token">Login Failed: No Token received</string>
+    <string name="login_failed_msg">Login failed: %s</string>
+    <string name="login_succeed">Login successfull</string>
+    <string name="dialog_osmnotes_login_required_title">Login required</string>
+    <string name="dialog_osmnotes_login_required_message">Please login to OpenStreetmap in order to continue</string>
+    <string name="dialog_osmnotes_login_required_positive">Login</string>
+    <string name="dialog_permissions_required_title">Permission required</string>
+    <string name="dialog_permissions_required_message">The GPS Permission is required to display your Position on the Map. You can enable the Permission later in the App Settings</string>
+    <string name="dialog_permissions_required_positive">Allow</string>
+    <string name="pref_tutorial_bug_state_done">pref_tutorial_bug_state_done</string>
+
 </resources>
