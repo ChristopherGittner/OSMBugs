@@ -5,14 +5,13 @@ import android.app.Application
 import androidx.preference.PreferenceManager
 import org.gittner.osmbugs.statics.Images
 import org.gittner.osmbugs.statics.Settings
-import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.osmdroid.config.Configuration
 import timber.log.Timber
 
 class App : Application() {
-    private lateinit var mSettings : Settings
+    private lateinit var mSettings: Settings
 
     @SuppressLint("ApplySharedPref")
     override fun onCreate() {

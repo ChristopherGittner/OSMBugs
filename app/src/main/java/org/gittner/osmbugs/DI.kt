@@ -5,7 +5,6 @@ import org.gittner.osmbugs.keepright.KeeprightApi
 import org.gittner.osmbugs.mapdust.MapdustApi
 import org.gittner.osmbugs.osmnotes.OsmNotesApi
 import org.gittner.osmbugs.osmose.OsmoseApi
-import org.gittner.osmbugs.statics.Settings
 import org.gittner.osmbugs.ui.ErrorViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel

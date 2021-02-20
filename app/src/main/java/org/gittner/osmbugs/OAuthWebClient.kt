@@ -8,7 +8,7 @@ import android.webkit.WebViewClient
  * Web client that calls a callback for all calls to a given URL
  * the "oauth_verifier" query parameter will be parsed as argument to the Callback
  */
-class OAuthWebClient(verifierScheme : String, authDoneCb : AuthDone) : WebViewClient() {
+class OAuthWebClient(verifierScheme: String, authDoneCb: AuthDone) : WebViewClient() {
     private val mCbUrl = verifierScheme
     private val mAuthDoneCb = authDoneCb
 
@@ -25,6 +25,6 @@ class OAuthWebClient(verifierScheme : String, authDoneCb : AuthDone) : WebViewCl
     }
 
     interface AuthDone {
-        fun authDone(token : String?)
+        fun authDone(token: String?)
     }
 }

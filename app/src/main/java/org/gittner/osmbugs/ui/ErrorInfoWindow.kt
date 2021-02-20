@@ -18,7 +18,7 @@ import java.util.*
 
 open class ErrorInfoWindow(layoutResId: Int, mapView: MapView) : InfoWindow(layoutResId, mapView) {
 
-    private var mStateView : View? = null
+    private var mStateView: View? = null
 
     override fun onOpen(item: Any?) {
         val error = (item as ErrorMarker<*>).mError

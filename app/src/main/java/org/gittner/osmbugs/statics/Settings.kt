@@ -9,7 +9,6 @@ import org.gittner.osmbugs.R
 import org.gittner.osmbugs.keepright.KeeprightError
 import org.gittner.osmbugs.mapdust.MapdustError
 import org.gittner.osmbugs.osmose.OsmoseError
-import org.koin.core.KoinComponent
 import org.osmdroid.api.IGeoPoint
 import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
@@ -19,9 +18,9 @@ import kotlin.math.max
 class Settings(private val mContext: Context) {
 
     companion object {
-        private lateinit var Instance : Settings
+        private lateinit var Instance: Settings
 
-        public fun getInstance() : Settings {
+        public fun getInstance(): Settings {
             return Instance
         }
 

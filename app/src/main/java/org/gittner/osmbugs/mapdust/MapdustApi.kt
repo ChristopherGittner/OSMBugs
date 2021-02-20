@@ -7,7 +7,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.gittner.osmbugs.statics.Settings
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 import org.osmdroid.api.IGeoPoint
 import org.osmdroid.util.BoundingBox
 import java.util.*

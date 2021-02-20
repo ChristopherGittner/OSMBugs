@@ -15,8 +15,8 @@ import org.gittner.osmbugs.osmose.OsmoseError
 @Database(entities = [OsmNote::class, KeeprightError::class, MapdustError::class, OsmoseError::class], version = 1)
 @TypeConverters(RoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun osmNoteDato() : OsmNoteDao
-    abstract fun keeprightDao() : KeeprightDao
-    abstract fun mapdustDao() : MapdustDao
-    abstract fun osmoseDao() : OsmoseDao
+    abstract fun osmNoteDato(): OsmNoteDao
+    abstract fun keeprightDao(): KeeprightDao
+    abstract fun mapdustDao(): MapdustDao
+    abstract fun osmoseDao(): OsmoseDao
 }

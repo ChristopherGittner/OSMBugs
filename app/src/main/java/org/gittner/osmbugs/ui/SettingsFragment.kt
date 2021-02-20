@@ -3,7 +3,6 @@ package org.gittner.osmbugs.ui
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.preference.CheckBoxPreference
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -18,7 +17,7 @@ import org.osmdroid.tileprovider.modules.SqlTileWriter
 
 
 class SettingsFragment : PreferenceFragmentCompat() {
-    private val mViewModel : ErrorViewModel by inject()
+    private val mViewModel: ErrorViewModel by inject()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preferences)

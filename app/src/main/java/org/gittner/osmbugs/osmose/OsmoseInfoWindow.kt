@@ -1,9 +1,9 @@
 package org.gittner.osmbugs.osmose
 
 import android.view.View
-import org.gittner.osmbugs.ui.ErrorInfoWindow
 import org.gittner.osmbugs.R
 import org.gittner.osmbugs.databinding.OsmoseMarkerBinding
+import org.gittner.osmbugs.ui.ErrorInfoWindow
 import org.osmdroid.views.MapView
 
 class OsmoseInfoWindow(map: MapView) : ErrorInfoWindow(R.layout.osmose_marker, map) {
@@ -28,6 +28,6 @@ class OsmoseInfoWindow(map: MapView) : ErrorInfoWindow(R.layout.osmose_marker, m
     }
 
     override fun onClose() {
-        
+
     }
 }

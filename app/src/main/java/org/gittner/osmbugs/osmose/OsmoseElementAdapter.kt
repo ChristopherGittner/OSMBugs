@@ -11,7 +11,8 @@ import org.gittner.osmbugs.R
 import org.gittner.osmbugs.databinding.RowOsmoseElementBinding
 import org.gittner.osmbugs.statics.OpenStreetMap
 
-class OsmoseElementAdapter(context: Context, elements: ArrayList<OpenStreetMap.Object>) : ArrayAdapter<OpenStreetMap.Object>(context, R.layout.row_osmose_element) {
+class OsmoseElementAdapter(context: Context, elements: ArrayList<OpenStreetMap.Object>) :
+    ArrayAdapter<OpenStreetMap.Object>(context, R.layout.row_osmose_element) {
     init {
         addAll(elements)
     }

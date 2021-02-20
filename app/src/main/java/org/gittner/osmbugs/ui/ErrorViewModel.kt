@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.karumi.dexter.Dexter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -34,22 +33,22 @@ class ErrorViewModel : ViewModel(), KoinComponent {
     private val mError = MutableLiveData<String>()
 
     private val mOsmNotesApi: OsmNotesApi by inject()
-    private val mOsmNoteDao : OsmNoteDao by inject()
+    private val mOsmNoteDao: OsmNoteDao by inject()
     private val mOsmNotes = MutableLiveData<ArrayList<OsmNote>>(ArrayList())
     private val mOsmNotesEnabled = MutableLiveData(mSettings.OsmNotes.Enabled)
 
     private val mKeeprightApi: KeeprightApi by inject()
-    private val mKeeprightDao : KeeprightDao by inject()
+    private val mKeeprightDao: KeeprightDao by inject()
     private val mKeeprightErrors = MutableLiveData<ArrayList<KeeprightError>>(ArrayList())
     private val mKeeprightEnabled = MutableLiveData(mSettings.Keepright.Enabled)
 
     private val mMapdustApi: MapdustApi by inject()
-    private val mMapdustDao : MapdustDao by inject()
+    private val mMapdustDao: MapdustDao by inject()
     private val mMapdustErrors = MutableLiveData<ArrayList<MapdustError>>(ArrayList())
     private val mMapdustEnabled = MutableLiveData(mSettings.Mapdust.Enabled)
 
     private val mOsmoseApi: OsmoseApi by inject()
-    private val mOsmoseDao : OsmoseDao by inject()
+    private val mOsmoseDao: OsmoseDao by inject()
     private val mOsmoseErrors = MutableLiveData<ArrayList<OsmoseError>>(ArrayList())
     private val mOsmoseEnabled = MutableLiveData(mSettings.Osmose.Enabled)
 
@@ -241,7 +240,7 @@ class ErrorViewModel : ViewModel(), KoinComponent {
         // If we can not load the new Node, we at least remove the old one
         try {
             mOsmNoteDao.insert(mOsmNotesApi.download(osmNote.Id))
-        } catch (err : Exception) {
+        } catch (err: Exception) {
             mOsmNoteDao.delete(osmNote)
 
             throw err

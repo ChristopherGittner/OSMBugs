@@ -50,7 +50,11 @@ class KeeprightInfoWindow(map: MapView, viewModel: ErrorViewModel) : ErrorInfoWi
 
                         close()
                     } catch (error: Exception) {
-                        Toast.makeText(mMapView.context, mMapView.context.getString(R.string.err_failed_to_update_error).format(error.message), Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            mMapView.context,
+                            mMapView.context.getString(R.string.err_failed_to_update_error).format(error.message),
+                            Toast.LENGTH_LONG
+                        ).show()
                         return@launch
                     } finally {
                         progressbar.visibility = View.GONE
@@ -101,7 +105,7 @@ class KeeprightInfoWindow(map: MapView, viewModel: ErrorViewModel) : ErrorInfoWi
 
     }
 
-    private fun updateSaveState(error : KeeprightError) {
+    private fun updateSaveState(error: KeeprightError) {
         mBinding.apply {
             imgSave.visibility = if (error.State != mNewState || edtxtComment.text.toString() != error.Comment)
                 View.VISIBLE else

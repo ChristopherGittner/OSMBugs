@@ -6,10 +6,10 @@ import io.reactivex.Observable
 @Dao
 interface MapdustDao {
     @Query("SELECT * FROM MapdustError")
-    fun getAll() : Observable<List<MapdustError>>
+    fun getAll(): Observable<List<MapdustError>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(error : MapdustError)
+    suspend fun insert(error: MapdustError)
 
     @Insert
     suspend fun insertAll(error: ArrayList<MapdustError>)

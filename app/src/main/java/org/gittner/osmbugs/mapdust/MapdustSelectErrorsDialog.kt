@@ -7,7 +7,6 @@ import androidx.fragment.app.DialogFragment
 import org.gittner.osmbugs.R
 import org.gittner.osmbugs.statics.Settings
 import org.gittner.osmbugs.ui.EnabledErrorsAdapter
-import org.koin.android.ext.android.inject
 
 /**
  * Dialog that displays a List of all available Keepright Error Types, and lets the User select or deselect each Type

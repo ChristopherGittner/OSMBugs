@@ -15,7 +15,8 @@ import org.joda.time.DateTimeZone
  * @param context The current context.
  * @param comments The Comments to display. The comments will be added to the Adapter automatically
  */
-class OsmNoteCommentsAdapter(context: Context, comments: ArrayList<OsmNote.OsmNoteComment>) : ArrayAdapter<OsmNote.OsmNoteComment>(context, R.layout.row_osm_note_comment) {
+class OsmNoteCommentsAdapter(context: Context, comments: ArrayList<OsmNote.OsmNoteComment>) :
+    ArrayAdapter<OsmNote.OsmNoteComment>(context, R.layout.row_osm_note_comment) {
     init {
         addAll(comments)
     }

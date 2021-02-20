@@ -6,10 +6,10 @@ import io.reactivex.Observable
 @Dao
 interface KeeprightDao {
     @Query("SELECT * FROM KeeprightError")
-    fun getAll() : Observable<List<KeeprightError>>
+    fun getAll(): Observable<List<KeeprightError>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(error : KeeprightError)
+    suspend fun insert(error: KeeprightError)
 
     @Insert
     suspend fun insertAll(error: ArrayList<KeeprightError>)

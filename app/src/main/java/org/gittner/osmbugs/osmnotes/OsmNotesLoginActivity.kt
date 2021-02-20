@@ -15,10 +15,10 @@ import org.koin.android.ext.android.inject
 
 
 class OsmNotesLoginActivity : AppCompatActivity(R.layout.activity_osm_notes_login), OAuthWebClient.AuthDone {
-    private val mApi : OsmNotesApi by inject()
+    private val mApi: OsmNotesApi by inject()
     private val mSettings = Settings.getInstance()
 
-    private lateinit var mBinding : ActivityOsmNotesLoginBinding
+    private lateinit var mBinding: ActivityOsmNotesLoginBinding
 
     companion object {
         const val CALLBACK_URL = "osmbugs://osmbugs.gittner.org/auth-done/osmbugs"
@@ -65,7 +65,7 @@ class OsmNotesLoginActivity : AppCompatActivity(R.layout.activity_osm_notes_logi
 
                 setResult(Activity.RESULT_OK)
                 finish()
-            } catch(err : Exception) {
+            } catch (err: Exception) {
                 val msg = getString(R.string.login_failed_msg).format(err.message)
                 Toast.makeText(this@OsmNotesLoginActivity, msg, Toast.LENGTH_LONG).show()
 

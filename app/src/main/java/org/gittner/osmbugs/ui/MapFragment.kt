@@ -41,7 +41,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
  * Displays a Map with Buttons to reload the Errors, toggle the visible Layers and shows a progress bar when loading new Errors
  */
 class MapFragment : Fragment(R.layout.map_fragment) {
-    private lateinit var mBinding : MapFragmentBinding
+    private lateinit var mBinding: MapFragmentBinding
 
     private val mErrorViewModel: ErrorViewModel by inject()
     private val mSettings = Settings.getInstance()
@@ -277,7 +277,11 @@ class MapFragment : Fragment(R.layout.map_fragment) {
 
 
 
-        mBinding.btnLocation.visibility = if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) View.VISIBLE else View.GONE
+        mBinding.btnLocation.visibility = if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) View.VISIBLE else View.GONE
     }
 
     /**
@@ -432,7 +436,7 @@ class MapFragment : Fragment(R.layout.map_fragment) {
         btn.scaleY = .2f
     }
 
-    private fun slideOut(view: View, to : View, duration : Long, startDelay : Long) {
+    private fun slideOut(view: View, to: View, duration: Long, startDelay: Long) {
         if (view.visibility == View.VISIBLE) {
             val viewLoc = IntArray(2)
             val toLoc = IntArray(2)
@@ -461,18 +465,18 @@ class MapFragment : Fragment(R.layout.map_fragment) {
         }
     }
 
-    private fun slideIn(view: View, from : View, duration : Long, startDelay : Long) {
+    private fun slideIn(view: View, from: View, duration: Long, startDelay: Long) {
         view.visibility = View.VISIBLE
 
         view.animate()
-                .translationX(0f)
-                .translationY(0f)
-                .scaleX(1f)
-                .scaleY(1f)
-                .setDuration(duration)
-                .setInterpolator(OvershootInterpolator())
-                .setStartDelay(startDelay)
-                .start()
+            .translationX(0f)
+            .translationY(0f)
+            .scaleX(1f)
+            .scaleY(1f)
+            .setDuration(duration)
+            .setInterpolator(OvershootInterpolator())
+            .setStartDelay(startDelay)
+            .start()
     }
 
     private fun showAddErrorMenu() {
@@ -480,11 +484,11 @@ class MapFragment : Fragment(R.layout.map_fragment) {
         slideIn(mBinding.btnAddMapdustError, mBinding.btnAddError, 300, 150)
 
         mBinding.imgCrosshair.animate()
-                .scaleX(1f)
-                .scaleY(1f)
-                .setInterpolator(OvershootInterpolator())
-                .setDuration(300)
-                .start()
+            .scaleX(1f)
+            .scaleY(1f)
+            .setInterpolator(OvershootInterpolator())
+            .setDuration(300)
+            .start()
         mBinding.imgCrosshair.visibility = View.VISIBLE
     }
 
@@ -493,12 +497,12 @@ class MapFragment : Fragment(R.layout.map_fragment) {
         slideOut(mBinding.btnAddOsmNote, mBinding.btnAddError, 300, 150)
 
         mBinding.imgCrosshair.animate()
-                .scaleX(0f)
-                .scaleY(0f)
-                .setInterpolator(AccelerateDecelerateInterpolator())
-                .setDuration(300)
-                .withEndAction { mBinding.imgCrosshair.visibility = View.INVISIBLE }
-                .start()
+            .scaleX(0f)
+            .scaleY(0f)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .setDuration(300)
+            .withEndAction { mBinding.imgCrosshair.visibility = View.INVISIBLE }
+            .start()
     }
 
     private fun toggleAddBug() {

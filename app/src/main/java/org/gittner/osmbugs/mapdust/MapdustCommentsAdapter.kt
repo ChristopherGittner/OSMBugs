@@ -14,7 +14,8 @@ import org.gittner.osmbugs.databinding.RowMapdustCommentBinding
  * @param context The current context.
  * @param comments The Comments to display. The comments will be added to the Adapter automatically
  */
-class MapdustCommentsAdapter(context: Context, comments: ArrayList<MapdustError.MapdustComment>) : ArrayAdapter<MapdustError.MapdustComment>(context, R.layout.row_mapdust_comment) {
+class MapdustCommentsAdapter(context: Context, comments: ArrayList<MapdustError.MapdustComment>) :
+    ArrayAdapter<MapdustError.MapdustComment>(context, R.layout.row_mapdust_comment) {
     init {
         addAll(comments)
     }

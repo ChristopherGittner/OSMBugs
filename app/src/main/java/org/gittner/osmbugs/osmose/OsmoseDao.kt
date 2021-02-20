@@ -6,7 +6,7 @@ import io.reactivex.Observable
 @Dao
 interface OsmoseDao {
     @Query("SELECT * FROM OsmoseError")
-    fun getAll() : Observable<List<OsmoseError>>
+    fun getAll(): Observable<List<OsmoseError>>
 
     @Insert
     fun insertAll(error: ArrayList<OsmoseError>)

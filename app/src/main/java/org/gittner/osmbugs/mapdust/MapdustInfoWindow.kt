@@ -47,7 +47,11 @@ class MapdustInfoWindow(map: MapView, viewModel: ErrorViewModel) : ErrorInfoWind
 
                         close()
                     } catch (error: Exception) {
-                        Toast.makeText(mMapView.context, mMapView.context.getString(R.string.err_failed_to_update_error).format(error.message), Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            mMapView.context,
+                            mMapView.context.getString(R.string.err_failed_to_update_error).format(error.message),
+                            Toast.LENGTH_LONG
+                        ).show()
                         return@launch
                     } finally {
                         progressbarSave.visibility = View.GONE
@@ -96,7 +100,7 @@ class MapdustInfoWindow(map: MapView, viewModel: ErrorViewModel) : ErrorInfoWind
 
     }
 
-    private fun updateUi(error : MapdustError) {
+    private fun updateUi(error: MapdustError) {
         mBinding.apply {
             imgSave.visibility = if (edtxtComment.text.toString() != "") // No matter what, we always need a comment, even if changing State
                 View.VISIBLE else

@@ -118,7 +118,7 @@ class OsmNoteInfoWindow(map: MapView, viewModel: ErrorViewModel) : ErrorInfoWind
             }.show()
     }
 
-    private fun updateViews(error : OsmNote) {
+    private fun updateViews(error: OsmNote) {
         mBinding.apply {
             imgState.setImageDrawable(if (mNewState == OsmNote.STATE.OPEN) OsmNote.IcOpen else OsmNote.IcClosed)
 
@@ -126,7 +126,8 @@ class OsmNoteInfoWindow(map: MapView, viewModel: ErrorViewModel) : ErrorInfoWind
                 View.VISIBLE else
                 View.GONE
 
-            edtxtComment.visibility = if ((error.State == OsmNote.STATE.OPEN &&  mEditComment) || (error.State == OsmNote.STATE.CLOSED && mNewState == OsmNote.STATE.OPEN)) View.VISIBLE else View.GONE
+            edtxtComment.visibility =
+                if ((error.State == OsmNote.STATE.OPEN && mEditComment) || (error.State == OsmNote.STATE.CLOSED && mNewState == OsmNote.STATE.OPEN)) View.VISIBLE else View.GONE
 
             imgEditComment.visibility = if (error.State == OsmNote.STATE.OPEN && !mEditComment) View.VISIBLE else View.GONE
         }

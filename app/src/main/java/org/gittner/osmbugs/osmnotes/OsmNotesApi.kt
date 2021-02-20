@@ -13,7 +13,6 @@ import org.apache.http.impl.client.DefaultHttpClient
 import org.gittner.osmbugs.HttpRequestAdapter
 import org.gittner.osmbugs.statics.Settings
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 import org.osmdroid.api.IGeoPoint
 import org.osmdroid.util.BoundingBox
 import java.util.*
