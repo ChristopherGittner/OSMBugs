@@ -24,11 +24,11 @@ Build Status
 ============
 __master__
 
-[![Build Status](https://travis-ci.org/ChristopherGittner/OSMBugs.svg?branch=master)](https://travis-ci.org/ChristopherGittner/OSMBugs.svg?branch=master)
+[![Build Status](https://travis-ci.org/ChristopherGittner/OSMBugs.svg?branch=master)](https://travis-ci.com/ChristopherGittner/OSMBugs.svg?branch=master)
 
 __dev__
 
-[![Build Status](https://travis-ci.org/ChristopherGittner/OSMBugs.svg?branch=dev)](https://travis-ci.org/ChristopherGittner/OSMBugs.svg?branch=dev)
+[![Build Status](https://travis-ci.org/ChristopherGittner/OSMBugs.svg?branch=dev)](https://travis-ci.com/ChristopherGittner/OSMBugs.svg?branch=dev)
 
 License
 =======
