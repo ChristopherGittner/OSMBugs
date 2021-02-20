@@ -11,8 +11,8 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.map_fragment.*
 import org.gittner.osmbugs.R
+import org.gittner.osmbugs.databinding.MapFragmentBinding
 import org.gittner.osmbugs.keepright.KeeprightError
 import org.gittner.osmbugs.keepright.KeeprightInfoWindow
 import org.gittner.osmbugs.keepright.KeeprightMarker
@@ -41,6 +41,8 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
  * Displays a Map with Buttons to reload the Errors, toggle the visible Layers and shows a progress bar when loading new Errors
  */
 class MapFragment : Fragment(R.layout.map_fragment) {
+    private lateinit var mBinding : MapFragmentBinding
+
     private val mErrorViewModel: ErrorViewModel by inject()
     private val mSettings = Settings.getInstance()
 
@@ -53,6 +55,8 @@ class MapFragment : Fragment(R.layout.map_fragment) {
     private var mBtnInitDone = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        mBinding = MapFragmentBinding.inflate(layoutInflater)
+
         setHasOptionsMenu(true)
 
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -81,12 +85,12 @@ class MapFragment : Fragment(R.layout.map_fragment) {
         // If the Buttons have not been hidden once, they will not slide in, but only scale in
         view.viewTreeObserver.addOnGlobalLayoutListener {
             if (!mBtnInitDone) {
-                initialHide(btn_add_mapdust_error, btn_add_error)
-                initialHide(btn_add_osm_note, btn_add_error)
-                initialHide(btn_toggle_osm_notes_layer, btn_layers)
-                initialHide(btn_toggle_keepright_layer, btn_layers)
-                initialHide(btn_toggle_mapdust_layer, btn_layers)
-                initialHide(btn_toggle_osmose_layer, btn_layers)
+                initialHide(mBinding.btnAddMapdustError, mBinding.btnAddError)
+                initialHide(mBinding.btnAddOsmNote, mBinding.btnAddError)
+                initialHide(mBinding.btnToggleOsmNotesLayer, mBinding.btnLayers)
+                initialHide(mBinding.btnToggleKeeprightLayer, mBinding.btnLayers)
+                initialHide(mBinding.btnToggleMapdustLayer, mBinding.btnLayers)
+                initialHide(mBinding.btnToggleOsmoseLayer, mBinding.btnLayers)
                 mBtnInitDone = true
             }
         }
@@ -97,27 +101,27 @@ class MapFragment : Fragment(R.layout.map_fragment) {
 
         val style = mSettings.MapStyle
         if (style != null) {
-            map.setTileSource(style.TileSource)
+            mBinding.map.setTileSource(style.TileSource)
         }
 
-        map.onResume()
+        mBinding.map.onResume()
     }
 
     override fun onPause() {
         super.onPause()
 
-        map.onPause()
+        mBinding.map.onPause()
 
-        mSettings.LastMapCenter = map.mapCenter
-        mSettings.LastMapZoom = map.zoomLevelDouble.toInt()
+        mSettings.LastMapCenter = mBinding.map.mapCenter
+        mSettings.LastMapZoom = mBinding.map.zoomLevelDouble.toInt()
     }
 
     /**
      * Sets up everything related to the Toggle Layer Buttons
      */
     private fun setupLayerToggle() {
-        btn_layers.setOnClickListener {
-            if (btn_toggle_osm_notes_layer.visibility == View.VISIBLE) {
+        mBinding.btnLayers.setOnClickListener {
+            if (mBinding.btnToggleOsmNotesLayer.visibility == View.VISIBLE) {
                 hideLayerMenu()
             } else {
                 showLayerMenu()
@@ -126,44 +130,44 @@ class MapFragment : Fragment(R.layout.map_fragment) {
             hideAddErrorMenu()
         }
 
-        btn_toggle_osm_notes_layer.setOnClickListener {
+        mBinding.btnToggleOsmNotesLayer.setOnClickListener {
             mErrorViewModel.toggleOsmNotesEnabled()
         }
-        btn_toggle_osm_notes_layer.visibility = View.INVISIBLE
+        mBinding.btnToggleOsmNotesLayer.visibility = View.INVISIBLE
 
-        btn_toggle_keepright_layer.setOnClickListener {
+        mBinding.btnToggleKeeprightLayer.setOnClickListener {
             mErrorViewModel.toggleKeeprightEnabled()
         }
-        btn_toggle_keepright_layer.visibility = View.INVISIBLE
+        mBinding.btnToggleKeeprightLayer.visibility = View.INVISIBLE
 
-        btn_toggle_mapdust_layer.setOnClickListener {
+        mBinding.btnToggleMapdustLayer.setOnClickListener {
             mErrorViewModel.toggleMapdustEnabled()
         }
-        btn_toggle_mapdust_layer.visibility = View.INVISIBLE
+        mBinding.btnToggleMapdustLayer.visibility = View.INVISIBLE
 
-        btn_toggle_osmose_layer.setOnClickListener {
+        mBinding.btnToggleOsmoseLayer.setOnClickListener {
             mErrorViewModel.toggleOsmoseEnabled()
         }
-        btn_toggle_osmose_layer.visibility = View.INVISIBLE
+        mBinding.btnToggleOsmoseLayer.visibility = View.INVISIBLE
     }
 
     private fun hideLayerMenu() {
-        slideOut(btn_toggle_osmose_layer, btn_layers, 300, 0)
-        slideOut(btn_toggle_mapdust_layer, btn_layers, 300, 150)
-        slideOut(btn_toggle_keepright_layer, btn_layers, 300, 150)
-        slideOut(btn_toggle_osm_notes_layer, btn_layers, 300, 300)
+        slideOut(mBinding.btnToggleOsmoseLayer, mBinding.btnLayers, 300, 0)
+        slideOut(mBinding.btnToggleMapdustLayer, mBinding.btnLayers, 300, 150)
+        slideOut(mBinding.btnToggleKeeprightLayer, mBinding.btnLayers, 300, 150)
+        slideOut(mBinding.btnToggleOsmNotesLayer, mBinding.btnLayers, 300, 300)
     }
 
     private fun showLayerMenu() {
-        slideIn(btn_toggle_osm_notes_layer, btn_layers, 300, 0)
-        slideIn(btn_toggle_keepright_layer, btn_layers, 300, 150)
-        slideIn(btn_toggle_mapdust_layer, btn_layers, 300, 150)
-        slideIn(btn_toggle_osmose_layer, btn_layers, 300, 300)
+        slideIn(mBinding.btnToggleOsmNotesLayer, mBinding.btnLayers, 300, 0)
+        slideIn(mBinding.btnToggleKeeprightLayer, mBinding.btnLayers, 300, 150)
+        slideIn(mBinding.btnToggleMapdustLayer, mBinding.btnLayers, 300, 150)
+        slideIn(mBinding.btnToggleOsmoseLayer, mBinding.btnLayers, 300, 300)
     }
 
     private fun setupReload() {
-        btn_reload.setOnClickListener {
-            mErrorViewModel.onMapMoved(map.mapCenter, map.boundingBox)
+        mBinding.btnReload.setOnClickListener {
+            mErrorViewModel.onMapMoved(mBinding.map.mapCenter, mBinding.map.boundingBox)
         }
     }
 
@@ -181,7 +185,7 @@ class MapFragment : Fragment(R.layout.map_fragment) {
         mErrorViewModel.getOsmNotesEnabled().observe(viewLifecycleOwner, Observer {
             updateOsmNotes(mErrorViewModel.getOsmNotes().value!!)
 
-            btn_toggle_osm_notes_layer.setImageDrawable(if (it) OsmNote.IcToggleLayer else OsmNote.IcToggleLayerDisabled)
+            mBinding.btnToggleOsmNotesLayer.setImageDrawable(if (it) OsmNote.IcToggleLayer else OsmNote.IcToggleLayerDisabled)
         })
 
         mErrorViewModel.getKeeprightErrors().observe(viewLifecycleOwner, Observer {
@@ -190,7 +194,7 @@ class MapFragment : Fragment(R.layout.map_fragment) {
         mErrorViewModel.getKeeprightEnabled().observe(viewLifecycleOwner, Observer {
             updateKeeprightErrors(mErrorViewModel.getKeeprightErrors().value!!)
 
-            btn_toggle_keepright_layer.setImageDrawable(if (it) KeeprightError.IcToggleLayer else KeeprightError.IcToggleLayerDisabled)
+            mBinding.btnToggleKeeprightLayer.setImageDrawable(if (it) KeeprightError.IcToggleLayer else KeeprightError.IcToggleLayerDisabled)
         })
 
         mErrorViewModel.getMapdustErrors().observe(viewLifecycleOwner, Observer {
@@ -199,7 +203,7 @@ class MapFragment : Fragment(R.layout.map_fragment) {
         mErrorViewModel.getMapdustEnabled().observe(viewLifecycleOwner, Observer {
             updateMapdustErrors(mErrorViewModel.getMapdustErrors().value!!)
 
-            btn_toggle_mapdust_layer.setImageDrawable(if (it) MapdustError.IcToggleLayer else MapdustError.IcToggleLayerDisabled)
+            mBinding.btnToggleMapdustLayer.setImageDrawable(if (it) MapdustError.IcToggleLayer else MapdustError.IcToggleLayerDisabled)
         })
 
         mErrorViewModel.getOsmoseErrors().observe(viewLifecycleOwner, Observer {
@@ -208,11 +212,11 @@ class MapFragment : Fragment(R.layout.map_fragment) {
         mErrorViewModel.getOsmoseEnabled().observe(viewLifecycleOwner, Observer {
             updateOsmoseErrors(mErrorViewModel.getOsmoseErrors().value!!)
 
-            btn_toggle_osmose_layer.setImageDrawable(if (it) OsmoseError.IcToggleLayer else OsmoseError.IcToggleLayerDisabled)
+            mBinding.btnToggleOsmoseLayer.setImageDrawable(if (it) OsmoseError.IcToggleLayer else OsmoseError.IcToggleLayerDisabled)
         })
 
         mErrorViewModel.getContentLoading().observe(viewLifecycleOwner, Observer {
-            progressbar.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            mBinding.progressbar.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
     }
 
@@ -221,39 +225,39 @@ class MapFragment : Fragment(R.layout.map_fragment) {
      */
     @SuppressLint("RestrictedApi")
     private fun setupAddError() {
-        btn_add_error.setOnClickListener {
+        mBinding.btnAddError.setOnClickListener {
             toggleAddBug()
 
             hideLayerMenu()
         }
 
-        btn_add_osm_note.setOnClickListener {
+        mBinding.btnAddOsmNote.setOnClickListener {
             OsmNotesAddErrorDialog(
                 requireContext(),
                 mErrorViewModel,
-                map.mapCenter,
+                mBinding.map.mapCenter,
                 object : OsmNotesAddErrorDialog.SuccessCb {
                     override fun onSuccess() {
                         hideAddErrorMenu()
                     }
                 }).show()
         }
-        btn_add_osm_note.visibility = View.INVISIBLE
+        mBinding.btnAddOsmNote.visibility = View.INVISIBLE
 
-        btn_add_mapdust_error.setOnClickListener {
+        mBinding.btnAddMapdustError.setOnClickListener {
             MapdustAddErrorDialog(
                 requireContext(),
                 mErrorViewModel,
-                map.mapCenter,
+                mBinding.map.mapCenter,
                 object : MapdustAddErrorDialog.SuccessCb {
                     override fun onSuccess() {
                         hideAddErrorMenu()
                     }
                 }).show()
         }
-        btn_add_mapdust_error.visibility = View.INVISIBLE
+        mBinding.btnAddMapdustError.visibility = View.INVISIBLE
 
-        img_crosshair.visibility = View.INVISIBLE
+        mBinding.imgCrosshair.visibility = View.INVISIBLE
     }
 
     /**
@@ -261,28 +265,28 @@ class MapFragment : Fragment(R.layout.map_fragment) {
      */
     private fun setupFollowLocation() {
         // Setup Location Overlay
-        val locationOverlay = MyLocationNewOverlay(map)
-        map.overlays.add(locationOverlay)
+        val locationOverlay = MyLocationNewOverlay(mBinding.map)
+        mBinding.map.overlays.add(locationOverlay)
 
         locationOverlay.enableMyLocation()
         locationOverlay.enableFollowLocation()
 
-        btn_location.setOnClickListener {
+        mBinding.btnLocation.setOnClickListener {
             locationOverlay.enableFollowLocation()
         }
 
 
 
-        btn_location.visibility = if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) View.VISIBLE else View.GONE
+        mBinding.btnLocation.visibility = if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) View.VISIBLE else View.GONE
     }
 
     /**
      * Sets up everything related to the Map
      */
     private fun setupMap() {
-        map.overlays.add(MapEventsOverlay(object : MapEventsReceiver {
+        mBinding.map.overlays.add(MapEventsOverlay(object : MapEventsReceiver {
             override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
-                InfoWindow.closeAllInfoWindowsOn(map)
+                InfoWindow.closeAllInfoWindowsOn(mBinding.map)
                 hideLayerMenu()
                 hideAddErrorMenu()
 
@@ -294,101 +298,101 @@ class MapFragment : Fragment(R.layout.map_fragment) {
             }
         }))
 
-        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.SHOW_AND_FADEOUT)
-        map.setMultiTouchControls(true)
+        mBinding.map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.SHOW_AND_FADEOUT)
+        mBinding.map.setMultiTouchControls(true)
 
-        map.controller.setCenter(mSettings.LastMapCenter)
-        map.controller.setZoom(mSettings.LastMapZoom.toDouble())
+        mBinding.map.controller.setCenter(mSettings.LastMapCenter)
+        mBinding.map.controller.setZoom(mSettings.LastMapZoom.toDouble())
 
-        map.invalidate()
+        mBinding.map.invalidate()
     }
 
     /**
      * Called when OsmNotes have been updated in the ViewModel
      */
     private fun updateOsmNotes(errors: java.util.ArrayList<OsmNote>) {
-        map.overlays.removeAll(mOsmNotes)
+        mBinding.map.overlays.removeAll(mOsmNotes)
         mOsmNotes.clear()
 
-        val window = OsmNoteInfoWindow(map, mErrorViewModel)
+        val window = OsmNoteInfoWindow(mBinding.map, mErrorViewModel)
 
         if (mErrorViewModel.getOsmNotesEnabled().value!!) {
             errors.forEach {
-                val marker = setupMarker(OsmNoteMarker(it, map))
+                val marker = setupMarker(OsmNoteMarker(it, mBinding.map))
                 marker.infoWindow = window
 
                 mOsmNotes.add(marker)
-                map.overlays.add(marker)
+                mBinding.map.overlays.add(marker)
             }
         }
 
-        map.invalidate()
+        mBinding.map.invalidate()
     }
 
     /**
      * Called when KeeprightErrors have been updated in the ViewModel
      */
     private fun updateKeeprightErrors(errors: List<KeeprightError>) {
-        map.overlays.removeAll(mKeeprightErrors)
+        mBinding.map.overlays.removeAll(mKeeprightErrors)
         mKeeprightErrors.clear()
 
-        val window = KeeprightInfoWindow(map, mErrorViewModel)
+        val window = KeeprightInfoWindow(mBinding.map, mErrorViewModel)
 
         if (mErrorViewModel.getKeeprightEnabled().value!!) {
             errors.forEach {
-                val marker = setupMarker(KeeprightMarker(it, map))
+                val marker = setupMarker(KeeprightMarker(it, mBinding.map))
                 marker.infoWindow = window
 
                 mKeeprightErrors.add(marker)
-                map.overlays.add(marker)
+                mBinding.map.overlays.add(marker)
             }
         }
 
-        map.invalidate()
+        mBinding.map.invalidate()
     }
 
     /**
      * Called when Mapdust Errors have been updated in the ViewModel
      */
     private fun updateMapdustErrors(errors: ArrayList<MapdustError>) {
-        map.overlays.removeAll(mMapdustErrors)
+        mBinding.map.overlays.removeAll(mMapdustErrors)
         mMapdustErrors.clear()
 
-        val window = MapdustInfoWindow(map, mErrorViewModel)
+        val window = MapdustInfoWindow(mBinding.map, mErrorViewModel)
 
         if (mErrorViewModel.getMapdustEnabled().value!!) {
             errors.forEach {
-                val marker = setupMarker(MapdustMarker(it, map))
+                val marker = setupMarker(MapdustMarker(it, mBinding.map))
                 marker.infoWindow = window
 
                 mMapdustErrors.add(marker)
-                map.overlays.add(marker)
+                mBinding.map.overlays.add(marker)
             }
         }
 
-        map.invalidate()
+        mBinding.map.invalidate()
     }
 
     /**
      * Called when Osmose Errors have been updated in the ViewModel
      */
     private fun updateOsmoseErrors(errors: ArrayList<OsmoseError>) {
-        map.overlays.removeAll(mOsmoseErrors)
+        mBinding.map.overlays.removeAll(mOsmoseErrors)
         mOsmoseErrors.clear()
 
-        val window = OsmoseInfoWindow(map)
+        val window = OsmoseInfoWindow(mBinding.map)
 
         if (mErrorViewModel.getOsmoseEnabled().value!!) {
             errors.forEach {
-                val marker = setupMarker(OsmoseMarker(it, map))
+                val marker = setupMarker(OsmoseMarker(it, mBinding.map))
                 marker.infoWindow = window
 
                 mOsmoseErrors.add(marker)
-                map.overlays.add(marker)
+                mBinding.map.overlays.add(marker)
             }
         }
 
-        map.invalidate()
+        mBinding.map.invalidate()
     }
 
     /**
@@ -400,7 +404,7 @@ class MapFragment : Fragment(R.layout.map_fragment) {
     private fun <T : Marker> setupMarker(marker: T): T {
         marker.setOnMarkerClickListener { _, _ ->
             if (!marker.isInfoWindowOpen) {
-                InfoWindow.closeAllInfoWindowsOn(map)
+                InfoWindow.closeAllInfoWindowsOn(mBinding.map)
                 marker.showInfoWindow()
             } else {
                 marker.closeInfoWindow()
@@ -472,33 +476,33 @@ class MapFragment : Fragment(R.layout.map_fragment) {
     }
 
     private fun showAddErrorMenu() {
-        slideIn(btn_add_osm_note, btn_add_error, 300, 0)
-        slideIn(btn_add_mapdust_error, btn_add_error, 300, 150)
+        slideIn(mBinding.btnAddOsmNote, mBinding.btnAddError, 300, 0)
+        slideIn(mBinding.btnAddMapdustError, mBinding.btnAddError, 300, 150)
 
-        img_crosshair.animate()
+        mBinding.imgCrosshair.animate()
                 .scaleX(1f)
                 .scaleY(1f)
                 .setInterpolator(OvershootInterpolator())
                 .setDuration(300)
                 .start()
-        img_crosshair.visibility = View.VISIBLE
+        mBinding.imgCrosshair.visibility = View.VISIBLE
     }
 
     private fun hideAddErrorMenu() {
-        slideOut(btn_add_mapdust_error, btn_add_error, 300, 0)
-        slideOut(btn_add_osm_note, btn_add_error, 300, 150)
+        slideOut(mBinding.btnAddMapdustError, mBinding.btnAddError, 300, 0)
+        slideOut(mBinding.btnAddOsmNote, mBinding.btnAddError, 300, 150)
 
-        img_crosshair.animate()
+        mBinding.imgCrosshair.animate()
                 .scaleX(0f)
                 .scaleY(0f)
                 .setInterpolator(AccelerateDecelerateInterpolator())
                 .setDuration(300)
-                .withEndAction { img_crosshair.visibility = View.INVISIBLE }
+                .withEndAction { mBinding.imgCrosshair.visibility = View.INVISIBLE }
                 .start()
     }
 
     private fun toggleAddBug() {
-        if (btn_add_osm_note.visibility == View.VISIBLE) {
+        if (mBinding.btnAddOsmNote.visibility == View.VISIBLE) {
             hideAddErrorMenu()
         } else {
             showAddErrorMenu()

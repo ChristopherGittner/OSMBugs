@@ -4,12 +4,12 @@ import android.app.Activity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_osm_notes_login.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.gittner.osmbugs.OAuthWebClient
 import org.gittner.osmbugs.R
+import org.gittner.osmbugs.databinding.ActivityOsmNotesLoginBinding
 import org.gittner.osmbugs.statics.Settings
 import org.koin.android.ext.android.inject
 
@@ -18,20 +18,22 @@ class OsmNotesLoginActivity : AppCompatActivity(R.layout.activity_osm_notes_logi
     private val mApi : OsmNotesApi by inject()
     private val mSettings = Settings.getInstance()
 
+    private lateinit var mBinding : ActivityOsmNotesLoginBinding
+
     companion object {
         const val CALLBACK_URL = "osmbugs://osmbugs.gittner.org/auth-done/osmbugs"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        webview.webViewClient = OAuthWebClient(CALLBACK_URL, this)
+        mBinding = ActivityOsmNotesLoginBinding.inflate(layoutInflater)
+        mBinding.webview.webViewClient = OAuthWebClient(CALLBACK_URL, this)
 
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 val requestUrl = mApi.getRequestToken()
 
-                webview.loadUrl(requestUrl)
+                mBinding.webview.loadUrl(requestUrl)
             } catch (err: Exception) {
                 val msg = getString(R.string.login_failed_msg).format(err.message)
                 Toast.makeText(this@OsmNotesLoginActivity, msg, Toast.LENGTH_LONG).show()

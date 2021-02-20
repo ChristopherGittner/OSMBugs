@@ -19,11 +19,19 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import kotlinx.android.synthetic.main.activity_main.*
 import org.gittner.osmbugs.IntentHelper.intentHasReceivers
 import org.gittner.osmbugs.R
+import org.gittner.osmbugs.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
+
+    private lateinit var mBinding : ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+
+        mBinding = ActivityMainBinding.inflate(layoutInflater)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         MenuInflater(this).inflate(R.menu.activity_main, menu)
@@ -34,7 +42,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(mBinding.toolbar)
 
         checkPermissions()
     }
