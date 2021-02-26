@@ -40,7 +40,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 /**
  * Displays a Map with Buttons to reload the Errors, toggle the visible Layers and shows a progress bar when loading new Errors
  */
-class MapFragment : Fragment(R.layout.map_fragment) {
+class MapFragment : Fragment() {
     private lateinit var mBinding: MapFragmentBinding
 
     private val mErrorViewModel: ErrorViewModel by inject()
@@ -59,7 +59,7 @@ class MapFragment : Fragment(R.layout.map_fragment) {
 
         setHasOptionsMenu(true)
 
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return mBinding.root;
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

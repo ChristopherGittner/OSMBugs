@@ -1,5 +1,18 @@
 CHANGELOG
 =========
+V 1-3-2
+
+- ViewBinding should be working now
+
+V 1-3-1
+
+- Build Fixes
+- ViewBinding migration
+
+V 1-3-0
+
+- Rewrote the App in Kotlin
+
 V 1-2-3
 
 - Libraries Updated

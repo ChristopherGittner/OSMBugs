@@ -18,14 +18,16 @@ import org.gittner.osmbugs.IntentHelper.intentHasReceivers
 import org.gittner.osmbugs.R
 import org.gittner.osmbugs.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityMainBinding
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         mBinding = ActivityMainBinding.inflate(layoutInflater)
+
+        setContentView(mBinding.root)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
