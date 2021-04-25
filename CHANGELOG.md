@@ -1,5 +1,9 @@
 CHANGELOG
 =========
+V 1-3-3
+
+- Fixed login issue on Openstreetmap
+
 V 1-3-2
 
 - ViewBinding should be working now
