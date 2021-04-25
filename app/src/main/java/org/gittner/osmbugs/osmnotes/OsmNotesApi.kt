@@ -3,13 +3,13 @@ package org.gittner.osmbugs.osmnotes
 import android.net.Uri
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitStringResponse
+import com.github.scribejava.core.builder.ServiceBuilder
+import com.github.scribejava.core.builder.api.DefaultApi10a
+import com.github.scribejava.core.model.OAuth1AccessToken
+import com.github.scribejava.core.model.OAuth1RequestToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer
-import oauth.signpost.commonshttp.CommonsHttpOAuthProvider
-import org.apache.http.conn.scheme.Scheme
-import org.apache.http.conn.ssl.SSLSocketFactory
-import org.apache.http.impl.client.DefaultHttpClient
 import org.gittner.osmbugs.HttpRequestAdapter
 import org.gittner.osmbugs.statics.Settings
 import org.koin.core.KoinComponent
@@ -22,43 +22,66 @@ class OsmNotesApi : KoinComponent {
     companion object {
         private const val API_SCHEME = "https"
 
-        // Live Server
-        private const val DEFAULT_SERVER = "api.openstreetmap.org"
-
-        // Debug Server
-        //private const val DEFAULT_SERVER = "api06.dev.openstreetmap.org" //Debug Server
-
         private const val PATH_SEGMENT_API = "api"
         private const val PATH_SEGMENT_VERSION = "0.6"
         private const val PATH_SEGMENT_NOTES = "notes"
+
+        const val AUTH_CALLBACK_URL = "osmbugs://osmbugs.gittner.org/auth-done/osmbugs"
+        const val AUTH_VERIFIER_PARAM = "oauth_verifier";
+
+
+        // ------------------------------------
+        // Live Server
+        // ------------------------------------
+        private const val DEFAULT_SERVER = "api.openstreetmap.org"
+
+        private const val API_KEY = "aJ0PL87pUEflM1GqhwO8x4jFmw1ehzYe19x9nsme"
+        private const val API_SECRET = "KYIp6rbd0OIDOVQLQCXTxawOcZwmI1bX8quR7uPk"
+
+        private const val OAUTH_REQUEST_URL = "https://www.openstreetmap.org/oauth/request_token"
+        private const val OAUTH_ACCESS_URL = "https://www.openstreetmap.org/oauth/access_token"
+        private const val OAUTH_AUTH_URL = "https://www.openstreetmap.org/oauth/authorize"
+        // ------------------------------------
+
+
+        // ------------------------------------
+        // Debug Server
+        // ------------------------------------
+        //private const val DEFAULT_SERVER = "api06.dev.openstreetmap.org" //Debug Server
+
+        //private const val API_KEY = "ElJ0hTlALddTziJA3ZxjRq6cHsRjN48PGfhDL9R9"
+        //private const val API_SECRET = "5MususnuRXAZQJEFFqFgfFXAIpHDkLiRVjcRHJxK"
+
+        //private const val OAUTH_REQUEST_URL = "https://master.apis.dev.openstreetmap.org/oauth/request_token"
+        //private const val OAUTH_ACCESS_URL = "https://master.apis.dev.openstreetmap.org/oauth/access_token"
+        //private const val OAUTH_AUTH_URL = "https://master.apis.dev.openstreetmap.org/oauth/authorize"
+        // ------------------------------------
+
+
+        private val AuthService = ServiceBuilder(API_KEY)
+            .apiSecret(API_SECRET)
+            .build(object : DefaultApi10a() {
+                override fun getRequestTokenEndpoint(): String {
+                    return OAUTH_REQUEST_URL
+                }
+
+                override fun getAccessTokenEndpoint(): String {
+                    return OAUTH_ACCESS_URL
+                }
+
+                override fun getAuthorizationBaseUrl(): String {
+                    return OAUTH_AUTH_URL
+                }
+            })
     }
 
     private val mSettings = Settings.getInstance()
 
-    private val mConsumer = CommonsHttpOAuthConsumer(
-        // Live Server
-        "aJ0PL87pUEflM1GqhwO8x4jFmw1ehzYe19x9nsme",
-        "KYIp6rbd0OIDOVQLQCXTxawOcZwmI1bX8quR7uPk"
+    private fun getConsumer(): CommonsHttpOAuthConsumer {
+        val consumer = CommonsHttpOAuthConsumer(API_KEY, API_SECRET)
+        consumer.setTokenWithSecret(mSettings.OsmNotes.Token, mSettings.OsmNotes.ConsumerSecret)
 
-        // Debug Server
-        //"ElJ0hTlALddTziJA3ZxjRq6cHsRjN48PGfhDL9R9",
-        //"5MususnuRXAZQJEFFqFgfFXAIpHDkLiRVjcRHJxK"
-    )
-
-    private val mProvider = CommonsHttpOAuthProvider(
-        // Live Server
-        "https://www.openstreetmap.org/oauth/request_token",
-        "https://www.openstreetmap.org/oauth/access_token",
-        "https://www.openstreetmap.org/oauth/authorize"
-
-        // Debug Server
-        //"https://master.apis.dev.openstreetmap.org/oauth/request_token",
-        //"https://master.apis.dev.openstreetmap.org/oauth/access_token",
-        //"https://master.apis.dev.openstreetmap.org/oauth/authorize"
-    )
-
-    init {
-        mConsumer.setTokenWithSecret(mSettings.OsmNotes.Token, mSettings.OsmNotes.ConsumerSecret)
+        return consumer
     }
 
     suspend fun download(
@@ -136,7 +159,7 @@ class OsmNotesApi : KoinComponent {
             .build()
 
         val request = Fuel.post(url.toString())
-        mConsumer.sign(HttpRequestAdapter(request))
+        getConsumer().sign(HttpRequestAdapter(request))
 
         val response = request.awaitStringResponse()
 
@@ -158,7 +181,7 @@ class OsmNotesApi : KoinComponent {
             .build()
 
         val request = Fuel.post(url.toString())
-        mConsumer.sign(HttpRequestAdapter(request))
+        getConsumer().sign(HttpRequestAdapter(request))
 
         val response = request.awaitStringResponse()
 
@@ -180,7 +203,7 @@ class OsmNotesApi : KoinComponent {
             .build()
 
         val request = Fuel.post(url.toString())
-        mConsumer.sign(HttpRequestAdapter(request))
+        getConsumer().sign(HttpRequestAdapter(request))
 
         val response = request.awaitStringResponse()
 
@@ -202,7 +225,7 @@ class OsmNotesApi : KoinComponent {
             .build()
 
         val request = Fuel.post(url.toString())
-        mConsumer.sign(HttpRequestAdapter(request))
+        getConsumer().sign(HttpRequestAdapter(request))
 
         val response = request.awaitStringResponse()
 
@@ -215,17 +238,15 @@ class OsmNotesApi : KoinComponent {
         return parsedNotes[0]
     }
 
-    suspend fun getRequestToken(): String = withContext(Dispatchers.IO) {
-        val client = DefaultHttpClient();
-        client.getConnectionManager().getSchemeRegistry()
-            .register(Scheme("https", SSLSocketFactory.getSocketFactory(), 443))
-        mProvider.setHttpClient(client)
-        mProvider.retrieveRequestToken(mConsumer, OsmNotesLoginActivity.CALLBACK_URL, "")
+    suspend fun getRequestToken(): OAuth1RequestToken = withContext(Dispatchers.IO) {
+        AuthService.requestToken
     }
 
-    suspend fun getAccessToken(verifier: String): Pair<String, String> = withContext(Dispatchers.IO) {
-        mProvider.retrieveAccessToken(mConsumer, verifier, "")
+    fun getRequestUrl(requestToken: OAuth1RequestToken) : String {
+        return AuthService.getAuthorizationUrl(requestToken)
+    }
 
-        Pair(mConsumer.token, mConsumer.tokenSecret)
+    suspend fun getAccessToken(requestToken: OAuth1RequestToken, verifier: String): OAuth1AccessToken = withContext(Dispatchers.IO) {
+        AuthService.getAccessToken(requestToken, verifier)
     }
 }

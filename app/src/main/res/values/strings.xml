@@ -453,6 +453,7 @@
     <string name="dialog_feedback_failed_message">No App found to write an E-Mail. Please send your feedback to christopher@gittner.org</string>
     <string name="datetime_format">MM/dd/yyyy kk:mm a</string>
     <string name="login_failed_no_token">Login Failed: No Token received</string>
+    <string name="login_failed_no_verifier">Login Failed: No verifier received</string>
     <string name="login_failed_msg">Login failed: %s</string>
     <string name="login_succeed">Login successfull</string>
     <string name="dialog_osmnotes_login_required_title">Login required</string>

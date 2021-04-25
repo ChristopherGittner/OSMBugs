@@ -353,4 +353,5 @@
     <string name="dialog_permissions_required_title">Berechtigungen benötigt</string>
     <string name="dialog_permissions_required_message">Die "Gerätestandort" Berechtigung wird benötigt um Deine aktuelle Position anzuzeigen. Du kannst die Berechtigung auch nachträglich in den App Einstellungen aktivieren.</string>
     <string name="dialog_permissions_required_positive">Zulassen</string>
+    <string name="login_failed_no_verifier">Login Fehgleschlagen: Kein Verifier empfangen</string>
 </resources>

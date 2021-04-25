@@ -1,39 +1,46 @@
 package org.gittner.osmbugs.osmnotes
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.github.scribejava.core.model.OAuth1RequestToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.gittner.osmbugs.OAuthWebClient
 import org.gittner.osmbugs.R
-import org.gittner.osmbugs.databinding.ActivityOsmNotesLoginBinding
 import org.gittner.osmbugs.statics.Settings
 import org.koin.android.ext.android.inject
 
 
-class OsmNotesLoginActivity : AppCompatActivity(R.layout.activity_osm_notes_login), OAuthWebClient.AuthDone {
+class OsmNotesLoginActivity : AppCompatActivity(R.layout.activity_osm_notes_login) {
     private val mApi: OsmNotesApi by inject()
     private val mSettings = Settings.getInstance()
 
-    private lateinit var mBinding: ActivityOsmNotesLoginBinding
-
     companion object {
-        const val CALLBACK_URL = "osmbugs://osmbugs.gittner.org/auth-done/osmbugs"
+        private var lastRequestToken: OAuth1RequestToken? = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = ActivityOsmNotesLoginBinding.inflate(layoutInflater)
-        mBinding.webview.webViewClient = OAuthWebClient(CALLBACK_URL, this)
 
+        if (intent.toUri(0).startsWith(OsmNotesApi.AUTH_CALLBACK_URL, false)) {
+            authDone(intent)
+        } else {
+            login()
+        }
+    }
+
+    // Called when the Activity is started from within the App to open the Login URL
+    private fun login() {
         GlobalScope.launch(Dispatchers.Main) {
             try {
-                val requestUrl = mApi.getRequestToken()
+                lastRequestToken = mApi.getRequestToken()
+                val requestUrl = mApi.getRequestUrl(lastRequestToken!!)
 
-                mBinding.webview.loadUrl(requestUrl)
+                startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(requestUrl)))
             } catch (err: Exception) {
                 val msg = getString(R.string.login_failed_msg).format(err.message)
                 Toast.makeText(this@OsmNotesLoginActivity, msg, Toast.LENGTH_LONG).show()
@@ -44,22 +51,18 @@ class OsmNotesLoginActivity : AppCompatActivity(R.layout.activity_osm_notes_logi
         }
     }
 
-    override fun authDone(token: String?) {
-        if (token == null) {
-            Toast.makeText(this@OsmNotesLoginActivity, R.string.login_failed_no_token, Toast.LENGTH_LONG).show()
-
-            setResult(Activity.RESULT_CANCELED)
-            finish()
-
-            return
-        }
-
+    // Called when the user has granted Access
+    private fun authDone(intent: Intent) {
         GlobalScope.launch(Dispatchers.Main) {
             try {
-                val data = mApi.getAccessToken(token)
+                val requestToken = lastRequestToken ?: throw Exception("Request Token not yet set")
 
-                mSettings.OsmNotes.Token = data.first
-                mSettings.OsmNotes.ConsumerSecret = data.second
+                val verifier = intent.data?.getQueryParameter(OsmNotesApi.AUTH_VERIFIER_PARAM) ?: throw Exception(getString(R.string.login_failed_no_verifier))
+
+                val accessToken = mApi.getAccessToken(requestToken, verifier)
+
+                mSettings.OsmNotes.Token = accessToken.token
+                mSettings.OsmNotes.ConsumerSecret = accessToken.tokenSecret
 
                 Toast.makeText(this@OsmNotesLoginActivity, R.string.login_succeed, Toast.LENGTH_LONG).show()
 
