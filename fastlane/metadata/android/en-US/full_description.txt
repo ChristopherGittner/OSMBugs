@@ -1,0 +1,8 @@
+Display bugs and errors from various quality assurance services on a map.
+
+Supported Platforms:
+
+* Notes
+* Keepright
+* Mapdust
+* Osmose (Read only)
