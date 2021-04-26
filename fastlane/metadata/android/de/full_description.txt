@@ -1,0 +1,8 @@
+OSMBugs zeigt Fehler auf verschiedenen Fehlerberichts-Plattformen für Openstreetmap.
+
+Unterstütze Plattformen
+
+* Openstreetmap Notes
+* Osmose (Nur Anzeige)
+* Mapdust
+* Keepright

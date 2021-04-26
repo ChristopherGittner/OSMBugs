@@ -1,1 +1,1 @@
-Display bugs and errors from various quality assurance services on a map
+Shows Bugs from the different quality assurance tools from Openstreetmap

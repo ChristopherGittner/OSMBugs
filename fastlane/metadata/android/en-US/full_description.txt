@@ -1,8 +1,8 @@
-Display bugs and errors from various quality assurance services on a map.
+OSMBugs will show you Bugs on the various Bug reporting Platforms.
 
-Supported Platforms:
+Currently Supported:
 
-* Notes
-* Keepright
+* Openstreetmap Notes
+* Osmose (Read Only)
 * Mapdust
-* Osmose (Read only)
+* Keepright
