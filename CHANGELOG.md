@@ -1,5 +1,9 @@
 CHANGELOG
 =========
+V 1-3-4
+
+- OSM Notes were not correctly reloaded when an error occurred during a transaction like commenting or closing a note
+
 V 1-3-3
 
 - Fixed login issue on Openstreetmap

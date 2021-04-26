@@ -226,24 +226,24 @@ class ErrorViewModel : ViewModel(), KoinComponent {
     }
 
     suspend fun updateOsmNote(osmNote: OsmNote, newComment: String, newState: OsmNote.STATE) {
-        if (osmNote.State == OsmNote.STATE.OPEN && newState == OsmNote.STATE.CLOSED) {
-            mOsmNotesApi.closeNote(osmNote.Id, newComment)
-        } else if (osmNote.State == OsmNote.STATE.OPEN && newState == OsmNote.STATE.OPEN) {
-            mOsmNotesApi.addComment(osmNote.Id, newComment)
-        } else if (osmNote.State == OsmNote.STATE.CLOSED && newState == OsmNote.STATE.OPEN) {
-            mOsmNotesApi.reopenNote(osmNote.Id, newComment)
-        } else {
-            throw RuntimeException("Closed Notes cannot be commented on")
-        }
-
-        // Try to reload this note and replace the old one.
-        // If we can not load the new Node, we at least remove the old one
         try {
-            mOsmNoteDao.insert(mOsmNotesApi.download(osmNote.Id))
-        } catch (err: Exception) {
-            mOsmNoteDao.delete(osmNote)
-
-            throw err
+            if (osmNote.State == OsmNote.STATE.OPEN && newState == OsmNote.STATE.CLOSED) {
+                mOsmNotesApi.closeNote(osmNote.Id, newComment)
+            } else if (osmNote.State == OsmNote.STATE.OPEN && newState == OsmNote.STATE.OPEN) {
+                mOsmNotesApi.addComment(osmNote.Id, newComment)
+            } else if (osmNote.State == OsmNote.STATE.CLOSED && newState == OsmNote.STATE.OPEN) {
+                mOsmNotesApi.reopenNote(osmNote.Id, newComment)
+            } else {
+                throw RuntimeException("Closed Notes cannot be commented on")
+            }
+        } finally {
+            // Try to reload this note and replace the old one.
+            // If we can not load the new Node, we at least remove the old one
+            try {
+                mOsmNoteDao.insert(mOsmNotesApi.download(osmNote.Id))
+            } catch (err: Exception) {
+                mOsmNoteDao.delete(osmNote)
+            }
         }
     }
 
