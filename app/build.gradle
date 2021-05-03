@@ -16,8 +16,8 @@ android {
         applicationId "org.gittner.osmbugs"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 44
-        versionName "1-3-4"
+        versionCode 45
+        versionName "1-3-5"
 
         multiDexEnabled true
 
