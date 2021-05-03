@@ -15,10 +15,12 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.infowindow.InfoWindow
 import java.util.*
 
-
 open class ErrorInfoWindow(layoutResId: Int, mapView: MapView) : InfoWindow(layoutResId, mapView) {
 
     private var mStateView: View? = null
+
+    // Used to notify the Tutorial Runnable that the Window has been closed
+    private var mCancelToken = CancelToken()
 
     override fun onOpen(item: Any?) {
         val error = (item as ErrorMarker<*>).mError
@@ -44,7 +46,7 @@ open class ErrorInfoWindow(layoutResId: Int, mapView: MapView) : InfoWindow(layo
         if (mStateView == null) {
             mStateView = view
 
-            startShake()
+            startShake(mCancelToken)
         }
     }
 
@@ -52,20 +54,21 @@ open class ErrorInfoWindow(layoutResId: Int, mapView: MapView) : InfoWindow(layo
         Settings.getInstance().TutorialBugStateDone = true
     }
 
-    private fun startShake() {
+    private fun startShake(cancelToken: CancelToken) {
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
-            if (!Settings.getInstance().TutorialBugStateDone) {
+            if (!cancelToken.cancelled && !Settings.getInstance().TutorialBugStateDone) {
                 mStateView?.startAnimation(
                     AnimationUtils.loadAnimation(
                         mapView.context,
                         R.anim.shake
                     )
                 )
+                startShake(cancelToken)
             }
-            startShake()
         }, 5000)
     }
 
     override fun onClose() {
+        mCancelToken.cancelled = true
     }
 }
