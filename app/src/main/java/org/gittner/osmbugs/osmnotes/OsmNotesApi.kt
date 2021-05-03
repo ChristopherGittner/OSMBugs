@@ -47,7 +47,7 @@ class OsmNotesApi : KoinComponent {
         // ------------------------------------
         // Debug Server
         // ------------------------------------
-        //private const val DEFAULT_SERVER = "api06.dev.openstreetmap.org" //Debug Server
+        //private const val DEFAULT_SERVER = "api06.dev.openstreetmap.org"
 
         //private const val API_KEY = "ElJ0hTlALddTziJA3ZxjRq6cHsRjN48PGfhDL9R9"
         //private const val API_SECRET = "5MususnuRXAZQJEFFqFgfFXAIpHDkLiRVjcRHJxK"

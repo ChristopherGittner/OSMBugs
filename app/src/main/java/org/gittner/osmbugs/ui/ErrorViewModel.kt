@@ -176,7 +176,7 @@ class ErrorViewModel : ViewModel(), KoinComponent {
         return mContentLoading
     }
 
-    fun onMapMoved(mapCenter: IGeoPoint, boundingBox: BoundingBox) {
+    fun reloadErrors(mapCenter: IGeoPoint, boundingBox: BoundingBox) {
         if (mContentLoading.value!!) {
             return
         }
@@ -194,7 +194,11 @@ class ErrorViewModel : ViewModel(), KoinComponent {
 
                     mOsmNoteDao.replaceAll(errors)
                 }
+            } catch (err: Exception) {
+                mError.value = err.message
+            }
 
+            try {
                 if (mKeeprightEnabled.value!!) {
                     val errors = mKeeprightApi.download(
                         mapCenter,
@@ -205,13 +209,21 @@ class ErrorViewModel : ViewModel(), KoinComponent {
 
                     mKeeprightDao.replaceAll(errors)
                 }
+            } catch (err: Exception) {
+                mError.value = err.message
+            }
 
+            try {
                 if (mMapdustEnabled.value!!) {
                     val errors = mMapdustApi.download(boundingBox)
 
                     mMapdustDao.replaceAll(errors)
                 }
+            } catch (err: Exception) {
+                mError.value = err.message
+            }
 
+            try {
                 if (mOsmoseEnabled.value!!) {
                     val errors = mOsmoseApi.download(boundingBox)
 
@@ -219,9 +231,9 @@ class ErrorViewModel : ViewModel(), KoinComponent {
                 }
             } catch (err: Exception) {
                 mError.value = err.message
-            } finally {
-                mContentLoading.value = false
             }
+
+            mContentLoading.value = false
         }
     }
 

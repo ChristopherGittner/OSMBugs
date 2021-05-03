@@ -167,7 +167,7 @@ class MapFragment : Fragment() {
 
     private fun setupReload() {
         mBinding.btnReload.setOnClickListener {
-            mErrorViewModel.onMapMoved(mBinding.map.mapCenter, mBinding.map.boundingBox)
+            mErrorViewModel.reloadErrors(mBinding.map.mapCenter, mBinding.map.boundingBox)
         }
     }
 
@@ -182,6 +182,7 @@ class MapFragment : Fragment() {
         mErrorViewModel.getOsmNotes().observe(viewLifecycleOwner, Observer {
             updateOsmNotes(it)
         })
+
         mErrorViewModel.getOsmNotesEnabled().observe(viewLifecycleOwner, Observer {
             updateOsmNotes(mErrorViewModel.getOsmNotes().value!!)
 
@@ -191,6 +192,7 @@ class MapFragment : Fragment() {
         mErrorViewModel.getKeeprightErrors().observe(viewLifecycleOwner, Observer {
             updateKeeprightErrors(it)
         })
+
         mErrorViewModel.getKeeprightEnabled().observe(viewLifecycleOwner, Observer {
             updateKeeprightErrors(mErrorViewModel.getKeeprightErrors().value!!)
 
@@ -200,6 +202,7 @@ class MapFragment : Fragment() {
         mErrorViewModel.getMapdustErrors().observe(viewLifecycleOwner, Observer {
             updateMapdustErrors(it)
         })
+
         mErrorViewModel.getMapdustEnabled().observe(viewLifecycleOwner, Observer {
             updateMapdustErrors(mErrorViewModel.getMapdustErrors().value!!)
 
@@ -209,6 +212,7 @@ class MapFragment : Fragment() {
         mErrorViewModel.getOsmoseErrors().observe(viewLifecycleOwner, Observer {
             updateOsmoseErrors(it)
         })
+
         mErrorViewModel.getOsmoseEnabled().observe(viewLifecycleOwner, Observer {
             updateOsmoseErrors(mErrorViewModel.getOsmoseErrors().value!!)
 
@@ -221,7 +225,7 @@ class MapFragment : Fragment() {
     }
 
     /**
-     * Sets up everything related to te Add Error functions
+     * Sets up everything related to the Add Error functions
      */
     @SuppressLint("RestrictedApi")
     private fun setupAddError() {
