@@ -1,5 +1,9 @@
 CHANGELOG
 =========
+V 1-3-6
+
+- Downgrade Scribejava to 7.1.1 because of missing Dependency in recent Versions on older Android Versions
+
 V 1-3-5
 
 - Fixed a Null Pointer exception
