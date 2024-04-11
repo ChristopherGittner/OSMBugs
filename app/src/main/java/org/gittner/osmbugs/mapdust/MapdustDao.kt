@@ -1,7 +1,7 @@
 package org.gittner.osmbugs.mapdust
 
 import androidx.room.*
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 
 @Dao
 interface MapdustDao {

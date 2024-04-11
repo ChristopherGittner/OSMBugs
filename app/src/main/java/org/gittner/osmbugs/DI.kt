@@ -18,7 +18,7 @@ val DiModule = module {
 
     single { Room.databaseBuilder(androidApplication(), AppDatabase::class.java, "DB").build() }
 
-    single { get<AppDatabase>().osmNoteDato() }
+    single { get<AppDatabase>().osmNoteDao() }
     single { get<AppDatabase>().keeprightDao() }
     single { get<AppDatabase>().mapdustDao() }
     single { get<AppDatabase>().osmoseDao() }

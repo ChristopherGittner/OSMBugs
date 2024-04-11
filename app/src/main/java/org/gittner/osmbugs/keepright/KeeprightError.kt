@@ -12,7 +12,7 @@ import org.osmdroid.api.IGeoPoint
 
 @Entity(primaryKeys = ["Id", "Schema"])
 data class KeeprightError(
-    @Ignore override val Point: IGeoPoint,
+    override val Point: IGeoPoint,
     val CreationDate: DateTime,
     val Id: Long,
     val Schema: Long,

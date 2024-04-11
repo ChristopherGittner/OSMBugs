@@ -12,7 +12,7 @@ import org.osmdroid.api.IGeoPoint
 
 @Entity
 data class OsmNote(
-    @Ignore override val Point: IGeoPoint,
+    override val Point: IGeoPoint,
     @PrimaryKey val Id: Long,
     val Description: String,
     val User: String,

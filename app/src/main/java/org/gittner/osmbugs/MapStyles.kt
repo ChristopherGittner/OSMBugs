@@ -5,7 +5,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 
 object MapStyles {
     fun byId(id: Int): MAP_STYLES? {
-        return MAP_STYLES.values().firstOrNull {
+        return MAP_STYLES.entries.firstOrNull {
             it.Id == id
         }
     }

@@ -12,7 +12,7 @@ import org.osmdroid.api.IGeoPoint
 
 @Entity
 data class MapdustError(
-    @Ignore override val Point: IGeoPoint,
+    override val Point: IGeoPoint,
     @PrimaryKey val Id: Long,
     val CreationDate: DateTime,
     val User: String,

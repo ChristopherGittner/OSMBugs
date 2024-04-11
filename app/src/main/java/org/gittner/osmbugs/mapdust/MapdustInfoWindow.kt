@@ -11,14 +11,15 @@ import org.gittner.osmbugs.R
 import org.gittner.osmbugs.databinding.MapdustMarkerBinding
 import org.gittner.osmbugs.ui.ErrorInfoWindow
 import org.gittner.osmbugs.ui.ErrorViewModel
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.java.KoinJavaComponent.inject
 import org.osmdroid.views.MapView
 
-class MapdustInfoWindow(map: MapView, viewModel: ErrorViewModel) : ErrorInfoWindow(R.layout.mapdust_marker, map), KoinComponent {
+class MapdustInfoWindow(map: MapView, viewModel: ErrorViewModel) : ErrorInfoWindow(R.layout.mapdust_marker, map),
+    KoinComponent {
     private val mBinding = MapdustMarkerBinding.bind(view)
 
-    private val mApi: MapdustApi by inject()
+    private val mApi: MapdustApi by inject(MapdustApi::class.java)
 
     private val mViewModel: ErrorViewModel = viewModel
 

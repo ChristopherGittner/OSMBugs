@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer
 import org.gittner.osmbugs.HttpRequestAdapter
 import org.gittner.osmbugs.statics.Settings
-import org.koin.core.KoinComponent
+import org.koin.core.component.KoinComponent
 import org.osmdroid.api.IGeoPoint
 import org.osmdroid.util.BoundingBox
 import java.util.*

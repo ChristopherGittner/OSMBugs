@@ -3,8 +3,14 @@ package org.gittner.osmbugs
 import android.annotation.SuppressLint
 import android.app.Application
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.gittner.osmbugs.statics.Images
 import org.gittner.osmbugs.statics.Settings
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.osmdroid.config.Configuration
@@ -55,6 +61,16 @@ class App : Application() {
                             .edit()
                             .clear()
                             .commit()
+                    }
+                    47 -> {
+                        // Changed datatype of Room Classes
+                        runBlocking {
+                            GlobalScope.launch {
+                                Dispatchers.IO
+                                val database: AppDatabase by inject()
+                                database.clearAllTables()
+                            }
+                        }
                     }
                 }
                 mSettings.LastVersionCode = versionCode

@@ -1,7 +1,7 @@
 package org.gittner.osmbugs.osmose
 
 import androidx.room.*
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 
 @Dao
 interface OsmoseDao {

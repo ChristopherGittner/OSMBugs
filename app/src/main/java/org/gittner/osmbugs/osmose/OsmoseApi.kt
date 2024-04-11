@@ -6,7 +6,7 @@ import com.github.kittinunf.fuel.coroutines.awaitStringResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.gittner.osmbugs.statics.Settings
-import org.koin.core.KoinComponent
+import org.koin.core.component.KoinComponent
 import org.osmdroid.util.BoundingBox
 import java.util.*
 

@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,8 +21,8 @@ import org.gittner.osmbugs.osmose.OsmoseApi
 import org.gittner.osmbugs.osmose.OsmoseDao
 import org.gittner.osmbugs.osmose.OsmoseError
 import org.gittner.osmbugs.statics.Settings
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.osmdroid.api.IGeoPoint
 import org.osmdroid.util.BoundingBox
 
