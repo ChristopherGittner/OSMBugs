@@ -29,15 +29,6 @@
             android:key="@string/pref_keepright_enabled_types"
             android:title="@string/enabled_error" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/mapdust">
-        <EditTextPreference
-            android:defaultValue="Anonymous"
-            android:key="@string/pref_mapdust_username"
-            android:title="@string/username" />
-        <Preference
-            android:key="@string/pref_mapdust_enabled_types"
-            android:title="@string/enabled_error" />
-    </PreferenceCategory>
     <PreferenceCategory android:title="@string/osmose">
         <ListPreference
             android:defaultValue="1"
