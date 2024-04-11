@@ -19,11 +19,11 @@ class Settings(private val mContext: Context) {
     companion object {
         private lateinit var Instance: Settings
 
-        public fun getInstance(): Settings {
+        fun getInstance(): Settings {
             return Instance
         }
 
-        public fun init(context: Context) {
+        fun init(context: Context) {
             Instance = Settings(context)
         }
     }

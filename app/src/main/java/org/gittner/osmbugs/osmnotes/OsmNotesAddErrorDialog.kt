@@ -13,10 +13,9 @@ import org.gittner.osmbugs.databinding.DialogAddOsmNoteBinding
 import org.gittner.osmbugs.ui.ErrorViewModel
 import org.osmdroid.api.IGeoPoint
 
-class OsmNotesAddErrorDialog(context: Context, viewModel: ErrorViewModel, mapCenter: IGeoPoint, successCb: SuccessCb) : AlertDialog(context) {
+class OsmNotesAddErrorDialog(context: Context, viewModel: ErrorViewModel, mapCenter: IGeoPoint) : AlertDialog(context) {
     private val mViewModel = viewModel
     private val mMapCenter = mapCenter
-    private val mSuccessCb = successCb
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTitle(R.string.dialog_add_osm_note_title)
@@ -44,7 +43,6 @@ class OsmNotesAddErrorDialog(context: Context, viewModel: ErrorViewModel, mapCen
                         )
 
                         dismiss()
-                        mSuccessCb.onSuccess()
                     } catch (err: Exception) {
                         Toast.makeText(context, context.getString(R.string.failed_to_add_error).format(err.message), Toast.LENGTH_LONG).show()
                     } finally {
@@ -57,9 +55,5 @@ class OsmNotesAddErrorDialog(context: Context, viewModel: ErrorViewModel, mapCen
         }
 
         super.onCreate(savedInstanceState)
-    }
-
-    interface SuccessCb {
-        fun onSuccess()
     }
 }

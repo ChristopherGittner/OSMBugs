@@ -3,7 +3,6 @@ package org.gittner.osmbugs.ui
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -64,7 +63,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startFeedbackIntent() {
         val intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf<String>(getString(R.string.developer_mail)))
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.developer_mail)))
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback_mail_subject))
         intent.type = "plain/text"
 

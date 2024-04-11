@@ -40,8 +40,7 @@ class KeeprightParser {
                 val title = tokens[2]
                 val type = tokens[3].toInt()
 
-                var objectType: TYPE
-                objectType = when (tokens[4]) {
+                val objectType: TYPE = when (tokens[4]) {
                     "node" -> TYPE.NODE
                     "way" -> TYPE.WAY
                     "relation" -> TYPE.RELATION
@@ -59,8 +58,7 @@ class KeeprightParser {
                 val comment = tokens[12]
 
                 // Current state Temporarily Ignored == "ignore_t" Ignored == "ignore" Open == "new" or ""
-                var state: KeeprightError.STATE
-                state = when (tokens[13]) {
+                val state: KeeprightError.STATE = when (tokens[13]) {
                     "ignore_t" -> KeeprightError.STATE.IGNORED_TMP
                     "ignore" -> KeeprightError.STATE.IGNORED
                     else -> KeeprightError.STATE.OPEN

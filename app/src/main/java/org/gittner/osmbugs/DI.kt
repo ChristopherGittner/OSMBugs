@@ -2,15 +2,10 @@ package org.gittner.osmbugs
 
 import androidx.room.Room
 import androidx.room.migration.Migration
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.gittner.osmbugs.keepright.KeeprightApi
 import org.gittner.osmbugs.osmnotes.OsmNotesApi
 import org.gittner.osmbugs.osmose.OsmoseApi
 import org.gittner.osmbugs.ui.ErrorViewModel
-import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

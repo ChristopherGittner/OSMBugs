@@ -66,7 +66,7 @@ class KeeprightApi : KoinComponent {
     private fun getSelectionString(): String {
         // Unknown what 0 stands for but it's here for compatibility Reasons
         var result = "0"
-        KeeprightError.ERROR_TYPE.values().forEach {
+        KeeprightError.ERROR_TYPE.entries.forEach {
             if (mSettings.Keepright.GetTypeEnabled(it)) {
                 result += ",${it.Type}"
             }

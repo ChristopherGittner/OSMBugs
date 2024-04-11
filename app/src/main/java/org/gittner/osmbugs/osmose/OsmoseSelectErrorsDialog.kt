@@ -19,7 +19,7 @@ class OsmoseSelectErrorsDialog : DialogFragment() {
             val adapter = EnabledErrorsAdapter<OsmoseError.ERROR_TYPE>(it)
 
             // Add all Keepright Error Types
-            OsmoseError.ERROR_TYPE.values().forEach { errorType ->
+            OsmoseError.ERROR_TYPE.entries.forEach { errorType ->
                 adapter.add(
                     EnabledErrorsAdapter.Data(
                         errorType,

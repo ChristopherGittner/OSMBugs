@@ -7,7 +7,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.gittner.osmbugs.statics.Images
 import org.gittner.osmbugs.statics.Settings
 import org.koin.android.ext.android.inject

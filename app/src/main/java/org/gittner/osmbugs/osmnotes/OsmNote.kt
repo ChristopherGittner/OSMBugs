@@ -2,7 +2,6 @@ package org.gittner.osmbugs.osmnotes
 
 import android.graphics.drawable.Drawable
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import org.gittner.osmbugs.Error
 import org.gittner.osmbugs.R

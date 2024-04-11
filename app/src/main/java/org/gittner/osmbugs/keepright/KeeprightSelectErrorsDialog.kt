@@ -24,7 +24,7 @@ class KeeprightSelectErrorsDialog : DialogFragment() {
             adapter.add(EnabledErrorsAdapter.Data(null, mSettings.Keepright.ShowTmpIgnored, R.string.show_temporary_ignored, KeeprightError.IcZapTmpIgnored))
 
             // Add all Keepright Error Types
-            KeeprightError.ERROR_TYPE.values().forEach { errorType ->
+            KeeprightError.ERROR_TYPE.entries.forEach { errorType ->
                 adapter.add(
                     EnabledErrorsAdapter.Data(
                         errorType,

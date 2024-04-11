@@ -42,7 +42,7 @@ class OsmoseApi : KoinComponent {
 
     private fun getItemString(): String {
         var s = ""
-        OsmoseError.ERROR_TYPE.values().forEach {
+        OsmoseError.ERROR_TYPE.entries.forEach {
             if (mSettings.Osmose.GetTypeEnabled(it)) {
                 s += "${it.Item},"
             }

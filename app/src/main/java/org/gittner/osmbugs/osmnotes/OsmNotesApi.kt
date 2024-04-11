@@ -27,7 +27,7 @@ class OsmNotesApi : KoinComponent {
         private const val PATH_SEGMENT_NOTES = "notes"
 
         const val AUTH_CALLBACK_URL = "osmbugs://osmbugs.gittner.org/auth-done/osmbugs"
-        const val AUTH_VERIFIER_PARAM = "oauth_verifier";
+        const val AUTH_VERIFIER_PARAM = "oauth_verifier"
 
 
         // ------------------------------------

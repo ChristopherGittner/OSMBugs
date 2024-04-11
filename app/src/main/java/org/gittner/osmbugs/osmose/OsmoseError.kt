@@ -2,7 +2,6 @@ package org.gittner.osmbugs.osmose
 
 import android.graphics.drawable.Drawable
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import org.gittner.osmbugs.Error
 import org.gittner.osmbugs.R
@@ -679,7 +678,7 @@ data class OsmoseError(
         }
 
         fun GetTypeByItemNumber(item: Int): ERROR_TYPE? {
-            return ERROR_TYPE.values().find {
+            return ERROR_TYPE.entries.find {
                 item == it.Item
             }
         }

@@ -53,7 +53,7 @@ class MapFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        return mBinding.root;
+        return mBinding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -209,11 +209,7 @@ class MapFragment : Fragment() {
             OsmNotesAddErrorDialog(
                 requireContext(),
                 mErrorViewModel,
-                mBinding.map.mapCenter,
-                object : OsmNotesAddErrorDialog.SuccessCb {
-                    override fun onSuccess() {
-                    }
-                }).show()
+                mBinding.map.mapCenter).show()
         }
 
         mBinding.imgCrosshair.visibility = View.INVISIBLE
@@ -273,7 +269,7 @@ class MapFragment : Fragment() {
      * Called when OsmNotes have been updated in the ViewModel
      */
     private fun updateOsmNotes(errors: java.util.ArrayList<OsmNote>) {
-        mBinding.map.overlays.removeAll(mOsmNotes)
+        mBinding.map.overlays.removeAll(mOsmNotes.toSet())
         mOsmNotes.clear()
 
         val window = OsmNoteInfoWindow(mBinding.map, mErrorViewModel)
@@ -295,7 +291,7 @@ class MapFragment : Fragment() {
      * Called when KeeprightErrors have been updated in the ViewModel
      */
     private fun updateKeeprightErrors(errors: List<KeeprightError>) {
-        mBinding.map.overlays.removeAll(mKeeprightErrors)
+        mBinding.map.overlays.removeAll(mKeeprightErrors.toSet())
         mKeeprightErrors.clear()
 
         val window = KeeprightInfoWindow(mBinding.map, mErrorViewModel)
@@ -317,7 +313,7 @@ class MapFragment : Fragment() {
      * Called when Osmose Errors have been updated in the ViewModel
      */
     private fun updateOsmoseErrors(errors: ArrayList<OsmoseError>) {
-        mBinding.map.overlays.removeAll(mOsmoseErrors)
+        mBinding.map.overlays.removeAll(mOsmoseErrors.toSet())
         mOsmoseErrors.clear()
 
         val window = OsmoseInfoWindow(mBinding.map)

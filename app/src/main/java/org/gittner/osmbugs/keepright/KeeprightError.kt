@@ -2,7 +2,6 @@ package org.gittner.osmbugs.keepright
 
 import android.graphics.drawable.Drawable
 import androidx.room.Entity
-import androidx.room.Ignore
 import org.gittner.osmbugs.Error
 import org.gittner.osmbugs.R
 import org.gittner.osmbugs.statics.Images
@@ -210,7 +209,7 @@ data class KeeprightError(
         }
 
         fun GetTypeByTypeNumber(n: Int): ERROR_TYPE? {
-            var type = ERROR_TYPE.values().find {
+            var type = ERROR_TYPE.entries.find {
                 n == it.Type
             }
 

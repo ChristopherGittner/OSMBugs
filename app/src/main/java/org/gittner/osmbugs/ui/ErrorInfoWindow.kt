@@ -55,7 +55,7 @@ open class ErrorInfoWindow(layoutResId: Int, mapView: MapView) : InfoWindow(layo
     }
 
     private fun startShake(cancelToken: CancelToken) {
-        Handler(Looper.getMainLooper()).postDelayed(Runnable {
+        Handler(Looper.getMainLooper()).postDelayed({
             if (!cancelToken.cancelled && !Settings.getInstance().TutorialBugStateDone) {
                 mStateView?.startAnimation(
                     AnimationUtils.loadAnimation(

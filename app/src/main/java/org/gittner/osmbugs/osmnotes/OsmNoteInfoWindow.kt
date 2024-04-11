@@ -92,7 +92,7 @@ class OsmNoteInfoWindow(map: MapView, viewModel: ErrorViewModel) : ErrorInfoWind
 
             txtvDate.text = error.Date.withZone(DateTimeZone.getDefault()).toString(mMapView.context.getString(R.string.datetime_format))
 
-            if (error.Comments.count() > 0) {
+            if (error.Comments.isNotEmpty()) {
                 val comments = ArrayList<OsmNote.OsmNoteComment>()
                 error.Comments.reversed().forEach {
                     comments.add(it)
