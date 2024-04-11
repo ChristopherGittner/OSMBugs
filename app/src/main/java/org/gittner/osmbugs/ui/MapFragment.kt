@@ -10,6 +10,7 @@ import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import org.gittner.osmbugs.OsmBugsMyLocationNewOverlay
 import org.gittner.osmbugs.R
 import org.gittner.osmbugs.databinding.MapFragmentBinding
 import org.gittner.osmbugs.keepright.KeeprightError
@@ -22,6 +23,7 @@ import org.gittner.osmbugs.osmnotes.OsmNotesAddErrorDialog
 import org.gittner.osmbugs.osmose.OsmoseError
 import org.gittner.osmbugs.osmose.OsmoseInfoWindow
 import org.gittner.osmbugs.osmose.OsmoseMarker
+import org.gittner.osmbugs.statics.Images
 import org.gittner.osmbugs.statics.Settings
 import org.koin.android.ext.android.inject
 import org.osmdroid.events.MapEventsReceiver
@@ -30,7 +32,6 @@ import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.infowindow.InfoWindow
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 /**
  * Displays a Map with Buttons to reload the Errors, toggle the visible Layers and shows a progress bar when loading new Errors
@@ -220,17 +221,24 @@ class MapFragment : Fragment() {
      */
     private fun setupFollowLocation() {
         // Setup Location Overlay
-        val locationOverlay = MyLocationNewOverlay(mBinding.map)
+        val locationOverlay = OsmBugsMyLocationNewOverlay(mBinding.map) {
+            if (it)
+                mBinding.btnLocation.setImageDrawable(Images.GetDrawable(R.drawable.ic_location_enabled))
+            else
+                mBinding.btnLocation.setImageDrawable(Images.GetDrawable(R.drawable.ic_location))
+        }
+
         mBinding.map.overlays.add(locationOverlay)
 
         locationOverlay.enableMyLocation()
         locationOverlay.enableFollowLocation()
 
         mBinding.btnLocation.setOnClickListener {
-            locationOverlay.enableFollowLocation()
+            if (!locationOverlay.isFollowLocationEnabled)
+                locationOverlay.enableFollowLocation()
+            else
+                locationOverlay.disableFollowLocation()
         }
-
-
 
         mBinding.btnLocation.visibility = if (ContextCompat.checkSelfPermission(
                 requireContext(),
