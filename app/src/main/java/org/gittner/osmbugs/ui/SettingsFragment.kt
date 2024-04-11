@@ -8,7 +8,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.gittner.osmbugs.R
 import org.gittner.osmbugs.keepright.KeeprightSelectErrorsDialog
-import org.gittner.osmbugs.mapdust.MapdustSelectErrorsDialog
 import org.gittner.osmbugs.osmnotes.OsmNotesLoginActivity
 import org.gittner.osmbugs.osmose.OsmoseSelectErrorsDialog
 import org.koin.android.ext.android.inject
@@ -24,11 +23,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<Preference>(getString(R.string.pref_keepright_enabled_types))?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             activity?.supportFragmentManager?.let { KeeprightSelectErrorsDialog().show(it, "Select Errors") }
-            true
-        }
-
-        findPreference<Preference>(getString(R.string.pref_mapdust_enabled_types))?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            activity?.supportFragmentManager?.let { MapdustSelectErrorsDialog().show(it, "Select Errors") }
             true
         }
 

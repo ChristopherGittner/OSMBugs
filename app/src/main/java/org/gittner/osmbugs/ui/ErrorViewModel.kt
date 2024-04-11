@@ -11,9 +11,6 @@ import kotlinx.coroutines.launch
 import org.gittner.osmbugs.keepright.KeeprightApi
 import org.gittner.osmbugs.keepright.KeeprightDao
 import org.gittner.osmbugs.keepright.KeeprightError
-import org.gittner.osmbugs.mapdust.MapdustApi
-import org.gittner.osmbugs.mapdust.MapdustDao
-import org.gittner.osmbugs.mapdust.MapdustError
 import org.gittner.osmbugs.osmnotes.OsmNote
 import org.gittner.osmbugs.osmnotes.OsmNoteDao
 import org.gittner.osmbugs.osmnotes.OsmNotesApi
@@ -42,11 +39,6 @@ class ErrorViewModel : ViewModel(), KoinComponent {
     private val mKeeprightErrors = MutableLiveData<ArrayList<KeeprightError>>(ArrayList())
     private val mKeeprightEnabled = MutableLiveData(mSettings.Keepright.Enabled)
 
-    private val mMapdustApi: MapdustApi by inject()
-    private val mMapdustDao: MapdustDao by inject()
-    private val mMapdustErrors = MutableLiveData<ArrayList<MapdustError>>(ArrayList())
-    private val mMapdustEnabled = MutableLiveData(mSettings.Mapdust.Enabled)
-
     private val mOsmoseApi: OsmoseApi by inject()
     private val mOsmoseDao: OsmoseDao by inject()
     private val mOsmoseErrors = MutableLiveData<ArrayList<OsmoseError>>(ArrayList())
@@ -69,14 +61,6 @@ class ErrorViewModel : ViewModel(), KoinComponent {
                 mKeeprightErrors.value!!.clear()
                 mKeeprightErrors.value!!.addAll(it)
                 mKeeprightErrors.value = mKeeprightErrors.value
-            }
-
-        mMapdustDao.getAll()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                mMapdustErrors.value!!.clear()
-                mMapdustErrors.value!!.addAll(it)
-                mMapdustErrors.value = mMapdustErrors.value
             }
 
         mOsmoseDao.getAll()
@@ -116,18 +100,6 @@ class ErrorViewModel : ViewModel(), KoinComponent {
         mKeeprightEnabled.value = enabled
     }
 
-    fun getMapdustErrors(): LiveData<ArrayList<MapdustError>> {
-        return mMapdustErrors
-    }
-
-    fun getMapdustEnabled(): LiveData<Boolean> {
-        return mMapdustEnabled
-    }
-
-    fun setMapdustEnabled(enabled: Boolean) {
-        mMapdustEnabled.value = enabled
-    }
-
     fun getOsmoseErrors(): LiveData<ArrayList<OsmoseError>> {
         return mOsmoseErrors
     }
@@ -154,14 +126,6 @@ class ErrorViewModel : ViewModel(), KoinComponent {
         mSettings.Keepright.Enabled = new
 
         mKeeprightEnabled.value = new
-    }
-
-    fun toggleMapdustEnabled() {
-        val new = !mMapdustEnabled.value!!
-
-        mSettings.Mapdust.Enabled = new
-
-        mMapdustEnabled.value = new
     }
 
     fun toggleOsmoseEnabled() {
@@ -214,16 +178,6 @@ class ErrorViewModel : ViewModel(), KoinComponent {
             }
 
             try {
-                if (mMapdustEnabled.value!!) {
-                    val errors = mMapdustApi.download(boundingBox)
-
-                    mMapdustDao.replaceAll(errors)
-                }
-            } catch (err: Exception) {
-                mError.value = err.message
-            }
-
-            try {
                 if (mOsmoseEnabled.value!!) {
                     val errors = mOsmoseApi.download(boundingBox)
 
@@ -267,30 +221,7 @@ class ErrorViewModel : ViewModel(), KoinComponent {
         mKeeprightDao.insert(newError)
     }
 
-    suspend fun updateMapdustError(error: MapdustError, newComment: String, newState: MapdustError.STATE) {
-        if (newState != error.State) {
-            mMapdustApi.changeErrorStatus(error.Id, newComment, newState)
-
-            error.State = newState
-        } else {
-            mMapdustApi.commentError(error.Id, newComment)
-        }
-
-        // Add the New Comment to the Error
-        error.Comments.add(MapdustError.MapdustComment(newComment, mSettings.Mapdust.Username))
-
-        mMapdustDao.insert(error)
-    }
-
     suspend fun addOsmNote(point: IGeoPoint, comment: String) {
         mOsmNoteDao.insert(mOsmNotesApi.addNote(point, comment))
-    }
-
-    suspend fun addMapdustError(point: IGeoPoint, type: MapdustError.ERROR_TYPE, description: String) {
-        val newId = mMapdustApi.addBug(point, type, description)
-
-        val newError = mMapdustApi.download(newId)
-
-        mMapdustDao.insert(newError)
     }
 }

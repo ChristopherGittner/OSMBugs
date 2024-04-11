@@ -9,8 +9,6 @@ Currently supported Platforms are:
 
 - Keepright
 
-- Mapdust
-
 - Osmose ( Read-Only )
 
 [<img src="https://f-droid.org/badge/get-it-on.png"
@@ -46,8 +44,6 @@ EventBus ( https://github.com/greenrobot/EventBus )
 Keepright ( http://keepright.at )
 
 Osmdroid ( https://github.com/osmdroid/osmdroid )
-
-Mapdust ( http://www.mapdust.com )
 
 Openstreetmap ( https://www.openstreetmap.org )
 

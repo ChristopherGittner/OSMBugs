@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.res.ResourcesCompat
 import org.gittner.osmbugs.App
 import org.gittner.osmbugs.keepright.KeeprightError
-import org.gittner.osmbugs.mapdust.MapdustError
 import org.gittner.osmbugs.osmnotes.OsmNote
 import org.gittner.osmbugs.osmose.OsmoseError
 
@@ -26,7 +25,6 @@ class Images {
 
             OsmNote.Init()
             KeeprightError.Init()
-            MapdustError.Init()
             OsmoseError.Init()
         }
     }

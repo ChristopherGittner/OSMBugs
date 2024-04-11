@@ -7,7 +7,6 @@ import org.gittner.osmbugs.MAP_STYLES
 import org.gittner.osmbugs.MapStyles
 import org.gittner.osmbugs.R
 import org.gittner.osmbugs.keepright.KeeprightError
-import org.gittner.osmbugs.mapdust.MapdustError
 import org.gittner.osmbugs.osmose.OsmoseError
 import org.osmdroid.api.IGeoPoint
 import org.osmdroid.config.Configuration
@@ -33,7 +32,6 @@ class Settings(private val mContext: Context) {
 
     val OsmNotes = OsmNotesSettings(mContext, mSharedPreferences)
     val Keepright = KeeprightSettings(mContext, mSharedPreferences)
-    val Mapdust = MapdustSettings(mContext, mSharedPreferences)
     val Osmose = OsmoseSettings(mContext, mSharedPreferences)
 
     var LastVersionCode: Int
@@ -234,83 +232,6 @@ class Settings(private val mContext: Context) {
                 mSharedPreferences
                     .edit()
                     .putBoolean(mContext.getString(R.string.pref_keepright_enabled_show_tmp_ign), value)
-                    .apply()
-            }
-    }
-
-    class MapdustSettings(private val mContext: Context, private val mSharedPreferences: SharedPreferences) {
-        /**
-         * Retrieves the State (Enabled / Disabled) of the given Type
-         * @param errorType The Error Type for which the State is retrieved
-         * @return True when the Type is enabled
-         */
-        fun GetTypeEnabled(errorType: MapdustError.ERROR_TYPE): Boolean {
-            return mSharedPreferences.getBoolean(mContext.getString(errorType.PreferenceId), true)
-        }
-
-        /**
-         * Sets the State of the given Error Type
-         * @param errorType The Error Type for which the State will be set
-         * @param enabled Wether or not this Error Type is enabled
-         */
-        fun SetTypeEnabled(errorType: MapdustError.ERROR_TYPE, enabled: Boolean) {
-            mSharedPreferences.edit().putBoolean(mContext.getString(errorType.PreferenceId), enabled).apply()
-        }
-
-        private val DEFAULT_USERNAME = "Anonymous"
-
-        var Username: String
-            get() {
-                return mSharedPreferences.getString(mContext.getString(R.string.pref_mapdust_username), DEFAULT_USERNAME)!!
-            }
-            set(value) {
-                mSharedPreferences
-                    .edit()
-                    .putString(mContext.getString(R.string.pref_mapdust_username), value)
-                    .apply()
-            }
-
-        var Enabled: Boolean
-            get() {
-                return mSharedPreferences.getBoolean(mContext.getString(R.string.pref_mapdust_enabled), false)
-            }
-            set(value) {
-                mSharedPreferences
-                    .edit()
-                    .putBoolean(mContext.getString(R.string.pref_mapdust_enabled), value)
-                    .apply()
-            }
-
-        var ShowOpen: Boolean
-            get() {
-                return mSharedPreferences.getBoolean(mContext.getString(R.string.pref_mapdust_enabled_open), true)
-            }
-            set(value) {
-                mSharedPreferences
-                    .edit()
-                    .putBoolean(mContext.getString(R.string.pref_mapdust_enabled_open), value)
-                    .apply()
-            }
-
-        var ShowClosed: Boolean
-            get() {
-                return mSharedPreferences.getBoolean(mContext.getString(R.string.pref_mapdust_enabled_closed), false)
-            }
-            set(value) {
-                mSharedPreferences
-                    .edit()
-                    .putBoolean(mContext.getString(R.string.pref_mapdust_enabled_closed), value)
-                    .apply()
-            }
-
-        var ShowIgnored: Boolean
-            get() {
-                return mSharedPreferences.getBoolean(mContext.getString(R.string.pref_mapdust_enabled_ignored), false)
-            }
-            set(value) {
-                mSharedPreferences
-                    .edit()
-                    .putBoolean(mContext.getString(R.string.pref_mapdust_enabled_ignored), value)
                     .apply()
             }
     }

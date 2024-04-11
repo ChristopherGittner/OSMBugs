@@ -2,7 +2,6 @@ package org.gittner.osmbugs
 
 import androidx.room.TypeConverter
 import org.gittner.osmbugs.keepright.KeeprightError
-import org.gittner.osmbugs.mapdust.MapdustError
 import org.gittner.osmbugs.osmnotes.OsmNote
 import org.gittner.osmbugs.osmose.OsmoseError
 import org.gittner.osmbugs.statics.OpenStreetMap
@@ -96,26 +95,6 @@ class RoomConverters {
 
     @TypeConverter
     fun fromKeeprightErrorType(data: KeeprightError.ERROR_TYPE): String {
-        return data.toString()
-    }
-
-    @TypeConverter
-    fun toMapdustState(data: String): MapdustError.STATE {
-        return MapdustError.STATE.valueOf(data)
-    }
-
-    @TypeConverter
-    fun fromMapdustState(data: MapdustError.STATE): String {
-        return data.toString()
-    }
-
-    @TypeConverter
-    fun toMapdustErrorType(data: String): MapdustError.ERROR_TYPE {
-        return MapdustError.ERROR_TYPE.valueOf(data)
-    }
-
-    @TypeConverter
-    fun fromMapdustErrorType(data: MapdustError.ERROR_TYPE): String {
         return data.toString()
     }
 
