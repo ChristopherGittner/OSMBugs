@@ -134,31 +134,16 @@ class Settings(private val mContext: Context) {
                     .apply()
             }
 
-        var Token: String
+        var OAuth2: String
             get() {
-                return mSharedPreferences.getString(mContext.getString(R.string.pref_openstreetmap_notes_token), "")!!
+                return mSharedPreferences.getString(mContext.getString(R.string.pref_openstreetmap_notes_oauth2), "")!!
             }
             set(value) {
                 mSharedPreferences
                     .edit()
-                    .putString(mContext.getString(R.string.pref_openstreetmap_notes_token), value)
+                    .putString(mContext.getString(R.string.pref_openstreetmap_notes_oauth2), value)
                     .apply()
             }
-
-        var ConsumerSecret: String
-            get() {
-                return mSharedPreferences.getString(mContext.getString(R.string.pref_openstreetmap_notes_consumer_secret), "")!!
-            }
-            set(value) {
-                mSharedPreferences
-                    .edit()
-                    .putString(mContext.getString(R.string.pref_openstreetmap_notes_consumer_secret), value)
-                    .apply()
-            }
-
-        fun IsLoggedIn(): Boolean {
-            return ConsumerSecret != "" && Token != ""
-        }
 
         var ShowClosed: Boolean
             get() {

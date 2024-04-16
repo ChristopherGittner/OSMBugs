@@ -1,6 +1,5 @@
 package org.gittner.osmbugs.osmnotes
 
-import android.content.Intent
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -9,20 +8,19 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.gittner.osmbugs.R
 import org.gittner.osmbugs.databinding.OsmNotesMarkerBinding
-import org.gittner.osmbugs.statics.Settings
 import org.gittner.osmbugs.ui.ErrorInfoWindow
 import org.gittner.osmbugs.ui.ErrorViewModel
 import org.joda.time.DateTimeZone
 import org.osmdroid.views.MapView
 
-class OsmNoteInfoWindow(map: MapView, viewModel: ErrorViewModel) : ErrorInfoWindow(R.layout.osm_notes_marker, map) {
+class OsmNoteInfoWindow(map: MapView, viewModel: ErrorViewModel, osmNotesApi: OsmNotesApi) : ErrorInfoWindow(R.layout.osm_notes_marker, map) {
     private val mBinding: OsmNotesMarkerBinding = OsmNotesMarkerBinding.bind(view)
 
-    private val mViewModel = viewModel
+    private val mErrorViewModel = viewModel
+
+    private val mOsmNotesApi = osmNotesApi
 
     private var mNewState = OsmNote.STATE.OPEN
-
-    private var mSettings = Settings.getInstance()
 
     private var mEditComment = false
 
@@ -42,7 +40,7 @@ class OsmNoteInfoWindow(map: MapView, viewModel: ErrorViewModel) : ErrorInfoWind
 
             imgSave.visibility = View.GONE
             imgSave.setOnClickListener {
-                if (!mSettings.OsmNotes.IsLoggedIn()) {
+                if (!mOsmNotesApi.isLoggedIn()) {
                     startLogin()
                     return@setOnClickListener
                 }
@@ -52,7 +50,7 @@ class OsmNoteInfoWindow(map: MapView, viewModel: ErrorViewModel) : ErrorInfoWind
                     imgSave.visibility = View.GONE
 
                     try {
-                        mViewModel.updateOsmNote(error, edtxtComment.text.toString(), mNewState)
+                        mErrorViewModel.updateOsmNote(error, edtxtComment.text.toString(), mNewState)
 
                         close()
                     } catch (error: Exception) {
@@ -114,7 +112,7 @@ class OsmNoteInfoWindow(map: MapView, viewModel: ErrorViewModel) : ErrorInfoWind
             .setMessage(R.string.dialog_osmnotes_login_required_message)
             .setCancelable(true)
             .setPositiveButton(R.string.dialog_osmnotes_login_required_positive) { _, _ ->
-                mMapView.context.startActivity(Intent(mMapView.context, OsmNotesLoginActivity::class.java))
+                mErrorViewModel.triggerAction(ErrorViewModel.Companion.Action.OSM_NOTES_LOGIN)
             }.show()
     }
 

@@ -8,15 +8,14 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.gittner.osmbugs.R
 import org.gittner.osmbugs.keepright.KeeprightSelectErrorsDialog
-import org.gittner.osmbugs.osmnotes.OsmNotesLoginActivity
 import org.gittner.osmbugs.osmose.OsmoseSelectErrorsDialog
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.modules.SqlTileWriter
 
 
 class SettingsFragment : PreferenceFragmentCompat() {
-    private val mViewModel: ErrorViewModel by inject()
+    private val mViewModel: ErrorViewModel by activityViewModel<ErrorViewModel>()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preferences)
@@ -32,7 +31,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         findPreference<Preference>(getString(R.string.pref_openstreetmap_notes_log_in))?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            startActivity(Intent(context, OsmNotesLoginActivity::class.java))
+            mViewModel.triggerAction(ErrorViewModel.Companion.Action.OSM_NOTES_LOGIN)
             true
         }
 

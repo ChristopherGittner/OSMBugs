@@ -431,8 +431,7 @@
     <string name="osmose_error_description_9018">specific brazil</string>
     <string name="osmose_error_description_9019">specific france</string>
     <string name="osmose_error_description_9100">power transformer</string>
-    <string name="pref_openstreetmap_notes_token" translatable="false">pref_openstreetmap_notes_token</string>
-    <string name="pref_openstreetmap_notes_consumer_secret" translatable="false">pref_openstreetmap_notes_consumer_secret</string>
+    <string name="pref_openstreetmap_notes_oauth2" translatable="false">pref_openstreetmap_notes_oauth2</string>
     <string name="logging_in">Logging in…</string>
     <string name="pref_openstreetmap_notes_log_in" translatable="false">pref_openstreetmap_notes_log_in</string>
     <string name="log_in">Login</string>

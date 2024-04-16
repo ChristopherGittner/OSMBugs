@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.karumi.dexter.Dexter
@@ -16,8 +17,18 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import org.gittner.osmbugs.IntentHelper.intentHasReceivers
 import org.gittner.osmbugs.R
 import org.gittner.osmbugs.databinding.ActivityMainBinding
+import org.gittner.osmbugs.osmnotes.OsmNotesApi
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        private const val RC_AUTH = 100
+    }
+
+    private val mErrorViewModel : ErrorViewModel by viewModel<ErrorViewModel>()
+
+    private val mOsmNotesApi : OsmNotesApi by inject()
 
     private lateinit var mBinding: ActivityMainBinding
 
@@ -27,6 +38,12 @@ class MainActivity : AppCompatActivity() {
         mBinding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(mBinding.root)
+
+        mErrorViewModel.getAction().observe(this) {
+            if (it == ErrorViewModel.Companion.Action.OSM_NOTES_LOGIN) {
+                startActivityForResult(mOsmNotesApi.getAuthIntent(), RC_AUTH)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -41,6 +58,25 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(mBinding.toolbar)
 
         checkPermissions()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_AUTH && data != null) {
+            try {
+                mOsmNotesApi.authDone(data)
+
+                Toast.makeText(
+                    this,
+                    R.string.login_succeed,
+                    Toast.LENGTH_LONG
+                ).show()
+            } catch (ex: Exception) {
+                val msg = getString(R.string.login_failed_msg).format(ex)
+                Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -11,7 +11,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val DiModule = module {
-    single { OsmNotesApi() }
+    single { OsmNotesApi(get()) }
     single { KeeprightApi() }
     single { OsmoseApi() }
 

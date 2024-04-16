@@ -25,9 +25,17 @@ import org.osmdroid.util.BoundingBox
 
 @SuppressLint("CheckResult")
 class ErrorViewModel : ViewModel(), KoinComponent {
+    companion object {
+        enum class Action {
+            OSM_NOTES_LOGIN
+        }
+    }
+
     private val mSettings = Settings.getInstance()
 
     private val mError = MutableLiveData<String>()
+
+    private val mAction = MutableLiveData<Action>()
 
     private val mOsmNotesApi: OsmNotesApi by inject()
     private val mOsmNoteDao: OsmNoteDao by inject()
@@ -74,6 +82,14 @@ class ErrorViewModel : ViewModel(), KoinComponent {
 
     fun getError(): LiveData<String> {
         return mError
+    }
+
+    fun getAction() : LiveData<Action> {
+        return mAction
+    }
+
+    fun triggerAction(action : Action) {
+        mAction.value = action
     }
 
     fun getOsmNotes(): LiveData<ArrayList<OsmNote>> {

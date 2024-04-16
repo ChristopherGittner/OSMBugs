@@ -2,6 +2,8 @@ package org.gittner.osmbugs.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.*
@@ -20,12 +22,14 @@ import org.gittner.osmbugs.osmnotes.OsmNote
 import org.gittner.osmbugs.osmnotes.OsmNoteInfoWindow
 import org.gittner.osmbugs.osmnotes.OsmNoteMarker
 import org.gittner.osmbugs.osmnotes.OsmNotesAddErrorDialog
+import org.gittner.osmbugs.osmnotes.OsmNotesApi
 import org.gittner.osmbugs.osmose.OsmoseError
 import org.gittner.osmbugs.osmose.OsmoseInfoWindow
 import org.gittner.osmbugs.osmose.OsmoseMarker
 import org.gittner.osmbugs.statics.Images
 import org.gittner.osmbugs.statics.Settings
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
@@ -39,7 +43,10 @@ import org.osmdroid.views.overlay.infowindow.InfoWindow
 class MapFragment : Fragment() {
     private lateinit var mBinding: MapFragmentBinding
 
-    private val mErrorViewModel: ErrorViewModel by inject()
+    private val mErrorViewModel: ErrorViewModel by activityViewModel<ErrorViewModel>()
+
+    private val mOsmNotesApi : OsmNotesApi by inject()
+
     private val mSettings = Settings.getInstance()
 
     // These ArrayLists store all Visible Markers on the Map, to be able to remove them when the Markers are updated or the Layers are toggled
@@ -280,7 +287,7 @@ class MapFragment : Fragment() {
         mBinding.map.overlays.removeAll(mOsmNotes.toSet())
         mOsmNotes.clear()
 
-        val window = OsmNoteInfoWindow(mBinding.map, mErrorViewModel)
+        val window = OsmNoteInfoWindow(mBinding.map, mErrorViewModel, mOsmNotesApi)
 
         if (mErrorViewModel.getOsmNotesEnabled().value!!) {
             errors.forEach {

@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.gittner.osmbugs.osmnotes.OsmNotesApi
 import org.gittner.osmbugs.statics.Images
 import org.gittner.osmbugs.statics.Settings
 import org.koin.android.ext.android.inject
@@ -17,6 +18,8 @@ import timber.log.Timber
 
 class App : Application() {
     private lateinit var mSettings: Settings
+
+    private val mOsmNotesApi : OsmNotesApi by inject()
 
     @SuppressLint("ApplySharedPref")
     override fun onCreate() {
@@ -78,7 +81,6 @@ class App : Application() {
             // First start of the App --> Do nothing
             mSettings.LastVersionCode = versionCode
         }
-
 
         // Initialize Osmdroid
         // Set the correct User Agent

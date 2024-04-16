@@ -24,17 +24,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".osmnotes.OsmNotesLoginActivity"
-            android:noHistory="true"
-            android:exported="true">
+            android:exported="true"
+            android:name="net.openid.appauth.RedirectUriReceiverActivity"
+            tools:node="replace">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
                 <data
                     android:scheme="osmbugs"
-                    android:host="osmbugs.gittner.org"/>
+                    android:host="org.gittner.osmbugs"
+                    android:path="/auth"/>
             </intent-filter>
         </activity>
     </application>

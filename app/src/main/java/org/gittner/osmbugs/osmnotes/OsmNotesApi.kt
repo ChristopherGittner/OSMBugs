@@ -1,16 +1,22 @@
 package org.gittner.osmbugs.osmnotes
 
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.extensions.AuthenticatedRequest
 import com.github.kittinunf.fuel.coroutines.awaitStringResponse
-import com.github.scribejava.core.builder.ServiceBuilder
-import com.github.scribejava.core.builder.api.DefaultApi10a
-import com.github.scribejava.core.model.OAuth1AccessToken
-import com.github.scribejava.core.model.OAuth1RequestToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer
-import org.gittner.osmbugs.HttpRequestAdapter
+import net.openid.appauth.AuthState
+import net.openid.appauth.AuthorizationException
+import net.openid.appauth.AuthorizationRequest
+import net.openid.appauth.AuthorizationResponse
+import net.openid.appauth.AuthorizationService
+import net.openid.appauth.AuthorizationServiceConfiguration
+import net.openid.appauth.ClientAuthentication
+import net.openid.appauth.ClientSecretBasic
+import net.openid.appauth.ResponseTypeValues
 import org.gittner.osmbugs.statics.Settings
 import org.koin.core.component.KoinComponent
 import org.osmdroid.api.IGeoPoint
@@ -18,7 +24,7 @@ import org.osmdroid.util.BoundingBox
 import java.util.*
 
 
-class OsmNotesApi : KoinComponent {
+class OsmNotesApi(context: Context) : KoinComponent {
     companion object {
         private const val API_SCHEME = "https"
 
@@ -26,21 +32,18 @@ class OsmNotesApi : KoinComponent {
         private const val PATH_SEGMENT_VERSION = "0.6"
         private const val PATH_SEGMENT_NOTES = "notes"
 
-        const val AUTH_CALLBACK_URL = "osmbugs://osmbugs.gittner.org/auth-done/osmbugs"
-        const val AUTH_VERIFIER_PARAM = "oauth_verifier"
-
+        const val AUTH_CALLBACK_URL = "osmbugs://org.gittner.osmbugs/auth"
 
         // ------------------------------------
         // Live Server
         // ------------------------------------
         private const val DEFAULT_SERVER = "api.openstreetmap.org"
 
-        private const val API_KEY = "aJ0PL87pUEflM1GqhwO8x4jFmw1ehzYe19x9nsme"
-        private const val API_SECRET = "KYIp6rbd0OIDOVQLQCXTxawOcZwmI1bX8quR7uPk"
+        private const val CLIENT_ID = "PJqrMYJtFFQ0Al3KDySlyZxcUIc7_xnavtcWzH7QdNs"
+        private const val CLIENT_SECRET = "TF5Dt0tj3-CNDeelwjKsdVEO9KIREd8IUJ7QzH1m6aw"
 
-        private const val OAUTH_REQUEST_URL = "https://www.openstreetmap.org/oauth/request_token"
-        private const val OAUTH_ACCESS_URL = "https://www.openstreetmap.org/oauth/access_token"
-        private const val OAUTH_AUTH_URL = "https://www.openstreetmap.org/oauth/authorize"
+        private const val OAUTH_AUTHORIZE_URL = "https://www.openstreetmap.org/oauth2/authorize"
+        private const val OAUTH_ACCESS_URL = "https://www.openstreetmap.org/oauth2/token"
         // ------------------------------------
 
 
@@ -49,40 +52,59 @@ class OsmNotesApi : KoinComponent {
         // ------------------------------------
         //private const val DEFAULT_SERVER = "api06.dev.openstreetmap.org"
 
-        //private const val API_KEY = "ElJ0hTlALddTziJA3ZxjRq6cHsRjN48PGfhDL9R9"
-        //private const val API_SECRET = "5MususnuRXAZQJEFFqFgfFXAIpHDkLiRVjcRHJxK"
+        //private const val CLIENT_ID = "OuCGNYL3J0QbwV4UrKgrTC0MQCtrmFy8NJg6SGr4PDg"
+        //private const val CLIENT_SECRET = "PpQovsEbpZ3A1ZXTGB4VM3L8V963m26rYNJJK7LZTxc "
 
-        //private const val OAUTH_REQUEST_URL = "https://master.apis.dev.openstreetmap.org/oauth/request_token"
-        //private const val OAUTH_ACCESS_URL = "https://master.apis.dev.openstreetmap.org/oauth/access_token"
-        //private const val OAUTH_AUTH_URL = "https://master.apis.dev.openstreetmap.org/oauth/authorize"
+        //private const val OAUTH_AUTHORIZE_URL = "https://master.apis.dev.openstreetmap.org/oauth2/authorize"
+        //private const val OAUTH_ACCESS_URL = "https://master.apis.dev.openstreetmap.org/oauth2/token"
         // ------------------------------------
+    }
 
+    private var serviceConfig = AuthorizationServiceConfiguration(
+        Uri.parse(OAUTH_AUTHORIZE_URL),
+        Uri.parse(OAUTH_ACCESS_URL))
 
-        private val AuthService = ServiceBuilder(API_KEY)
-            .apiSecret(API_SECRET)
-            .build(object : DefaultApi10a() {
-                override fun getRequestTokenEndpoint(): String {
-                    return OAUTH_REQUEST_URL
+    private var mAuthState = AuthState(serviceConfig)
+
+    fun isLoggedIn(): Boolean {
+        return mAuthState.isAuthorized
+    }
+
+    private var mAuthService : AuthorizationService
+
+    fun getAuthIntent() : Intent{
+        return mAuthService.getAuthorizationRequestIntent(
+            AuthorizationRequest.Builder(
+                serviceConfig,
+                CLIENT_ID,
+                ResponseTypeValues.CODE,
+                Uri.parse(AUTH_CALLBACK_URL)).
+            setScope("write_notes").
+            build())
+    }
+
+    fun authDone(data: Intent) {
+        val resp = AuthorizationResponse.fromIntent(data)
+        val ex = AuthorizationException.fromIntent(data)
+
+        mAuthState.update(resp, ex)
+
+        mSettings.OsmNotes.OAuth2 = mAuthState.jsonSerializeString()
+
+        if (resp != null) {
+            val clientAuth : ClientAuthentication = ClientSecretBasic(CLIENT_SECRET)
+
+            mAuthService.performTokenRequest(resp.createTokenExchangeRequest(), clientAuth) { tokenResp, tokenEx ->
+                if (tokenResp != null) {
+                    mAuthState.update(tokenResp, tokenEx);
+
+                    mSettings.OsmNotes.OAuth2 = mAuthState.jsonSerializeString()
                 }
-
-                override fun getAccessTokenEndpoint(): String {
-                    return OAUTH_ACCESS_URL
-                }
-
-                override fun getAuthorizationBaseUrl(): String {
-                    return OAUTH_AUTH_URL
-                }
-            })
+            }
+        }
     }
 
     private val mSettings = Settings.getInstance()
-
-    private fun getConsumer(): CommonsHttpOAuthConsumer {
-        val consumer = CommonsHttpOAuthConsumer(API_KEY, API_SECRET)
-        consumer.setTokenWithSecret(mSettings.OsmNotes.Token, mSettings.OsmNotes.ConsumerSecret)
-
-        return consumer
-    }
 
     suspend fun download(
         bBox: BoundingBox,
@@ -158,8 +180,7 @@ class OsmNotesApi : KoinComponent {
             .appendQueryParameter("text", comment)
             .build()
 
-        val request = Fuel.post(url.toString())
-        getConsumer().sign(HttpRequestAdapter(request))
+        val request = AuthenticatedRequest(Fuel.post(url.toString())).bearer(mAuthState.accessToken!!)
 
         val response = request.awaitStringResponse()
 
@@ -180,8 +201,7 @@ class OsmNotesApi : KoinComponent {
             .appendQueryParameter("text", comment)
             .build()
 
-        val request = Fuel.post(url.toString())
-        getConsumer().sign(HttpRequestAdapter(request))
+        val request = AuthenticatedRequest(Fuel.post(url.toString())).bearer(mAuthState.accessToken!!)
 
         val response = request.awaitStringResponse()
 
@@ -202,8 +222,7 @@ class OsmNotesApi : KoinComponent {
             .appendQueryParameter("text", comment)
             .build()
 
-        val request = Fuel.post(url.toString())
-        getConsumer().sign(HttpRequestAdapter(request))
+        val request = AuthenticatedRequest(Fuel.post(url.toString())).bearer(mAuthState.accessToken!!)
 
         val response = request.awaitStringResponse()
 
@@ -224,8 +243,7 @@ class OsmNotesApi : KoinComponent {
             .appendQueryParameter("text", comment)
             .build()
 
-        val request = Fuel.post(url.toString())
-        getConsumer().sign(HttpRequestAdapter(request))
+        val request = AuthenticatedRequest(Fuel.post(url.toString())).bearer(mAuthState.accessToken!!)
 
         val response = request.awaitStringResponse()
 
@@ -234,19 +252,14 @@ class OsmNotesApi : KoinComponent {
         if (parsedNotes.count() != 1) {
             throw java.lang.RuntimeException("Received an invalid number of notes: ${parsedNotes.count()}. Expected: 1")
         }
-
         return parsedNotes[0]
     }
 
-    suspend fun getRequestToken(): OAuth1RequestToken = withContext(Dispatchers.IO) {
-        AuthService.requestToken
-    }
-
-    fun getRequestUrl(requestToken: OAuth1RequestToken) : String {
-        return AuthService.getAuthorizationUrl(requestToken)
-    }
-
-    suspend fun getAccessToken(requestToken: OAuth1RequestToken, verifier: String): OAuth1AccessToken = withContext(Dispatchers.IO) {
-        AuthService.getAccessToken(requestToken, verifier)
+    init {
+        val data = mSettings.OsmNotes.OAuth2
+        if (data.isNotEmpty()) {
+            mAuthState = AuthState.jsonDeserialize(data)
+        }
+        mAuthService = AuthorizationService(context)
     }
 }
