@@ -24,6 +24,13 @@
                 android:src="@drawable/keepright_zap_ignored" />
 
             <ImageView
+                android:id="@+id/imgBrowse"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_browse" />
+
+            <ImageView
                 android:id="@+id/imgSave"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
@@ -37,13 +44,6 @@
                 android:layout_marginLeft="8dp"
                 android:indeterminate="true"
                 android:visibility="gone" />
-
-            <ImageView
-                android:id="@+id/imgBrowse"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginLeft="8dp"
-                android:src="@drawable/ic_browse" />
 
             <Space
                 android:layout_width="0dp"

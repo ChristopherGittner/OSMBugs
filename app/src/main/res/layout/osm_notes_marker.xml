@@ -24,13 +24,6 @@
                 android:src="@drawable/osm_note_open" />
 
             <ImageView
-                android:id="@+id/imgEditComment"
-                android:layout_marginLeft="8dp"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_edit" />
-
-            <ImageView
                 android:id="@+id/imgSave"
                 android:layout_marginLeft="8dp"
                 android:layout_width="32dp"
@@ -44,6 +37,13 @@
                 android:layout_marginLeft="8dp"
                 android:indeterminate="true"
                 android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/imgEditComment"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_edit" />
 
             <Space
                 android:layout_width="0dp"

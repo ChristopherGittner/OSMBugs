@@ -8,6 +8,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.gittner.osmbugs.R
 import org.gittner.osmbugs.databinding.OsmNotesMarkerBinding
+import org.gittner.osmbugs.statics.Images
 import org.gittner.osmbugs.ui.ErrorInfoWindow
 import org.gittner.osmbugs.ui.ErrorViewModel
 import org.joda.time.DateTimeZone
@@ -118,7 +119,7 @@ class OsmNoteInfoWindow(map: MapView, viewModel: ErrorViewModel, osmNotesApi: Os
 
     private fun updateViews(error: OsmNote) {
         mBinding.apply {
-            imgState.setImageDrawable(if (mNewState == OsmNote.STATE.OPEN) OsmNote.IcOpen else OsmNote.IcClosed)
+            imgState.setImageDrawable(if (mNewState == OsmNote.STATE.OPEN) Images.GetDrawable(R.drawable.osm_note_open) else Images.GetDrawable(R.drawable.osm_note_closed))
 
             imgSave.visibility = if (error.State != mNewState || edtxtComment.text.toString() != "")
                 View.VISIBLE else

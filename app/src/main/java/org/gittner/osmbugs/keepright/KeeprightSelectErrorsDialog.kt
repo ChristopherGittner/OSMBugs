@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import org.gittner.osmbugs.R
+import org.gittner.osmbugs.statics.Images
 import org.gittner.osmbugs.statics.Settings
 import org.gittner.osmbugs.ui.EnabledErrorsAdapter
 
@@ -20,8 +21,8 @@ class KeeprightSelectErrorsDialog : DialogFragment() {
             val adapter = EnabledErrorsAdapter<KeeprightError.ERROR_TYPE>(it)
 
             // Add Ignored and Temporary ignored
-            adapter.add(EnabledErrorsAdapter.Data(null, mSettings.Keepright.ShowIgnored, R.string.show_ignored, KeeprightError.IcZapIgnored))
-            adapter.add(EnabledErrorsAdapter.Data(null, mSettings.Keepright.ShowTmpIgnored, R.string.show_temporary_ignored, KeeprightError.IcZapTmpIgnored))
+            adapter.add(EnabledErrorsAdapter.Data(null, mSettings.Keepright.ShowIgnored, R.string.show_ignored, Images.GetDrawable(R.drawable.keepright_zap_ignored)))
+            adapter.add(EnabledErrorsAdapter.Data(null, mSettings.Keepright.ShowTmpIgnored, R.string.show_temporary_ignored, Images.GetDrawable(R.drawable.keepright_zap_tmp_ignored)))
 
             // Add all Keepright Error Types
             KeeprightError.ERROR_TYPE.entries.forEach { errorType ->
@@ -30,7 +31,7 @@ class KeeprightSelectErrorsDialog : DialogFragment() {
                         errorType,
                         mSettings.Keepright.GetTypeEnabled(errorType),
                         errorType.DescriptionId,
-                        errorType.Icon
+                        Images.GetDrawable(errorType.Drawable)
                     )
                 )
             }

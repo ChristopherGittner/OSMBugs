@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import org.gittner.osmbugs.R
+import org.gittner.osmbugs.statics.Images
 import org.gittner.osmbugs.statics.Settings
 import org.gittner.osmbugs.ui.EnabledErrorsAdapter
 
@@ -25,7 +26,7 @@ class OsmoseSelectErrorsDialog : DialogFragment() {
                         errorType,
                         mSettings.Osmose.GetTypeEnabled(errorType),
                         errorType.DescriptionId,
-                        errorType.Icon
+                        Images.GetDrawable(errorType.Drawable)
                     )
                 )
             }

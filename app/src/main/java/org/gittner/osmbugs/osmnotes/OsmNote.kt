@@ -30,20 +30,4 @@ data class OsmNote(
         OPEN,
         CLOSED
     }
-
-    companion object {
-        lateinit var IcOpen: Drawable
-        lateinit var IcClosed: Drawable
-
-        lateinit var IcToggleLayer: Drawable
-        lateinit var IcToggleLayerDisabled: Drawable
-
-        fun Init() {
-            IcOpen = Images.GetDrawable(R.drawable.osm_note_open)
-            IcClosed = Images.GetDrawable(R.drawable.osm_note_closed)
-
-            IcToggleLayer = Images.GetDrawable(R.drawable.ic_toggle_osm_notes_layer)
-            IcToggleLayerDisabled = Images.GetDrawable(R.drawable.ic_toggle_osm_notes_layer_disabled)
-        }
-    }
 }

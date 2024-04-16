@@ -22,10 +22,6 @@ class Images {
 
         fun init(app: App) {
             mResources = app.applicationContext.resources
-
-            OsmNote.Init()
-            KeeprightError.Init()
-            OsmoseError.Init()
         }
     }
 }

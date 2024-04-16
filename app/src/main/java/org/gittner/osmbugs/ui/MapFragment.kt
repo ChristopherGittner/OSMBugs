@@ -180,7 +180,7 @@ class MapFragment : Fragment() {
         mErrorViewModel.getOsmNotesEnabled().observe(viewLifecycleOwner) {
             updateOsmNotes(mErrorViewModel.getOsmNotes().value!!)
 
-            mBinding.btnToggleOsmNotesLayer.setImageDrawable(if (it) OsmNote.IcToggleLayer else OsmNote.IcToggleLayerDisabled)
+            mBinding.btnToggleOsmNotesLayer.setImageDrawable(if (it) Images.GetDrawable(R.drawable.ic_toggle_osm_notes_layer) else Images.GetDrawable(R.drawable.ic_toggle_osm_notes_layer_disabled))
         }
 
         mErrorViewModel.getKeeprightErrors().observe(viewLifecycleOwner) {
@@ -190,7 +190,11 @@ class MapFragment : Fragment() {
         mErrorViewModel.getKeeprightEnabled().observe(viewLifecycleOwner) {
             updateKeeprightErrors(mErrorViewModel.getKeeprightErrors().value!!)
 
-            mBinding.btnToggleKeeprightLayer.setImageDrawable(if (it) KeeprightError.IcToggleLayer else KeeprightError.IcToggleLayerDisabled)
+            mBinding.btnToggleKeeprightLayer.setImageDrawable(
+                if (it)
+                    Images.GetDrawable(R.drawable.ic_toggle_keepright_layer)
+                else
+                    Images.GetDrawable(R.drawable.ic_toggle_keepright_layer_disabled))
         }
 
         mErrorViewModel.getOsmoseErrors().observe(viewLifecycleOwner) {
@@ -200,7 +204,7 @@ class MapFragment : Fragment() {
         mErrorViewModel.getOsmoseEnabled().observe(viewLifecycleOwner) {
             updateOsmoseErrors(mErrorViewModel.getOsmoseErrors().value!!)
 
-            mBinding.btnToggleOsmoseLayer.setImageDrawable(if (it) OsmoseError.IcToggleLayer else OsmoseError.IcToggleLayerDisabled)
+            mBinding.btnToggleOsmoseLayer.setImageDrawable(if (it) Images.GetDrawable(R.drawable.ic_toggle_osmose_layer) else Images.GetDrawable(R.drawable.ic_toggle_osmose_layer_disabled))
         }
 
         mErrorViewModel.getContentLoading().observe(viewLifecycleOwner) {
