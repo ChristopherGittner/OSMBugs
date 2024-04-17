@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityMainBinding
 
+    private val mMapFragment = MapFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -87,6 +89,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         return true
+    }
+
+    override fun onBackPressed() {
+        if (mMapFragment.handleBackPress()) {
+            return
+        }
+
+        super.onBackPressed()
     }
 
     private fun startSettingsFragment() {
@@ -147,7 +157,7 @@ class MainActivity : AppCompatActivity() {
     private fun afterPermissions() {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.container, MapFragment())
+            .replace(R.id.container, mMapFragment)
             .commit()
     }
 }

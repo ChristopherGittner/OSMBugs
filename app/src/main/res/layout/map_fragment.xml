@@ -46,52 +46,33 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="bottom"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_toggle_osm_notes_layer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:orientation="vertical">
+                android:src="@drawable/ic_toggle_osm_notes_layer"
+                app:elevation="0dp" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    android:orientation="horizontal">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_toggle_keepright_layer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/ic_toggle_keepright_layer"
+                app:elevation="0dp" />
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/btn_toggle_osm_notes_layer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="16dp"
-                        android:src="@drawable/ic_toggle_osm_notes_layer"
-                        app:elevation="0dp" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/btn_toggle_keepright_layer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="16dp"
-                        android:src="@drawable/ic_toggle_keepright_layer"
-                        app:elevation="0dp" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/btn_toggle_osmose_layer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_toggle_osmose_layer"
-                        app:elevation="0dp" />
-                </LinearLayout>
-
-            </LinearLayout>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_toggle_osmose_layer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/ic_toggle_osmose_layer"
+                app:elevation="0dp" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btn_layers"
@@ -100,15 +81,14 @@
                 android:layout_marginBottom="16dp"
                 android:src="@drawable/ic_layers"
                 app:elevation="0dp" />
-
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_add_osm_note"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_error"
             android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_add_error"
             app:elevation="0dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

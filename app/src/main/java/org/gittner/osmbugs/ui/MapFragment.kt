@@ -10,6 +10,8 @@ import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import org.gittner.osmbugs.OsmBugsMyLocationNewOverlay
@@ -40,7 +42,7 @@ import org.osmdroid.views.overlay.infowindow.InfoWindow
 /**
  * Displays a Map with Buttons to reload the Errors, toggle the visible Layers and shows a progress bar when loading new Errors
  */
-class MapFragment : Fragment() {
+class MapFragment : Fragment(), BackPressHandler {
     private lateinit var mBinding: MapFragmentBinding
 
     private val mErrorViewModel: ErrorViewModel by activityViewModel<ErrorViewModel>()
@@ -55,6 +57,8 @@ class MapFragment : Fragment() {
     private val mOsmoseErrors = ArrayList<OsmoseMarker>()
 
     private var mBtnInitDone = false
+
+    private var mEnableAddOsmNote = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         mBinding = MapFragmentBinding.inflate(layoutInflater)
@@ -161,6 +165,17 @@ class MapFragment : Fragment() {
         }
     }
 
+    override fun handleBackPress() : Boolean {
+        if (mEnableAddOsmNote) {
+            mEnableAddOsmNote = false
+            updateViews()
+
+            return true
+        }
+
+        return false
+    }
+
     /**
      * Sets up everything related to the ViewModel like Observers etc.
      */
@@ -215,16 +230,33 @@ class MapFragment : Fragment() {
     /**
      * Sets up everything related to the Add Error functions
      */
-    @SuppressLint("RestrictedApi")
     private fun setupAddError() {
         mBinding.btnAddOsmNote.setOnClickListener {
-            OsmNotesAddErrorDialog(
-                requireContext(),
-                mErrorViewModel,
-                mBinding.map.mapCenter).show()
+            if (!mEnableAddOsmNote) {
+                mEnableAddOsmNote = true
+            } else {
+                OsmNotesAddErrorDialog(
+                    requireContext(),
+                    mErrorViewModel,
+                    mBinding.map.mapCenter).show()
+
+                mEnableAddOsmNote = false
+            }
+
+            updateViews()
         }
 
-        mBinding.imgCrosshair.visibility = View.INVISIBLE
+        updateViews()
+    }
+
+    private fun updateViews() {
+        if (mEnableAddOsmNote) {
+            mBinding.imgCrosshair.visibility = View.VISIBLE
+            mBinding.btnAddOsmNote.setImageDrawable(Images.GetDrawable(R.drawable.ic_add_error_confirm))
+        } else {
+            mBinding.imgCrosshair.visibility = View.INVISIBLE
+            mBinding.btnAddOsmNote.setImageDrawable(Images.GetDrawable(R.drawable.ic_add_error))
+        }
     }
 
     /**
