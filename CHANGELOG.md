@@ -1,5 +1,10 @@
 CHANGELOG
 =========
+V 1-4-0
+
+- Switched to OAuth2 as login Method for OSM Notes
+- Removed Mapdust support
+
 V 1-3-6
 
 - Downgrade Scribejava to 7.1.1 because of missing Dependency in recent Versions on older Android Versions
