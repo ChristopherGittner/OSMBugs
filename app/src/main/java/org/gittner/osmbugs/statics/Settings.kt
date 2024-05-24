@@ -47,21 +47,23 @@ class Settings(private val mContext: Context) {
 
     var CacheSizeMb: Long
         get() {
-            return mSharedPreferences.getLong(
+            return mSharedPreferences.getString(
                 mContext.getString(R.string.pref_cache_size),
-                Configuration.getInstance().tileFileSystemCacheMaxBytes / 1024L / 1024L
-            )
+                ""
+            )?.toLong() ?: (Configuration.getInstance().tileFileSystemCacheMaxBytes / 1024L / 1024L)
         }
         set(value) {
             mSharedPreferences
                 .edit()
-                .putLong(mContext.getString(R.string.pref_cache_size), value)
+                .putString(mContext.getString(R.string.pref_cache_size), value.toString())
                 .apply()
         }
 
     var TileTTLOverride: Long
         get() {
-            return max(mSharedPreferences.getString(mContext.getString(R.string.pref_tile_cache_ttl_override), "0")!!.toLong(), 0)
+            return max(
+                mSharedPreferences.getString(mContext.getString(R.string.pref_tile_cache_ttl_override), "0")?.toLong()?:0,
+                0)
         }
         set(value) {
             mSharedPreferences

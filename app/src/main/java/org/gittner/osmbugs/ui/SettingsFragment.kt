@@ -1,7 +1,7 @@
 package org.gittner.osmbugs.ui
 
-import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.widget.Toast
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
@@ -35,22 +35,33 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        findPreference<Preference>(getString(R.string.pref_clear_tile_cache))?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            if (clearTileCache()) {
-                Toast.makeText(requireContext(), R.string.tile_cache_cleared, Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(requireContext(), R.string.tile_cache_cleared_failed, Toast.LENGTH_LONG).show()
+        findPreference<EditTextPreference>(getString(R.string.pref_tile_cache_ttl_override))?.apply {
+            setOnPreferenceChangeListener { _, newValue ->
+                Configuration.getInstance().expirationOverrideDuration =
+                    newValue.toString().toLong() * 1000
+
+                clearTileCache()
+
+                true
             }
 
-            true
+            setOnBindEditTextListener{ it.inputType = InputType.TYPE_CLASS_NUMBER }
         }
 
-        findPreference<EditTextPreference>(getString(R.string.pref_tile_cache_ttl_override))?.setOnPreferenceChangeListener { _, newValue ->
-            Configuration.getInstance().expirationOverrideDuration = newValue.toString().toLong() * 1000
+        findPreference<EditTextPreference>(getString(R.string.pref_cache_size))?.apply {
+            setOnBindEditTextListener{ it.inputType = InputType.TYPE_CLASS_NUMBER }
+        }
 
-            clearTileCache()
+        findPreference<Preference>(getString(R.string.pref_clear_tile_cache))?.apply {
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                if (clearTileCache()) {
+                    Toast.makeText(requireContext(), R.string.tile_cache_cleared, Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(requireContext(), R.string.tile_cache_cleared_failed, Toast.LENGTH_LONG).show()
+                }
 
-            true
+                true
+            }
         }
     }
 
