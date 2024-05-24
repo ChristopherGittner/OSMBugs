@@ -329,6 +329,7 @@ class MapFragment : Fragment(), BackPressHandler {
             errors.forEach {
                 val marker = setupMarker(OsmNoteMarker(it, mBinding.map))
                 marker.infoWindow = window
+                marker.setAnchor(0.5f, 1.0f)
 
                 mOsmNotes.add(marker)
                 mBinding.map.overlays.add(marker)
@@ -351,6 +352,7 @@ class MapFragment : Fragment(), BackPressHandler {
             errors.forEach {
                 val marker = setupMarker(KeeprightMarker(it, mBinding.map))
                 marker.infoWindow = window
+                marker.setAnchor(0.0f, 1.0f)
 
                 mKeeprightErrors.add(marker)
                 mBinding.map.overlays.add(marker)
@@ -373,6 +375,7 @@ class MapFragment : Fragment(), BackPressHandler {
             errors.forEach {
                 val marker = setupMarker(OsmoseMarker(it, mBinding.map))
                 marker.infoWindow = window
+                marker.setAnchor(0.5f, 1.0f)
 
                 mOsmoseErrors.add(marker)
                 mBinding.map.overlays.add(marker)
