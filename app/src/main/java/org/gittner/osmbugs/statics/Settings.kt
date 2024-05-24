@@ -47,10 +47,11 @@ class Settings(private val mContext: Context) {
 
     var CacheSizeMb: Long
         get() {
+            val default = (Configuration.getInstance().tileFileSystemCacheMaxBytes / 1024L / 1024L)
             return mSharedPreferences.getString(
                 mContext.getString(R.string.pref_cache_size),
-                ""
-            )?.toLong() ?: (Configuration.getInstance().tileFileSystemCacheMaxBytes / 1024L / 1024L)
+                default.toString()
+            )?.toLong() ?: default
         }
         set(value) {
             mSharedPreferences
