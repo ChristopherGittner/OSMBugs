@@ -408,36 +408,36 @@ data class KeeprightError(
         _20(
             20,
             R.string.keepright_error_title_20,
-            R.string.pref_keepright_enabled_20,
             R.drawable.keepright_zap_20,
+            R.string.pref_keepright_enabled_20,
             false
         ),
         _60(
             60,
             R.string.keepright_error_title_60,
-            R.string.pref_keepright_enabled_60,
             R.drawable.keepright_zap_60,
+            R.string.pref_keepright_enabled_60,
             false
         ),
         _300(
             300,
             R.string.keepright_error_title_300,
-            R.string.pref_keepright_enabled_300,
             R.drawable.keepright_zap_300,
+            R.string.pref_keepright_enabled_300,
             false
         ),
         _360(
             360,
             R.string.keepright_error_title_360,
-            R.string.pref_keepright_enabled_360,
             R.drawable.keepright_zap_360,
+            R.string.pref_keepright_enabled_360,
             false
         ),
         _390(
             390,
             R.string.keepright_error_title_390,
-            R.string.pref_keepright_enabled_390,
             R.drawable.keepright_zap_390,
+            R.string.pref_keepright_enabled_390,
             false
         )
     }
