@@ -243,7 +243,11 @@ class OsmNotesApi(context: Context) : KoinComponent {
             .appendQueryParameter("text", comment)
             .build()
 
-        val request = AuthenticatedRequest(Fuel.post(url.toString())).bearer(mAuthState.accessToken!!)
+        val request = if(isLoggedIn()) {
+            AuthenticatedRequest(Fuel.post(url.toString())).bearer(mAuthState.accessToken!!)
+        } else {
+            Fuel.post(url.toString())
+        }
 
         val response = request.awaitStringResponse()
 
