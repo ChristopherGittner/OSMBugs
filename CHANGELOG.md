@@ -1,5 +1,14 @@
 CHANGELOG
 =========
+V 1-4-1
+
+- Various Bugfixes. Thanks to the Users reporting and investigating the Errors
+- Bugfix: Keepright Settings not accessible without Crash
+- Bugfix: Crash when restarting the App after setting a max cache size / tile ttl
+- Bugfix: Markers positions are slightly off
+- Bugfix: OSM Notes can only be added when being logged in
+
+
 V 1-4-0
 
 - Switched to OAuth2 as login Method for OSM Notes
