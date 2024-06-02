@@ -8,7 +8,6 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.Toast
-import org.gittner.osmbugs.IntentHelper
 import org.gittner.osmbugs.R
 import org.gittner.osmbugs.statics.Settings
 import org.osmdroid.views.MapView
@@ -33,12 +32,16 @@ open class ErrorInfoWindow(layoutResId: Int, mapView: MapView) : InfoWindow(layo
         view.findViewById<ImageView>(R.id.imgShare).setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:%f,%f".format(Locale.ENGLISH, error.Point.latitude, error.Point.longitude)))
 
-            if (!IntentHelper.intentHasReceivers(mMapView.context, intent)) {
-                Toast.makeText(mMapView.context, R.string.toast_geo_intent_no_app_found, Toast.LENGTH_LONG).show()
+            try {
+                mMapView.context.startActivity(intent)
+            }catch(e: Exception) {
+                Toast.makeText(
+                    mMapView.context,
+                    R.string.toast_geo_intent_no_app_found,
+                    Toast.LENGTH_LONG
+                ).show()
                 return@setOnClickListener
             }
-
-            mMapView.context.startActivity(intent)
         }
     }
 
