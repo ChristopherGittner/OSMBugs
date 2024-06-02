@@ -1,5 +1,11 @@
 CHANGELOG
 =========
+V 1-4-2
+
+- Bugfix: Sharing of Locations not working on some devices
+- Bugfix: Crash when restarting the App after setting an empty cache size / tile ttl
+
+
 V 1-4-1
 
 - Various Bugfixes. Thanks to the Users reporting and investigating the Errors
