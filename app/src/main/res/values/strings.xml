@@ -110,7 +110,7 @@
     <string name="tile_cache_cleared_failed">Failed to clear Tile cache</string>
     <string name="create_error">Create Error</string>
     <string name="max_cache_size">Cache size limit</string>
-    <string name="enter_new_cache_size">Enter Cache size limit (MB)</string>
+    <string name="enter_new_cache_size">Enter Cache size limit (MB)\nDefault = 600</string>
     <string name="pref_openstreetmap_notes_enabled" translatable="false">pref_openstreetmap_notes_enabled</string>
     <string name="pref_openstreetmap_notes_show_closed" translatable="false">pref_openstreetmap_notes_show_closed</string>
     <string name="pref_openstreetmap_notes_bug_limit" translatable="false">pref_openstreetmap_notes_bug_limit</string>
@@ -458,5 +458,6 @@
     <string name="dialog_permissions_required_message">The GPS Permission is required to display your Position on the Map. You can enable the Permission later in the App Settings</string>
     <string name="dialog_permissions_required_positive">Allow</string>
     <string name="pref_tutorial_bug_state_done">pref_tutorial_bug_state_done</string>
+    <string name="invalid_value">Invalid Value</string>
 
 </resources>

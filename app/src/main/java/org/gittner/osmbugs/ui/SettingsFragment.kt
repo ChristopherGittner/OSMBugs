@@ -37,18 +37,33 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<EditTextPreference>(getString(R.string.pref_tile_cache_ttl_override))?.apply {
             setOnPreferenceChangeListener { _, newValue ->
-                Configuration.getInstance().expirationOverrideDuration =
-                    newValue.toString().toLong() * 1000
+                if (newValue.toString().isEmpty()) {
+                    Toast.makeText(context, R.string.invalid_value, Toast.LENGTH_LONG).show()
+                    false
+                } else {
 
-                clearTileCache()
+                    Configuration.getInstance().expirationOverrideDuration =
+                        newValue.toString().toLong() * 1000
 
-                true
+                    clearTileCache()
+
+                    true
+                }
             }
 
             setOnBindEditTextListener{ it.inputType = InputType.TYPE_CLASS_NUMBER }
         }
 
         findPreference<EditTextPreference>(getString(R.string.pref_cache_size))?.apply {
+            setOnPreferenceChangeListener { _, newValue ->
+                if (newValue.toString().isEmpty()) {
+                    Toast.makeText(context, R.string.invalid_value, Toast.LENGTH_LONG).show()
+                    false
+                } else {
+                    true
+                }
+            }
+
             setOnBindEditTextListener{ it.inputType = InputType.TYPE_CLASS_NUMBER }
         }
 

@@ -33,9 +33,7 @@
     <string name="tile_cache_cleared">Tile cache gelöscht</string>
     <string name="tile_cache_cleared_failed">Fehler beim löschen des Tile caches</string>
     <string name="max_cache_size">Cache Größe</string>
-    <string name="enter_new_cache_size">Maximale Cache Größe eingeben (MB)</string>
-
-
+    <string name="enter_new_cache_size">Maximale Cache Größe eingeben (MB)\nStandard = 600</string>
     <string name="keepright_error_title_30">offene Ränder</string>
     <string name="keepright_error_title_40">Einbahn-Sackgassen</string>
     <string name="keepright_error_title_50">beinahe-Verbindungen</string>
@@ -351,4 +349,5 @@
     <string name="dialog_permissions_required_message">Die "Gerätestandort" Berechtigung wird benötigt um Deine aktuelle Position anzuzeigen. Du kannst die Berechtigung auch nachträglich in den App Einstellungen aktivieren.</string>
     <string name="dialog_permissions_required_positive">Zulassen</string>
     <string name="login_failed_no_verifier">Login Fehgleschlagen: Kein Verifier empfangen</string>
+    <string name="invalid_value">Ungültiger Wert</string>
 </resources>

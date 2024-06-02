@@ -36,7 +36,10 @@ class Settings(private val mContext: Context) {
 
     var LastVersionCode: Int
         get() {
-            return mSharedPreferences.getInt(mContext.getString(R.string.pref_last_version_code), -1)
+            return mSharedPreferences.getInt(
+                mContext.getString(R.string.pref_last_version_code),
+                -1
+            )
         }
         set(value) {
             mSharedPreferences
@@ -48,10 +51,13 @@ class Settings(private val mContext: Context) {
     var CacheSizeMb: Long
         get() {
             val default = (Configuration.getInstance().tileFileSystemCacheMaxBytes / 1024L / 1024L)
-            return mSharedPreferences.getString(
-                mContext.getString(R.string.pref_cache_size),
-                default.toString()
-            )?.toLong() ?: default
+
+            try {
+                val s = mSharedPreferences.getString(mContext.getString(R.string.pref_cache_size), "")?: return default
+                return s.toLong()
+            } catch (e: Exception) {
+                return default
+            }
         }
         set(value) {
             mSharedPreferences
@@ -62,9 +68,15 @@ class Settings(private val mContext: Context) {
 
     var TileTTLOverride: Long
         get() {
-            return max(
-                mSharedPreferences.getString(mContext.getString(R.string.pref_tile_cache_ttl_override), "0")?.toLong()?:0,
-                0)
+            try {
+                val s = mSharedPreferences.getString(
+                    mContext.getString(R.string.pref_tile_cache_ttl_override),
+                    "0"
+                )?:return 0
+                return max(0, s.toLong())
+            } catch (e:Exception) {
+                return 0
+            }
         }
         set(value) {
             mSharedPreferences
