@@ -14,7 +14,6 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import org.gittner.osmbugs.IntentHelper.intentHasReceivers
 import org.gittner.osmbugs.R
 import org.gittner.osmbugs.databinding.ActivityMainBinding
 import org.gittner.osmbugs.osmnotes.OsmNotesApi
@@ -83,7 +82,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_action_feedback -> startFeedbackIntent()
             R.id.menu_action_settings -> startSettingsFragment()
             else -> return false
         }
@@ -105,23 +103,6 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.container, SettingsFragment())
             .addToBackStack("Settings")
             .commit()
-    }
-
-    private fun startFeedbackIntent() {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.developer_mail)))
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback_mail_subject))
-        intent.type = "plain/text"
-
-        if (!intentHasReceivers(this, intent)) {
-            AlertDialog.Builder(this)
-                .setTitle(R.string.dialog_feedback_failed_title)
-                .setMessage(R.string.dialog_feedback_failed_message)
-                .setCancelable(true)
-                .create().show()
-        }
-
-        startActivity(intent)
     }
 
     private fun checkPermissions() {

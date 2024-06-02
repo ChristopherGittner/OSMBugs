@@ -446,10 +446,6 @@
     <string name="pref_osmose_error_level" translatable="false">pref_osmose_error_level</string>
     <string name="level">Level</string>
     <string name="menu_item_feedback_title">Feedback</string>
-    <string name="developer_mail" translatable="false">christopher@gittner.org</string>
-    <string name="feedback_mail_subject">Feedback to OSMBugs</string>
-    <string name="dialog_feedback_failed_title">Failed to send Feedback</string>
-    <string name="dialog_feedback_failed_message">No App found to write an E-Mail. Please send your feedback to christopher@gittner.org</string>
     <string name="datetime_format">MM/dd/yyyy kk:mm a</string>
     <string name="login_failed_no_token">Login Failed: No Token received</string>
     <string name="login_failed_no_verifier">Login Failed: No verifier received</string>

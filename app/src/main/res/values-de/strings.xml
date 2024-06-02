@@ -339,9 +339,6 @@
     <string name="osmose_error_level_3">Alle</string>
     <string name="level">Level</string>
     <string name="menu_item_feedback_title">Feedback</string>
-    <string name="feedback_mail_subject">Feedback zu OSMBugs</string>
-    <string name="dialog_feedback_failed_title">Feedback kann nicht gesendet werden</string>
-    <string name="dialog_feedback_failed_message">Keine App gefunde, mit der eine E-Mail verschickt werden kann. Bitte das Feedback an christopher@gittner.org schicken</string>
     <string name="datetime_format">dd.MM.yyyy HH:mm</string>
     <string name="login_failed_no_token">Login Fehlgeschlagen: Kein Token empfangen</string>
     <string name="login_failed_msg">Login fehler: %s</string>
